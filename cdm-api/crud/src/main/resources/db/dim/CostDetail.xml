@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CostDetail">
+    <select id="getPlacementCost" parameterType="java.lang.Long"
+            resultType="DimPlacementCost">
+        SELECT PLACEMENT_COST_ID        as placementCostId,
+               PLACEMENT_ID             as placementId,
+               START_DATE               as startDate,
+               END_DATE                 as endDate,
+               RATE_TYPE                as costRateType,
+               RATE,
+               INVENTORY,
+               COST_TYPE                as costType
+          FROM DIM_OWNER.D_PLACEMENT_COST
+         WHERE PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+    </select>
+                               
+    <select id="getPlacementCostDetail" parameterType="java.lang.Long"
+            resultType="DimPlacementCostDetail">
+        SELECT PLACEMENT_COST_ID        as placementCostId,
+               PLACEMENT_ID             as placementId,
+               START_DATE               as startDate,
+               END_DATE                 as endDate,
+               INVENTORY,
+               RATE_TYPE                as dimPlacementCostDetailRateType,
+               LOGICAL_DELETE           as logicalDelete,
+               CREATED                  as createdDate,
+               CREATED_TPWS_KEY         as createdTpwsKey,
+               MODIFIED                 as modifiedDate,
+               MODIFIED_TPWS_KEY        as modifiedTpwsKey,
+               PLANNED_NET_RATE         as plannedNetRate,
+               PLANNED_GROSS_RATE       as plannedGrossRate,
+               PLANNED_NET_AD_SPEND     as plannedNetAdSpend,
+               PLANNED_GROSS_AD_SPEND   as plannedGrossAdSpend,
+               ACTUAL_NET_RATE          as actualNetRate,
+               ACTUAL_GROSS_RATE        as actualGrossRate,
+               ACTUAL_NET_AD_SPEND      as actualNetAdSpend,
+               ACTUAL_GROSS_AD_SPEND    as actualGrossAdSpend
+          FROM DIM_OWNER.D_PLACEMENT_COST_DETAIL
+         WHERE PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+           AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    
+    <select id="getProductBuyCost" parameterType="java.lang.Long"
+            resultType="DimProductBuyCost">
+        SELECT PRODUCT_BUY_COST_ID        as productBuyCostId,
+               PRODUCT_BUY_ID             as productBuyId,
+               START_DATE                 as startDate,
+               END_DATE                   as endDate,
+               RATE_TYPE                  as costRateType,
+               RATE,
+               INVENTORY,
+               COST_TYPE                  as costType
+          FROM DIM_OWNER.D_PRODUCT_BUY_COST
+         WHERE PRODUCT_BUY_ID = #{productBuyId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="getPackagePlacement" parameterType="java.lang.Long"
+            resultType="PackagePlacement">
+        SELECT PACKAGE_PLACEMENT_ID        as id,
+               PACKAGE_ID                  as packageId,
+               PLACEMENT_ID                as placementId,
+               LOGICAL_DELETE              as logicalDelete,
+               CREATED                     as createdDate,
+               CREATED_TPWS_KEY            as createdTpwsKey,
+               MODIFIED                    as modifiedDate,
+               MODIFIED_TPWS_KEY           as modifiedTpwsKey
+          FROM DIM_OWNER.D_PACKAGE_PLACEMENT
+         WHERE PACKAGE_ID = #{packageId,jdbcType=NUMERIC}
+           AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getPackageCostDetail" parameterType="java.lang.Long"
+            resultType="DimPackageCostDetail">
+        SELECT PACKAGE_COST_ID          as packageCostId,
+               PACKAGE_ID               as packageId,
+               START_DATE               as startDate,
+               END_DATE                 as endDate,
+               INVENTORY,
+               RATE_TYPE                as rateType,
+               LOGICAL_DELETE           as logicalDelete,
+               CREATED                  as createdDate,
+               CREATED_TPWS_KEY         as createdTpwsKey,
+               MODIFIED                 as modifiedDate,
+               MODIFIED_TPWS_KEY        as modifiedTpwsKey,
+               PLANNED_NET_RATE         as plannedNetRate,
+               PLANNED_GROSS_RATE       as plannedGrossRate,
+               PLANNED_NET_AD_SPEND     as plannedNetAdSpend,
+               PLANNED_GROSS_AD_SPEND   as plannedGrossAdSpend,
+               ACTUAL_NET_RATE          as actualNetRate,
+               ACTUAL_GROSS_RATE        as actualGrossRate,
+               ACTUAL_NET_AD_SPEND      as actualNetAdSpend,
+               ACTUAL_GROSS_AD_SPEND    as actualGrossAdSpend
+          FROM DIM_OWNER.D_PACKAGE_COST_DETAIL
+         WHERE PACKAGE_ID = #{packageId,jdbcType=NUMERIC}
+           AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+   
+    <select id="updatePlacementCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL DIM_OWNER.PKG_PLACEMENT.p_placement_update(
+            #{action,jdbcType=VARCHAR,mode=IN},
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{placementId,jdbcType=NUMERIC,mode=IN},
+            #{inventory,jdbcType=NUMERIC,mode=IN},
+            #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            #{rateType,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{plannedNetRate,jdbcType=NUMERIC,mode=IN},
+            #{plannedGrossRate,jdbcType=NUMERIC,mode=IN},
+            #{plannedNetAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{plannedGrossAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{actualNetRate,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossRate,jdbcType=NUMERIC,mode=IN},
+            #{actualNetAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{errorCode,jdbcType=NUMERIC,mode=OUT,javaType=java.lang.Long},
+            #{error,jdbcType=VARCHAR,mode=OUT,javaType=java.lang.String}) }
+    </select>
+    
+    <select id="deletePlacementCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL DIM_OWNER.PKG_PLACEMENT.p_placement_update(
+            #{action,jdbcType=VARCHAR,mode=IN},
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{errorCode,jdbcType=NUMERIC,mode=OUT,javaType=java.lang.Long},
+            #{error,jdbcType=VARCHAR,mode=OUT,javaType=java.lang.String}) }
+    </select>
+
+    <!-- Queries: Create/update/delete Package/CostDetails-->
+    <select id="updatePackageCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL DIM_OWNER.PKG_PACKAGE.p_package_cost_detail(
+            #{action,jdbcType=VARCHAR,mode=IN},
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            #{inventory,jdbcType=NUMERIC,mode=IN},
+            #{rateType,jdbcType=NUMERIC,mode=IN},
+            #{logicalDelete,jdbcType=CHAR,mode=IN},
+            #{created,jdbcType=TIMESTAMP,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{modified,jdbcType=TIMESTAMP,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{plannedNetRate,jdbcType=NUMERIC,mode=IN},
+            #{plannedGrossRate,jdbcType=NUMERIC,mode=IN},
+            #{plannedNetAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{plannedGrossAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{actualNetRate,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossRate,jdbcType=NUMERIC,mode=IN},
+            #{actualNetAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{errorCode,jdbcType=NUMERIC,mode=OUT,javaType=java.lang.Long},
+            #{error,jdbcType=VARCHAR,mode=OUT,javaType=java.lang.String}) }
+    </select>
+    <!-- Queries: Create/update/delete Package/CostDetails-->
+    
+    <!--Queries to hard remove data from dim-->
+    <select id="removeFromPackage" parameterType="java.util.Map">
+        DELETE FROM DIM_OWNER.D_PACKAGE
+        WHERE PACKAGE_ID IN 
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>  
+    <select id="removeFromPackagePlacement" parameterType="java.util.Map">
+        DELETE FROM DIM_OWNER.D_PACKAGE_PLACEMENT
+        WHERE PACKAGE_ID IN 
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>  
+    <select id="removeFromPackageCostDetail" parameterType="java.util.Map">
+        DELETE FROM DIM_OWNER.D_PACKAGE_COST_DETAIL
+        WHERE PACKAGE_ID IN 
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>  
+
+    <select id="removeFromPlacementCost" parameterType="java.util.Map">
+        DELETE FROM DIM_OWNER.D_PLACEMENT_COST
+        WHERE PLACEMENT_ID IN 
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+       
+    <select id="removeFromPlacementCostDetail" parameterType="java.util.Map">
+        DELETE FROM DIM_OWNER.D_PLACEMENT_COST_DETAIL
+        WHERE PLACEMENT_ID IN 
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>   
+    
+    <select id="removeFromProductBuyCost" parameterType="java.util.Map">
+        DELETE FROM DIM_OWNER.D_PRODUCT_BUY_COST
+        WHERE PRODUCT_BUY_ID IN 
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>   
+    <!--Queries to hard remove data from dim-->
+</mapper>

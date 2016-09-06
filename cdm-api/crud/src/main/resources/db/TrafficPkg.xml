@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TrafficPkg">
+   <resultMap id="tfckResultMap" type="trueffect.truconnect.api.commons.model.CampaignCreatorContact">
+        <result property="contactId"                 column="contact_id"/>
+        <result property="contactName"             column="contact_name"/>
+        <result property="contactEmail"           column="contact_email"/>
+    </resultMap> 
+    
+   <update id="getCampaignCreatorContact" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.Traffic_Pkg.GetCampaignCreatorContact(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{refCursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=tfckResultMap}) }
+    </update> 
+    <!--1-->
+    <select id="getCreativeSchedule" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1) as cantCreative
+          FROM TE_XLS.CREATIVE_INSERTION 
+         WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+           AND ( UPPER( LOGICAL_DELETE ) != 'Y' OR LOGICAL_DELETE IS NULL )
+    </select>
+    <!--5-->
+    <select id="getCreativePlacementMatchHeightAndWidth" parameterType="java.util.Map" resultType="java.lang.Long">
+       SELECT COUNT(1)
+        FROM ( SELECT ci.PLACEMENT_ID, c.creative_id, c.HEIGHT, c.WIDTH
+                 FROM TE_XLS.CREATIVE_INSERTION CI, TE_XLS.CREATIVE C
+                WHERE CI.CREATIVE_ID = C.CREATIVE_ID
+                  AND CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+                  AND ( UPPER( CI.LOGICAL_DELETE ) != 'Y' OR CI.LOGICAL_DELETE IS NULL )
+                  AND ( UPPER( C.LOGICAL_DELETE ) != 'Y' OR C.LOGICAL_DELETE IS NULL )
+                MINUS
+               SELECT P.PLACEMENT_ID, ci.creative_id, AD.HEIGHT, AD.WIDTH
+                 FROM TE_XLS.PLACEMENT P, TE_XLS.AD_SIZE AD, TE_XLS.CREATIVE_INSERTION  ci
+                WHERE P.AD_SIZE_ID = AD.AD_SIZE_ID
+                  AND CI.PLACEMENT_ID = P.PLACEMENT_ID
+                  and ci.campaign_id = #{campaignId,jdbcType=NUMERIC,mode=IN}
+                  AND ( UPPER( P.LOGICAL_DELETE ) != 'Y' OR P.LOGICAL_DELETE IS NULL )
+                  AND ( UPPER( AD.LOGICAL_DELETE ) != 'Y' OR AD.LOGICAL_DELETE IS NULL )
+                  AND ( UPPER( CI.LOGICAL_DELETE ) != 'Y' ) OR CI.LOGICAL_DELETE IS NULL 
+             )
+     </select>
+           
+     <select id="getSchedulesClickthroughCount" parameterType="java.util.Map" resultType="java.lang.Long">
+         SELECT COUNT(1)
+           FROM TE_XLS.CREATIVE_INSERTION CI, TE_XLS.CREATIVE C
+          WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+            AND ( CI.CREATIVE_ID = C.CREATIVE_ID )
+            AND ( UPPER( C.CREATIVE_TYPE ) != '3RD' )
+            AND ( TRIM(CI.CLICKTHROUGH) IS NULL )
+            AND DECODE(CI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+     </select>
+
+     <select id="getCreativesClickthroughCount" parameterType="java.util.Map" resultType="java.lang.Long">
+         SELECT COUNT(1)
+           FROM TE_XLS.CREATIVE C
+          WHERE C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+            AND ( TRIM(C.CLICKTHROUGH) IS NULL  )
+            AND ( UPPER( C.CREATIVE_TYPE ) != '3RD' )
+            AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+     </select>
+          
+     <select id="getDatesValidationCount" parameterType="java.util.Map" resultType="java.lang.Long">
+         SELECT COUNT(1)
+           FROM TE_XLS.CREATIVE_INSERTION CI
+          WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+            AND ( CI.START_DATE > CI.END_DATE )
+            AND ( UPPER( CI.LOGICAL_DELETE ) != 'Y' OR CI.LOGICAL_DELETE IS NULL )
+     </select>
+     
+     <select id="checkContactsBelongsAgencyByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT DECODE(COUNT(1), #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}, 'true','false') as belongsAgency
+          FROM TE_XLS.USERS U, TE_XLS.AGENCY A, TE_XLS.AGENCY_CONTACT AC, TE_XLS.CONTACT C
+         WHERE U.AGENCY_ID = A.AGENCY_ID
+           AND A.AGENCY_ID = AC.AGENCY_ID
+           AND AC.CONTACT_ID = C.CONTACT_ID
+           AND ( U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN})
+           AND C.CONTACT_ID IN
+          <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+          </foreach>
+           AND ( UPPER( U.LOGICAL_DELETE ) != 'Y' OR U.LOGICAL_DELETE IS NULL )
+           AND ( UPPER( A.LOGICAL_DELETE ) != 'Y' OR A.LOGICAL_DELETE IS NULL )
+           AND ( UPPER( C.LOGICAL_DELETE ) != 'Y' OR C.LOGICAL_DELETE IS NULL )
+           AND ( UPPER( AC.LOGICAL_DELETE ) != 'Y' OR AC.LOGICAL_DELETE IS NULL )        
+    </select>
+
+    <!-- NOTE. sc.type_id = 6 corresponds to TYPE_CATEGORY= site in the table CONTACT_TYPES. This means this contact is a GENERAL CONTACT SITE -->
+    <select id="checkSiteContacts" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT DECODE(COUNT(1), #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}, 'true','false') as validSiteContacts
+          FROM TE_XLS.USERS U, TE_XLS.AGENCY A, TE_XLS.AGENCY_PUBLISHER AP, TE_XLS.PUBLISHER P, TE_XLS.SITE S, TE_XLS.SITE_CONTACT SC, TE_XLS.CONTACT C
+         WHERE ( U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN})
+           AND U.AGENCY_ID = A.AGENCY_ID
+           AND A.AGENCY_ID = AP.AGENCY_ID
+           AND AP.PUBLISHER_ID = P.PUBLISHER_ID
+           AND P.PUBLISHER_ID = S.PUBLISHER_ID
+           AND S.SITE_ID = SC.SITE_ID
+           AND SC.CONTACT_ID = C.CONTACT_ID
+           AND C.CONTACT_ID IN
+          <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+          </foreach>
+           AND sc.type_id = 6
+           AND DECODE(UPPER(U.LOGICAL_DELETE), 'Y', '1', '0') = '0'
+           AND DECODE(UPPER(A.LOGICAL_DELETE), 'Y', '1', '0') = '0'
+           AND DECODE(UPPER(AP.LOGICAL_DELETE), 'Y', '1', '0') = '0'
+           AND DECODE(UPPER(P.LOGICAL_DELETE), 'Y', '1', '0') = '0'
+           AND DECODE(UPPER(S.LOGICAL_DELETE), 'Y', '1', '0') = '0'
+           AND DECODE(UPPER(SC.LOGICAL_DELETE), 'Y', '1', '0') = '0'
+           AND DECODE(UPPER(C.LOGICAL_DELETE), 'Y', '1', '0') = '0'
+    </select>
+</mapper>

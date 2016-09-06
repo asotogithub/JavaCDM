@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SiteMeasurementPkg">
+    
+    <resultMap id="smdtoMap" type="trueffect.truconnect.api.commons.model.dto.SiteMeasurementDTO">
+        <result property="clWindow"             column="CL_WINDOW"/>
+        <result property="vtWindow"             column="VT_WINDOW"/>
+        <result property="assocMethod"          column="ASSOC_METHOD"/>
+        <result property="id"                   column="MEASUREMENT_ID"/>
+        <result property="brandId"              column="BRAND_ID"/>
+        <result property="siteId"               column="SITE_ID"/>
+        <result property="name"                 column="MEASUREMENT_NAME"/>
+        <result property="dupName"              column="DUP_MEASURE_NAME"/>
+        <result property="state"                column="MEASUREMENT_STATE"/>
+        <result property="notes"                column="GENERAL_NOTES"/>
+        <result property="logicalDelete"        column="LOGICAL_DELETE"/>
+        <result property="createdTpwsKey"       column="CREATED_TPWS_KEY"/>
+        <result property="modifiedTpwsKey"      column="MODIFIED_TPWS_KEY"/>
+        <result property="createdDate"          column="CREATED"/>
+        <result property="modifiedDate"         column="MODIFIED"/>
+        <result property="cookieDomainId"       column="COOKIE_DOMAIN_ID"/>
+        <result property="expirationDate"       column="EXPIRATION_DATE"/>
+        <result property="ttVer"                column="TT_VER"/>
+        <result property="resourcePathId"       column="RESOURCE_PATH_ID"/>
+        <result property="advertiserId"         column="ADVERTISER_ID"/>
+        <result property="advertiserName"       column="ADVERTISER_NAME"/>
+        <result property="brandName"            column="BRAND_NAME"/>
+        <result property="domain"               column="DOMAIN"/>
+        <result property="numberOfEvents"       column="NUMBER_OF_EVENTS"/>
+    </resultMap>
+    <resultMap id="cbmResultMap" type="trueffect.truconnect.api.commons.model.SiteMeasurementCampaign">
+        <result property="campaignId"       column="Campaign_ID"/>
+    </resultMap>
+    <resultMap id="mbcResultMap" type="trueffect.truconnect.api.commons.model.SiteMeasurementCampaign">
+        <result property="measurementId"       column="measurement_id"/>
+    </resultMap>
+
+    
+    <!--SM_GROUP-->
+    <!--InsertGroup-->
+    <update id="insertSmGroup" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL SITE_MEASUREMENT_PKG.InsertSMGroup(
+            #{smGroupId,jdbcType=NUMERIC,mode=IN},
+            #{measurementId,jdbcType=NUMERIC,mode=IN},
+            #{groupName,jdbcType=VARCHAR,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--DeleteSmGroup-->
+    <update id="deleteSmGroup" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL SITE_MEASUREMENT_PKG.DeleteSMGroup(
+            #{smGroupId,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--SM_EVENT_PING-->
+    <!--InsertSmEventPing-->
+    <update id="insertSmEventPing" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL SITE_MEASUREMENT_PKG.InsertSMEventPing(
+            #{smEventPingId,jdbcType=NUMERIC,mode=IN},
+            #{smEventId,jdbcType=NUMERIC,mode=IN},
+            #{siteId,jdbcType=NUMERIC,mode=IN},
+            #{pingContent,jdbcType=VARCHAR,mode=IN},
+            #{description,jdbcType=VARCHAR,mode=IN},
+            #{pingType,jdbcType=NUMERIC,mode=IN},
+            #{tagType,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--UpdateSmEventPing-->
+    <update id="updateSmEventPing" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL SITE_MEASUREMENT_PKG.UpDateSMEventPing(
+            #{smEventPingId,jdbcType=NUMERIC,mode=IN},
+            #{pingContent,jdbcType=VARCHAR,mode=IN},
+            #{description,jdbcType=VARCHAR,mode=IN},
+            #{pingType,jdbcType=NUMERIC,mode=IN},
+            #{tagType,jdbcType=NUMERIC,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--DeleteSmEventPing-->
+    <update id="deleteSmEventPing" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL SITE_MEASUREMENT_PKG.DeleteSMEventPing(
+            #{smEventPingId,jdbcType=NUMERIC,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    
+    <!--SITE_MEASUREMENT-->
+    <update id="insertSiteMeasurement" statementType="CALLABLE" parameterType="SiteMeasurementDTO">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.InsertSiteMeasurement(
+                    #{id,jdbcType=NUMERIC,mode=IN},
+                    #{brandId,jdbcType=NUMERIC,mode=IN},
+                    #{name,jdbcType=VARCHAR,mode=IN},
+                    #{dupName,jdbcType=VARCHAR,mode=IN},
+                    #{state,jdbcType=NUMERIC,mode=IN},
+                    #{notes,jdbcType=VARCHAR,mode=IN},
+                    #{cookieDomainId,jdbcType=NUMERIC,mode=IN},
+                    #{expirationDate,jdbcType=TIMESTAMP,mode=IN},
+                    #{ttVer,jdbcType=NUMERIC,mode=IN},
+                    #{createdTpwsKey,jdbcType=VARCHAR,mode=IN},
+                    #{clWindow,jdbcType=NUMERIC,mode=IN},
+                    #{vtWindow,jdbcType=NUMERIC,mode=IN},
+                    #{assocMethod,jdbcType=VARCHAR,mode=IN}) }
+     </update>
+     <update id="upDateSiteMeasurement" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.UpDateSiteMeasurement(
+                    #{id,jdbcType=NUMERIC,mode=IN},
+                    #{state,jdbcType=NUMERIC,mode=IN},
+                    #{notes,jdbcType=VARCHAR,mode=IN},
+                    #{expirationDate,jdbcType=TIMESTAMP,mode=IN},
+                    #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+                    #{clWindow,jdbcType=NUMERIC,mode=IN},
+                    #{vtWindow,jdbcType=NUMERIC,mode=IN},
+                    #{assocMethod,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="updateSiteMeasurement" parameterType="SiteMeasurementDTO">
+        UPDATE SITE_MEASUREMENT
+            SET MEASUREMENT_NAME = #{name},
+            <if test="notes != null">
+                GENERAL_NOTES = #{notes},
+            </if>
+            MODIFIED = SYSDATE,
+            <if test="clWindow == null">
+                CL_WINDOW = NULL,
+            </if>
+            <if test="clWindow != null">
+                CL_WINDOW = #{clWindow},
+            </if>
+            <if test="vtWindow == null">
+                VT_WINDOW = NULL,
+            </if>
+            <if test="vtWindow != null">
+                VT_WINDOW = #{vtWindow},
+            </if>
+            <if test="assocMethod == null">
+                ASSOC_METHOD = NULL,
+            </if>
+            <if test="assocMethod != null">
+                ASSOC_METHOD = #{assocMethod},
+            </if>
+            EXPIRATION_DATE = #{expirationDate},
+            MODIFIED_TPWS_KEY = #{modifiedTpwsKey}
+        WHERE (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL)
+            AND (MEASUREMENT_ID = #{id})
+    </update>
+     <update id="deleteSiteMeasurement" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.DeleteSiteMeasurement(
+                    #{id,jdbcType=NUMERIC,mode=IN},
+                                    #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <!--Site Measurement Event-->
+    <update id="insertSMEvent" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.InsertSMEvent(
+                    #{p_sm_event_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_sm_group_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_event_name,jdbcType=VARCHAR,mode=IN},
+                                    #{p_location,jdbcType=VARCHAR,mode=IN},
+                                    #{p_event_type,jdbcType=NUMERIC,mode=IN},
+                                    #{p_sm_event_type,jdbcType=NUMERIC,mode=IN},
+                                    #{p_tpws_key,jdbcType=VARCHAR,mode=IN}) }
+    </update> 
+    <update id="upDateSMEvent" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.UpDateSMEvent(
+                    #{p_sm_event_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_location,jdbcType=VARCHAR,mode=IN},
+                                    #{p_sm_event_type,jdbcType=NUMERIC,mode=IN},
+                                    #{p_tpws_key,jdbcType=VARCHAR,mode=IN}) }
+    </update> 
+    <update id="deleteSMEvent" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.DeleteSMEvent(
+                    #{p_sm_event_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_tpws_key,jdbcType=VARCHAR,mode=IN}) }
+    </update> 
+    
+    <update id="getCampaignsBySiteMeasurement" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.GetCampaignsBy_SiteMeasurement(
+                    #{p_measurement_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_ref_cursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=cbmResultMap}) }
+    </update>
+    <update id="getSiteMeasurementsByCampaign" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.GetSiteMeasurementsBy_Campaign(
+                    #{p_campaign_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_ref_cursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=mbcResultMap}) }
+    </update>
+
+    <!--SECTION OF QUERY'S-->
+     <!--SM_EVENT_PING-->
+    <select id="getSmEventPing"  parameterType="long"
+            resultType="trueffect.truconnect.api.commons.model.SmEventPing" >
+        SELECT EP.SM_EVENT_PING_ID  as smEventPingId,
+            EP.SM_EVENT_ID          as smEventId,
+            EP.PING_CONTENT         as pingContent,
+            EP.DESCRIPTION          as description,
+            EP.SITE_ID              as siteId,
+            EP.CREATED_TPWS_KEY     as createdTpwsKey,
+            EP.MODIFIED_TPWS_KEY    as modifiedTpwsKey,
+            EP.CREATED              as createdDate,
+            EP.MODIFIED             as modifiedDate,
+            EP.LOGICAL_DELETE       as logicalDelete,
+            EP.PING_TYPE            as pingType,
+            EP.TAG_TYPE             as tagType
+        FROM SM_EVENT_PING EP
+        WHERE EP.SM_EVENT_PING_ID = #{id}
+    </select>
+    
+    <!--SITE_MEASUREMENT-->  
+    <select id="getSiteMeasurement"  parameterType="java.lang.Long" resultType="SiteMeasurementDTO" >
+        SELECT SM.CL_WINDOW            as clWindow,
+               SM.VT_WINDOW            as vtWindow,
+               SM.ASSOC_METHOD         as assocMethod,
+               SM.MEASUREMENT_ID       as id,
+               SM.BRAND_ID             as brandId,
+               SM.SITE_ID              as siteId,
+               SM.MEASUREMENT_NAME     as name,
+               SM.DUP_MEASURE_NAME     as dupName,
+               SM.MEASUREMENT_STATE    as state,
+               SM.GENERAL_NOTES        as notes,
+               SM.LOGICAL_DELETE       as logicalDelete,
+               SM.CREATED_TPWS_KEY     as createdTpwsKey,
+               SM.MODIFIED_TPWS_KEY    as modifiedTpwsKey,
+               SM.CREATED              as createdDate,
+               SM.MODIFIED             as modifiedDate,
+               SM.COOKIE_DOMAIN_ID     as cookieDomainId,
+               SM.EXPIRATION_DATE      as expirationDate,
+               SM.TT_VER               as ttVer,
+               SM.RESOURCE_PATH_ID     as resourcePathId,
+               A.ADVERTISER_ID         as advertiserId,
+               A.ADVERTISER_NAME       as advertiserName,
+               B.BRAND_NAME            as brandName,
+               D.DOMAIN                as domain
+          FROM SITE_MEASUREMENT SM
+               INNER JOIN BRAND B ON SM.BRAND_ID = B.BRAND_ID
+               INNER JOIN ADVERTISER A ON B.ADVERTISER_ID = A.ADVERTISER_ID
+               INNER JOIN COOKIE_DOMAIN D ON SM.COOKIE_DOMAIN_ID = D.COOKIE_DOMAIN_ID
+         WHERE SM.MEASUREMENT_ID = #{id}
+           AND DECODE(SM.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(B.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(A.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(D.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="doesSiteMeasurementExists"  parameterType="java.util.Map" resultType="java.lang.Long" >
+        SELECT COUNT(1) as total
+        FROM TE_XLS.SITE_MEASUREMENT SM
+        WHERE SM.DUP_MEASURE_NAME = UPPER(#{name,jdbcType=VARCHAR})
+            AND SM.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+            <if test="smId != null">
+                AND SM.MEASUREMENT_ID &lt;&gt; #{smId,jdbcType=NUMERIC}
+            </if>
+            AND DECODE(SM.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+    
+    <!--Site Measurement Event--> 
+    <select id="getSmEventId"   parameterType="java.lang.Long" resultType="trueffect.truconnect.api.commons.model.SmEvent" >
+         SELECT   sm_event_id as  smEventId
+                , sm_group_id as  smGroupId
+                , event_name as  eventName
+                , location as  location
+                , event_type as  eventType
+                , logical_delete as  logicalDelete
+                , created_tpws_key as  createdTpwsKey
+                , modified_tpws_key as  modifiedTpwsKey
+                , created as  createdDate
+                , modified as  modifiedDate
+                , is_trafficked as  isTrafficked
+                , sm_event_type as  smEventType
+           FROM TE_XLS.SM_EVENT 
+          WHERE sm_event_id = #{id} AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL)
+    </select>      
+    <!--Site Measurement Event by Group id--> 
+    <select id="getSmEventGroupId"   parameterType="java.lang.Long" resultType="trueffect.truconnect.api.commons.model.SmEvent" >
+         SELECT   sm_event_id as  smEventId
+                , sm_group_id as  smGroupId
+                , event_name as  eventName
+                , location as  location
+                , event_type as  eventType
+                , logical_delete as  logicalDelete
+                , created_tpws_key as  createdTpwsKey
+                , modified_tpws_key as  modifiedTpwsKey
+                , created as  createdDate
+                , modified as  modifiedDate
+                , is_trafficked as  isTrafficked
+                , sm_event_type as  smEventType
+           FROM TE_XLS.SM_EVENT 
+          WHERE sm_group_id = #{id} AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL)
+    </select>      
+    <!--Site Measurement Event--> 
+    <select id="getSmEventAll" resultType="trueffect.truconnect.api.commons.model.SmEvent" >
+         SELECT   sm_event_id as  smEventId
+                , sm_group_id as  smGroupId
+                , event_name as  eventName
+                , location as  location
+                , event_type as  eventType
+                , logical_delete as  logicalDelete
+                , created_tpws_key as  createdTpwsKey
+                , modified_tpws_key as  modifiedTpwsKey
+                , created as  createdDate
+                , modified as  modifiedDate
+                , is_trafficked as  isTrafficked
+                , sm_event_type as  smEventType
+       FROM TE_XLS.SM_EVENT 
+    </select>
+
+     <!--SM_EVENT_PING-->
+    <select id="queryGetSmEventPing"  parameterType="java.lang.String"
+            resultType="trueffect.truconnect.api.commons.model.SmEventPing" >
+        SELECT SM_EVENT_PING.SM_EVENT_PING_ID  as smEventPingId,
+            SM_EVENT_PING.SM_EVENT_ID          as smEventId,
+            SM_EVENT_PING.PING_CONTENT         as pingContent,
+            SM_EVENT_PING.DESCRIPTION          as description,
+            SM_EVENT_PING.SITE_ID              as siteId,
+            SM_EVENT_PING.CREATED_TPWS_KEY     as createdTpwsKey,
+            SM_EVENT_PING.MODIFIED_TPWS_KEY    as modifiedTpwsKey,
+            SM_EVENT_PING.CREATED              as createdDate,
+            SM_EVENT_PING.MODIFIED             as modifiedDate,
+            SM_EVENT_PING.LOGICAL_DELETE       as logicalDelete,
+            SM_EVENT_PING.PING_TYPE            as pingType,
+            SM_EVENT_PING.TAG_TYPE             as tagType
+        FROM SM_EVENT_PING
+        ${value}
+    </select>
+
+    <select id="queryGetSiteMeasurement"  parameterType="java.lang.String"
+            resultType="trueffect.truconnect.api.commons.model.SiteMeasurement" >
+         SELECT SITE_MEASUREMENT.measurement_id as  id
+            , SITE_MEASUREMENT.brand_id as  brandId
+            , SITE_MEASUREMENT.site_id as  siteId
+            , SITE_MEASUREMENT.measurement_name as  name
+            , SITE_MEASUREMENT.dup_measure_name as  dupName
+            , SITE_MEASUREMENT.measurement_state as  state
+            , SITE_MEASUREMENT.general_notes as  notes
+            , SITE_MEASUREMENT.logical_delete as  logicalDelete
+            , SITE_MEASUREMENT.created_tpws_key as  createdTpwsKey
+            , SITE_MEASUREMENT.modified_tpws_key as  modifiedTpwsKey
+            , SITE_MEASUREMENT.created as  createdDate
+            , SITE_MEASUREMENT.modified as  modifiedDate
+            , SITE_MEASUREMENT.cookie_domain_id as  cookieDomainId
+            , SITE_MEASUREMENT.expiration_date as  expirationDate
+            , SITE_MEASUREMENT.tt_ver as  ttVer
+            , SITE_MEASUREMENT.resource_path_id as  resourcePathId
+            , SITE_MEASUREMENT.cl_window as  clWindow
+            , SITE_MEASUREMENT.vt_window as  vtWindow
+            , SITE_MEASUREMENT.assoc_method as  assocMethod
+       FROM SITE_MEASUREMENT
+       ${value}
+    </select>
+
+    <select id="queryGetSmEventId"   parameterType="java.lang.String"
+            resultType="trueffect.truconnect.api.commons.model.SmEvent" >
+         SELECT SM_EVENT.sm_event_id as  smEventId
+            , SM_EVENT.sm_group_id as  smGroupId
+            , SM_EVENT.event_name as  eventName
+            , SM_EVENT.location as  location
+            , SM_EVENT.event_type as  eventType
+            , SM_EVENT.logical_delete as  logicalDelete
+            , SM_EVENT.created_tpws_key as  createdTpwsKey
+            , SM_EVENT.modified_tpws_key as  modifiedTpwsKey
+            , SM_EVENT.created as  createdDate
+            , SM_EVENT.modified as  modifiedDate
+            , SM_EVENT.is_trafficked as  isTrafficked
+            , SM_EVENT.sm_event_type as  smEventType
+           FROM SM_EVENT
+          ${value}
+    </select>
+    
+    <select id="getSiteMeasurementsByCriteria" parameterType="java.util.Map" resultMap="smdtoMap">
+        SELECT SITE_MEASUREMENT.CL_WINDOW            as CL_WINDOW,        
+               SITE_MEASUREMENT.VT_WINDOW            as VT_WINDOW,
+               SITE_MEASUREMENT.ASSOC_METHOD         as ASSOC_METHOD,
+               SITE_MEASUREMENT.MEASUREMENT_ID       as MEASUREMENT_ID,
+               SITE_MEASUREMENT.BRAND_ID             as BRAND_ID,
+               SITE_MEASUREMENT.SITE_ID              as SITE_ID,
+               SITE_MEASUREMENT.MEASUREMENT_NAME     as MEASUREMENT_NAME,
+               SITE_MEASUREMENT.DUP_MEASURE_NAME     as DUP_MEASURE_NAME,
+               SITE_MEASUREMENT.MEASUREMENT_STATE    as MEASUREMENT_STATE,
+               SITE_MEASUREMENT.GENERAL_NOTES        as GENERAL_NOTES,
+               SITE_MEASUREMENT.LOGICAL_DELETE       as LOGICAL_DELETE,
+               SITE_MEASUREMENT.CREATED_TPWS_KEY     as CREATED_TPWS_KEY,
+               SITE_MEASUREMENT.MODIFIED_TPWS_KEY    as MODIFIED_TPWS_KEY,
+               SITE_MEASUREMENT.CREATED              as CREATED,
+               SITE_MEASUREMENT.MODIFIED             as MODIFIED,
+               SITE_MEASUREMENT.COOKIE_DOMAIN_ID     as COOKIE_DOMAIN_ID,
+               SITE_MEASUREMENT.EXPIRATION_DATE      as EXPIRATION_DATE,
+               SITE_MEASUREMENT.TT_VER               as TT_VER,
+               SITE_MEASUREMENT.RESOURCE_PATH_ID     as RESOURCE_PATH_ID,
+               ADVERTISER.ADVERTISER_ID              as ADVERTISER_ID,
+               ADVERTISER.ADVERTISER_NAME            as ADVERTISER_NAME,
+               BRAND.BRAND_NAME                      as BRAND_NAME,
+               COOKIE_DOMAIN.DOMAIN                  as DOMAIN,
+               PPP.NUMBER_OF_EVENTS                  AS NUMBER_OF_EVENTS
+          FROM TE_XLS.SITE_MEASUREMENT
+               INNER JOIN TE_XLS.BRAND ON SITE_MEASUREMENT.BRAND_ID = BRAND.BRAND_ID
+                 AND DECODE(BRAND.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.ADVERTISER ON BRAND.ADVERTISER_ID = ADVERTISER.ADVERTISER_ID
+                 AND DECODE(ADVERTISER.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.COOKIE_DOMAIN ON SITE_MEASUREMENT.COOKIE_DOMAIN_ID = COOKIE_DOMAIN.COOKIE_DOMAIN_ID
+                 AND DECODE(COOKIE_DOMAIN.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                                     AND DECODE(AI.LOGICAL_DELETE,'Y','1','0')='0'
+                             WHERE U.USER_ID = '${userId}'
+                               AND DECODE(U.LOGICAL_DELETE,'Y','1','0')='0'
+                          ) AU ON AU.AGENCY_ID = ADVERTISER.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = ADVERTISER.ADVERTISER_ID
+               LEFT JOIN (
+                            SELECT  MEASUREMENT_ID, SUM(NUMBER_OF_EVENTS) AS NUMBER_OF_EVENTS
+                                FROM (
+                                        SELECT 	SM.MEASUREMENT_ID AS MEASUREMENT_ID,
+                                        SEVT.SM_GROUP_ID AS SM_GROUP_ID,
+                                        COUNT(SEVT.SM_GROUP_ID) AS NUMBER_OF_EVENTS
+                                        FROM TE_XLS.SITE_MEASUREMENT SM
+                                            LEFT JOIN TE_XLS.SM_GROUP SMGRP ON SM.MEASUREMENT_ID = SMGRP.MEASUREMENT_ID
+                                            LEFT JOIN TE_XLS.SM_EVENT SEVT ON SEVT.SM_GROUP_ID = SMGRP.SM_GROUP_ID
+                                        WHERE  DECODE (SMGRP.LOGICAL_DELETE, 'Y','1','0')='0' AND
+                                               DECODE (SEVT.LOGICAL_DELETE,'Y','1','0')='0' AND
+                                               DECODE (SM.LOGICAL_DELETE,'Y','1','0')='0'
+                                        GROUP BY SEVT.SM_GROUP_ID, SM.MEASUREMENT_ID
+                            )
+                            GROUP BY MEASUREMENT_ID
+
+                          )PPP ON PPP.MEASUREMENT_ID = SITE_MEASUREMENT.MEASUREMENT_ID
+         WHERE DECODE(SITE_MEASUREMENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+               ${order}
+            </if>
+    </select>
+    <select id="getSiteMeasurementsNumberOfRecordsByCriteria" parameterType="java.util.Map"
+        resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalRecords
+          FROM TE_XLS.SITE_MEASUREMENT
+               INNER JOIN TE_XLS.BRAND ON SITE_MEASUREMENT.BRAND_ID = BRAND.BRAND_ID
+                 AND DECODE(BRAND.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.ADVERTISER ON BRAND.ADVERTISER_ID = ADVERTISER.ADVERTISER_ID
+                 AND DECODE(ADVERTISER.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.COOKIE_DOMAIN ON SITE_MEASUREMENT.COOKIE_DOMAIN_ID = COOKIE_DOMAIN.COOKIE_DOMAIN_ID
+                 AND DECODE(COOKIE_DOMAIN.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                                     AND DECODE(AI.LOGICAL_DELETE,'Y','1','0')='0'
+                             WHERE U.USER_ID = '${userId}'
+                               AND DECODE(U.LOGICAL_DELETE,'Y','1','0')='0'
+                          ) AU ON AU.AGENCY_ID = ADVERTISER.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = ADVERTISER.ADVERTISER_ID        
+        WHERE DECODE(SITE_MEASUREMENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+
+    <!--SITE_MEASUREMETN_CAMPAIGNS-->
+    <!--GET siteMeasurementCampaignBy measurementId and campaignId-->
+    <select id="getSiteMeasurementCampaign"  parameterType="java.util.Map" resultType="SiteMeasurementCampaignDTO" >
+        SELECT smc.measurement_id    AS measurementId,
+               smc.campaign_id       AS campaignId,  
+               sm.brand_id           AS brandId,
+               b.advertiser_id       AS advertiserId,
+               sm.measurement_name   AS measurementName,
+               c.campaign_name       AS campaignName,
+               b.brand_name          AS brandName,
+               a.advertiser_name     AS advertiserName,
+               smc.created           AS created,          
+               smc.modified          AS modified,
+               smc.created_tpws_key  AS createdTpwsKey,
+               smc.modified_tpws_key As modifiedTpwsKey,
+               smc.logical_delete    AS logicalDelete
+          FROM SITE_MEASUREMENT_CAMPAIGN smc, SITE_MEASUREMENT sm, BRAND b, ADVERTISER a, CAMPAIGN c
+         WHERE smc.measurement_id = sm.measurement_id 
+           AND sm.brand_id        = b.brand_id
+           AND b.advertiser_id    = a.advertiser_id
+           AND smc.campaign_id    = c.campaign_id
+           AND smc.measurement_id = #{measurementId}
+           AND smc.campaign_id    = #{campaignId}
+           AND DECODE(SMC.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(SM.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(B.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(A.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>   
+    <!--GET siteMeasurementCampaigns by measurementId-->
+    <select id="getAssociatedSMCampaignsForSiteMeasurementId" parameterType="java.util.Map" resultType="SiteMeasurementCampaignDTO">
+    SELECT SMCCR.*
+        FROM (
+            SELECT SMCC.*,
+                ROWNUM as ROWNUMBER
+            FROM (
+                SELECT
+                    SMC.MEASUREMENT_ID    AS measurementId,
+                    SMC.CAMPAIGN_ID       AS campaignId,
+                    SM.BRAND_ID           AS brandId,
+                    B.ADVERTISER_ID       AS advertiserId,
+                    SM.MEASUREMENT_NAME   AS measurementName,
+                    C.CAMPAIGN_NAME       AS campaignName,
+                    B.BRAND_NAME          AS brandName,
+                    A.ADVERTISER_NAME     AS advertiserName,
+                    SMC.CREATED           AS created,
+                    SMC.MODIFIED          AS modified,
+                    SMC.CREATED_TPWS_KEY  AS createdTpwsKey,
+                    SMC.MODIFIED_TPWS_KEY As modifiedTpwsKey,
+                    SMC.LOGICAL_DELETE    AS logicalDelete,
+                    DECODE(CS.STATUS_NAME, 'NEW', 'New', 'ACT', 'Active',
+                        'ACTCHG', 'Active with changes', 'ARCHV', 'Archived',
+                        'TRFKG', 'Being trafficked', 'New') as campaignStatus
+                FROM TE_XLS.SITE_MEASUREMENT_CAMPAIGN SMC
+                    INNER JOIN TE_XLS.SITE_MEASUREMENT SM ON SMC.MEASUREMENT_ID = SM.MEASUREMENT_ID
+                        AND DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                    INNER JOIN TE_XLS.BRAND B ON SM.BRAND_ID = B.BRAND_ID
+                    INNER JOIN TE_XLS.ADVERTISER A ON B.ADVERTISER_ID = A.ADVERTISER_ID
+                    INNER JOIN TE_XLS.CAMPAIGN C ON SMC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                        AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                    INNER JOIN TE_XLS.CAMPAIGN_STATUS CS ON C.CAMPAIGN_STATUS_ID = CS.STATUS_ID
+                WHERE SMC.MEASUREMENT_ID = #{smId,jdbcType=NUMERIC,mode=IN}
+                    AND DECODE(SMC.LOGICAL_DELETE, 'Y', '1', '0') = '0') SMCC
+            ) SMCCR
+        WHERE ROWNUMBER > #{inferiorLimit,jdbcType=NUMERIC}
+            AND #{superiorLimit,jdbcType=NUMERIC} >= ROWNUM
+    </select>
+    <select id="getCountAssociatedSMCampaignsForSiteMeasurementId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT
+            COUNT(1)
+        FROM TE_XLS.SITE_MEASUREMENT_CAMPAIGN SMC
+            INNER JOIN TE_XLS.SITE_MEASUREMENT SM ON SMC.MEASUREMENT_ID = SM.MEASUREMENT_ID
+                AND DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.BRAND B ON SM.BRAND_ID = B.BRAND_ID
+            INNER JOIN TE_XLS.ADVERTISER A ON B.ADVERTISER_ID = A.ADVERTISER_ID
+            INNER JOIN TE_XLS.CAMPAIGN C ON SMC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE SMC.MEASUREMENT_ID = #{value,jdbcType=NUMERIC,mode=IN}
+            AND DECODE(SMC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getUnassociatedSMCampaignsForSiteMeasurementId" parameterType="java.util.Map" resultType="SiteMeasurementCampaignDTO">
+        SELECT SMCCR.*
+        FROM (
+            SELECT SMCC.*,
+                ROWNUM as ROWNUMBER
+            FROM (
+                SELECT
+                    C.CAMPAIGN_ID         AS campaignId,
+                    C.CAMPAIGN_NAME       AS campaignName,
+                    B.BRAND_ID            AS brandId,
+                    B.BRAND_NAME          AS brandName,
+                    A.ADVERTISER_ID       AS advertiserId,
+                    A.ADVERTISER_NAME     AS advertiserName,
+                    DECODE(CS.STATUS_NAME, 'NEW', 'New', 'ACT', 'Active',
+                        'ACTCHG', 'Active with changes', 'ARCHV', 'Archived',
+                        'TRFKG', 'Being trafficked', 'New') as campaignStatus
+                FROM TE_XLS.CAMPAIGN C
+                    INNER JOIN TE_XLS.BRAND B ON C.BRAND_ID = B.BRAND_ID
+                    INNER JOIN TE_XLS.ADVERTISER A ON B.ADVERTISER_ID = A.ADVERTISER_ID
+                    INNER JOIN TE_XLS.CAMPAIGN_STATUS CS ON C.CAMPAIGN_STATUS_ID = CS.STATUS_ID
+                WHERE 
+                    DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                    AND C.COOKIE_DOMAIN_ID = (SELECT SM.COOKIE_DOMAIN_ID
+                        FROM TE_XLS.SITE_MEASUREMENT SM
+                        WHERE SM.MEASUREMENT_ID = #{smId,jdbcType=NUMERIC,mode=IN}
+                            AND DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0')
+                    AND C.CAMPAIGN_ID NOT IN (SELECT SMC.CAMPAIGN_ID
+                        FROM TE_XLS.SITE_MEASUREMENT_CAMPAIGN SMC
+                        WHERE SMC.MEASUREMENT_ID = #{smId,jdbcType=NUMERIC,mode=IN}
+                            AND DECODE(SMC.LOGICAL_DELETE, 'Y', '1', '0') = '0')) SMCC
+            ) SMCCR
+        WHERE ROWNUMBER > #{inferiorLimit,jdbcType=NUMERIC}
+            AND #{superiorLimit,jdbcType=NUMERIC} >= ROWNUM
+    </select>
+    <select id="getCountUnassociatedSMCampaignsForSiteMeasurementId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT
+            COUNT(1)
+        FROM CAMPAIGN C
+        WHERE 
+            DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND C.COOKIE_DOMAIN_ID = (SELECT SM.COOKIE_DOMAIN_ID
+                FROM TE_XLS.SITE_MEASUREMENT SM
+                WHERE SM.MEASUREMENT_ID = #{value,jdbcType=NUMERIC,mode=IN}
+                    AND DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0')
+            AND C.CAMPAIGN_ID NOT IN (SELECT SMC.CAMPAIGN_ID
+                FROM TE_XLS.SITE_MEASUREMENT_CAMPAIGN SMC
+                WHERE SMC.MEASUREMENT_ID = #{value,jdbcType=NUMERIC,mode=IN}
+                    AND DECODE(SMC.LOGICAL_DELETE, 'Y', '1', '0') = '0')
+    </select>
+
+    <select id="checkDomainConsistency" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+            WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                THEN 'true'
+                ELSE 'false'
+            END AS hasAccess
+        FROM CAMPAIGN C
+        WHERE 
+            DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND C.COOKIE_DOMAIN_ID = (SELECT SM.COOKIE_DOMAIN_ID
+                FROM TE_XLS.SITE_MEASUREMENT SM
+                WHERE SM.MEASUREMENT_ID = #{smId,jdbcType=NUMERIC,mode=IN}
+                    AND DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0')
+            AND C.CAMPAIGN_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+    <update id="addSiteMeasureCampaign" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.Add_SiteMeasure_Campaign(
+                    #{measurementId,jdbcType=NUMERIC,mode=IN},
+                    #{campaignId,jdbcType=NUMERIC,mode=IN},
+                    #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="removeSiteMeasureCampaign" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.Remove_SiteMeasure_Campaign(
+                    #{measurementId,jdbcType=NUMERIC,mode=IN},
+                    #{campaignId,jdbcType=NUMERIC,mode=IN},
+                    #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>    
+
+</mapper>

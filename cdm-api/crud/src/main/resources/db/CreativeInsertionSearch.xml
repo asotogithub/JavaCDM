@@ -1,0 +1,1977 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CreativeInsertionSearch">
+
+    <!-- SEARCH BY SITE PIVOT -->
+    <sql id="searchCreativeInsertionsPivotSiteData">
+        <if test="soSite">
+            (SELECT S.SITE_ID,
+                    S.SITE_NAME,
+                    NULL            AS SITE_SECTION_ID,
+                    NULL            AS SITE_SECTION_NAME,
+                    NULL            AS PLACEMENT_ID,
+                    NULL            AS PLACEMENT_NAME,
+                    NULL            AS PLACEMENT_END_DATE,
+                    NULL            AS PLACEMENT_START_DATE,
+                    NULL            AS PLACEMENT_STATUS,
+                    NULL            AS CREATIVE_GROUP_ID,
+                    NULL            AS CREATIVE_GROUP_NAME,
+                    NULL            AS CREATIVE_GROUP_WEIGHT,
+                    NULL            AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    NULL            AS CREATIVE_GROUP_ROTATION_TYPE,
+                    NULL            AS CREATIVE_GROUP_DO_GEOTARGET,
+                    NULL            AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    NULL            AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    NULL            AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    NULL            AS CREATIVE_GROUP_PRIORITY,
+                    NULL            AS CREATIVE_GROUP_DAYPART_TARGET,
+                    NULL            AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL            AS CAMPAIGN_ID,
+                    NULL            AS SIZE_NAME,
+                    NULL            AS CREATIVE_INSERTION_ID,
+                    NULL            AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL            AS END_DATE,
+                    NULL            AS RELEASED,
+                    NULL            AS SEQUENCE,
+                    NULL            AS START_DATE,
+                    NULL            AS TIME_ZONE,
+                    NULL            AS WEIGHT,
+                    NULL            AS CLICKTHROUGH,
+                    NULL            AS CREATIVE_ID,
+                    NULL            AS CREATIVE_ALIAS,
+                    NULL            AS CREATIVE_TYPE,
+                    NULL            AS FILENAME,
+                    NULL            AS LOGICAL_DELETE,
+                    NULL            AS CREATED,
+                    NULL            AS CREATED_TPWS_KEY,
+                    NULL            AS MODIFIED,
+                    NULL            AS MODIFIED_TPWS_KEY
+               FROM TE_XLS.SITE S
+                    INNER JOIN ( SELECT DISTINCT P.SITE_ID
+                                   FROM TE_XLS.PLACEMENT P, TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE P.PLACEMENT_ID = CI.PLACEMENT_ID
+                                    AND CI.campaign_id = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'site'">
+                                        AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) PLA ON S.SITE_ID = PLA.SITE_ID
+              WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                AND UPPER(S.SITE_NAME||' ('||S.SITE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+            )
+        </if>
+        <if test="soSection">
+            <if test="soSite">
+                UNION
+            </if>
+            (SELECT DISTINCT S.SITE_ID,
+                    S.SITE_NAME,
+                    SS.SECTION_ID            AS SITE_SECTION_ID,
+                    SS.SECTION_NAME          AS SITE_SECTION_NAME,
+                    NULL                     AS PLACEMENT_ID,
+                    NULL                     AS PLACEMENT_NAME,
+                    NULL                     AS PLACEMENT_END_DATE,
+                    NULL                     AS PLACEMENT_START_DATE,
+                    NULL                     AS PLACEMENT_STATUS,
+                    NULL                     AS CREATIVE_GROUP_ID,
+                    NULL                     AS CREATIVE_GROUP_NAME,
+                    NULL                     AS CREATIVE_GROUP_WEIGHT,
+                    NULL                     AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    NULL                     AS CREATIVE_GROUP_ROTATION_TYPE,
+                    NULL                     AS CREATIVE_GROUP_DO_GEOTARGET,
+                    NULL                     AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    NULL                     AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    NULL                     AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    NULL                     AS CREATIVE_GROUP_PRIORITY,
+                    NULL                     AS CREATIVE_GROUP_DAYPART_TARGET,
+                    NULL                     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL                     AS CAMPAIGN_ID,
+                    NULL                     AS SIZE_NAME,
+                    NULL                     AS CREATIVE_INSERTION_ID,
+                    NULL                     AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL                     AS END_DATE,
+                    NULL                     AS RELEASED,
+                    NULL                     AS SEQUENCE,
+                    NULL                     AS START_DATE,
+                    NULL                     AS TIME_ZONE,
+                    NULL                     AS WEIGHT,
+                    NULL                     AS CLICKTHROUGH,
+                    NULL                     AS CREATIVE_ID,
+                    NULL                     AS CREATIVE_ALIAS,
+                    NULL                     AS CREATIVE_TYPE,
+                    NULL                     AS FILENAME,
+                    NULL                     AS LOGICAL_DELETE,
+                    NULL                     AS CREATED,
+                    NULL                     AS CREATED_TPWS_KEY,
+                    NULL                     AS MODIFIED,
+                    NULL                     AS MODIFIED_TPWS_KEY
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                       <if test="type == 'site' or type == 'section'">
+                           AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                       </if>
+                       <if test="type == 'section'">
+                           AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                       </if>
+                       AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND UPPER(SS.SECTION_NAME||' ('||SS.SECTION_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soPlacement">
+            <if test="soSite or soSection">
+                UNION
+            </if>
+            (SELECT DISTINCT S.SITE_ID,
+                    S.SITE_NAME,
+                    SS.SECTION_ID            AS SITE_SECTION_ID,
+                    SS.SECTION_NAME          AS SITE_SECTION_NAME,
+                    P.PLACEMENT_ID,
+                    P.PLACEMENT_NAME,
+                    P.END_DATE               AS PLACEMENT_END_DATE,
+                    P.START_DATE             AS PLACEMENT_START_DATE,
+                    (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                       FROM TE_XLS.STATUS_TYPES STYP
+                      WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                    NULL                     AS CREATIVE_GROUP_ID,
+                    NULL                     AS CREATIVE_GROUP_NAME,
+                    NULL                     AS CREATIVE_GROUP_WEIGHT,
+                    NULL                     AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    NULL                     AS CREATIVE_GROUP_ROTATION_TYPE,
+                    NULL                     AS CREATIVE_GROUP_DO_GEOTARGET,
+                    NULL                     AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    NULL                     AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    NULL                     AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    NULL                     AS CREATIVE_GROUP_PRIORITY,
+                    NULL                     AS CREATIVE_GROUP_DAYPART_TARGET,
+                    NULL                     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL                     AS CAMPAIGN_ID,
+                    NULL                     AS SIZE_NAME,
+                    NULL                     AS CREATIVE_INSERTION_ID,
+                    NULL                     AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL                     AS END_DATE,
+                    NULL                     AS RELEASED,
+                    NULL                     AS SEQUENCE,
+                    NULL                     AS START_DATE,
+                    NULL                     AS TIME_ZONE,
+                    NULL                     AS WEIGHT,
+                    NULL                     AS CLICKTHROUGH,
+                    NULL                     AS CREATIVE_ID,
+                    NULL                     AS CREATIVE_ALIAS,
+                    NULL                     AS CREATIVE_TYPE,
+                    NULL                     AS FILENAME,
+                    NULL                     AS LOGICAL_DELETE,
+                    NULL                     AS CREATED,
+                    NULL                     AS CREATED_TPWS_KEY,
+                    NULL                     AS MODIFIED,
+                    NULL                     AS MODIFIED_TPWS_KEY
+               FROM TE_XLS.PLACEMENT P
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                       ) status
+                                 WHERE range = 1
+                               ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+              WHERE P.PLACEMENT_ID IN ( SELECT DISTINCT CI.PLACEMENT_ID
+                                          FROM TE_XLS.CREATIVE_INSERTION CI
+                                         WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                            <if test="type == 'placement'">
+                                                AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                            </if>
+                                           AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                        )
+                <if test="type == 'placement'">
+                    AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'site' or type == 'section' or type == 'placement'">
+                    AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'section' or type == 'placement'">
+                    AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(P.PLACEMENT_NAME||' ('||P.PLACEMENT_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soGroup">
+            <if test="soSite or soSection or soPlacement">
+                UNION
+            </if>
+            (SELECT DISTINCT S.SITE_ID,
+                    S.SITE_NAME,
+                    SS.SECTION_ID            AS SITE_SECTION_ID,
+                    SS.SECTION_NAME          AS SITE_SECTION_NAME,
+                    P.PLACEMENT_ID,
+                    P.PLACEMENT_NAME,
+                    P.END_DATE               AS PLACEMENT_END_DATE,
+                    P.START_DATE             AS PLACEMENT_START_DATE,
+                    (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                        FROM TE_XLS.STATUS_TYPES STYP
+                        WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                    CG.CREATIVE_GROUP_ID,
+                    CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                    CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                    CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL                     AS CAMPAIGN_ID,
+                    NULL                     AS SIZE_NAME,
+                    NULL                     AS CREATIVE_INSERTION_ID,
+                    NULL                     AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL                     AS END_DATE,
+                    NULL                     AS RELEASED,
+                    NULL                     AS SEQUENCE,
+                    NULL                     AS START_DATE,
+                    NULL                     AS TIME_ZONE,
+                    NULL                     AS WEIGHT,
+                    NULL                     AS CLICKTHROUGH,
+                    NULL                     AS CREATIVE_ID,
+                    NULL                     AS CREATIVE_ALIAS,
+                    NULL                     AS CREATIVE_TYPE,
+                    NULL                     AS FILENAME,
+                    NULL                     AS LOGICAL_DELETE,
+                    NULL                     AS CREATED,
+                    NULL                     AS CREATED_TPWS_KEY,
+                    NULL                     AS MODIFIED,
+                    NULL                     AS MODIFIED_TPWS_KEY
+               FROM TE_XLS.CREATIVE_GROUP CG
+                    INNER JOIN ( SELECT DISTINCT CI.CREATIVE_GROUP_ID, CI.PLACEMENT_ID
+                                   FROM TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'placement' or type == 'group'">
+                                        AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                    </if>
+                                    <if test="type == 'group'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) PCG ON CG.CREATIVE_GROUP_ID = PCG.CREATIVE_GROUP_ID
+                    INNER JOIN TE_XLS.PLACEMENT P ON PCG.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'site' or type == 'section' or type == 'placement' or type == 'group'">
+                           AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'section' or type == 'placement' or type == 'group'">
+                            AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                        ) status
+                                 WHERE range = 1
+                               ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+              WHERE CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="type == 'group'">
+                    AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(CG.GROUP_NAME||' ('||CG.CREATIVE_GROUP_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soCreative">
+            <if test="soSite or soSection or soPlacement or soGroup">
+                UNION
+            </if>
+            (SELECT DISTINCT S.SITE_ID,
+                    S.SITE_NAME,
+                    SS.SECTION_ID            AS SITE_SECTION_ID,
+                    SS.SECTION_NAME          AS SITE_SECTION_NAME,
+                    P.PLACEMENT_ID,
+                    P.PLACEMENT_NAME,
+                    P.END_DATE               AS PLACEMENT_END_DATE,
+                    P.START_DATE             AS PLACEMENT_START_DATE,
+                    (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                       FROM TE_XLS.STATUS_TYPES STYP
+                      WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                    CG.CREATIVE_GROUP_ID,
+                    CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                    CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                    CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    CI.CAMPAIGN_ID,
+                    ADS.SIZE_NAME,
+                    CI.CREATIVE_INSERTION_ID,
+                    CI.CREATIVE_INSERTION_ROOT_ID,
+                    CI.END_DATE,
+                    CI.RELEASED,
+                    CI.SEQUENCE,
+                    CI.START_DATE,
+                    CI.TIME_ZONE,
+                    CI.WEIGHT,
+                    CI.CLICKTHROUGH         AS CLICKTHROUGH,
+                    C.CREATIVE_ID,
+                    C.ALIAS                 AS CREATIVE_ALIAS,
+                    C.CREATIVE_TYPE,
+                    C.FILENAME,
+                    CI.LOGICAL_DELETE,
+                    CI.CREATED,
+                    CI.CREATED_TPWS_KEY,
+                    CI.MODIFIED,
+                    CI.MODIFIED_TPWS_KEY
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'site' or type == 'section' or type == 'placement' or type == 'group' or type == 'schedule'">
+                           AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'section' or type == 'placement' or type == 'group' or type == 'schedule'">
+                            AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                       ) status
+                                 WHERE range = 1
+                               ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                        AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                    AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'group' or type == 'schedule'">
+                    AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'schedule'">
+                    AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                </if>
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+
+    <sql id="searchCreativeInsertionsPivotSiteCount">
+        <if test="soSite">
+            (SELECT 'site' as ID, COUNT(S.SITE_ID) as totalRows
+               FROM TE_XLS.SITE S
+                    INNER JOIN ( SELECT DISTINCT P.SITE_ID
+                                   FROM TE_XLS.PLACEMENT P, TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE P.PLACEMENT_ID = CI.PLACEMENT_ID
+                                    AND CI.campaign_id = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'site'">
+                                        AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) PLA ON S.SITE_ID = PLA.SITE_ID
+              WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                AND UPPER(S.SITE_NAME||' ('||S.SITE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+            )
+        </if>
+        <if test="soSection">
+            <if test="soSite">
+                UNION
+            </if>
+            (SELECT 'section' as ID, COUNT(DISTINCT SS.SECTION_ID) as totalRows
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'site' or type == 'section'">
+                           AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'section'">
+                           AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND UPPER(SS.SECTION_NAME||' ('||SS.SECTION_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soPlacement">
+            <if test="soSite or soSection">
+                UNION
+            </if>
+            (SELECT 'placement' as ID, COUNT(DISTINCT P.PLACEMENT_ID) as totalRows
+               FROM TE_XLS.PLACEMENT P
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE P.PLACEMENT_ID IN ( SELECT DISTINCT CI.PLACEMENT_ID
+                                          FROM TE_XLS.CREATIVE_INSERTION CI
+                                         WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                            <if test="type == 'placement'">
+                                                AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                            </if>
+                                           AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                      )
+                <if test="type == 'placement'">
+                    AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'site' or type == 'section' or type == 'placement'">
+                    AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'section' or type == 'placement'">
+                    AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(P.PLACEMENT_NAME||' ('||P.PLACEMENT_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soGroup">
+            <if test="soSite or soSection or soPlacement">
+                UNION
+            </if>
+            (SELECT 'group' as ID, COUNT(DISTINCT CG.CREATIVE_GROUP_ID) as totalRows
+               FROM TE_XLS.CREATIVE_GROUP CG
+                    INNER JOIN ( SELECT DISTINCT CI.CREATIVE_GROUP_ID, CI.PLACEMENT_ID
+                                   FROM TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'placement' or type == 'group'">
+                                        AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                    </if>
+                                    <if test="type == 'group'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) PCG ON CG.CREATIVE_GROUP_ID = PCG.CREATIVE_GROUP_ID
+                    INNER JOIN TE_XLS.PLACEMENT P ON PCG.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'site' or type == 'section' or type == 'placement' or type == 'group'">
+                           AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'section' or type == 'placement' or type == 'group'">
+                            AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+             WHERE CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="type == 'group'">
+                    AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+               AND UPPER(CG.GROUP_NAME||' ('||CG.CREATIVE_GROUP_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+               AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soCreative">
+            <if test="soSite or soSection or soPlacement or soGroup">
+                UNION
+            </if>
+            (SELECT 'schedule' as ID, COUNT(DISTINCT CI.CREATIVE_INSERTION_ID) as totalRows
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'site' or type == 'section' or type == 'placement' or type == 'group' or type == 'schedule'">
+                           AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        <if test="type == 'section' or type == 'placement' or type == 'group' or type == 'schedule'">
+                            AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                        AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                    AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'group' or type == 'schedule'">
+                    AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'schedule'">
+                    AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                </if>
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+    <!-- SEARCH BY SITE PIVOT -->
+
+    <!-- SEARCH BY PLACEMENT PIVOT -->
+    <sql id="searchCreativeInsertionsPivotPlacementData">
+        <if test="soPlacement">
+            (SELECT DISTINCT P.PLACEMENT_ID,
+                    P.SITE_ID,
+                    P.SECTION_ID             AS SITE_SECTION_ID,
+                    P.PLACEMENT_NAME,
+                    P.END_DATE               AS PLACEMENT_END_DATE,
+                    P.START_DATE             AS PLACEMENT_START_DATE,
+                    (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                       FROM TE_XLS.STATUS_TYPES STYP
+                      WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                    NULL                     AS CREATIVE_GROUP_ID,
+                    NULL                     AS CREATIVE_GROUP_NAME,
+                    NULL                     AS CREATIVE_GROUP_WEIGHT,
+                    NULL                     AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    NULL                     AS CREATIVE_GROUP_ROTATION_TYPE,
+                    NULL                     AS CREATIVE_GROUP_DO_GEOTARGET,
+                    NULL                     AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    NULL                     AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    NULL                     AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    NULL                     AS CREATIVE_GROUP_PRIORITY,
+                    NULL                     AS CREATIVE_GROUP_DAYPART_TARGET,
+                    NULL                     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL                     AS CAMPAIGN_ID,
+                    NULL                     AS SIZE_NAME,
+                    NULL                     AS CREATIVE_INSERTION_ID,
+                    NULL                     AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL                     AS END_DATE,
+                    NULL                     AS RELEASED,
+                    NULL                     AS SEQUENCE,
+                    NULL                     AS START_DATE,
+                    NULL                     AS TIME_ZONE,
+                    NULL                     AS WEIGHT,
+                    NULL                     AS CLICKTHROUGH,
+                    NULL                     AS CREATIVE_ID,
+                    NULL                     AS CREATIVE_ALIAS,
+                    NULL                     AS CREATIVE_TYPE,
+                    NULL                     AS FILENAME,
+                    NULL                     AS LOGICAL_DELETE,
+                    NULL                     AS CREATED,
+                    NULL                     AS CREATED_TPWS_KEY,
+                    NULL                     AS MODIFIED,
+                    NULL                     AS MODIFIED_TPWS_KEY
+               FROM TE_XLS.PLACEMENT P
+                    INNER JOIN (SELECT *
+                        FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                      rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                 FROM TE_XLS.PLACEMENT_STATUS ps
+                                WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                            ) status
+                        WHERE range = 1) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+              WHERE P.PLACEMENT_ID IN ( SELECT DISTINCT CI.PLACEMENT_ID
+                                          FROM TE_XLS.CREATIVE_INSERTION CI
+                                         WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                            <if test="type == 'placement'">
+                                                AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                            </if>
+                                           AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                        )
+                <if test="type == 'placement'">
+                    AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(P.PLACEMENT_NAME||' ('||P.PLACEMENT_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soGroup">
+            <if test="soPlacement">
+                UNION
+            </if>
+            (SELECT DISTINCT P.PLACEMENT_ID,
+                    P.SITE_ID,
+                    P.SECTION_ID             AS SITE_SECTION_ID,
+                    P.PLACEMENT_NAME,
+                    P.END_DATE               AS PLACEMENT_END_DATE,
+                    P.START_DATE             AS PLACEMENT_START_DATE,
+                    (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                       FROM TE_XLS.STATUS_TYPES STYP
+                      WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                    CG.CREATIVE_GROUP_ID,
+                    CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                    CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                    CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL                     AS CAMPAIGN_ID,
+                    NULL                     AS SIZE_NAME,
+                    NULL                     AS CREATIVE_INSERTION_ID,
+                    NULL                     AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL                     AS END_DATE,
+                    NULL                     AS RELEASED,
+                    NULL                     AS SEQUENCE,
+                    NULL                     AS START_DATE,
+                    NULL                     AS TIME_ZONE,
+                    NULL                     AS WEIGHT,
+                    NULL                     AS CLICKTHROUGH,
+                    NULL                     AS CREATIVE_ID,
+                    NULL                     AS CREATIVE_ALIAS,
+                    NULL                     AS CREATIVE_TYPE,
+                    NULL                     AS FILENAME,
+                    NULL                     AS LOGICAL_DELETE,
+                    NULL                     AS CREATED,
+                    NULL                     AS CREATED_TPWS_KEY,
+                    NULL                     AS MODIFIED,
+                    NULL                     AS MODIFIED_TPWS_KEY
+               FROM TE_XLS.CREATIVE_GROUP CG
+                    INNER JOIN (SELECT DISTINCT CI.CREATIVE_GROUP_ID, CI.PLACEMENT_ID
+                                  FROM TE_XLS.CREATIVE_INSERTION CI
+                                 WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'placement' or type == 'group'">
+                                        AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                    </if>
+                                    <if test="type == 'group'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                   AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) PCG ON CG.CREATIVE_GROUP_ID = PCG.CREATIVE_GROUP_ID
+                    INNER JOIN TE_XLS.PLACEMENT P ON PCG.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                        ) status
+                                  WHERE range = 1
+                               ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+              WHERE CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="type == 'group'">
+                    AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(CG.GROUP_NAME||' ('||CG.CREATIVE_GROUP_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soCreative">
+            <if test="soPlacement or soGroup">
+                UNION
+            </if>
+            (SELECT DISTINCT P.PLACEMENT_ID,
+                    P.SITE_ID,
+                    P.SECTION_ID             AS SITE_SECTION_ID,
+                    P.PLACEMENT_NAME,
+                    P.END_DATE               AS PLACEMENT_END_DATE,
+                    P.START_DATE             AS PLACEMENT_START_DATE,
+                    (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                       FROM TE_XLS.STATUS_TYPES STYP
+                      WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                    CG.CREATIVE_GROUP_ID,
+                    CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                    CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                    CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    CI.CAMPAIGN_ID,
+                    ADS.SIZE_NAME,
+                    CI.CREATIVE_INSERTION_ID,
+                    CI.CREATIVE_INSERTION_ROOT_ID,
+                    CI.END_DATE,
+                    CI.RELEASED,
+                    CI.SEQUENCE,
+                    CI.START_DATE,
+                    CI.TIME_ZONE,
+                    CI.WEIGHT,
+                    CI.CLICKTHROUGH         AS CLICKTHROUGH,
+                    C.CREATIVE_ID,
+                    C.ALIAS                 AS CREATIVE_ALIAS,
+                    C.CREATIVE_TYPE,
+                    C.FILENAME,
+                    CI.LOGICAL_DELETE,
+                    CI.CREATED,
+                    CI.CREATED_TPWS_KEY,
+                    CI.MODIFIED,
+                    CI.MODIFIED_TPWS_KEY
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                       ) status
+                                 WHERE range = 1) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                        AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                    AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'group' or type == 'schedule'">
+                    AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'schedule'">
+                    AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                </if>
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+
+    <sql id="searchCreativeInsertionsPivotPlacementCount">
+        <if test="soPlacement">
+            (SELECT 'placement' as ID, COUNT(DISTINCT P.PLACEMENT_ID) as totalRows
+               FROM TE_XLS.PLACEMENT P
+              WHERE P.PLACEMENT_ID IN ( SELECT DISTINCT CI.PLACEMENT_ID
+                                          FROM TE_XLS.CREATIVE_INSERTION CI
+                                         WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                            <if test="type == 'placement'">
+                                                AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                            </if>
+                                           AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                      )
+                <if test="type == 'placement'">
+                    AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(P.PLACEMENT_NAME||' ('||P.PLACEMENT_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soGroup">
+            <if test="soPlacement">
+                UNION
+            </if>
+            (SELECT 'group' as ID, COUNT(DISTINCT CG.CREATIVE_GROUP_ID) as totalRows
+               FROM TE_XLS.CREATIVE_GROUP CG
+                    INNER JOIN ( SELECT DISTINCT CI.CREATIVE_GROUP_ID, CI.PLACEMENT_ID
+                                   FROM TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'placement' or type == 'group'">
+                                        AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                    </if>
+                                    <if test="type == 'group'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) PCG ON CG.CREATIVE_GROUP_ID = PCG.CREATIVE_GROUP_ID
+                    INNER JOIN TE_XLS.PLACEMENT P ON PCG.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="type == 'group'">
+                    AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(CG.GROUP_NAME||' ('||CG.CREATIVE_GROUP_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soCreative">
+            <if test="soPlacement or soGroup">
+                UNION
+            </if>
+            (SELECT 'schedule' as ID, COUNT(DISTINCT CI.CREATIVE_INSERTION_ID) as totalRows
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                        AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                    AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'group' or type == 'schedule'">
+                    AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+                <if test="type == 'schedule'">
+                    AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                </if>
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+    <!-- SEARCH BY PLACEMENT PIVOT -->
+
+   <!-- SEARCH BY GROUP PIVOT -->
+    <sql id="searchCreativeInsertionsPivotGroupData">
+        <if test="soGroup">
+            (SELECT DISTINCT NULL            AS SITE_ID,
+                    NULL                     AS SITE_NAME,
+                    NULL                     AS SITE_SECTION_ID,
+                    NULL                     AS SITE_SECTION_NAME,
+                    NULL                     AS PLACEMENT_ID,
+                    NULL                     AS PLACEMENT_NAME,
+                    NULL                     AS PLACEMENT_END_DATE,
+                    NULL                     AS PLACEMENT_START_DATE,
+                    NULL                     AS PLACEMENT_STATUS,
+                    CG.CREATIVE_GROUP_ID,
+                    CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                    CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                    CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL                     AS CAMPAIGN_ID,
+                    NULL                     AS SIZE_NAME,
+                    NULL                     AS CREATIVE_INSERTION_ID,
+                    NULL                     AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL                     AS END_DATE,
+                    NULL                     AS RELEASED,
+                    NULL                     AS SEQUENCE,
+                    NULL                     AS START_DATE,
+                    NULL                     AS TIME_ZONE,
+                    NULL                     AS WEIGHT,
+                    NULL                     AS CLICKTHROUGH,
+                    NULL                     AS CREATIVE_ID,
+                    NULL                     AS CREATIVE_ALIAS,
+                    NULL                     AS CREATIVE_TYPE,
+                    NULL                     AS FILENAME,
+                    NULL                     AS LOGICAL_DELETE,
+                    NULL                     AS CREATED,
+                    NULL                     AS CREATED_TPWS_KEY,
+                    NULL                     AS MODIFIED,
+                    NULL                     AS MODIFIED_TPWS_KEY
+               FROM TE_XLS.CREATIVE_GROUP CG
+                    INNER JOIN ( SELECT DISTINCT CI.CREATIVE_GROUP_ID
+                                   FROM TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'group'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) PCG ON CG.CREATIVE_GROUP_ID = PCG.CREATIVE_GROUP_ID
+              WHERE CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND UPPER(CG.GROUP_NAME||' ('||CG.CREATIVE_GROUP_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>        
+        <if test="soSite">
+            <if test="soGroup">
+                UNION
+            </if>
+            (SELECT S.SITE_ID,
+                    S.SITE_NAME,
+                    NULL                     AS SITE_SECTION_ID,
+                    NULL                     AS SITE_SECTION_NAME,
+                    NULL                     AS PLACEMENT_ID,
+                    NULL                     AS PLACEMENT_NAME,
+                    NULL                     AS PLACEMENT_END_DATE,
+                    NULL                     AS PLACEMENT_START_DATE,
+                    NULL                     AS PLACEMENT_STATUS,
+                    CG.CREATIVE_GROUP_ID,
+                    CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                    CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                    CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL            AS CAMPAIGN_ID,
+                    NULL            AS SIZE_NAME,
+                    NULL            AS CREATIVE_INSERTION_ID,
+                    NULL            AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL            AS END_DATE,
+                    NULL            AS RELEASED,
+                    NULL            AS SEQUENCE,
+                    NULL            AS START_DATE,
+                    NULL            AS TIME_ZONE,
+                    NULL            AS WEIGHT,
+                    NULL            AS CLICKTHROUGH,
+                    NULL            AS CREATIVE_ID,
+                    NULL            AS CREATIVE_ALIAS,
+                    NULL            AS CREATIVE_TYPE,
+                    NULL            AS FILENAME,
+                    NULL            AS LOGICAL_DELETE,
+                    NULL            AS CREATED,
+                    NULL            AS CREATED_TPWS_KEY,
+                    NULL            AS MODIFIED,
+                    NULL            AS MODIFIED_TPWS_KEY
+               FROM TE_XLS.SITE S
+                    INNER JOIN ( SELECT DISTINCT P.SITE_ID, CI.CREATIVE_GROUP_ID
+                                   FROM TE_XLS.PLACEMENT P, TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE P.PLACEMENT_ID = CI.PLACEMENT_ID
+                                    AND CI.campaign_id = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'group' or type == 'site'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) PLA ON S.SITE_ID = PLA.SITE_ID
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = PLA.CREATIVE_GROUP_ID
+              WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="type == 'site'">
+                    AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(S.SITE_NAME||' ('||S.SITE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+            )
+        </if>
+        <if test="soPlacement">
+            <if test="soSite or soGroup">
+                UNION
+            </if>
+            (SELECT DISTINCT S.SITE_ID,
+                    S.SITE_NAME,
+                    NULL                     AS SITE_SECTION_ID,
+                    NULL                     AS SITE_SECTION_NAME,
+                    P.PLACEMENT_ID,
+                    P.PLACEMENT_NAME,
+                    P.END_DATE               AS PLACEMENT_END_DATE,
+                    P.START_DATE             AS PLACEMENT_START_DATE,
+                    (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                       FROM TE_XLS.STATUS_TYPES STYP
+                      WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                    CG.CREATIVE_GROUP_ID,
+                    CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                    CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                    CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    NULL                     AS CAMPAIGN_ID,
+                    NULL                     AS SIZE_NAME,
+                    NULL                     AS CREATIVE_INSERTION_ID,
+                    NULL                     AS CREATIVE_INSERTION_ROOT_ID,
+                    NULL                     AS END_DATE,
+                    NULL                     AS RELEASED,
+                    NULL                     AS SEQUENCE,
+                    NULL                     AS START_DATE,
+                    NULL                     AS TIME_ZONE,
+                    NULL                     AS WEIGHT,
+                    NULL                     AS CLICKTHROUGH,
+                    NULL                     AS CREATIVE_ID,
+                    NULL                     AS CREATIVE_ALIAS,
+                    NULL                     AS CREATIVE_TYPE,
+                    NULL                     AS FILENAME,
+                    NULL                     AS LOGICAL_DELETE,
+                    NULL                     AS CREATED,
+                    NULL                     AS CREATED_TPWS_KEY,
+                    NULL                     AS MODIFIED,
+                    NULL                     AS MODIFIED_TPWS_KEY
+               FROM (SELECT DISTINCT P.*, CI.CREATIVE_GROUP_ID
+                        FROM TE_XLS.PLACEMENT P, TE_XLS.CREATIVE_INSERTION CI
+                       WHERE P.PLACEMENT_ID = CI.PLACEMENT_ID
+                         AND CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                         <if test="type == 'group' or type == 'site' or type == 'placement'">
+                            AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                         </if>
+                         <if test="type == 'placement'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                         </if>
+                         AND UPPER(P.PLACEMENT_NAME||' ('||P.PLACEMENT_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                         AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                         AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                     ) P
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        <if test="type == 'site' or type == 'placement'">
+                            AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                          <if test="type == 'placement'">
+                                            AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                          </if>
+                                       ) status
+                                 WHERE range = 1
+                               ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = P.CREATIVE_GROUP_ID
+            )        
+        </if>
+        <if test="soCreative">
+            <if test="soSite or soPlacement or soGroup">
+                UNION
+            </if>
+            (SELECT DISTINCT S.SITE_ID,
+                    S.SITE_NAME,
+                    NULL                     AS SITE_SECTION_ID,
+                    NULL                     AS SITE_SECTION_NAME,
+                    P.PLACEMENT_ID,
+                    P.PLACEMENT_NAME,
+                    P.END_DATE               AS PLACEMENT_END_DATE,
+                    P.START_DATE             AS PLACEMENT_START_DATE,
+                    (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                       FROM TE_XLS.STATUS_TYPES STYP
+                      WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                    CG.CREATIVE_GROUP_ID,
+                    CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                    CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                    CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    CI.CAMPAIGN_ID,
+                    ADS.SIZE_NAME,
+                    CI.CREATIVE_INSERTION_ID,
+                    CI.CREATIVE_INSERTION_ROOT_ID,
+                    CI.END_DATE,
+                    CI.RELEASED,
+                    CI.SEQUENCE,
+                    CI.START_DATE,
+                    CI.TIME_ZONE,
+                    CI.WEIGHT,
+                    CI.CLICKTHROUGH         AS CLICKTHROUGH,
+                    C.CREATIVE_ID,
+                    C.ALIAS                 AS CREATIVE_ALIAS,
+                    C.CREATIVE_TYPE,
+                    C.FILENAME,
+                    CI.LOGICAL_DELETE,
+                    CI.CREATED,
+                    CI.CREATED_TPWS_KEY,
+                    CI.MODIFIED,
+                    CI.MODIFIED_TPWS_KEY
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'schedule'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        <if test="type == 'site' or type == 'placement' or type == 'schedule'">
+                            AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                            <if test="type == 'placement' or type == 'schedule'">
+                                                AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                            </if>
+                                       ) status
+                                 WHERE range = 1
+                               ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        <if test="type == 'schedule'">
+                            AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                        </if>
+                        AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                        <if test="type == 'group' or type == 'site' or type == 'placement' or type == 'schedule'">
+                            AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                        </if>
+                        AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+
+    <sql id="searchCreativeInsertionsPivotGroupCount">
+        <if test="soGroup">
+            (SELECT 'group' as ID, COUNT(DISTINCT CG.CREATIVE_GROUP_ID) as totalRows
+               FROM TE_XLS.CREATIVE_GROUP CG
+                    INNER JOIN ( SELECT DISTINCT CI.CREATIVE_GROUP_ID
+                                   FROM TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'group'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) PCG ON CG.CREATIVE_GROUP_ID = PCG.CREATIVE_GROUP_ID
+              WHERE CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND UPPER(CG.GROUP_NAME||' ('||CG.CREATIVE_GROUP_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soSite">
+            <if test="soGroup">
+                UNION
+            </if>
+            (SELECT 'site' as ID, COUNT(S.SITE_ID) as totalRows
+               FROM TE_XLS.SITE S
+                    INNER JOIN ( SELECT DISTINCT P.SITE_ID, CI.CREATIVE_GROUP_ID
+                                   FROM TE_XLS.PLACEMENT P, TE_XLS.CREATIVE_INSERTION CI
+                                  WHERE P.PLACEMENT_ID = CI.PLACEMENT_ID
+                                    AND CI.campaign_id = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="type == 'group' or type == 'site'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) PLA ON S.SITE_ID = PLA.SITE_ID
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = PLA.CREATIVE_GROUP_ID
+              WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="type == 'site'">
+                    AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                </if>
+                AND UPPER(S.SITE_NAME||' ('||S.SITE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+            )
+        </if>
+        <if test="soPlacement">
+            <if test="soSite or soGroup">
+                UNION
+            </if>
+            (SELECT 'placement' as ID, COUNT(DISTINCT P.PLACEMENT_ID) as totalRows
+               FROM (SELECT DISTINCT P.*, CI.CREATIVE_GROUP_ID
+                        FROM TE_XLS.PLACEMENT P, TE_XLS.CREATIVE_INSERTION CI
+                       WHERE P.PLACEMENT_ID = CI.PLACEMENT_ID
+                         AND CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                         <if test="type == 'group' or type == 'site' or type == 'placement'">
+                            AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                         </if>
+                         <if test="type == 'placement'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                         </if>
+                         AND UPPER(P.PLACEMENT_NAME||' ('||P.PLACEMENT_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                         AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                         AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                     ) P
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        <if test="type == 'site' or type == 'placement'">
+                            AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                          <if test="type == 'placement'">
+                                            AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                          </if>
+                                       ) status
+                                 WHERE range = 1
+                               ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = P.CREATIVE_GROUP_ID
+            )
+        </if>
+
+        <if test="soCreative">
+            <if test="soSite or soPlacement or soGroup">
+                UNION
+            </if>
+            (SELECT 'schedule' as ID, COUNT(DISTINCT CI.CREATIVE_INSERTION_ID) as totalRows
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'schedule'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        <if test="type == 'site' or type == 'placement' or type == 'schedule'">
+                            AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                        AND P.SITE_ID = SS.SITE_ID
+                        AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                                  FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                           FROM TE_XLS.PLACEMENT_STATUS ps
+                                          WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                            <if test="type == 'placement' or type == 'schedule'">
+                                                AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                            </if>
+                                       ) status
+                                 WHERE range = 1
+                               ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        <if test="type == 'schedule'">
+                            AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                        </if>
+                        AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                        AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        <if test="type == 'group' or type == 'site' or type == 'placement' or type == 'schedule'">
+                            AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+    <!-- SEARCH BY GROUP PIVOT -->
+
+    <!-- SEARCH BY CREATIVE PIVOT -->
+    <sql id="searchCreativeInsertionsPivotCreativeData">
+        <if test="soCreative">
+            (SELECT
+                DISTINCT CI.CAMPAIGN_ID,
+                C.CREATIVE_ID,
+                C.ALIAS                 AS CREATIVE_ALIAS,
+                C.CREATIVE_TYPE,
+                C.FILENAME,
+                (C.WIDTH || 'x' || C.HEIGHT)  AS SIZE_NAME,
+                NULL                    AS CREATIVE_INSERTION_ID,
+                NULL                    AS CREATIVE_INSERTION_ROOT_ID,
+                NULL                    AS END_DATE,
+                NULL                    AS RELEASED,
+                NULL                    AS SEQUENCE,
+                NULL                    AS START_DATE,
+                NULL                    AS TIME_ZONE,
+                NULL                    AS WEIGHT,
+                C.CLICKTHROUGH,
+                NULL                    AS LOGICAL_DELETE,
+                NULL                    AS CREATED,
+                NULL                    AS CREATED_TPWS_KEY,
+                NULL                    AS MODIFIED,
+                NULL                    AS MODIFIED_TPWS_KEY,
+                NULL                    AS SITE_ID,
+                NULL                    AS SITE_NAME,
+                NULL                    AS SITE_SECTION_ID,
+                NULL                    AS PLACEMENT_ID,
+                NULL                    AS PLACEMENT_NAME,
+                NULL                    AS PLACEMENT_END_DATE,
+                NULL                    AS PLACEMENT_START_DATE,
+                NULL                    AS PLACEMENT_STATUS,
+                NULL                    AS CREATIVE_GROUP_ID,
+                NULL                    AS CREATIVE_GROUP_NAME,
+                NULL                    AS CREATIVE_GROUP_WEIGHT,
+                NULL                    AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                NULL                    AS CREATIVE_GROUP_ROTATION_TYPE,
+                NULL                    AS CREATIVE_GROUP_DO_GEOTARGET,
+                NULL                    AS CREATIVE_GROUP_DO_COOKIETARGET,
+                NULL                    AS CREATIVE_GROUP_FREQUENCY_CAP,
+                NULL                    AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                NULL                    AS CREATIVE_GROUP_PRIORITY,
+                NULL                    AS CREATIVE_GROUP_DAYPART_TARGET,
+                NULL                    AS CREATIVE_GROUP_DO_DAYPART_TAR
+            FROM TE_XLS.CREATIVE_INSERTION CI
+                INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                    AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                    AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    <if test="type == 'creative'">
+                        AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                    </if>
+                    AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                    AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soSite">
+            <if test="soCreative">
+                UNION
+            </if>
+            (SELECT 
+                DISTINCT CI.CAMPAIGN_ID,
+                C.CREATIVE_ID,
+                C.ALIAS                 AS CREATIVE_ALIAS,
+                C.CREATIVE_TYPE,
+                C.FILENAME,
+                (C.WIDTH || 'x' || C.HEIGHT)  AS SIZE_NAME,
+                NULL                    AS CREATIVE_INSERTION_ID,
+                NULL                    AS CREATIVE_INSERTION_ROOT_ID,
+                NULL                    AS END_DATE,
+                NULL                    AS RELEASED,
+                NULL                    AS SEQUENCE,
+                NULL                    AS START_DATE,
+                NULL                    AS TIME_ZONE,
+                NULL                    AS WEIGHT,
+                C.CLICKTHROUGH,
+                NULL                    AS LOGICAL_DELETE,
+                NULL                    AS CREATED,
+                NULL                    AS CREATED_TPWS_KEY,
+                NULL                    AS MODIFIED,
+                NULL                    AS MODIFIED_TPWS_KEY,
+                S.SITE_ID,
+                S.SITE_NAME,
+                NULL                    AS SITE_SECTION_ID,
+                NULL                    AS PLACEMENT_ID,
+                NULL                    AS PLACEMENT_NAME,
+                NULL                    AS PLACEMENT_END_DATE,
+                NULL                    AS PLACEMENT_START_DATE,
+                NULL                    AS PLACEMENT_STATUS,
+                NULL                    AS CREATIVE_GROUP_ID,
+                NULL                    AS CREATIVE_GROUP_NAME,
+                NULL                    AS CREATIVE_GROUP_WEIGHT,
+                NULL                    AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                NULL                    AS CREATIVE_GROUP_ROTATION_TYPE,
+                NULL                    AS CREATIVE_GROUP_DO_GEOTARGET,
+                NULL                    AS CREATIVE_GROUP_DO_COOKIETARGET,
+                NULL                    AS CREATIVE_GROUP_FREQUENCY_CAP,
+                NULL                    AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                NULL                    AS CREATIVE_GROUP_PRIORITY,
+                NULL                    AS CREATIVE_GROUP_DAYPART_TARGET,
+                NULL                    AS CREATIVE_GROUP_DO_DAYPART_TAR
+            FROM TE_XLS.CREATIVE_INSERTION CI
+                INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                    AND UPPER(S.SITE_NAME||' ('||S.SITE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                    <if test="type == 'site'">
+                        AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                    AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                    AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    <if test="type == 'creative' or type == 'site'">
+                        AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soPlacement">
+            <if test="soCreative or soSite">
+                UNION
+            </if>
+            (SELECT 
+                DISTINCT CI.CAMPAIGN_ID,
+                C.CREATIVE_ID,
+                C.ALIAS                 AS CREATIVE_ALIAS,
+                C.CREATIVE_TYPE,
+                C.FILENAME,
+                (C.WIDTH || 'x' || C.HEIGHT)  AS SIZE_NAME,
+                NULL                    AS CREATIVE_INSERTION_ID,
+                NULL                    AS CREATIVE_INSERTION_ROOT_ID,
+                NULL                    AS END_DATE,
+                NULL                    AS RELEASED,
+                NULL                    AS SEQUENCE,
+                NULL                    AS START_DATE,
+                NULL                    AS TIME_ZONE,
+                NULL                    AS WEIGHT,
+                C.CLICKTHROUGH,
+                NULL                    AS LOGICAL_DELETE,
+                NULL                    AS CREATED,
+                NULL                    AS CREATED_TPWS_KEY,
+                NULL                    AS MODIFIED,
+                NULL                    AS MODIFIED_TPWS_KEY,
+                S.SITE_ID,
+                S.SITE_NAME,
+                NULL                    AS SITE_SECTION_ID,
+                P.PLACEMENT_ID,
+                P.PLACEMENT_NAME,
+                P.END_DATE              AS PLACEMENT_END_DATE,
+                P.START_DATE            AS PLACEMENT_START_DATE,
+                (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                   FROM TE_XLS.STATUS_TYPES STYP
+                  WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                NULL                    AS CREATIVE_GROUP_ID,
+                NULL                    AS CREATIVE_GROUP_NAME,
+                NULL                    AS CREATIVE_GROUP_WEIGHT,
+                NULL                    AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                NULL                    AS CREATIVE_GROUP_ROTATION_TYPE,
+                NULL                    AS CREATIVE_GROUP_DO_GEOTARGET,
+                NULL                    AS CREATIVE_GROUP_DO_COOKIETARGET,
+                NULL                    AS CREATIVE_GROUP_FREQUENCY_CAP,
+                NULL                    AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                NULL                    AS CREATIVE_GROUP_PRIORITY,
+                NULL                    AS CREATIVE_GROUP_DAYPART_TARGET,
+                NULL                    AS CREATIVE_GROUP_DO_DAYPART_TAR
+            FROM TE_XLS.CREATIVE_INSERTION CI
+                INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                    AND UPPER(P.PLACEMENT_NAME||' ('||P.PLACEMENT_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                    <if test="type == 'placement'">
+                        AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN (
+                    SELECT *
+                    FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                            rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                        FROM TE_XLS.PLACEMENT_STATUS PS
+                        WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                            <if test="type == 'placement'">
+                                AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                            </if>
+                        ) status
+                    WHERE range = 1) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                    <if test="type == 'site' or type == 'placement'">
+                        AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                    AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                    AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    <if test="type == 'creative' or type == 'site' or type == 'placement'">
+                        AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soGroup">
+            <if test="soCreative or soSite or soPlacement">
+                UNION
+            </if>
+            (SELECT 
+                DISTINCT CI.CAMPAIGN_ID,
+                C.CREATIVE_ID,
+                C.ALIAS                 AS CREATIVE_ALIAS,
+                C.CREATIVE_TYPE,
+                C.FILENAME,
+                (C.WIDTH || 'x' || C.HEIGHT)  AS SIZE_NAME,
+                NULL                    AS CREATIVE_INSERTION_ID,
+                NULL                    AS CREATIVE_INSERTION_ROOT_ID,
+                NULL                    AS END_DATE,
+                NULL                    AS RELEASED,
+                NULL                    AS SEQUENCE,
+                NULL                    AS START_DATE,
+                NULL                    AS TIME_ZONE,
+                NULL                    AS WEIGHT,
+                C.CLICKTHROUGH,
+                NULL                    AS LOGICAL_DELETE,
+                NULL                    AS CREATED,
+                NULL                    AS CREATED_TPWS_KEY,
+                NULL                    AS MODIFIED,
+                NULL                    AS MODIFIED_TPWS_KEY,
+                S.SITE_ID,
+                S.SITE_NAME,
+                NULL                    AS SITE_SECTION_ID,
+                P.PLACEMENT_ID,
+                P.PLACEMENT_NAME,
+                P.END_DATE              AS PLACEMENT_END_DATE,
+                P.START_DATE            AS PLACEMENT_START_DATE,
+                (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                   FROM TE_XLS.STATUS_TYPES STYP
+                  WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                CG.CREATIVE_GROUP_ID,
+                CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR
+            FROM TE_XLS.CREATIVE_INSERTION CI
+                INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                    AND UPPER(CG.GROUP_NAME||' ('||CG.CREATIVE_GROUP_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                    <if test="type == 'group'">
+                        AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                    <if test="type == 'placement' or type == 'group'">
+                        AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN (
+                    SELECT *
+                    FROM (
+                        SELECT ps.placement_id, ps.status_id, ps.status_date,
+                            rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                        FROM TE_XLS.PLACEMENT_STATUS ps
+                        WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                            <if test="type == 'placement' or type == 'group'">
+                                AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                            </if>
+                        ) status
+                    WHERE range = 1) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                    <if test="type == 'site' or type == 'placement' or type == 'group'">
+                        AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                    AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                    AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    <if test="type == 'creative' or type == 'site' or type == 'placement' or type == 'group'">
+                        AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soCreative">
+            <if test="soCreative or soSite or soPlacement or soGroup">
+                UNION
+            </if>
+            (SELECT 
+                DISTINCT CI.CAMPAIGN_ID,
+                C.CREATIVE_ID,
+                C.ALIAS                 AS CREATIVE_ALIAS,
+                C.CREATIVE_TYPE,
+                C.FILENAME,
+                ADS.SIZE_NAME,
+                CI.CREATIVE_INSERTION_ID,
+                CI.CREATIVE_INSERTION_ROOT_ID,
+                CI.END_DATE,
+                CI.RELEASED,
+                CI.SEQUENCE,
+                CI.START_DATE,
+                CI.TIME_ZONE,
+                CI.WEIGHT,
+                CI.CLICKTHROUGH         AS CLICKTHROUGH,
+                CI.LOGICAL_DELETE,
+                CI.CREATED,
+                CI.CREATED_TPWS_KEY,
+                CI.MODIFIED,
+                CI.MODIFIED_TPWS_KEY,
+                S.SITE_ID,
+                S.SITE_NAME,
+                NULL                    AS SITE_SECTION_ID,
+                P.PLACEMENT_ID,
+                P.PLACEMENT_NAME,
+                P.END_DATE              AS PLACEMENT_END_DATE,
+                P.START_DATE            AS PLACEMENT_START_DATE,
+                (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                   FROM TE_XLS.STATUS_TYPES STYP
+                  WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+                CG.CREATIVE_GROUP_ID,
+                CG.GROUP_NAME            AS CREATIVE_GROUP_NAME,
+                CG.WEIGHT                AS CREATIVE_GROUP_WEIGHT,
+                CG.ENABLE_GROUP_WEIGHT   AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                CG.ROTATION_TYPE         AS CREATIVE_GROUP_ROTATION_TYPE,
+                CG.DO_GEO_TARGET         AS CREATIVE_GROUP_DO_GEOTARGET,
+                CG.DO_COOKIE_TARGET      AS CREATIVE_GROUP_DO_COOKIETARGET,
+                CG.FREQUENCY_CAP         AS CREATIVE_GROUP_FREQUENCY_CAP,
+                CG.FREQUENCY_CAP_WINDOW  AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                CG.PRIORITY              AS CREATIVE_GROUP_PRIORITY,
+                CG.DAYPART_TARGET        AS CREATIVE_GROUP_DAYPART_TARGET,
+                CG.DO_DAYPART_TARGET     AS CREATIVE_GROUP_DO_DAYPART_TAR
+            FROM TE_XLS.CREATIVE_INSERTION CI
+                INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                    <if test="type == 'group' or type == 'schedule'">
+                        AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                    <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                        AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN (
+                    SELECT *
+                    FROM (
+                        SELECT ps.placement_id, ps.status_id, ps.status_date,
+                            rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                        FROM TE_XLS.PLACEMENT_STATUS ps
+                        WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                            <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                                AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                            </if>
+                        ) status
+                    WHERE range = 1) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                    <if test="type == 'site' or type == 'placement' or type == 'group' or type == 'schedule'">
+                        AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                    AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                    AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    <if test="type == 'creative' or type == 'site' or type == 'placement' or type == 'group' or type == 'schedule'">
+                        AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                    </if>
+                    AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                    AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+
+    <sql id="searchCreativeInsertionsPivotCreativeCount">
+        <if test="soCreative">
+            (SELECT 'creative' as ID, COUNT(DISTINCT C.CREATIVE_ID) as totalRows
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        <if test="type == 'creative'">
+                            AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                        </if>
+                        AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soSite">
+            <if test="soCreative">
+                UNION
+            </if>
+            (SELECT 'site' as ID, COUNT(S.SITE_ID) as totalRows
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        AND UPPER(S.SITE_NAME||' ('||S.SITE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        <if test="type == 'site'">
+                            AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        <if test="type == 'creative' or type == 'site'">
+                            AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soPlacement">
+            <if test="soCreative or soSite">
+                UNION
+            </if>
+            (SELECT 'placement' as ID, COUNT(DISTINCT P.PLACEMENT_ID) as totalRows
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        AND UPPER(P.PLACEMENT_NAME||' ('||P.PLACEMENT_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        <if test="type == 'placement'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                        FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                            FROM TE_XLS.PLACEMENT_STATUS PS
+                            WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                <if test="type == 'placement'">
+                                    AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                </if>
+                            ) status
+                        WHERE range = 1) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        <if test="type == 'site' or type == 'placement'">
+                            AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        <if test="type == 'creative' or type == 'site' or type == 'placement'">
+                            AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soGroup">
+            <if test="soCreative or soSite or soPlacement">
+                UNION
+            </if>
+            (SELECT 'group' as ID, COUNT(DISTINCT CG.CREATIVE_GROUP_ID) as totalRows
+               FROM TE_XLS.CREATIVE_INSERTION CI
+                    INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                        AND UPPER(CG.GROUP_NAME||' ('||CG.CREATIVE_GROUP_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                        <if test="type == 'group'">
+                            AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        <if test="type == 'placement' or type == 'group'">
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN (SELECT *
+                        FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                            FROM TE_XLS.PLACEMENT_STATUS ps
+                            WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                <if test="type == 'placement' or type == 'group'">
+                                    AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                </if>
+                            ) status
+                        WHERE range = 1) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                        <if test="type == 'site' or type == 'placement' or type == 'group'">
+                            AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                        AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                        AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        <if test="type == 'creative' or type == 'site' or type == 'placement' or type == 'group'">
+                            AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                        </if>
+                        AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soCreative">
+            <if test="soCreative or soSite or soPlacement or soGroup">
+                UNION
+            </if>
+            (SELECT 'schedule' as ID, COUNT(DISTINCT CI.CREATIVE_INSERTION_ID) as totalRows
+            FROM TE_XLS.CREATIVE_INSERTION CI
+                INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                    <if test="type == 'group' or type == 'schedule'">
+                        AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                    <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                        AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN (
+                    SELECT *
+                    FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                            rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                        FROM TE_XLS.PLACEMENT_STATUS ps
+                        WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                            <if test="type == 'placement' or type == 'group' or type == 'schedule'">
+                                AND PS.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                            </if>
+                        ) status
+                    WHERE range = 1) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                    <if test="type == 'site' or type == 'placement' or type == 'group' or type == 'schedule'">
+                        AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                    AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                    AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    <if test="type == 'creative' or type == 'site' or type == 'placement' or type == 'group' or type == 'schedule'">
+                        AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                    </if>
+                    AND UPPER(C.ALIAS||' ('||C.CREATIVE_ID||')') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                    AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+    <!-- SEARCH BY CREATIVE PIVOT -->
+
+    <select id="searchCreativeInsertions" parameterType="java.util.Map" resultMap="CreativeInsertion.creativeInsertionView">
+        SELECT DISTINCT CRIC.*,
+               CIC.SEQUENCE      AS CLICKTHROUGH_SEQUENCE,
+               CIC.CLICKTHROUGH  AS CLICKTHROUGH_NAME
+          FROM ( SELECT CRI.*
+                   FROM (SELECT SR.*,
+                                ROWNUM  AS ROWNUMBER
+                           FROM (
+                                <if test="pivotType == 'site'">
+                                    <include refid="searchCreativeInsertionsPivotSiteData"/>
+                                </if>
+                                <if test="pivotType == 'placement'">
+                                    <include refid="searchCreativeInsertionsPivotPlacementData"/>
+                                </if>
+                                <if test="pivotType == 'group'">
+                                    <include refid="searchCreativeInsertionsPivotGroupData"/>
+                                </if>
+                                <if test="pivotType == 'creative'">
+                                    <include refid="searchCreativeInsertionsPivotCreativeData"/>
+                                </if>
+                                ) SR
+                        ) CRI
+                  WHERE ROWNUMBER > #{startIndex,jdbcType=NUMERIC}
+                    AND #{pageSize,jdbcType=NUMERIC} >= ROWNUM
+               ) CRIC
+               LEFT JOIN TE_XLS.CREATIVE_INSERT_CLICKTHROUGH CIC ON CRIC.CREATIVE_INSERTION_ID = CIC.CREATIVE_INSERTION_ID
+                   AND DECODE(CIC.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="searchCreativeInsertionsCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT SUM(totalRows) as total
+          FROM (
+            <if test="pivotType == 'site'">
+                <include refid="searchCreativeInsertionsPivotSiteCount"/>
+            </if>
+            <if test="pivotType == 'placement'">
+                <include refid="searchCreativeInsertionsPivotPlacementCount"/>
+            </if>
+            <if test="pivotType == 'group'">
+                <include refid="searchCreativeInsertionsPivotGroupCount"/>
+            </if>
+            <if test="pivotType == 'creative'">
+                <include refid="searchCreativeInsertionsPivotCreativeCount"/>
+            </if>
+        )
+    </select>
+
+    <select id="searchCreativeInsertionsPlacementsAssociations" parameterType="java.util.Map" resultMap="CreativeInsertion.creativeInsertionView">
+        SELECT PLACEMENT_ID,
+               COUNT(DISTINCT CREATIVE_GROUP_ID) AS pAssocsWithCreativeGroups
+          FROM TE_XLS.CREATIVE_INSERTION
+         WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+           AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+           AND PLACEMENT_ID IN
+            <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+         GROUP BY PLACEMENT_ID
+    </select>
+
+    <select id="searchCreativeInsertionsCreativeGroupsAssociations" parameterType="java.util.Map" resultMap="CreativeInsertion.creativeInsertionView">
+        SELECT DISTINCT CCG.CREATIVE_GROUP_ID,
+                <if test="pivotType != 'group'">
+                    CC.PLACEMENT_ID,
+                </if>
+               CCG.cgAssocsWithPlacements,
+               CC.cgAssocsWithCreatives
+          FROM (SELECT CREATIVE_GROUP_ID,
+                       COUNT(DISTINCT PLACEMENT_ID) AS cgAssocsWithPlacements
+                  FROM TE_XLS.CREATIVE_INSERTION
+                 WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                   AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+                   AND CREATIVE_GROUP_ID IN 
+                    <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                 GROUP BY CREATIVE_GROUP_ID) CCG
+              INNER JOIN ( SELECT CREATIVE_GROUP_ID,
+                                  <if test="pivotType != 'group'">
+                                      PLACEMENT_ID,
+                                  </if>
+                                  COUNT(DISTINCT CREATIVE_ID) AS cgAssocsWithCreatives
+                             FROM TE_XLS.CREATIVE_INSERTION
+                            WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                              AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+                              AND CREATIVE_GROUP_ID IN 
+                              <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                                  #{item}
+                              </foreach>
+                            GROUP BY CREATIVE_GROUP_ID
+                            <if test="pivotType != 'group'">
+                                , PLACEMENT_ID
+                            </if>
+                         ) CC ON CCG.CREATIVE_GROUP_ID = CC.CREATIVE_GROUP_ID
+    </select>
+
+    <select id="searchCreativeInsertionsCreativeAssociations" parameterType="java.util.Map" resultMap="CreativeInsertion.creativeInsertionView">
+        SELECT CREATIVE_ID,
+               COUNT(DISTINCT PLACEMENT_ID) AS cAssocsWithPlacements,
+               COUNT(DISTINCT CREATIVE_GROUP_ID) AS cAssocsWithCreativeGroups
+          FROM TE_XLS.CREATIVE_INSERTION
+         WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+            AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+           AND CREATIVE_ID IN
+            <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+          GROUP BY CREATIVE_ID
+    </select>
+</mapper>

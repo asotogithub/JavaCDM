@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PublisherPkg">
+
+    <!--InsertPublisher-->
+    <update id="insertPublisher" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL PUBLISHER_PKG.InsertPublisher(
+            #{agencyId,jdbcType=NUMERIC,mode=IN},
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{address1,jdbcType=VARCHAR,mode=IN},
+            #{address2,jdbcType=VARCHAR,mode=IN},
+            #{city,jdbcType=VARCHAR,mode=IN},
+            #{state,jdbcType=VARCHAR,mode=IN},
+            #{zip,jdbcType=VARCHAR,mode=IN},
+            #{country,jdbcType=VARCHAR,mode=IN},
+            #{phoneNumber,jdbcType=VARCHAR,mode=IN},
+            #{url,jdbcType=VARCHAR,mode=IN},
+            #{agencyNotes,jdbcType=VARCHAR,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--UpdatePublisher-->
+    <update id="updatePublisher" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL PUBLISHER_PKG.UpdatePublisher(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{address1,jdbcType=VARCHAR,mode=IN},
+            #{address2,jdbcType=VARCHAR,mode=IN},
+            #{city,jdbcType=VARCHAR,mode=IN},
+            #{state,jdbcType=VARCHAR,mode=IN},
+            #{zip,jdbcType=VARCHAR,mode=IN},
+            #{country,jdbcType=VARCHAR,mode=IN},
+            #{phoneNumber,jdbcType=VARCHAR,mode=IN},
+            #{url,jdbcType=VARCHAR,mode=IN},
+            #{agencyNotes,jdbcType=VARCHAR,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--DeletePublisher-->
+    <update id="deletePublisher" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL PUBLISHER_PKG.DeletePublisher(
+            #{agencyId,jdbcType=NUMERIC,mode=IN},
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <select id="getPublishersByCriteria" parameterType="SearchCriteria" resultType="Publisher">
+        SELECT PUBLISHER.PUBLISHER_ID       as id,
+               PUBLISHER.PUBLISHER_NAME     as name,
+               PUBLISHER.DUP_PUB_NAME       as dupName,
+               PUBLISHER.PUB_ADDRESS1       as address1,
+               PUBLISHER.PUB_ADDRESS2       as address2,
+               PUBLISHER.PUB_CITY           as city,
+               PUBLISHER.PUB_STATE          as state,
+               PUBLISHER.PUB_ZIP            as zipCode,
+               PUBLISHER.PUB_COUNTRY        as country,
+               PUBLISHER.PUB_PHONE          as phoneNumber,
+               PUBLISHER.PUB_URL            as url,
+               PUBLISHER.AGENCY_NOTES       as agencyNotes,
+               PUBLISHER.LOGICAL_DELETE     as logicalDelete,
+               PUBLISHER.CREATED_TPWS_KEY   as createdTpwsKey,
+               PUBLISHER.MODIFIED_TPWS_KEY  as modifiedTpwsKey,
+               PUBLISHER.CREATED            as createdDate,
+               PUBLISHER.MODIFIED           as modifiedDate,
+               AGENCY_PUBLISHER.AGENCY_ID   as agencyId
+          FROM TE_XLS.PUBLISHER
+               INNER JOIN AGENCY_PUBLISHER ON PUBLISHER.PUBLISHER_ID = AGENCY_PUBLISHER.PUBLISHER_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AGENCY_PUBLISHER.AGENCY_ID
+         WHERE DECODE(PUBLISHER.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+                ${order}
+            </if>
+    </select>
+    <select id="getPublishersNumberOfRecordsByCriteria" parameterType="SearchCriteria" resultType="java.lang.Integer">
+        SELECT COUNT(1) as totalRecords
+          FROM TE_XLS.PUBLISHER
+               INNER JOIN AGENCY_PUBLISHER ON PUBLISHER.PUBLISHER_ID = AGENCY_PUBLISHER.PUBLISHER_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AGENCY_PUBLISHER.AGENCY_ID
+         WHERE DECODE(PUBLISHER.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+
+    <select id="getPublisher"  parameterType="long" resultType="Publisher" >
+        SELECT P.PUBLISHER_ID       as id,
+               P.PUBLISHER_NAME     as name,
+               P.PUB_ADDRESS1       as address1,
+               P.PUB_ADDRESS2       as address2,
+               P.PUB_CITY           as city,
+               P.PUB_STATE          as state,
+               P.PUB_ZIP            as zipCode,
+               P.PUB_COUNTRY        as country,
+               P.PUB_PHONE          as phoneNumber,
+               P.PUB_URL            as url,
+               P.AGENCY_NOTES       as agencyNotes,
+               P.CREATED            as createdDate,
+               P.MODIFIED           as modifiedDate,
+               AP.AGENCY_ID         as agencyId
+          FROM PUBLISHER P
+               INNER JOIN AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+         WHERE P.PUBLISHER_ID = #{id}
+           AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(AP.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+    
+    <select id="getPublisherByAgency" parameterType="java.util.Map" resultType="Publisher">
+    SELECT DISTINCT P.PUBLISHER_ID    as id,
+           P.PUBLISHER_NAME     as name,
+           P.DUP_PUB_NAME       as dupName,
+           P.PUB_ADDRESS1       as address1,
+           P.PUB_ADDRESS2       as address2,
+           P.PUB_CITY           as city,
+           P.PUB_STATE          as state,
+           P.PUB_ZIP            as zip,
+           P.PUB_COUNTRY        as country,
+           P.PUB_PHONE          as phoneNumber,
+           P.PUB_URL            as url,
+           P.AGENCY_NOTES       as agencyNotes,
+           P.LOGICAL_DELETE     as logicalDelete,
+           P.CREATED_TPWS_KEY   as createdTpwsKey,
+           P.MODIFIED_TPWS_KEY  as modifiedTpwsKey,
+           P.CREATED            as createdDate,
+           P.MODIFIED           as modifiedDate,
+           AP.AGENCY_ID         as agencyId
+      FROM PUBLISHER P
+           INNER JOIN AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+     WHERE AP.AGENCY_ID = #{agencyId}
+       AND P.PUBLISHER_ID = #{id}
+       AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+       AND DECODE(AP.LOGICAL_DELETE,'Y','1','0')='0'
+     ORDER BY LOWER(P.PUBLISHER_NAME)
+    </select>
+    
+    <select id="publisherExists"  parameterType="Publisher" resultType="java.lang.Long" >
+        SELECT P.PUBLISHER_ID as id 
+          FROM TE_XLS.PUBLISHER P
+               INNER JOIN TE_XLS.AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+         WHERE AP.AGENCY_ID = #{agencyId}
+           AND UPPER(P.PUBLISHER_NAME) = UPPER(#{name})
+           AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(AP.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+    
+    <select id="getPublisherByCampaignIdAndName" parameterType="java.util.Map" resultType="Publisher">
+        SELECT MIN(P.PUBLISHER_ID)     AS id,
+               UPPER(P.PUBLISHER_NAME) AS name
+          FROM TE_XLS.PUBLISHER P
+               INNER JOIN TE_XLS.AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+                 AND DECODE(AP.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON AP.AGENCY_ID = C.AGENCY_ID
+                 AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                 AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) UA ON C.AGENCY_ID = UA.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE UPPER(P.PUBLISHER_NAME) IN
+            <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+         GROUP BY UPPER(P.PUBLISHER_NAME)
+    </select>
+</mapper>

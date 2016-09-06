@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdvertiserPkg">
+
+     <!-- InsertCompleteAdvertiser(p_advertiser_id,....) -->
+     <update id="saveAdvertiser" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL ADVERTISER_PKG.InsertCompleteAdvertiser(
+                #{id,jdbcType=NUMERIC,mode=IN},
+                #{agencyId,jdbcType=NUMERIC,mode=IN}, 
+                #{name,jdbcType=VARCHAR,mode=IN}, 
+                #{address1,jdbcType=VARCHAR,mode=IN}, 
+                #{address2,jdbcType=VARCHAR,mode=IN},
+                #{city,jdbcType=VARCHAR,mode=IN}, 
+                #{state,jdbcType=VARCHAR,mode=IN}, 
+                #{zip,jdbcType=VARCHAR,mode=IN}, 
+                #{country,jdbcType=VARCHAR,mode=IN}, 
+                #{phone,jdbcType=VARCHAR,mode=IN}, 
+                #{url,jdbcType=VARCHAR,mode=IN}, 
+                #{fax,jdbcType=VARCHAR,mode=IN}, 
+                #{contactDefault,jdbcType=VARCHAR,mode=IN}, 
+                #{notes,jdbcType=VARCHAR,mode=IN}, 
+                #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}, 
+                #{enableHtmlTag,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+    <update id="updateAdvertiser" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL ADVERTISER_PKG.UpdateCompleteAdvertiser(
+                #{id,jdbcType=NUMERIC,mode=IN},
+                #{name,jdbcType=VARCHAR,mode=IN}, 
+                #{address1,jdbcType=VARCHAR,mode=IN}, 
+                #{address2,jdbcType=VARCHAR,mode=IN},
+                #{city,jdbcType=VARCHAR,mode=IN}, 
+                #{state,jdbcType=VARCHAR,mode=IN}, 
+                #{zip,jdbcType=VARCHAR,mode=IN}, 
+                #{country,jdbcType=VARCHAR,mode=IN}, 
+                #{phone,jdbcType=VARCHAR,mode=IN}, 
+                #{url,jdbcType=VARCHAR,mode=IN},
+                #{fax,jdbcType=VARCHAR,mode=IN},
+                #{contactDefault,jdbcType=VARCHAR,mode=IN},
+                #{notes,jdbcType=VARCHAR,mode=IN},
+                #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}, 
+                #{enableHtmlTag,jdbcType=NUMERIC,mode=IN},
+                #{isHidden,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    
+    <select id="getAdvertiser" parameterType="java.lang.Long" resultType="trueffect.truconnect.api.commons.model.Advertiser">
+        SELECT AD.advertiser_id as id,
+                 AD.agency_id as  agencyId,
+                 AD.advertiser_name as  name,
+                 AD.advert_address1 as  address1,
+                 AD.advert_address2 as  address2,
+                 AD.advert_city as  city,
+                 AD.advert_state as  state,
+                 AD.advert_zip as  zipCode,
+                 AD.advert_country as  country,
+                 AD.advert_phone as  phoneNumber,
+                 AD.advert_url as  url,
+                 AD.advert_fax as  faxNumber,
+                 AD.advert_notes as  notes,
+                 AD.created as  createdDate,
+                 AD.modified as  modifiedDate,
+                 AD.is_hidden as  isHidden,
+                 AD.advert_contact_default as  contactDefault,
+                 AD.enable_html_tag as  enableHtmlTag
+            FROM  TE_XLS.ADVERTISER AD
+            WHERE AD.advertiser_id = #{value} AND (AD.LOGICAL_DELETE != 'Y' OR AD.LOGICAL_DELETE IS NULL)
+    </select>
+    <select id="findAdvertiserByName" parameterType="java.lang.String" resultType="trueffect.truconnect.api.commons.model.Advertiser">
+        SELECT AD.advertiser_id as id,
+                 AD.agency_id as  agencyId,
+                 AD.advertiser_name as  name,
+                 AD.advert_address1 as  address1,
+                 AD.advert_address2 as  address2,
+                 AD.advert_city as  city,
+                 AD.advert_state as  state,
+                 AD.advert_zip as  zipCode,
+                 AD.advert_country as  country,
+                 AD.advert_phone as  phoneNumber,
+                 AD.advert_url as  url,
+                 AD.advert_fax as  faxNumber,
+                 AD.advert_notes as  notes,
+                 AD.is_hidden as  isHidden,
+                 AD.advert_contact_default as  contactDefault,
+                 AD.created as  createdDate,
+                 AD.modified as  modifiedDate,
+                 AD.enable_html_tag as  enableHtmlTag
+            FROM  TE_XLS.ADVERTISER AD
+            WHERE UPPER(AD.advertiser_name) = UPPER('${value}')
+    </select>
+</mapper>

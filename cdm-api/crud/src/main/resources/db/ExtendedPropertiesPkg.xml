@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExtendedPropertiesPkg">
+    <resultMap id="epResultMap" type="trueffect.truconnect.api.commons.model.ExtendedProperties">
+        <result property="extendPropValueId"       column="EXTENDED_PROPVALUE_ID"/>
+        <result property="fieldName"               column="FIELD_NAME"/>
+        <result property="value"                   column="VALUE"/>
+        <result property="objectId"                column="OBJECT_ID"/>
+    </resultMap>
+    <resultMap id="epbfResultMap" type="trueffect.truconnect.api.commons.model.ExtendedProperties">
+        <result property="id"                       column="EXTENDED_PROPERTIES_ID"/>
+        <result property="objectName"               column="OBJECT_NAME"/>
+        <result property="fieldName"                column="FIELD_NAME"/>
+        <result property="dataType"                 column="DATA_TYPE"/>
+        <result property="tableName"                column="TABLE_NAME"/>
+    </resultMap>
+    <!--InsertExtendedProperty-->
+     <update id="insertExtendedProperty" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.EXTENDED_PROPERTIES_PKG.InsertExtendedProperty(
+                 #{objectName,jdbcType=VARCHAR,mode=IN},     
+                 #{fieldName,jdbcType=VARCHAR,mode=IN},     
+                 #{value,jdbcType=VARCHAR,mode=IN},     
+                 #{objectId,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+    
+     <!--SECTION OF QUERY'S-->     
+    <select id="getByObjectIdNameFieldValue"  parameterType="ExtendedProperties" resultType="ExtendedProperties" >
+        SELECT EXP.EXTENDED_PROPERTIES_ID AS id               ,
+               EXPV.OBJECT_ID             AS objectId         ,
+               EXPV.EXTENDED_PROPVALUE_ID AS extendPropValueId,
+               EXP.OBJECT_NAME            AS objectName       ,
+               EXP.FIELD_NAME             AS fieldName        ,
+               VALUE                      AS value
+          FROM TE_XLS.EXTENDED_PROPERTIES EXP , TE_XLS.EXTENDED_PROPERTIES_VALUE EXPV
+         WHERE EXP.EXTENDED_PROPERTIES_ID = EXPV.EXTENDED_PROPERTIES_ID
+           AND EXPV.OBJECT_ID  = #{objectId} 
+           AND EXP.OBJECT_NAME = #{objectName}
+           AND EXP.FIELD_NAME  = #{fieldName}
+           and EXPV.VALUE      = #{value}
+    </select>
+    
+    <select id="getExtendedPropertyValue"  parameterType="ExtendedProperties"
+            resultType="ExtendedProperties" >
+        SELECT EXP.EXTENDED_PROPERTIES_ID AS id               ,
+               EXPV.OBJECT_ID             AS objectId         ,
+               EXPV.EXTENDED_PROPVALUE_ID AS extendPropValueId,
+               EXP.OBJECT_NAME            AS objectName       ,
+               EXP.FIELD_NAME             AS fieldName        ,
+               VALUE                      AS value 
+          FROM TE_XLS.EXTENDED_PROPERTIES EXP , TE_XLS.EXTENDED_PROPERTIES_VALUE EXPV
+         WHERE EXP.EXTENDED_PROPERTIES_ID = EXPV.EXTENDED_PROPERTIES_ID
+           AND EXPV.OBJECT_ID  = #{objectId} 
+           AND EXP.OBJECT_NAME = #{objectName}
+           AND EXP.FIELD_NAME  = #{fieldName}
+    </select>
+    
+    <update id="updateExtendedPropertyValue"  parameterType="ExtendedProperties">
+       UPDATE TE_XLS.EXTENDED_PROPERTIES_VALUE
+       SET VALUE = #{value}
+       WHERE EXTENDED_PROPVALUE_ID = (
+            SELECT EXPV.EXTENDED_PROPVALUE_ID
+            FROM TE_XLS.EXTENDED_PROPERTIES EXP , TE_XLS.EXTENDED_PROPERTIES_VALUE EXPV
+            WHERE EXP.EXTENDED_PROPERTIES_ID = EXPV.EXTENDED_PROPERTIES_ID
+            AND EXPV.OBJECT_ID  = #{objectId} 
+            AND EXP.OBJECT_NAME = #{objectName}
+            AND EXP.FIELD_NAME  = #{fieldName})
+    </update>
+    
+    <delete id="removeExtendedPropertyValue"  parameterType="ExtendedProperties">
+        DELETE FROM TE_XLS.EXTENDED_PROPERTIES_VALUE
+        WHERE EXTENDED_PROPVALUE_ID = (
+            SELECT EXPV.EXTENDED_PROPVALUE_ID
+            FROM TE_XLS.EXTENDED_PROPERTIES EXP , TE_XLS.EXTENDED_PROPERTIES_VALUE EXPV
+            WHERE EXP.EXTENDED_PROPERTIES_ID = EXPV.EXTENDED_PROPERTIES_ID
+            AND EXPV.OBJECT_ID  = #{objectId} 
+            AND EXP.OBJECT_NAME = #{objectName}
+            AND EXP.FIELD_NAME  = #{fieldName})
+    </delete>
+    
+    <select id="getCriteriaExtendedProperties"  parameterType="java.util.Map"  resultType="ExtendedProperties" >
+        SELECT   EXTENDED_PROPERTIES.EXTENDED_PROPERTIES_ID as id, 
+                 EXTENDED_PROPERTIES_VALUE.OBJECT_ID        as objectId,
+                 EXTENDED_PROPERTIES.OBJECT_NAME            as objectName,
+                 EXTENDED_PROPERTIES.FIELD_NAME             as fieldName,
+                 EXTENDED_PROPERTIES_VALUE.VALUE            as value
+        FROM
+            TE_XLS.EXTENDED_PROPERTIES
+            INNER JOIN TE_XLS.EXTENDED_PROPERTIES_VALUE ON EXTENDED_PROPERTIES.EXTENDED_PROPERTIES_ID = EXTENDED_PROPERTIES_VALUE.EXTENDED_PROPERTIES_ID
+        <if test="condition != null">
+            WHERE ${condition}
+        </if>
+        <if test="order != null">
+               ${order}
+           </if>
+    </select>    
+    <select id="getExtPropertiesNumberOfRecordsByCriteria" parameterType="java.util.Map"
+        resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalRecords
+        FROM
+            TE_XLS.EXTENDED_PROPERTIES
+            INNER JOIN TE_XLS.EXTENDED_PROPERTIES_VALUE ON EXTENDED_PROPERTIES.EXTENDED_PROPERTIES_ID = EXTENDED_PROPERTIES_VALUE.EXTENDED_PROPERTIES_ID
+        <if test="condition != null">
+            WHERE ${condition}
+        </if>
+    </select>
+</mapper>

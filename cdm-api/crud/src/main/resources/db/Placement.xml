@@ -1,0 +1,1900 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Placement">
+    <resultMap type="trueffect.truconnect.api.commons.model.PlacementStatus" id="placementStatusResultMap">
+        <result property="statusDate"  column="STATUS_DATE"/>
+        <result property="statusId"    column="STATUS_ID" />
+        <result property="contactId"   column="CONTACT_ID" />
+        <result property="statusName"  column="STATUS_NAME" />
+        <result property="placementId" column="PLACEMENT_ID" />
+    </resultMap>
+    <resultMap id="mediaRawResultMap" type="MediaRawDataView">
+        <id     property="placementId"                   column="placementId"/>
+        <result property="placementName"                 column="placementName"/>
+        <result property="extPlacementId"               column="extPlacementId"/>
+        <result property="placementProp1"               column="placementProp1"/>
+        <result property="placementProp2"               column="placementProp2"/>
+        <result property="placementProp3"               column="placementProp3"/>
+        <result property="placementProp4"               column="placementProp4"/>
+        <result property="placementProp5"               column="placementProp5"/>
+        <result property="mediaPackageId"               column="mediaPackageId"/>
+        <collection property="costDetails" ofType="CostDetailRawDataView">
+            <result property="inventory"                column="inventory"/>
+            <result property="rateType"                 column="rateType"/>
+            <result property="rate"                     column="rate"/>
+            <result property="plannedAdSpend"           column="plannedAdSpend"/>
+            <result property="startDate"                column="startDate"/>
+            <result property="endDate"                  column="endDate"/>
+        </collection>
+    </resultMap>
+    <!-- Queries: get Placements data-->
+    <select id="getPlacement"  parameterType="java.lang.Long" resultType="Placement" >
+        SELECT PL.PLACEMENT_ID         as  id,
+               PL.SITE_ID              as  siteId,
+               PL.SECTION_ID           as  siteSectionId,
+               PL.IO_ID                as  ioId,
+               PL.AD_SIZE_ID           as  sizeId,
+               PL.START_DATE           as  startDate,
+               PL.END_DATE             as  endDate,
+               PL.INVENTORY            as  inventory,
+               PL.RATE                 as  rate,
+               PL.RATE_TYPE            as  rateType,
+               PL.MAX_FILE_SIZE        as  maxFileSize,
+               PL.IS_SECURE            as  isSecure,
+               PL.LOGICAL_DELETE       as  logicalDelete,
+               PL.CREATED_TPWS_KEY     as  createdTpwsKey,
+               PL.MODIFIED_TPWS_KEY    as  modifiedTpwsKey,
+               PL.CREATED              as  createdDate,
+               PL.MODIFIED             as  modifiedDate,
+               PL.IS_TRAFFICKED        as  isTrafficked,
+               PL.RESEND_TAGS          as  resendTags,
+               PL.UTC_OFFSET           as  utcOffset,
+               PL.SM_EVENT_ID          as  smEventId,
+               PL.COUNTRY_CURRENCY_ID  as  countryCurrencyId,
+               PL.PLACEMENT_NAME       as  name,
+               PL.EXT_PROP1            as  extProp1,
+               PL.EXT_PROP2            as  extProp2,
+               PL.EXT_PROP3            as  extProp3,
+               PL.EXT_PROP4            as  extProp4,
+               PL.EXT_PROP5            as  extProp5,
+               AD.WIDTH                as  width,
+               AD.HEIGHT               as  height,
+               AD.SIZE_NAME            as  sizeName,
+               C.CAMPAIGN_ID           as  campaignId,
+               S.SITE_NAME             as  siteName,
+               NVL(PACKAGE.PACKAGE_ID,'')  AS  packageId,
+               DECODE(STATUS_TYPES.STATUS_NAME, 'IO_ACPT', 'Accepted','IO_NEW','New','IO_RJCT','Rejected', 'New') as status,
+               EXT.externalId          as externalId,
+               CASE SCHEDULE.totalSchedules WHEN 0 THEN 'N' ELSE 'Y' END as isScheduled,
+               SS.SECTION_NAME         as sectionName
+          FROM TE_XLS.PLACEMENT PL
+               INNER JOIN TE_XLS.SITE S ON S.SITE_ID = PL.SITE_ID
+                   AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE_SECTION SS ON SS.SECTION_ID = PL.SECTION_ID
+                   AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.AD_SIZE AD ON AD.AD_SIZE_ID = PL.AD_SIZE_ID
+                   AND DECODE(AD.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON PL.IO_ID = IO.IO_ID
+                   AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                   AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MBC.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                   AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON C.CAMPAIGN_ID = MBC.CAMPAIGN_ID
+                   AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (SELECT P.PLACEMENT_ID, NVL(COUNT(DISTINCT CI.CREATIVE_INSERTION_ID), 0) as totalSchedules
+                             FROM TE_XLS.PLACEMENT P
+                                  LEFT OUTER JOIN TE_XLS.CREATIVE_INSERTION CI ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                                   AND CI.PLACEMENT_ID = #{id}
+                                   AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                            WHERE P.PLACEMENT_ID = #{id}
+                              AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                            GROUP BY P.PLACEMENT_ID
+                          ) SCHEDULE ON SCHEDULE.PLACEMENT_ID = PL.PLACEMENT_ID
+               LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON PP.PLACEMENT_ID = PL.PLACEMENT_ID
+                AND PP.PLACEMENT_ID = #{id}
+                AND DECODE(PP.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT JOIN TE_XLS.PACKAGE ON PACKAGE.PACKAGE_ID = PP.PACKAGE_ID
+                AND DECODE(PACKAGE.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT OUTER JOIN (SELECT PS.PLACEMENT_ID, ST.STATUS_NAME,  TO_CHAR (STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID STATUS_DATE,
+                                       MAX (TO_CHAR (PS.STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID) OVER (PARTITION BY PS.PLACEMENT_ID)  MAX_STATUS_DATE
+                                  FROM TE_XLS.PLACEMENT_STATUS PS, TE_XLS.STATUS_TYPES ST
+                                 WHERE PS.STATUS_ID = ST.STATUS_ID
+                                   AND (PS.LOGICAL_DELETE != 'Y')
+                               ) STATUS_TYPES ON (PL.PLACEMENT_ID = STATUS_TYPES.PLACEMENT_ID)
+                AND (STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE)
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as placementId, EPV.VALUE as externalId
+                                  FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                       INNER JOIN TE_XLS.EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                 WHERE LOWER(OBJECT_NAME) = LOWER('Placement')
+                                   AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                               ) EXT ON EXT.placementId = PL.PLACEMENT_ID
+         WHERE PL.PLACEMENT_ID  = #{id}
+           AND DECODE(PL.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="getPlacementsByIds"  parameterType="java.util.Map" resultType="Placement" >
+        SELECT PL.PLACEMENT_ID         as  id,
+               PL.SITE_ID              as  siteId,
+               PL.SECTION_ID           as  siteSectionId,
+               PL.IO_ID                as  ioId,
+               PL.AD_SIZE_ID           as  sizeId,
+               PL.START_DATE           as  startDate,
+               PL.END_DATE             as  endDate,
+               PL.INVENTORY            as  inventory,
+               PL.RATE                 as  rate,
+               PL.RATE_TYPE            as  rateType,
+               PL.MAX_FILE_SIZE        as  maxFileSize,
+               PL.IS_SECURE            as  isSecure,
+               PL.LOGICAL_DELETE       as  logicalDelete,
+               PL.CREATED_TPWS_KEY     as  createdTpwsKey,
+               PL.MODIFIED_TPWS_KEY    as  modifiedTpwsKey,
+               PL.CREATED              as  createdDate,
+               PL.MODIFIED             as  modifiedDate,
+               PL.IS_TRAFFICKED        as  isTrafficked,
+               PL.RESEND_TAGS          as  resendTags,
+               PL.UTC_OFFSET           as  utcOffset,
+               PL.SM_EVENT_ID          as  smEventId,
+               PL.COUNTRY_CURRENCY_ID  as  countryCurrencyId,
+               PL.PLACEMENT_NAME       as  name,
+               PL.EXT_PROP1            as  extProp1,
+               PL.EXT_PROP2            as  extProp2,
+               PL.EXT_PROP3            as  extProp3,
+               PL.EXT_PROP4            as  extProp4,
+               PL.EXT_PROP5            as  extProp5,
+               AD.WIDTH                as  width,
+               AD.HEIGHT               as  height,
+               AD.SIZE_NAME            as  sizeName,
+               DECODE(STATUS_TYPES.STATUS_NAME, 'IO_ACPT', 'Accepted','IO_NEW','New','IO_RJCT','Rejected', 'New') as status,
+               MBC.CAMPAIGN_ID         as  campaignId,
+               EXT.externalId          as  externalId
+          FROM TE_XLS.PLACEMENT PL
+                INNER JOIN TE_XLS.AD_SIZE AD ON AD.AD_SIZE_ID = PL.AD_SIZE_ID
+                  AND DECODE(AD.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.INSERTION_ORDER IO ON PL.IO_ID = IO.IO_ID
+                  AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                  AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MBC.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                  AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                LEFT OUTER JOIN ( SELECT PS.PLACEMENT_ID, ST.STATUS_NAME,
+                                         TO_CHAR (STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID STATUS_DATE,
+                                         MAX (TO_CHAR (PS.STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID) OVER (PARTITION BY PS.PLACEMENT_ID)  MAX_STATUS_DATE
+                                    FROM TE_XLS.PLACEMENT_STATUS PS, TE_XLS.STATUS_TYPES ST
+                                   WHERE PS.STATUS_ID = ST.STATUS_ID
+                                     AND DECODE(PS.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) STATUS_TYPES ON (PL.PLACEMENT_ID = STATUS_TYPES.PLACEMENT_ID)
+                 AND (STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE)
+                LEFT OUTER JOIN ( SELECT EPV.OBJECT_ID as placementId, EPV.VALUE as externalId
+                                    FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                         INNER JOIN TE_XLS.EXTENDED_PROPERTIES_VALUE EPV
+                                            ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                   WHERE LOWER(OBJECT_NAME) = LOWER('Placement')
+                                     AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                               ) EXT ON EXT.placementId = PL.PLACEMENT_ID
+          WHERE PL.PLACEMENT_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND DECODE(PL.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <sql id="selectPlacements">
+        SELECT
+            PLACEMENT.PLACEMENT_ID        AS ID,
+            PLACEMENT.SITE_ID             AS SITEID,
+            PLACEMENT.SECTION_ID          AS SITESECTIONID,
+            PLACEMENT.IO_ID               AS IOID,
+            PLACEMENT.AD_SIZE_ID          AS SIZEID,
+            PLACEMENT.START_DATE          AS STARTDATE,
+            PLACEMENT.END_DATE            AS ENDDATE,
+            PLACEMENT.INVENTORY           AS INVENTORY,
+            PLACEMENT.RATE                AS RATE,
+            PLACEMENT.RATE_TYPE           AS RATETYPE,
+            PLACEMENT.MAX_FILE_SIZE       AS MAXFILESIZE,
+            PLACEMENT.IS_SECURE           AS ISSECURE,
+            PLACEMENT.LOGICAL_DELETE      AS LOGICALDELETE,
+            PLACEMENT.CREATED_TPWS_KEY    AS CREATEDTPWSKEY,
+            PLACEMENT.MODIFIED_TPWS_KEY   AS MODIFIEDTPWSKEY,
+            PLACEMENT.CREATED             AS CREATEDDATE,
+            PLACEMENT.MODIFIED            AS MODIFIEDDATE,
+            PLACEMENT.IS_TRAFFICKED       AS ISTRAFFICKED,
+            PLACEMENT.RESEND_TAGS         AS RESENDTAGS,
+            PLACEMENT.UTC_OFFSET          AS UTCOFFSET,
+            PLACEMENT.SM_EVENT_ID         AS SMEVENTID,
+            PLACEMENT.COUNTRY_CURRENCY_ID AS COUNTRYCURRENCYID,
+            PLACEMENT.PLACEMENT_NAME      AS NAME,
+            PLACEMENT.EXT_PROP1           AS EXTPROP1,
+            PLACEMENT.EXT_PROP2           AS EXTPROP2,
+            PLACEMENT.EXT_PROP3           AS EXTPROP3,
+            PLACEMENT.EXT_PROP4           AS EXTPROP4,
+            PLACEMENT.EXT_PROP5           AS EXTPROP5,
+            AD_SIZE.WIDTH                 AS WIDTH,
+            AD_SIZE.HEIGHT                AS HEIGHT,
+            AD_SIZE.SIZE_NAME             AS SIZENAME,
+            CAMPAIGN.CAMPAIGN_ID          AS CAMPAIGNID,
+            S.SITE_NAME                   AS SITENAME,
+            NVL(PACKAGE.PACKAGE_ID, '')   AS PACKAGEID,
+            DECODE(STATUS_TYPES.STATUS_NAME,
+                   'IO_ACPT',
+                   'Accepted',
+                   'IO_NEW',
+                   'New',
+                   'IO_RJCT',
+                   'Rejected',
+                   'New')                 AS STATUS,
+            EXT.EXTERNALID                AS EXTERNALID,
+            CASE SCHEDULE.TOTALSCHEDULES
+            WHEN 0
+                THEN 'N'
+            ELSE 'Y'
+            END                           AS ISSCHEDULED,
+            SS.SECTION_NAME               AS SECTIONNAME
+        FROM
+            TE_XLS.PLACEMENT
+            INNER JOIN TE_XLS.SITE S ON
+                S.SITE_ID = PLACEMENT.SITE_ID
+                AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.SITE_SECTION SS ON
+                SS.SECTION_ID = PLACEMENT.SECTION_ID
+                AND DECODE(SS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.AD_SIZE ON
+                AD_SIZE.AD_SIZE_ID = PLACEMENT.AD_SIZE_ID
+                AND DECODE(AD_SIZE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.INSERTION_ORDER ON
+                PLACEMENT.IO_ID = INSERTION_ORDER.IO_ID
+                AND DECODE(INSERTION_ORDER.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.MEDIA_BUY ON
+                MEDIA_BUY.MEDIA_BUY_ID = INSERTION_ORDER.MEDIA_BUY_ID
+                AND DECODE(MEDIA_BUY.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN ON
+                MEDIA_BUY_CAMPAIGN.MEDIA_BUY_ID = MEDIA_BUY.MEDIA_BUY_ID
+                AND DECODE(MEDIA_BUY_CAMPAIGN.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.CAMPAIGN ON
+                CAMPAIGN.CAMPAIGN_ID = MEDIA_BUY_CAMPAIGN.CAMPAIGN_ID
+                AND DECODE(CAMPAIGN.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN
+            (
+                SELECT
+                    P.PLACEMENT_ID,
+                    SUM(NVL(PCD.PLANNED_GROSS_AD_SPEND, 0.0)) AS ADSPEND
+                FROM
+                    TE_XLS.PLACEMENT P
+                    LEFT OUTER JOIN TE_XLS.PLACEMENT_COST_DETAIL PCD ON
+                        PCD.PLACEMENT_ID = P.PLACEMENT_ID
+                        AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                WHERE
+                    DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                GROUP BY
+                    P.PLACEMENT_ID
+            )
+            PPCD ON PPCD.PLACEMENT_ID = PLACEMENT.PLACEMENT_ID
+            INNER JOIN
+            (
+                SELECT
+                    P.PLACEMENT_ID,
+                    NVL(COUNT(DISTINCT CI.CREATIVE_INSERTION_ID), 0) AS TOTALSCHEDULES
+                FROM
+                    TE_XLS.PLACEMENT P
+                    LEFT OUTER JOIN TE_XLS.CREATIVE_INSERTION CI ON
+                        CI.PLACEMENT_ID = P.PLACEMENT_ID
+                        AND DECODE(CI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                WHERE
+                    DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                GROUP BY
+                    P.PLACEMENT_ID
+            )
+            SCHEDULE ON SCHEDULE.PLACEMENT_ID = PLACEMENT.PLACEMENT_ID
+            LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON
+                PP.PLACEMENT_ID = PLACEMENT.PLACEMENT_ID
+                AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            LEFT JOIN TE_XLS.PACKAGE ON
+                PACKAGE.PACKAGE_ID = PP.PACKAGE_ID
+                AND DECODE(PACKAGE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            LEFT OUTER JOIN
+            (
+                SELECT
+                    PS.PLACEMENT_ID,
+                    ST.STATUS_NAME,
+                    TO_CHAR(STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID STATUS_DATE,
+                    MAX(TO_CHAR(PS.STATUS_DATE, 'YYYYMMDDHH24MISS')  || PS.ROWID)
+                    OVER (PARTITION BY PS.PLACEMENT_ID) MAX_STATUS_DATE
+                FROM
+                    TE_XLS.PLACEMENT_STATUS PS,
+                    TE_XLS.STATUS_TYPES ST
+                WHERE
+                    PS.STATUS_ID = ST.STATUS_ID
+                    AND DECODE(PS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            )
+            STATUS_TYPES ON
+                PLACEMENT.PLACEMENT_ID = STATUS_TYPES.PLACEMENT_ID
+                AND STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE
+            LEFT OUTER JOIN
+            (
+                SELECT
+                    EPV.OBJECT_ID AS PLACEMENTID,
+                    EPV.VALUE     AS EXTERNALID
+                FROM
+                    TE_XLS.EXTENDED_PROPERTIES EP
+                    INNER JOIN EXTENDED_PROPERTIES_VALUE EPV
+                        ON
+                            EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                WHERE
+                    LOWER(OBJECT_NAME) = LOWER('Placement')
+                    AND LOWER(FIELD_NAME) = LOWER('MediaID')
+            )
+            EXT ON EXT.PLACEMENTID = PLACEMENT.PLACEMENT_ID
+        WHERE
+            DECODE(PLACEMENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </sql>
+
+    <select id="getPlacementsByPackageId" parameterType="java.util.Map" resultType="Placement" flushCache="true">
+        <include refid="selectPlacements"/>
+            AND PACKAGE.PACKAGE_ID = #{packageId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="getPlacementsByIoId" parameterType="java.util.Map" resultType="Placement" flushCache="true">
+        <include refid="selectPlacements"/>
+            AND INSERTION_ORDER.IO_ID = #{ioId,jdbcType=NUMERIC}
+            <if test="statusName != null">
+                AND STATUS_TYPES.STATUS_NAME = #{statusName,jdbcType=VARCHAR}
+            </if>
+    </select>
+
+    <select id="getPlacementsByCriteria" parameterType="java.util.Map" resultType="Placement">
+        SELECT PLACEMENT.placement_id         AS  id
+             , PLACEMENT.site_id              AS  siteId
+             , PLACEMENT.SECTION_ID           AS  siteSectionId
+             , PLACEMENT.IO_ID                AS  ioId
+             , PLACEMENT.AD_SIZE_ID           AS  sizeId
+             , PLACEMENT.start_date           AS  startDate
+             , PLACEMENT.end_date             AS  endDate
+             , PLACEMENT.inventory            AS  inventory
+             , PLACEMENT.rate                 as  rate
+             , PLACEMENT.rate_type            as  rateType
+             , PLACEMENT.max_file_size        as  maxFileSize
+             , PLACEMENT.is_secure            as  isSecure
+             , PLACEMENT.logical_delete       as  logicalDelete
+             , PLACEMENT.created_tpws_key     as  createdTpwsKey
+             , PLACEMENT.modified_tpws_key    as  modifiedTpwsKey
+             , PLACEMENT.created              as  createdDate
+             , PLACEMENT.modified             as  modifiedDate
+             , PLACEMENT.is_trafficked        as  isTrafficked
+             , PLACEMENT.resend_tags          as  resendTags
+             , PLACEMENT.utc_offset           as  utcOffset
+             , PLACEMENT.sm_event_id          as  smEventId
+             , PLACEMENT.country_currency_id  as  countryCurrencyId
+             , PLACEMENT.placement_name       as  name
+             , PLACEMENT.ext_prop1            as  extProp1
+             , PLACEMENT.ext_prop2            as  extProp2
+             , PLACEMENT.ext_prop3            as  extProp3
+             , PLACEMENT.ext_prop4            as  extProp4
+             , PLACEMENT.ext_prop5            as  extProp5
+             , AD_SIZE.width                  as  width
+             , AD_SIZE.height                 as  height
+             , AD_SIZE.SIZE_NAME              as  sizeName
+             , CAMPAIGN.campaign_id           as  campaignId
+             , S.SITE_NAME                    as  siteName
+             , NVL(PACKAGE.PACKAGE_ID,'')     AS  packageId
+             , DECODE(STATUS_TYPES.STATUS_NAME, 'IO_ACPT', 'Accepted','IO_NEW','New','IO_RJCT','Rejected', 'New') as status
+             , EXT.externalId                 as externalId
+             , CASE SCHEDULE.totalSchedules WHEN 0 THEN 'N' ELSE 'Y' END as isScheduled
+             , SS.SECTION_NAME                as sectionName
+          FROM TE_XLS.PLACEMENT
+               INNER JOIN TE_XLS.SITE S ON S.SITE_ID = PLACEMENT.SITE_ID
+                 AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE_SECTION SS  ON SS.SECTION_ID = PLACEMENT.SECTION_ID
+                 AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.AD_SIZE ON AD_SIZE.AD_SIZE_ID = PLACEMENT.AD_SIZE_ID
+                 AND DECODE(AD_SIZE.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.INSERTION_ORDER ON PLACEMENT.IO_ID = INSERTION_ORDER.IO_ID
+                 AND DECODE(INSERTION_ORDER.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY ON MEDIA_BUY.MEDIA_BUY_ID = INSERTION_ORDER.MEDIA_BUY_ID
+                 AND DECODE(MEDIA_BUY.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN ON MEDIA_BUY_CAMPAIGN.MEDIA_BUY_ID = MEDIA_BUY.MEDIA_BUY_ID
+                 AND DECODE(MEDIA_BUY_CAMPAIGN.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN ON CAMPAIGN.CAMPAIGN_ID = MEDIA_BUY_CAMPAIGN.CAMPAIGN_ID
+                 AND DECODE(CAMPAIGN.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (SELECT P.PLACEMENT_ID, SUM(NVL(PCD.PLANNED_GROSS_AD_SPEND, 0.0)) as adSpend
+                             FROM TE_XLS.PLACEMENT P
+                                  LEFT OUTER JOIN TE_XLS.PLACEMENT_COST_DETAIL PCD ON PCD.PLACEMENT_ID = P.PLACEMENT_ID
+                                   AND DECODE(PCD.LOGICAL_DELETE,'Y','1','0')='0'
+                            WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                            GROUP BY P.PLACEMENT_ID
+                          ) PPCD ON PPCD.PLACEMENT_ID = PLACEMENT.PLACEMENT_ID
+               INNER JOIN (SELECT P.PLACEMENT_ID, NVL(COUNT(DISTINCT CI.CREATIVE_INSERTION_ID), 0) as totalSchedules
+                             FROM TE_XLS.PLACEMENT P
+                                  LEFT OUTER JOIN TE_XLS.CREATIVE_INSERTION CI ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                                   AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                            WHERE (P.LOGICAL_DELETE != 'Y' OR P.LOGICAL_DELETE IS NULL)
+                            GROUP BY P.PLACEMENT_ID
+                          ) SCHEDULE ON SCHEDULE.PLACEMENT_ID = PLACEMENT.PLACEMENT_ID
+               LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON PP.PLACEMENT_ID = PLACEMENT.PLACEMENT_ID
+                AND DECODE(PP.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT JOIN TE_XLS.PACKAGE ON PACKAGE.PACKAGE_ID = PP.PACKAGE_ID
+                AND DECODE(PACKAGE.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT OUTER JOIN (SELECT PS.PLACEMENT_ID, ST.STATUS_NAME,  TO_CHAR (STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID STATUS_DATE,
+                                       MAX (TO_CHAR (PS.STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID) OVER (PARTITION BY PS.PLACEMENT_ID)  MAX_STATUS_DATE
+                                  FROM TE_XLS.PLACEMENT_STATUS PS, TE_XLS.STATUS_TYPES ST
+                                 WHERE PS.STATUS_ID = ST.STATUS_ID
+                                   AND DECODE(PS.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) STATUS_TYPES ON (PLACEMENT.PLACEMENT_ID = STATUS_TYPES.PLACEMENT_ID)
+                AND (STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE)
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as placementId, EPV.VALUE as externalId
+                                  FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                       INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                 WHERE LOWER(OBJECT_NAME) = LOWER('Placement')
+                                   AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                               )  EXT ON EXT.placementId = PLACEMENT.PLACEMENT_ID
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                                     AND DECODE(AI.LOGICAL_DELETE,'Y','1','0')='0'
+                             WHERE ( U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN} )
+                               AND DECODE(U.LOGICAL_DELETE,'Y','1','0')='0'
+                          ) AU ON AU.AGENCY_ID = MEDIA_BUY.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = CAMPAIGN.ADVERTISER_ID
+       WHERE DECODE(PLACEMENT.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+                ${order}
+            </if>
+    </select>
+
+    <select id="getPlacementsNumberOfRecordsByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1) as totalRecords
+          FROM TE_XLS.PLACEMENT
+               INNER JOIN TE_XLS.SITE S ON S.SITE_ID = PLACEMENT.SITE_ID
+                 AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN AD_SIZE ON AD_SIZE.AD_SIZE_ID = PLACEMENT.AD_SIZE_ID
+                 AND DECODE(AD_SIZE.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN INSERTION_ORDER ON PLACEMENT.IO_ID = INSERTION_ORDER.IO_ID
+                 AND DECODE(INSERTION_ORDER.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN MEDIA_BUY ON MEDIA_BUY.MEDIA_BUY_ID = INSERTION_ORDER.MEDIA_BUY_ID
+                 AND DECODE(MEDIA_BUY.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN MEDIA_BUY_CAMPAIGN ON MEDIA_BUY_CAMPAIGN.MEDIA_BUY_ID = MEDIA_BUY.MEDIA_BUY_ID
+                 AND DECODE(MEDIA_BUY_CAMPAIGN.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN CAMPAIGN ON CAMPAIGN.CAMPAIGN_ID = MEDIA_BUY_CAMPAIGN.CAMPAIGN_ID
+                 AND DECODE(CAMPAIGN.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON PP.PLACEMENT_ID = PLACEMENT.PLACEMENT_ID
+                 AND DECODE(PP.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT JOIN TE_XLS.PACKAGE ON PACKAGE.PACKAGE_ID = PP.PACKAGE_ID
+                 AND DECODE(PACKAGE.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT OUTER JOIN (SELECT PS.PLACEMENT_ID, ST.STATUS_NAME,  TO_CHAR (STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID STATUS_DATE,
+                                       MAX (TO_CHAR (PS.STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID) OVER (PARTITION BY PS.PLACEMENT_ID)  MAX_STATUS_DATE
+                                  FROM TE_XLS.PLACEMENT_STATUS PS, TE_XLS.STATUS_TYPES ST
+                                 WHERE PS.STATUS_ID = ST.STATUS_ID
+                                   AND DECODE(PS.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) STATUS_TYPES ON (PLACEMENT.PLACEMENT_ID = STATUS_TYPES.PLACEMENT_ID)
+                AND (STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE)
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as placementId, EPV.VALUE as externalId
+                                  FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                        INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                  WHERE LOWER(OBJECT_NAME) = LOWER('Placement')
+                                    AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                                ) EXT ON EXT.placementId = PLACEMENT.PLACEMENT_ID
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                               FROM TE_XLS.USERS U
+                                    INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                                      AND DECODE(AI.LOGICAL_DELETE,'Y','1','0')='0'
+                              WHERE U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN}
+                                AND DECODE(U.LOGICAL_DELETE,'Y','1','0')='0'
+                           ) AU ON AU.AGENCY_ID = MEDIA_BUY.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = CAMPAIGN.ADVERTISER_ID
+         WHERE DECODE(PLACEMENT.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+
+    <select id="placementPPV" parameterType="java.util.Map" resultType="PackagePlacementView">
+        SELECT P.PLACEMENT_ID                        as placementId,
+               campaign.io_number                    as ioNumber,
+               P.PLACEMENT_NAME                      as placementName,
+               P.IO_ID                               as ioId,
+               P.SITE_ID                             as siteId,
+               S.SITE_NAME                           as siteName,
+               P.AD_SIZE_ID                          as sizeId,
+               A.SIZE_NAME                           as sizeName,
+               ADSPEND.ADSPEND                       as adSpend,
+               P.INVENTORY                           as inventory,
+               P.RATE                                as rate,
+               P.RATE_TYPE                           as rateType,
+               P.START_DATE                          as startDate,
+               P.END_DATE                            as endDate,
+               campaign.campaign_id                  as campaignId,
+               PP.PACKAGE_ID                         as packageId,
+               DECODE ( NVL(SCH.TOTALSCHEDULES, 0), 0, 'N', 'Y' ) as isScheduled,
+               DECODE(PS.STATUS_NAME, 'IO_ACPT', 'Accepted','IO_NEW','New','IO_RJCT','Rejected', 'New') as status
+          FROM TE_XLS.PLACEMENT P,  TE_XLS.SITE S,  TE_XLS.AD_SIZE A,
+               (SELECT pp.package_id, pl.placement_id
+                  FROM TE_XLS.PACKAGE_PLACEMENT pp, TE_XLS.PLACEMENT pl
+                 WHERE pl.placement_id = pp.placement_id
+                   AND DECODE(PL.LOGICAL_DELETE,'Y','1','0')='0'
+                   AND DECODE(PP.LOGICAL_DELETE,'Y','1','0')='0'
+               ) PP,
+               (SELECT *
+                  FROM (SELECT PS.PLACEMENT_ID,  ST.STATUS_NAME,
+                               TO_CHAR (STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID STATUS_DATE,
+                               MAX (TO_CHAR (PS.STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID) OVER (PARTITION BY PS.PLACEMENT_ID) MAX_STATUS_DATE
+                          FROM TE_XLS.PLACEMENT_STATUS PS, TE_XLS.STATUS_TYPES ST
+                         WHERE PS.STATUS_ID = ST.STATUS_ID
+                           AND DECODE(PS.LOGICAL_DELETE,'Y','1','0')='0'
+                       ) STATUS
+                 WHERE STATUS.STATUS_DATE = STATUS.MAX_STATUS_DATE
+               ) PS,
+               (SELECT P.PLACEMENT_ID, NVL(COUNT(DISTINCT CI.CREATIVE_INSERTION_ID), 0) AS  TOTALSCHEDULES
+                  FROM TE_XLS.PLACEMENT P,  TE_XLS.CREATIVE_INSERTION CI
+                 WHERE P.PLACEMENT_ID = CI.PLACEMENT_ID
+                   AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                   AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                 GROUP  BY P.PLACEMENT_ID
+               ) SCH,
+               (SELECT P.PLACEMENT_ID,  SUM(PCD.PLANNED_GROSS_AD_SPEND) ADSPEND
+                  FROM TE_XLS.PLACEMENT_COST_DETAIL PCD, TE_XLS.PLACEMENT P
+                 WHERE P.PLACEMENT_ID = PCD.PLACEMENT_ID
+                   AND ( PCD.LOGICAL_DELETE != 'Y' OR PCD.LOGICAL_DELETE IS NULL )
+                   AND ( P.LOGICAL_DELETE != 'Y' OR P.LOGICAL_DELETE IS NULL )
+                 GROUP  BY P.PLACEMENT_ID
+               ) ADSPEND,
+               (SELECT pl.placement_id, io.io_id, io.io_number, mbc.campaign_id
+                  FROM TE_XLS.PLACEMENT pl, TE_XLS.insertion_order io, TE_XLS.media_buy mb,
+                       TE_XLS.media_buy_campaign mbc
+                 WHERE pl.io_id = io.io_id
+                   AND io.media_buy_id = mb.media_buy_id
+                   AND mb.media_buy_id = mbc.media_buy_id
+                   AND DECODE(PL.LOGICAL_DELETE,'Y','1','0')='0'
+                   AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                   AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                   AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+               ) campaign
+         WHERE P.SITE_ID = S.SITE_ID
+           AND P.AD_SIZE_ID = A.AD_SIZE_ID
+           AND P.PLACEMENT_ID = PS.PLACEMENT_ID (+)
+           AND P.PLACEMENT_ID = SCH.PLACEMENT_ID (+)
+           AND P.PLACEMENT_ID = ADSPEND.PLACEMENT_ID (+)
+           AND P.PLACEMENT_ID = PP.PLACEMENT_ID (+)
+           AND P.PLACEMENT_ID = campaign.placement_id
+            <if test="ioId != null">
+                AND P.io_id = #{ioId,jdbcType=NUMERIC}
+            </if>
+            <if test="campaignId != null">
+                AND campaign.campaign_id = #{campaignId,jdbcType=NUMERIC}
+            </if>
+           AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(A.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+    <!-- Queries: get Placements data-->
+
+    <!-- Queries: get Media Data for Export -->
+    <select id="getMediaForExport" parameterType="java.util.Map" resultType="MediaRawDataView">
+        SELECT
+            IO.IO_NUMBER                AS  orderNumber,
+            IO.IO_NAME                  AS  orderName,
+            NVL(PKG.PACKAGE_ID,'')      AS  mediaPackageId,
+            NVL(PKG.PACKAGE_NAME,'')    AS  mediaPackageName,
+            PL.PLACEMENT_ID             AS  placementId,
+            PL.PLACEMENT_NAME           AS  placementName,
+            EXT.externalId              AS  extPlacementId,
+            NVL(PUB.PUBLISHER_NAME,'')  AS  publisher,
+            S.SITE_NAME                 AS  site,
+            SS.SECTION_NAME             AS  section,
+            AD_SIZE.WIDTH               AS  adWidth,
+            AD_SIZE.HEIGHT              AS  adHeight,
+            PL.EXT_PROP1                AS  placementProp1,
+            PL.EXT_PROP2                AS  placementProp2,
+            PL.EXT_PROP3                AS  placementProp3,
+            PL.EXT_PROP4                AS  placementProp4,
+            PL.EXT_PROP5                AS  placementProp5,
+            SS.EXT_PROP1                AS  sectionProp1,
+            SS.EXT_PROP2                AS  sectionProp2,
+            SS.EXT_PROP3                AS  sectionProp3,
+            SS.EXT_PROP4                AS  sectionProp4,
+            SS.EXT_PROP5                AS  sectionProp5,
+            PL.IO_ID                    AS  ioId,
+            NVL(PUB.PUBLISHER_ID,'')    AS  publisherId,
+            PL.SITE_ID                  AS  siteId,
+            PL.SECTION_ID               AS  sectionId,
+            PL.AD_SIZE_ID               AS  sizeId
+        FROM TE_XLS.PLACEMENT PL
+            INNER JOIN TE_XLS.SITE S ON S.SITE_ID = PL.SITE_ID
+                AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.PUBLISHER PUB ON PUB.PUBLISHER_ID = S.PUBLISHER_ID
+                AND DECODE(PUB.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.SITE_SECTION SS  ON SS.SECTION_ID = PL.SECTION_ID
+                AND SS.SITE_ID = S.SITE_ID
+                AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.AD_SIZE ON AD_SIZE.AD_SIZE_ID = PL.AD_SIZE_ID
+                AND DECODE(AD_SIZE.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.INSERTION_ORDER IO ON PL.IO_ID = IO.IO_ID
+                AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.MEDIA_BUY ON MEDIA_BUY.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                AND DECODE(MEDIA_BUY.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN ON MEDIA_BUY_CAMPAIGN.MEDIA_BUY_ID = MEDIA_BUY.MEDIA_BUY_ID
+                AND DECODE(MEDIA_BUY_CAMPAIGN.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.CAMPAIGN ON CAMPAIGN.CAMPAIGN_ID = MEDIA_BUY_CAMPAIGN.CAMPAIGN_ID
+                AND DECODE(CAMPAIGN.LOGICAL_DELETE,'Y','1','0')='0'
+            LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON PP.PLACEMENT_ID = PL.PLACEMENT_ID
+                AND DECODE(PP.LOGICAL_DELETE,'Y','1','0')='0'
+            LEFT JOIN TE_XLS.PACKAGE PKG ON PKG.PACKAGE_ID = PP.PACKAGE_ID
+                AND DECODE(PKG.LOGICAL_DELETE,'Y','1','0')='0'
+            LEFT OUTER JOIN (
+                SELECT EPV.OBJECT_ID as placementId, EPV.VALUE as externalId
+                FROM TE_XLS.EXTENDED_PROPERTIES EP
+                    INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                WHERE LOWER(OBJECT_NAME) = LOWER('Placement')
+                    AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                )  EXT ON EXT.placementId = PL.PLACEMENT_ID
+        WHERE DECODE(PL.LOGICAL_DELETE,'Y','1','0')='0'
+            AND CAMPAIGN.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+    </select>
+
+    <select id="getPlacementCostsForExport" parameterType="java.util.Map" resultType="MediaRawDataView">
+        SELECT
+            DISTINCT PCD.PLACEMENT_ID   AS placementId,
+            PCD.PLANNED_GROSS_AD_SPEND  AS plannedAdSpend,
+            PCD.INVENTORY               AS inventory,
+            PCD.PLANNED_GROSS_RATE      AS rate,
+            PCD.RATE_TYPE               AS rateType,
+            PCD.START_DATE              AS startDateOriginal,
+            TO_CHAR(PCD.START_DATE, 'mm/dd/yyyy hh:mi:ss PM') AS startDate,
+            TO_CHAR(PCD.END_DATE, 'mm/dd/yyyy hh:mi:ss PM')   AS endDate
+        FROM TE_XLS.PLACEMENT_COST_DETAIL PCD
+        WHERE DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="ids != null and ids.size() > 0">
+                AND PCD.PLACEMENT_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>  
+        ORDER BY PCD.PLACEMENT_ID, PCD.START_DATE
+    </select>
+
+    <select id="getMediaPlacementByPkgPlacIds"  parameterType="java.util.Map" resultMap="mediaRawResultMap" >
+        SELECT P.PLACEMENT_ID             AS  placementId,
+               P.PLACEMENT_NAME           AS  placementName,
+               EXT.externalId             AS  extPlacementId,
+               P.EXT_PROP1                AS  placementProp1,
+               P.EXT_PROP2                AS  placementProp2,
+               P.EXT_PROP3                AS  placementProp3,
+               P.EXT_PROP4                AS  placementProp4,
+               P.EXT_PROP5                AS  placementProp5,
+               PP.PACKAGE_ID              AS  mediaPackageId,
+               PCD.INVENTORY              AS  inventory,
+               DECODE(PCD.RATE_TYPE, 1, 'CPA', 2, 'CPC', 3, 'CPL', 4, 'CPM', 5, 'FLT') AS rateType,
+               PCD.PLANNED_GROSS_RATE        AS rate,
+               PCD.PLANNED_GROSS_AD_SPEND    AS plannedAdSpend,
+               DECODE(PCD.START_DATE, NULL, NULL, TO_CHAR(PCD.START_DATE, 'mm/dd/yyyy hh24:mi:ss ') || #{timezone, jdbcType=VARCHAR}) AS startDate,
+               DECODE(PCD.END_DATE, NULL, NULL, TO_CHAR(PCD.END_DATE, 'mm/dd/yyyy hh24:mi:ss ') || #{timezone, jdbcType=VARCHAR}) AS endDate
+          FROM TE_XLS.PLACEMENT P
+               LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON P.PLACEMENT_ID = PP.PLACEMENT_ID
+                AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               LEFT JOIN TE_XLS.PLACEMENT_COST_DETAIL PCD ON P.PLACEMENT_ID = PCD.PLACEMENT_ID
+                AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON IO.IO_ID = P.IO_ID
+                 AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'  
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               LEFT OUTER JOIN ( SELECT EPV.OBJECT_ID as placementId, EPV.VALUE as externalId
+                                   FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                        INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                  WHERE LOWER(OBJECT_NAME) = LOWER('Placement')
+                                    AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                               )  EXT ON EXT.placementId = P.PLACEMENT_ID
+                <if test="ids != null">
+                    INNER JOIN (
+                                <include refid="DataAccessControlPkg.getUserAgencies"/>
+                               ) AU ON AU.AGENCY_ID = MB.AGENCY_ID
+                    INNER JOIN (
+                                <include refid="DataAccessControlPkg.userAdvertisers"/>
+                               ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+                </if>
+        WHERE C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+            <if test="pkgPlacIds != null">
+                AND PP.PACKAGE_ID || '_' || P.PLACEMENT_ID  IN
+                <foreach item="item" index="index" collection="pkgPlacIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="ids != null">
+                AND P.PLACEMENT_ID  IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+           AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+         ORDER BY P.PLACEMENT_ID, PCD.START_DATE
+    </select>
+    <!-- Queries: get Media Data for Export -->
+
+    <!-- Queries: get data to Create Insertions-->
+    <sql id="getPlacementsByFilterParamData">
+        SELECT P.PLACEMENT_ID                         AS id,
+                P.PLACEMENT_NAME                       AS name,
+                (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted',
+                        'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                   FROM TE_XLS.STATUS_TYPES STYP
+                  WHERE ST.STATUS_ID = STYP.STATUS_ID) AS status,
+                P.START_DATE                           AS startDate,
+                P.END_DATE                             AS endDate,
+                P.SITE_ID                              AS siteId,
+                S.SITE_NAME                            AS siteName,
+                P.SECTION_ID                           AS siteSectionId,
+                SS.SECTION_NAME                        AS siteSectionName,
+                ADS.AD_SIZE_ID                         AS sizeId,
+                ADS.SIZE_NAME                          AS sizeName,
+                ADS.HEIGHT                             AS height,
+                ADS.WIDTH                              AS width
+           FROM TE_XLS.PLACEMENT P
+                INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                   AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                   AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                   AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                  AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN (
+                              <include refid="DataAccessControlPkg.userAdvertisers"/>
+                           ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+                INNER JOIN TE_XLS.SITE s ON s.SITE_ID = p.SITE_ID
+                   AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.SITE_SECTION SS ON SS.SECTION_ID = P.SECTION_ID
+                   AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.AD_SIZE ADS ON ADS.AD_SIZE_ID = P.AD_SIZE_ID
+                   AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN (SELECT status.*
+                              FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                            rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                       FROM TE_XLS.PLACEMENT_STATUS ps
+                                      WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                   ) status
+                             WHERE range = 1
+                               AND status_id = 16
+                           ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+                 <if test="pivotType == 'site' or pivotType == 'group' or pivotType == 'creative' ">
+                    INNER JOIN ( SELECT DISTINCT CR.WIDTH, CR.HEIGHT
+                                   FROM TE_XLS.CREATIVE CR
+                                        <if test="pivotType == 'group'">
+                                            INNER JOIN TE_XLS.CREATIVE_GROUP_CREATIVE CGC ON CR.CREATIVE_ID = CGC.CREATIVE_ID
+                                              AND CGC.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                              AND DECODE(CGC.LOGICAL_DELETE,'Y','1','0')='0'
+                                        </if>
+                                  WHERE CR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="pivotType == 'creative'">
+                                        AND CR.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                                    </if>
+                                    AND DECODE(CR.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) CR_SIZES ON (ADS.HEIGHT = CR_SIZES.HEIGHT AND ADS.WIDTH = CR_SIZES.WIDTH)
+                 </if>
+           WHERE MBC.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+            <if test="pivotType == 'site' or ((pivotType == 'group' or pivotType == 'creative') and type == 'site')">
+                AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+            </if>
+            <if test="pivotType == 'site' or pivotType == 'group' or pivotType == 'creative' ">
+                AND NOT EXISTS (SELECT ci.placement_id, s.width, s.height, count(1)
+                                  FROM TE_XLS.CREATIVE_INSERTION CI
+                                       INNER JOIN TE_XLS.PLACEMENT PLA ON CI.PLACEMENT_ID = PLA.PLACEMENT_ID
+                                            <if test="pivotType == 'site'">
+                                                AND PLA.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                                            </if>
+                                         AND DECODE(PLA.LOGICAL_DELETE,'Y','1','0')='0'
+                                       INNER JOIN TE_XLS.AD_SIZE S ON PLA.AD_SIZE_ID  = S.AD_SIZE_ID 
+                                         AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+                                 WHERE CI.PLACEMENT_ID = P.PLACEMENT_ID
+                                   AND CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="pivotType == 'group'">
+                                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                    </if>
+                                    <if test="pivotType == 'creative'">
+                                        AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                                    </if>
+                                   AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                HAVING COUNT(1) >= (SELECT COUNT(1)
+                                                      FROM TE_XLS.CREATIVE_GROUP_CREATIVE CGC
+                                                           INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CGC.CREATIVE_GROUP_ID = CG.CREATIVE_GROUP_ID
+                                                             AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                                                <if test="pivotType == 'group'">
+                                                                    AND CG.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                                                </if>
+                                                             AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+                                                           INNER JOIN TE_XLS.CREATIVE C ON CGC.CREATIVE_ID = C.CREATIVE_ID
+                                                             AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                                                <if test="pivotType == 'creative'">
+                                                                    AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                                                                </if>
+                                                             AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                                                     WHERE C.WIDTH = S.WIDTH
+                                                       AND C.HEIGHT = S.HEIGHT
+                                                       AND DECODE(CGC.LOGICAL_DELETE,'Y','1','0')='0'
+                                                    )
+                               GROUP BY ci.placement_id, s.width, s.height
+                           )
+            </if>
+             AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+    <select id="getPlacementsByFilterParam" parameterType="java.util.Map" resultType="PlacementView">
+        <include refid="getPlacementsByFilterParamData"/>
+    </select>
+
+    <select id="getCountPlacementsByFilterParam" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getPlacementsByFilterParamData"/>
+               )
+    </select>
+    <!-- Queries: get data to Create Insertions -->
+
+    <!-- Queries: get data to CampaignPlacementsView by PlacementFilterParam-->
+    <sql id="getPlacementsViewCampaignLevelData">
+        SELECT C.CAMPAIGN_ID   AS campaignId,
+               C.CAMPAIGN_NAME AS campaignName
+          FROM TE_XLS.CAMPAIGN C
+         WHERE C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+           AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+           AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+           AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getPlacementsViewCampaignLevel" parameterType="java.util.Map" resultType="PlacementView">
+        <include refid="getPlacementsViewCampaignLevelData"/>
+    </select>
+
+    <select id="getCountPlacementsViewCampaignLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getPlacementsViewCampaignLevelData"/>
+               )
+    </select>
+
+    <sql id="getPlacementsViewSiteLevelData">
+        SELECT S.SITE_ID       AS siteId,
+               S.SITE_NAME     AS siteName,
+               PLA.CAMPAIGN_ID AS campaignId
+          FROM TE_XLS.SITE S
+               INNER JOIN ( SELECT DISTINCT SITE_ID, mbc.campaign_id
+                              FROM TE_XLS.PLACEMENT P
+                                   INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                     AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                   INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                     AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                   INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                     AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                   INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                                     AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                     AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                                     AND C.BRAND_ID =  #{brandId,jdbcType=NUMERIC}
+                                     AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                     AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                             WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                           ) PLA ON s.site_id = pla.site_id
+         WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getPlacementsViewSiteLevel" parameterType="java.util.Map" resultType="PlacementView">
+        <include refid="getPlacementsViewSiteLevelData"/>
+    </select>
+
+    <select id="getCountPlacementsViewSiteLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getPlacementsViewSiteLevelData"/>
+               )
+    </select>
+
+    <sql id="getPlacementsViewSectionLevelData">
+        SELECT SS.SECTION_ID           AS siteSectionId,
+               SS.SECTION_NAME         AS siteSectionName,
+               SS.SITE_ID              AS siteId,
+               PLA.CAMPAIGN_ID         AS campaignId
+          FROM TE_XLS.SITE_SECTION SS
+               INNER JOIN ( SELECT DISTINCT SECTION_ID, mbc.campaign_id
+                              FROM TE_XLS.PLACEMENT P
+                                   INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                     AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                   INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                     AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                   INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                     AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                   INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                                     AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                     AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                                     AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                                     AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                     AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                             WHERE P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                               AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                           ) PLA ON ss.SECTION_ID = pla.SECTION_ID
+         WHERE DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getPlacementsViewSectionLevel" parameterType="java.util.Map" resultType="PlacementView">
+        <include refid="getPlacementsViewSectionLevelData"/>
+    </select>
+
+    <select id="getCountPlacementsViewSectionLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getPlacementsViewSectionLevelData"/>
+               )
+    </select>
+
+    <sql id="getPlacementsViewPlacementLevelData">
+        SELECT P.PLACEMENT_ID             AS id,
+               P.PLACEMENT_NAME           AS name,
+               P.PLACEMENT_NAME || ' - ' || ADS.SIZE_NAME || ' - ' ||
+               TO_CHAR(p.start_date, 'MM/DD/YYYY') || ' - ' ||
+               TO_CHAR(p.end_date, 'MM/DD/YYYY') || ' (' ||
+               (TRUNC(P.END_DATE) - TRUNC(P.START_DATE) + 1) || ' days)'  AS placementAlias,
+               C.CAMPAIGN_ID              AS campaignId,
+               P.SITE_ID                  AS siteId,
+               P.SECTION_ID               AS siteSectionId
+          FROM TE_XLS.PLACEMENT P
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                 AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                 AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                 AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                 AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                 AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                 AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                 AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                 AND SS.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                 AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                 AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+         WHERE P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+           AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+           AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getPlacementsViewPlacementLevel" parameterType="java.util.Map" resultType="PlacementView">
+        <include refid="getPlacementsViewPlacementLevelData"/>
+    </select>
+
+    <select id="getCountPlacementsViewPlacementLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getPlacementsViewPlacementLevelData"/>
+               )
+    </select>
+
+    <!--Search-->
+
+    <sql id="getCampaignsTotal">
+        select count (1)
+        FROM TE_XLS.CAMPAIGN C
+        WHERE C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+            AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+            AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+            AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <sql id="getSitesTotal">
+        select count (1)
+        FROM TE_XLS.SITE S
+            INNER JOIN (
+                SELECT DISTINCT SITE_ID, mbc.campaign_id, c.campaign_name
+                FROM TE_XLS.PLACEMENT P
+                    INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                        AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                        AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                        AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                        AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                        AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                        AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                        AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    ) PLAC ON s.site_id = PLAC.site_id
+        WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+        and PLAC.campaign_id = C.campaign_id
+    </sql>
+
+    <sql id="getSectionsTotal">
+        select count(1)
+        FROM TE_XLS.SITE_SECTION SS
+           INNER JOIN (
+                    SELECT DISTINCT SECTION_ID, mbc.campaign_id, c.campaign_name
+                    FROM TE_XLS.PLACEMENT P
+                        INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                            AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                        INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                            AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                        INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                            AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                        INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                            AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                            AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                            AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                            AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                    WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+           ) PLAC ON ss.SECTION_ID = plaC.SECTION_ID
+        WHERE DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+        AND PLAC.campaign_id = C.campaign_id
+        AND SS.SITE_ID = S.SITE_ID
+
+    </sql>
+
+    <sql id="getPlacementsTotal">
+        select count(1)
+        FROM TE_XLS.PLACEMENT PA
+            INNER JOIN TE_XLS.INSERTION_ORDER IO ON PA.IO_ID = IO.IO_ID
+                AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.CAMPAIGN CA ON MBC.CAMPAIGN_ID = CA.CAMPAIGN_ID
+                AND CA.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                AND CA.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                AND CA.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.SITE SI ON PA.SITE_ID = SI.SITE_ID
+                AND DECODE(SI.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.SITE_SECTION SS ON PA.SECTION_ID = SS.SECTION_ID
+                AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.AD_SIZE ADS ON PA.AD_SIZE_ID = ADS.AD_SIZE_ID
+                AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+        WHERE DECODE(PA.LOGICAL_DELETE,'Y','1','0')='0'
+        AND CA.campaign_id = C.campaign_id
+        AND SS.SITE_ID = S.SITE_ID
+        AND SS.SECTION_ID = P.SECTION_ID
+    </sql>
+
+    <sql id="searchPlacementViewsData">
+        <if test="soCampaign">
+            (SELECT C.CAMPAIGN_ID     AS campaignId,
+                    C.CAMPAIGN_NAME   AS campaignName,
+                    NULL              AS siteId,
+                    NULL              AS siteName,
+                    NULL              AS siteSectionId,
+                    NULL              AS siteSectionName,
+                    NULL              AS id,
+                    NULL              AS name,
+                    NULL              AS placementAlias,
+                    (
+                      <include refid="getCampaignsTotal"/>
+                    ) 			 	  as campaignsTotal,
+                    NULL		  	  as sitesTotal,
+                    NULL 				  		as sectionsTotal,
+                    NULL 			  			as placementsTotal
+               FROM TE_XLS.CAMPAIGN C
+              WHERE C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                AND UPPER(C.CAMPAIGN_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soSite">
+            <if test="soCampaign">
+                UNION
+            </if>
+            (SELECT C.CAMPAIGN_ID   AS campaignId,
+                    C.campaign_name AS campaignName,
+                    S.SITE_ID         AS siteId,
+                    S.SITE_NAME       AS siteName,
+                    NULL              AS siteSectionId,
+                    NULL              AS siteSectionName,
+                    NULL              AS id,
+                    NULL              AS name,
+                    NULL              AS placementAlias,
+                    (
+                      <include refid="getCampaignsTotal"/>
+                    ) 			 	  as campaignsTotal,
+                    (
+                      <include refid="getSitesTotal"/>
+                    ) 			  	  as sitesTotal,
+                    NULL				  		as sectionsTotal,
+                    NULL			  			as placementsTotal
+               FROM TE_XLS.SITE S
+                    INNER JOIN ( SELECT DISTINCT SITE_ID, mbc.campaign_id, c.campaign_name
+                                   FROM TE_XLS.PLACEMENT P
+                                        INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                          AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                          AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                                          AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                          AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                                          AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                  WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) C ON s.site_id = C.site_id
+              WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                AND UPPER(S.SITE_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+            )
+        </if>
+        <if test="soSection">
+            <if test="soCampaign or soSite">
+                UNION
+            </if>
+            (SELECT C.CAMPAIGN_ID         AS campaignId,
+                    C.CAMPAIGN_NAME       AS campaignName,
+                    SS.SITE_ID              AS siteId,
+                    S.SITE_NAME             AS siteName,
+                    SS.SECTION_ID           AS siteSectionId,
+                    SS.SECTION_NAME         AS siteSectionName,
+                    NULL                    AS id,
+                    NULL                    AS name,
+                    NULL                    AS placementAlias,
+                    (
+                      <include refid="getCampaignsTotal"/>
+                    ) 			 	  as campaignsTotal,
+                    (
+                      <include refid="getSitesTotal"/>
+                    ) 			  	  as sitesTotal,
+                    (
+                      <include refid="getSectionsTotal"/>
+                    ) 				  		as sectionsTotal,
+                    NULL			  			as placementsTotal
+               FROM TE_XLS.SITE_SECTION SS
+                    INNER JOIN ( SELECT DISTINCT SECTION_ID, mbc.campaign_id, c.campaign_name
+                                   FROM TE_XLS.PLACEMENT P
+                                        INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                          AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                          AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                                          AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                          AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                                          AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                  WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) C ON ss.SECTION_ID = C.SECTION_ID
+                    INNER JOIN TE_XLS.SITE S ON SS.SITE_ID = S.SITE_ID
+                      AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                AND UPPER(SS.SECTION_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+            )
+        </if>
+        <if test="soPlacement">
+            <if test="soCampaign or soSite or soSection">
+                UNION
+            </if>
+            (SELECT C.CAMPAIGN_ID              AS campaignId,
+                    C.CAMPAIGN_NAME            AS campaignName,
+                    P.SITE_ID                  AS siteId,
+                    S.SITE_NAME                AS siteName,
+                    P.SECTION_ID               AS siteSectionId,
+                    SS.SECTION_NAME            AS siteSectionName,
+                    P.PLACEMENT_ID             AS id,
+                    P.PLACEMENT_NAME           AS name,
+                    P.PLACEMENT_NAME || ' - ' || ADS.SIZE_NAME || ' - ' ||
+                    TO_CHAR(p.start_date, 'MM/DD/YYYY') || ' - ' ||
+                    TO_CHAR(p.end_date, 'MM/DD/YYYY') || ' (' ||
+                    (TRUNC(P.END_DATE) - TRUNC(P.START_DATE) + 1) || ' days)' AS placementAlias,
+                    (
+                      <include refid="getCampaignsTotal"/>
+                    ) 			 	  as campaignsTotal,
+                    (
+                      <include refid="getSitesTotal"/>
+                    ) 			  	  as sitesTotal,
+                    (
+                      <include refid="getSectionsTotal"/>
+                    ) 				  		as sectionsTotal,
+                    (
+                        <include refid="getPlacementsTotal"/>
+                    ) 			  			as placementsTotal
+               FROM TE_XLS.PLACEMENT P
+                    INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                      AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                      AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                      AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                      AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                      AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                      AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                      AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                      AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                      AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                      AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE UPPER(P.PLACEMENT_NAME || ' - ' || ADS.SIZE_NAME || ' - ' ||
+                    TO_CHAR(p.start_date, 'MM/DD/YYYY') || ' - ' ||
+                    TO_CHAR(p.end_date, 'MM/DD/YYYY') || ' (' ||
+                    (TRUNC(P.END_DATE) - TRUNC(P.START_DATE) + 1) || ' days)') LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+
+    <sql id="getSearchPlacementViewsCount">
+        <if test="soCampaign">
+            (SELECT 'campaign' as ID, COUNT(C.CAMPAIGN_ID) as totalRows
+               FROM TE_XLS.CAMPAIGN C
+              WHERE C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                AND UPPER(C.CAMPAIGN_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="soSite">
+            <if test="soCampaign">
+                UNION
+            </if>
+            (SELECT 'site' as ID, COUNT(S.SITE_ID) as totalRows
+               FROM TE_XLS.SITE S
+                    INNER JOIN ( SELECT DISTINCT SITE_ID, mbc.campaign_id, c.campaign_name
+                                   FROM TE_XLS.PLACEMENT P
+                                        INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                          AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                          AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                                          AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                          AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                                          AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                  WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) PLA ON s.site_id = pla.site_id
+              WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                AND UPPER(S.SITE_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+            )
+        </if>
+        <if test="soSection">
+            <if test="soCampaign or soSite">
+                UNION
+            </if>
+            (SELECT 'section' as ID, COUNT(DISTINCT SS.SECTION_ID) as totalRows
+               FROM TE_XLS.SITE_SECTION SS
+                    INNER JOIN ( SELECT DISTINCT SECTION_ID, mbc.campaign_id, c.campaign_name
+                                   FROM TE_XLS.PLACEMENT P
+                                        INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                          AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                          AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                                          AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                          AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                                          AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                  WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) PLA ON ss.SECTION_ID = pla.SECTION_ID
+                    INNER JOIN TE_XLS.SITE S ON SS.SITE_ID = S.SITE_ID
+                      AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                AND UPPER(SS.SECTION_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+            )
+        </if>
+        <if test="soPlacement">
+            <if test="soCampaign or soSite or soSection">
+                UNION
+            </if>
+            (SELECT 'placement' as ID, COUNT(DISTINCT P.PLACEMENT_ID) as totalRows
+               FROM TE_XLS.PLACEMENT P
+                    INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                      AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                      AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                      AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                      AND C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                      AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                      AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                      AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                      AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                      AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                      AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+              WHERE UPPER(P.PLACEMENT_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+    </sql>
+
+    <select id="searchPlacementView" parameterType="java.util.Map" resultType="PlacementView">
+        <include refid="searchPlacementViewsData"/>
+    </select>
+
+    <select id="searchPlacementViewCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT SUM(totalRows) as total
+          FROM (
+            <include refid="getSearchPlacementViewsCount"/>
+        )
+    </select>
+    <!--Search-->
+
+    <!--Get placements associated - HtmlInjectionTagId-->
+    <sql id="getPlacementsByTagIdData">
+        SELECT TR.HTML_REF_ENTITY_ID AS id,
+               PL.PLACEMENT_NAME AS name,
+               PL.SITE_ID AS siteId,
+               S.SITE_NAME AS siteName,
+               PL.START_DATE AS startDate,
+               PL.END_DATE AS endDate,
+               TR.CAMPAIGN_ID AS campaignId,
+               CA.CAMPAIGN_NAME AS campaignName
+          FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+               INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                 AND T.IS_ENABLED = 1
+               INNER JOIN TE_XLS.PLACEMENT PL ON PL.PLACEMENT_ID = TR.HTML_REF_ENTITY_ID
+                 AND DECODE(pl.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE S ON S.SITE_ID = PL.SITE_ID
+                 AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN CA ON TR.CAMPAIGN_ID = CA.CAMPAIGN_ID
+                 AND DECODE(ca.LOGICAL_DELETE,'Y','1','0')='0'
+         WHERE TR.HTML_REF_ENTITY_TYPE = (SELECT ET.ENTITY_TYPE_ID
+                                            FROM TE_XLS.ENTITY_TYPE ET
+                                           WHERE ET.ENTITY_NAME = 'Placement'
+                                          )
+           AND TR.HTML_INJECTION_ID = #{tagId,jdbcType=NUMERIC}
+           AND TR.IS_DELETED = 0
+    </sql>
+
+    <select id="getPlacementsByTagId" parameterType="java.util.Map" resultType="PlacementView">
+        <include refid="getPlacementsByTagIdData"/>
+    </select>
+
+    <select id="getPlacementsByTagIdCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getPlacementsByTagIdData"/>
+               )
+    </select>
+
+    <sql id="searchPlacementsRelatedTagByPatternData">
+        SELECT TR.CAMPAIGN_ID           AS campaignId,
+               CA.CAMPAIGN_NAME         AS campaignName,
+               PL.SITE_ID               AS siteId,
+               S.SITE_NAME              AS siteName,
+               TR.HTML_REF_ENTITY_ID    AS id,
+               PL.PLACEMENT_NAME        AS name,
+               PL.START_DATE            AS startDate,
+               PL.END_DATE              AS endDate
+          FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+               INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                 AND T.IS_ENABLED = 1
+               INNER JOIN TE_XLS.PLACEMENT PL ON PL.PLACEMENT_ID = TR.HTML_REF_ENTITY_ID
+                 AND DECODE(PL.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE S ON S.SITE_ID = PL.SITE_ID
+                 AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN CA ON TR.CAMPAIGN_ID = CA.CAMPAIGN_ID
+                 AND DECODE(CA.LOGICAL_DELETE,'Y','1','0')='0'
+         WHERE TR.HTML_REF_ENTITY_TYPE = 5
+           AND TR.HTML_INJECTION_ID = #{tagId,jdbcType=NUMERIC}
+           AND (
+                <if test="soCampaign">
+                    UPPER(CA.CAMPAIGN_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                </if>
+                <if test="soSite">
+                    <if test="soCampaign">
+                        OR
+                    </if>
+                    UPPER(S.SITE_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                </if>
+                <if test="soPlacement">
+                    <if test="soCampaign or soSite">
+                        OR
+                    </if>
+                    UPPER(PL.PLACEMENT_NAME) LIKE UPPER(#{pattern,jdbcType=VARCHAR})
+                </if>
+                )
+           AND TR.IS_DELETED = 0
+    </sql>
+
+    <select id="searchPlacementsRelatedTagByPattern" parameterType="java.util.Map" resultType="PlacementView">
+        <include refid="searchPlacementsRelatedTagByPatternData"/>
+    </select>
+
+    <select id="getSearhPlacementsRelatedTagByPatternCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="searchPlacementsRelatedTagByPatternData"/>
+               )
+    </select>
+    <!--Get placements associated - HtmlInjectionTagId-->
+    <!-- Queries: get data to CampaignPlacementsView by PlacementFilterParam -->
+
+    <!-- Queries: utilities placements-->
+    <select id="getCountPlacementByCampaign" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasCampaign
+          FROM TE_XLS.PLACEMENT P, TE_XLS.INSERTION_ORDER IO, TE_XLS.MEDIA_BUY MB,
+               TE_XLS.MEDIA_BUY_CAMPAIGN MBC, TE_XLS.CAMPAIGN C
+         WHERE P.IO_ID = IO.IO_ID
+           AND IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+           AND MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+           AND MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+           AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+        <if test="ids != null and ids.size() > 0">
+           AND P.PLACEMENT_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    
+    <select id="getPlacementsBySiteSectionSize"  parameterType="java.util.Map" resultType="Placement" >
+        SELECT PL.PLACEMENT_ID         as  id,
+               PL.SITE_ID              as  siteId,
+               PL.SECTION_ID           as  siteSectionId,
+               PL.IO_ID                as  ioId,
+               PL.AD_SIZE_ID           as  sizeId,
+               PL.START_DATE           as  startDate,
+               PL.END_DATE             as  endDate,
+               PL.INVENTORY            as  inventory,
+               PL.RATE                 as  rate,
+               PL.RATE_TYPE            as  rateType,
+               PL.MAX_FILE_SIZE        as  maxFileSize,
+               PL.IS_SECURE            as  isSecure,
+               PL.LOGICAL_DELETE       as  logicalDelete,
+               PL.CREATED_TPWS_KEY     as  createdTpwsKey,
+               PL.MODIFIED_TPWS_KEY    as  modifiedTpwsKey,
+               PL.CREATED              as  createdDate,
+               PL.MODIFIED             as  modifiedDate,
+               PL.IS_TRAFFICKED        as  isTrafficked,
+               PL.RESEND_TAGS          as  resendTags,
+               PL.UTC_OFFSET           as  utcOffset,
+               PL.SM_EVENT_ID          as  smEventId,
+               PL.COUNTRY_CURRENCY_ID  as  countryCurrencyId,
+               PL.PLACEMENT_NAME       as  name,
+               PL.EXT_PROP1            as  extProp1,
+               PL.EXT_PROP2            as  extProp2,
+               PL.EXT_PROP3            as  extProp3,
+               PL.EXT_PROP4            as  extProp4,
+               PL.EXT_PROP5            as  extProp5,
+               AD.WIDTH                as  width,
+               AD.HEIGHT               as  height,
+               AD.SIZE_NAME            as  sizeName,
+               C.CAMPAIGN_ID           as  campaignId,
+               S.SITE_NAME             as  siteName,
+               SS.SECTION_NAME         as sectionName
+          FROM TE_XLS.PLACEMENT PL
+               INNER JOIN TE_XLS.SITE S ON S.SITE_ID = PL.SITE_ID
+                   AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE_SECTION SS ON SS.SECTION_ID = PL.SECTION_ID
+                   AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.AD_SIZE AD ON AD.AD_SIZE_ID = PL.AD_SIZE_ID
+                   AND DECODE(AD.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON PL.IO_ID = IO.IO_ID
+                   AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                   AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MBC.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                   AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON C.CAMPAIGN_ID = MBC.CAMPAIGN_ID
+                   AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+         WHERE UPPER(S.SITE_NAME) || '_@&lt;-*->@_' || UPPER(SS.SECTION_NAME) || '_@&lt;-*->@_' || AD.WIDTH || '_@&lt;-*->@_' || AD.HEIGHT IN
+            <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                UPPER(#{item})
+            </foreach>
+           <if test="campaignId != null">
+                AND C.CAMPAIGN_ID  = #{campaignId,jdbcType=NUMERIC}
+           </if>
+           AND DECODE(PL.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="checkPlacementsStandAlone" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM TE_XLS.PACKAGE_PLACEMENT PP
+         WHERE PP.PLACEMENT_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND PP.PACKAGE_ID != #{packageId,jdbcType=NUMERIC,mode=IN}
+           AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getCountCampaignSiteOfPlacementsByIds" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT (DISTINCT MBC.CAMPAIGN_ID || '_' || P.SITE_ID)
+          FROM TE_XLS.PLACEMENT P
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                 AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+         WHERE DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND MBC.CAMPAIGN_ID || '_' || P.SITE_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+    <select id="getCountCampaignSiteSectionOfPlacementsByIds" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT (DISTINCT MBC.CAMPAIGN_ID || '_' || P.SITE_ID || '_' || P.SECTION_ID)
+          FROM TE_XLS.PLACEMENT P
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                 AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+         WHERE MBC.CAMPAIGN_ID || '_' || P.SITE_ID || '_' || P.SECTION_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getCountCampaignSiteSectionPlacementOfPlacementsByIds" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT (DISTINCT MBC.CAMPAIGN_ID || '_' || P.SITE_ID || '_' || P.SECTION_ID || '_' || P.PLACEMENT_ID)
+          FROM TE_XLS.PLACEMENT P
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                 AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+         WHERE MBC.CAMPAIGN_ID || '_' || P.SITE_ID || '_' || P.SECTION_ID || '_' || P.PLACEMENT_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: utilities placements-->
+
+    <!-- Queries: Create/update/delete placements-->
+    <insert id="insertPlacement" parameterType="java.util.Map">
+        INSERT INTO TE_XLS.PLACEMENT(
+            PLACEMENT_ID,
+            SITE_ID,
+            SECTION_ID,
+            AD_SIZE_ID,
+            IO_ID,
+            START_DATE,
+            END_DATE,
+            INVENTORY,
+            RATE,
+            RATE_TYPE,
+            MAX_FILE_SIZE,
+            IS_SECURE,
+            UTC_OFFSET,
+            SM_EVENT_ID,
+            CREATED_TPWS_KEY,
+            MODIFIED_TPWS_KEY,
+            COUNTRY_CURRENCY_ID,
+            PLACEMENT_NAME,
+            EXT_PROP1,
+            EXT_PROP2,
+            EXT_PROP3,
+            EXT_PROP4,
+            EXT_PROP5,
+            CREATED,
+            MODIFIED)
+        VALUES (
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{siteId,jdbcType=NUMERIC,mode=IN},
+            #{sectionId,jdbcType=NUMERIC,mode=IN},
+            #{sizeId,jdbcType=NUMERIC,mode=IN},
+            #{ioId,jdbcType=NUMERIC,mode=IN},
+            #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            #{inventory,jdbcType=NUMERIC,mode=IN},
+            #{rate,jdbcType=NUMERIC,mode=IN},
+            #{rateType,jdbcType=VARCHAR,mode=IN},
+            #{maxFileSize,jdbcType=NUMERIC,mode=IN},
+            #{isSecure,jdbcType=NUMERIC,mode=IN},
+            #{utcOffset,jdbcType=NUMERIC,mode=IN},
+            #{smEventId,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{countryCurrencyId,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{extProp1,jdbcType=VARCHAR,mode=IN},
+            #{extProp2,jdbcType=VARCHAR,mode=IN},
+            #{extProp3,jdbcType=VARCHAR,mode=IN},
+            #{extProp4,jdbcType=VARCHAR,mode=IN},
+            #{extProp5,jdbcType=VARCHAR,mode=IN},
+            SYSDATE,
+            SYSDATE )
+    </insert>
+
+    <update id="updatePlacement" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.UpdatePlacement(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{sizeId,jdbcType=NUMERIC,mode=IN},
+            #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            #{inventory,jdbcType=NUMERIC,mode=IN},
+            #{rate,jdbcType=NUMERIC,mode=IN},
+            #{rateType,jdbcType=VARCHAR,mode=IN},
+            #{maxFileSize,jdbcType=NUMERIC,mode=IN},
+            #{isSecure,jdbcType=NUMERIC,mode=IN},
+            #{utcOffset,jdbcType=NUMERIC,mode=IN},
+            #{smEventId,jdbcType=NUMERIC,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{countryCurrencyId,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{extProp1,jdbcType=VARCHAR,mode=IN},
+            #{extProp2,jdbcType=VARCHAR,mode=IN},
+            #{extProp3,jdbcType=VARCHAR,mode=IN},
+            #{extProp4,jdbcType=VARCHAR,mode=IN},
+            #{extProp5,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <update id="updatePlacementOnImport" parameterType="Placement">
+        UPDATE TE_XLS.PLACEMENT
+            SET MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR},
+            MODIFIED = SYSDATE
+        <if test="name != null">
+            , PLACEMENT_NAME = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="extProp1 != null">
+            , EXT_PROP1 = #{extProp1,jdbcType=VARCHAR}
+        </if>
+        <if test="extProp2 != null">
+            , EXT_PROP2 = #{extProp2,jdbcType=VARCHAR}
+        </if>
+        <if test="extProp3 != null">
+            , EXT_PROP3 = #{extProp3,jdbcType=VARCHAR}
+        </if>
+        <if test="extProp4 != null">
+            , EXT_PROP4 = #{extProp4,jdbcType=VARCHAR}
+        </if>
+        <if test="extProp5 != null">
+            , EXT_PROP5 = #{extProp5,jdbcType=VARCHAR}
+        </if>
+        <if test="startDate != null">
+            , START_DATE = #{startDate,jdbcType=VARCHAR}
+        </if>
+        <if test="endDate != null">
+            , END_DATE = #{endDate,jdbcType=VARCHAR}
+        </if>
+        WHERE  PLACEMENT_ID = TO_NUMBER(#{id})
+    </update>
+
+    <update id="deletePlacement" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.DeletePlacement(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!-- Queries: Create/update/delete placements-->
+
+    <!-- Queries: Get/Create/update/delete placementCostDetatails-->
+    <select id="getPlacementCostDetail"  parameterType="java.lang.Long" resultType="CostDetail" >
+        SELECT  placement_cost_id       as  id,
+                placement_id            as  foreignId,
+                start_date              as  startDate,
+                end_date                as  endDate,
+                inventory               as  inventory,
+                rate_type               as  rateType,
+                logical_delete          as  logicalDelete,
+                created                 as  createdDate,
+                created_tpws_key        as  createdTpwsKey,
+                modified                as  modifiedDate,
+                modified_tpws_key       as  modifiedTpwsKey,
+                planned_net_rate        as  plannedNetRate,
+                planned_gross_rate      as  plannedGrossRate,
+                planned_net_ad_spend    as  plannedNetAdSpend,
+                planned_gross_ad_spend  as  plannedGrossAdSpend,
+                actual_net_rate         as  actualNetRate,
+                actual_gross_rate       as  actualGrossRate,
+                actual_net_ad_spend     as  actualNetAdSpend,
+                actual_gross_ad_spend   as  actualGrossAdSpend,
+                country_currency_id     as  countryCurrencyId,
+                CASE
+                   WHEN ((PLANNED_GROSS_AD_SPEND = 0 OR PLANNED_GROSS_AD_SPEND IS NULL) AND
+                        (PLANNED_GROSS_RATE = 0 OR PLANNED_GROSS_RATE IS NULL))
+                      THEN 100
+                   WHEN (PLANNED_GROSS_AD_SPEND != 0 AND PLANNED_GROSS_AD_SPEND IS NOT NULL)
+                      THEN ROUND(((PLANNED_GROSS_AD_SPEND - nvl(PLANNED_NET_AD_SPEND,0) )/PLANNED_GROSS_AD_SPEND)*100 , 2 )
+                   ELSE  ROUND(((PLANNED_GROSS_RATE - nvl(PLANNED_NET_RATE,0) )/PLANNED_GROSS_RATE)*100 , 2 )
+                END AS margin
+          FROM TE_XLS.PLACEMENT_COST_DETAIL
+         WHERE placement_cost_id = #{id}
+           AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getPlacementCostDetailByPlacementId"  parameterType="java.util.Map" resultType="CostDetail" >
+        SELECT PCD.PLACEMENT_COST_ID       as id,
+               PCD.PLACEMENT_ID            as foreignId,
+               PCD.START_DATE              as startDate,
+               PCD.END_DATE                as endDate,
+               PCD.INVENTORY               as inventory,
+               PCD.RATE_TYPE               as rateType,
+               PCD.LOGICAL_DELETE          as logicalDelete,
+               PCD.CREATED                 as createdDate,
+               PCD.CREATED_TPWS_KEY        as createdTpwsKey,
+               PCD.MODIFIED                as modifiedDate,
+               PCD.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+               PCD.PLANNED_NET_RATE        as plannedNetRate,
+               PCD.PLANNED_GROSS_RATE      as plannedGrossRate,
+               PCD.PLANNED_NET_AD_SPEND    as plannedNetAdSpend,
+               PCD.PLANNED_GROSS_AD_SPEND  as plannedGrossAdSpend,
+               PCD.ACTUAL_NET_RATE         as actualNetRate,
+               PCD.ACTUAL_GROSS_RATE       as actualGrossRate,
+               PCD.ACTUAL_NET_AD_SPEND     as actualNetAdSpend,
+               PCD.ACTUAL_GROSS_AD_SPEND   as actualGrossAdSpend,
+               CASE
+                  WHEN ((PCD.PLANNED_GROSS_AD_SPEND = 0 OR PCD.PLANNED_GROSS_AD_SPEND IS NULL) AND 
+                       (PCD.PLANNED_GROSS_RATE = 0 OR PCD.PLANNED_GROSS_RATE IS NULL))
+                     THEN 100
+                  WHEN (PCD.PLANNED_GROSS_AD_SPEND != 0 AND PCD.PLANNED_GROSS_AD_SPEND IS NOT NULL) 
+                     THEN ROUND(((PCD.PLANNED_GROSS_AD_SPEND - nvl(PCD.PLANNED_NET_AD_SPEND,0) )/PCD.PLANNED_GROSS_AD_SPEND)*100 , 2)
+                  ELSE ROUND( ((PCD.PLANNED_GROSS_RATE - nvl(PCD.PLANNED_NET_RATE,0) )/PCD.PLANNED_GROSS_RATE)*100 , 2)
+               END AS margin
+          FROM TE_XLS.PLACEMENT_COST_DETAIL PCD
+         WHERE PCD.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC,mode=IN}
+           AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        ORDER BY PCD.START_DATE, PCD.CREATED
+    </select>
+
+    <update id="insertPlacementCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.IO_PKG.InsertPlacementCostSpend(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{placementId,jdbcType=NUMERIC,mode=IN},
+            #{inventory,jdbcType=NUMERIC,mode=IN},
+            #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            #{rateType,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            ROUND(#{plannedNetRate,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedGrossRate,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedNetAdSpend,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedGrossAdSpend,jdbcType=NUMERIC,mode=IN},14),
+            #{actualNetRate,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossRate,jdbcType=NUMERIC,mode=IN},
+            #{actualNetAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossAdSpend,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+
+    <update id="updatePlacementsCostDetailByPackageId" parameterType="java.util.Map">
+        UPDATE TE_XLS.PLACEMENT P
+           SET P.INVENTORY  = #{inventory,jdbcType=NUMERIC,mode=IN},
+            <if test="rate != null">
+               P.RATE       = #{rate,jdbcType=NUMERIC,mode=IN},
+            </if>
+            <if test="rateType != null">
+               P.RATE_TYPE  = #{rateType,jdbcType=VARCHAR,mode=IN},
+            </if>
+            <if test="startDate != null">
+               P.START_DATE = #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            </if>
+            <if test="endDate != null">
+               P.END_DATE   = #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            </if>
+               P.MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}
+         WHERE P.PLACEMENT_ID IN (SELECT PL.PLACEMENT_ID
+                                    FROM TE_XLS.PLACEMENT PL, TE_XLS.PACKAGE_PLACEMENT PP
+                                   WHERE PL.PLACEMENT_ID = PP.PLACEMENT_ID
+                                     AND PP.PACKAGE_ID = #{packageId,jdbcType=NUMERIC,mode=IN}
+                                     AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                     AND DECODE(PL.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+                                 )
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </update>
+
+    <update id="updatePlacementCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.IO_PKG.UpdatePlacementCostSpend(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{inventory,jdbcType=NUMERIC,mode=IN},
+            #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            #{rateType,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            ROUND(#{plannedNetRate,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedGrossRate,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedNetAdSpend,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedGrossAdSpend,jdbcType=NUMERIC,mode=IN},14),
+            #{actualNetRate,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossRate,jdbcType=NUMERIC,mode=IN},
+            #{actualNetAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossAdSpend,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+
+    <update id="deletePlacementCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.IO_PKG.DeletePlacementCostSpend(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!-- Queries: Create/update/delete placementCostDetatails-->
+
+    <!-- Queries: placementStatus-->
+    <select id="getCurrentPlacementStatus" statementType="CALLABLE" parameterType="java.lang.Long">
+        { CALL PUBLISHER_PKG.GetCurrentPlacementStatus(
+            #{placementId,jdbcType=NUMERIC,mode=IN},
+            #{refCursor, jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet,resultMap=placementStatusResultMap}) }
+    </select>
+    <update id="savePlacementStatus" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL PUBLISHER_PKG.InsertPlacementStatusAPI(
+            #{placementId,jdbcType=NUMERIC,mode=IN},
+            #{statusId,jdbcType=NUMERIC,mode=IN},
+            #{contactId,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!-- Quer-ies: placementStatus-->
+    <select id="getPlacementByAdvertiserAndBrand"  parameterType="java.util.Map" resultType="PlacementView" >
+        SELECT PL.PLACEMENT_ID         as  id,
+               PL.SITE_ID              as  siteId,
+               PL.SECTION_ID           as  siteSectionId,
+               PL.IS_TRAFFICKED        as  isTrafficked,
+               PL.PLACEMENT_NAME       as  name,
+               AD.SIZE_NAME            as  sizeName,
+               C.CAMPAIGN_NAME           as  campaignName,
+               C.CAMPAIGN_ID           as  campaignId,
+               S.SITE_NAME             as  siteName,
+               DECODE(STATUS_TYPES.STATUS_NAME, 'IO_ACPT', 'Accepted','IO_NEW','New','IO_RJCT','Rejected', 'New') as status,
+               SS.SECTION_NAME         as siteSectionName
+          FROM TE_XLS.PLACEMENT PL
+               INNER JOIN TE_XLS.SITE S ON S.SITE_ID = PL.SITE_ID
+                   AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE_SECTION SS ON SS.SECTION_ID = PL.SECTION_ID
+                   AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.AD_SIZE AD ON AD.AD_SIZE_ID = PL.AD_SIZE_ID
+                   AND DECODE(AD.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON PL.IO_ID = IO.IO_ID
+                   AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                   AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MBC.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                   AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON C.CAMPAIGN_ID = MBC.CAMPAIGN_ID
+                   AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (SELECT P.PLACEMENT_ID, NVL(COUNT(DISTINCT CI.CREATIVE_INSERTION_ID), 0) as totalSchedules
+                             FROM TE_XLS.PLACEMENT P
+                                  LEFT OUTER JOIN TE_XLS.CREATIVE_INSERTION CI ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                                   AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                            WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                            GROUP BY P.PLACEMENT_ID
+                          ) SCHEDULE ON SCHEDULE.PLACEMENT_ID = PL.PLACEMENT_ID
+               LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON PP.PLACEMENT_ID = PL.PLACEMENT_ID
+                AND DECODE(PP.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT JOIN TE_XLS.PACKAGE ON PACKAGE.PACKAGE_ID = PP.PACKAGE_ID
+                AND DECODE(PACKAGE.LOGICAL_DELETE,'Y','1','0')='0'
+               LEFT OUTER JOIN (SELECT PS.PLACEMENT_ID, ST.STATUS_NAME,  TO_CHAR (STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID STATUS_DATE,
+                                       MAX (TO_CHAR (PS.STATUS_DATE, 'YYYYMMDDHH24MISS') || PS.ROWID) OVER (PARTITION BY PS.PLACEMENT_ID)  MAX_STATUS_DATE
+                                  FROM TE_XLS.PLACEMENT_STATUS PS, TE_XLS.STATUS_TYPES ST
+                                 WHERE PS.STATUS_ID = ST.STATUS_ID
+                                   AND (PS.LOGICAL_DELETE != 'Y')
+                               ) STATUS_TYPES ON (PL.PLACEMENT_ID = STATUS_TYPES.PLACEMENT_ID)
+                AND (STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE)
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as placementId, EPV.VALUE as externalId
+                                  FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                       INNER JOIN TE_XLS.EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                 WHERE LOWER(OBJECT_NAME) = LOWER('Placement')
+                                   AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                               ) EXT ON EXT.placementId = PL.PLACEMENT_ID
+         WHERE  C.BRAND_ID= #{brandId,jdbcType=NUMERIC}
+              AND DECODE(PL.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+</mapper>

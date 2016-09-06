@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Brand">
+       
+    <!--InserBrand-->
+    <insert id="insertBrand" parameterType="java.util.Map">
+        INSERT INTO BRAND( brand_id, advertiser_id, brand_name, dup_brand_name,
+        description, created_tpws_key, modified_tpws_key, created, modified )
+        VALUES ( #{id,jdbcType=NUMERIC}, #{advertiserId,jdbcType=NUMERIC}, 
+                 #{name,jdbcType=VARCHAR}, #{dupName,jdbcType=VARCHAR},
+                 #{description,jdbcType=VARCHAR}, #{createdTpwsKey,jdbcType=VARCHAR},
+                 #{createdTpwsKey,jdbcType=VARCHAR}, SYSDATE, SYSDATE )
+    </insert>
+    
+    <update id="updateBrand" parameterType="java.util.Map">
+        UPDATE BRAND
+        SET brand_id = #{id,jdbcType=NUMERIC},
+            brand_name = #{name,jdbcType=VARCHAR},
+            dup_brand_name = #{dupName,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR},
+            modified_tpws_key = #{modifiedTpwsKey,jdbcType=VARCHAR},
+            modified = SYSDATE
+        WHERE ( logical_delete = 'N'
+                OR logical_delete IS NULL )
+            AND brand_id = #{id}
+    </update>
+    <update id="deleteBrand" statementType="CALLABLE" parameterType="java.util.Map">
+        UPDATE BRAND
+        SET LOGICAL_DELETE = 'Y', MODIFIED = SYSDATE, MODIFIED_TPWS_KEY = #{tpws,jdbcType=VARCHAR}
+        WHERE ( LOGICAL_DELETE = 'N'
+                OR LOGICAL_DELETE IS NULL )
+            AND BRAND_ID = #{id}
+    </update>
+    
+    <!--SECTION OF QUERY'S-->
+    
+    <select id="getBrand"  parameterType="java.lang.Long"
+            resultType="trueffect.truconnect.api.commons.model.Brand" >
+        SELECT B.BRAND_ID        as id,
+        B.ADVERTISER_ID      as advertiserId,
+        B.BRAND_NAME         as name,
+        B.DESCRIPTION        as description,
+        B.CREATED            as createdDate,
+        B.MODIFIED           as modifiedDate,
+        B.IS_HIDDEN          as isHidden
+        FROM TE_XLS.BRAND B
+        WHERE B.BRAND_ID = #{id} AND (B.LOGICAL_DELETE != 'Y' OR B.LOGICAL_DELETE IS NULL)
+    </select>
+    
+    <select id="brandExists"  parameterType="java.lang.String"
+            resultType="java.lang.Long" >
+        SELECT BRAND_ID
+        FROM TE_XLS.BRAND
+        WHERE BRAND_NAME = '${value}'
+    </select>
+    
+    <select id="brandExistsForSave"  parameterType="java.util.Map"
+            resultType="java.lang.Long" >
+        SELECT COUNT( 1 )
+        FROM BRAND
+        WHERE DUP_BRAND_NAME = LOWER(#{dupName})
+              AND ADVERTISER_ID = #{advertiserId}
+    </select>
+    <select id="brandExistsForUpdate"  parameterType="trueffect.truconnect.api.commons.model.Brand"
+            resultType="java.lang.Long" >
+        SELECT COUNT( 1 )
+        FROM BRAND
+        WHERE DUP_BRAND_NAME = LOWER(#{name})
+              AND ADVERTISER_ID = #{advertiserId}
+              AND BRAND_ID != #{id}
+    </select>
+    
+    <select id="hasActiveCampaign"  parameterType="java.lang.Long"
+            resultType="java.lang.Long" >
+        SELECT COUNT( 1 )
+        FROM CAMPAIGN C
+        WHERE C.BRAND_ID = #{id}
+            AND C.LOGICAL_DELETE = 'N'
+    </select>
+    
+    <select id="hasActiveSiteMeasurement"  parameterType="java.lang.Long"
+            resultType="java.lang.Long" >
+        SELECT COUNT( 1 )
+        FROM   SITE_MEASUREMENT
+        WHERE       BRAND_ID = #{id}
+               AND LOGICAL_DELETE = 'N'
+    </select>
+    
+    <select id="getBrandsByCriteria" parameterType="java.util.Map" 
+            resultType="trueffect.truconnect.api.commons.model.Brand">
+        SELECT BRAND.BRAND_ID        AS id,
+               BRAND.ADVERTISER_ID   AS advertiserId,
+               BRAND.BRAND_NAME      AS name,
+               BRAND.DESCRIPTION     AS description,
+               BRAND.CREATED         AS createdDate,
+               BRAND.MODIFIED        AS modifiedDate,
+               BRAND.is_hidden       AS isHidden
+          FROM TE_XLS.BRAND
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                           ) UADV ON UADV.ADVERTISER_ID = BRAND.ADVERTISER_ID
+               INNER JOIN ADVERTISER A ON UADV.ADVERTISER_ID = A.ADVERTISER_ID
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                             WHERE DECODE(U.LOGICAL_DELETE,'Y','1','0')='0'
+                               AND DECODE(AI.LOGICAL_DELETE,'Y','1','0')='0'
+                               AND (U.USER_ID = #{userId,jdbcType=VARCHAR})
+                          ) AU on AU.AGENCY_ID = A.AGENCY_ID 
+                 AND DECODE(A.LOGICAL_DELETE,'Y','1','0')='0'
+         WHERE DECODE(BRAND.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+                ${order}
+            </if>
+    </select>
+    
+    <select id="getBrandsNumberOfRecordsByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalRecords
+         FROM TE_XLS.BRAND
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                           ) UADV ON UADV.ADVERTISER_ID = BRAND.ADVERTISER_ID
+               INNER JOIN ADVERTISER A ON UADV.ADVERTISER_ID = A.ADVERTISER_ID
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                             WHERE DECODE(U.LOGICAL_DELETE,'Y','1','0')='0'
+                               AND DECODE(AI.LOGICAL_DELETE,'Y','1','0')='0'
+                               AND (U.USER_ID = #{userId,jdbcType=VARCHAR})
+                          ) AU on AU.AGENCY_ID = A.AGENCY_ID 
+                 AND DECODE(A.LOGICAL_DELETE,'Y','1','0')='0'
+        WHERE DECODE(BRAND.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+    
+    <select id="brandNameExists" parameterType="trueffect.truconnect.api.commons.model.Brand" resultType="java.lang.Long">
+        SELECT COUNT (B.BRAND_ID)
+        FROM TE_XLS.BRAND B
+        WHERE LOWER(B.BRAND_NAME) = LOWER(#{name})
+        AND B.ADVERTISER_ID = #{advertiserId}
+        AND ( UPPER( B.LOGICAL_DELETE ) != 'Y' )
+        <if test="id != null">
+            AND B.brand_id != #{id}
+        </if>
+    </select>
+    <select id="getBrandsByAdvertiserId" parameterType="java.util.Map" resultType="Brand">
+        SELECT B.BRAND_ID          AS ID,
+               B.ADVERTISER_ID     AS ADVERTISERID,
+               B.BRAND_NAME        AS NAME,
+               B.DUP_BRAND_NAME    AS DUPBRAND_NAME,
+               B.DESCRIPTION       AS DESCRIPTION,
+               B.LOGICAL_DELETE    AS LOGICALDELETE,
+               B.CREATED_TPWS_KEY  AS CREATEDTPWSKEY,
+               B.MODIFIED_TPWS_KEY AS MODIFIEDTPWSKEY,
+               B.CREATED           AS CREATEDDATE,
+               B.MODIFIED          AS MODIFIEDDATE,
+               B.IS_HIDDEN         AS ISHIDDEN
+          FROM TE_XLS.BRAND B, TE_XLS.ADVERTISER ADV
+         WHERE B.ADVERTISER_ID = ADV.ADVERTISER_ID
+           AND ADV.ADVERTISER_ID = #{advertiserId}
+           AND (UPPER(ADV.LOGICAL_DELETE) != 'Y' OR ADV.LOGICAL_DELETE IS NULL)  
+           AND (UPPER(B.LOGICAL_DELETE) != 'Y' OR B.LOGICAL_DELETE IS NULL) 
+    </select>
+</mapper>

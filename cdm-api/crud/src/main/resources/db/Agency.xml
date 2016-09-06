@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Agency">
+    <resultMap id="agencyResultMap" type="trueffect.truconnect.api.commons.model.Agency">
+        <id     property="id"                  column="AGENCY_ID"/>
+        <result property="domainId"            column="DOMAIN_ID"/>
+        <result property="name"                column="AGENCY_NAME"/>
+        <result property="address1"            column="AG_ADDRESS1"/>
+        <result property="address2"            column="AG_ADDRESS2"/>
+        <result property="city"                column="AG_CITY"/>
+        <result property="state"               column="AG_STATE"/>
+        <result property="zipCode"             column="AG_ZIP"/>
+        <result property="country"             column="AG_COUNTRY"/>
+        <result property="phoneNumber"         column="AG_PHONE"/>
+        <result property="url"                 column="AG_URL"/>
+        <result property="notes"               column="AG_NOTES"/>
+        <result property="isActiveStr"            column="IS_ACTIVE"/>
+        <result property="contactDefault"      column="AG_CONTACT_DEFAULT"/>
+        <result property="faxNumber"           column="AG_FAX"/>
+        <result property="enableHtmlInjection" column="HTML_INJECTION_ENABLE" />
+        <result property="createdDate"         column="CREATED" />
+        <result property="modifiedDate"        column="MODIFIED" />
+    </resultMap>
+    <resultMap id="adSizeResultMap" type="trueffect.truconnect.api.commons.model.Size">
+        <result property="adSizeId"             column="AD_SIZE_ID"/>
+        <result property="agencyId"             column="AGENCY_ID"/>
+        <result property="width"                column="WIDTH"/>
+        <result property="height"               column="HEIGHT"/>
+        <result property="sizeName"             column="SIZE_NAME"/>
+        <result property="createdDate"          column="CREATED"/>
+        <result property="modifiedDate"         column="MODIFIED"/>
+    </resultMap>
+
+    <insert id="saveCompleteAgency" parameterType="java.util.Map">
+        INSERT INTO AGENCY ( AGENCY_ID
+        , AGENCY_NAME
+        , DUP_AGENCY_NAME
+        , ORGANIZATION_ID
+        , DOMAIN_ID
+        , HTML_INJECTION_ENABLE
+        , CREATED
+        , MODIFIED
+        , CREATED_TPWS_KEY
+        , MODIFIED_TPWS_KEY
+        , AG_ADDRESS1
+        , AG_ADDRESS2
+        , AG_CITY
+        , AG_STATE
+        , AG_ZIP
+        , AG_COUNTRY
+        , AG_PHONE
+        , AG_URL
+        , AG_FAX
+        , AG_CONTACT_DEFAULT
+        , AG_NOTES )
+        VALUES ( #{id, jdbcType=NUMERIC}
+        , #{name, jdbcType=VARCHAR}
+        , LOWER(#{name, jdbcType=VARCHAR})
+        , #{organizationId, jdbcType=NUMERIC}
+        , 1
+        , #{htmlInjectionEnable, jdbcType=NUMERIC}
+        , SYSDATE
+        , SYSDATE
+        , #{createdTpwsKey, jdbcType=VARCHAR}
+        , #{createdTpwsKey, jdbcType=VARCHAR}
+        , #{address1, jdbcType=VARCHAR}
+        , #{address2, jdbcType=VARCHAR}
+        , #{city, jdbcType=VARCHAR}
+        , #{state, jdbcType=VARCHAR}
+        , #{zip, jdbcType=VARCHAR}
+        , #{country, jdbcType=VARCHAR}
+        , #{phone, jdbcType=VARCHAR}
+        , #{url, jdbcType=VARCHAR}
+        , #{fax, jdbcType=VARCHAR}
+        , #{contactDefault, jdbcType=VARCHAR}
+        , #{notes, jdbcType=VARCHAR}   )
+
+    </insert>
+    <insert id="saveOrganization" parameterType="java.util.Map">
+        INSERT INTO ORGANIZATION( ORGANIZATION_ID
+        , ORGANIZATION_NAME
+        , DUP_ORGANIZATION_NAME
+        , CREATED
+        , MODIFIED
+        , CREATED_TPWS_KEY
+        , MODIFIED_TPWS_KEY )
+        VALUES ( #{id, jdbcType=NUMERIC}
+        , #{name, jdbcType=VARCHAR}
+        , LOWER( #{name, jdbcType=VARCHAR} )
+        , SYSDATE
+        , SYSDATE
+        , #{createdTpwsKey, jdbcType=VARCHAR}
+        , #{createdTpwsKey, jdbcType=VARCHAR})
+    </insert>
+    <update id="updateCompleteAgency" statementType="CALLABLE" parameterType="java.util.Map">
+        UPDATE AGENCY
+        SET AGENCY_NAME = #{name,jdbcType=VARCHAR},
+        HTML_INJECTION_ENABLE = #{htmlInjectionEnable,jdbcType=NUMERIC},
+        MODIFIED = SYSDATE,
+        MODIFIED_TPWS_KEY = #{createdTpwsKey,jdbcType=VARCHAR},
+        AG_ADDRESS1 = #{address1,jdbcType=VARCHAR},
+        AG_ADDRESS2 = #{address2,jdbcType=VARCHAR},
+        AG_CITY = #{city,jdbcType=VARCHAR},
+        AG_STATE = #{state,jdbcType=VARCHAR},
+        AG_ZIP = #{zip,jdbcType=VARCHAR},
+        AG_COUNTRY = #{country,jdbcType=VARCHAR},
+        AG_PHONE = #{phone,jdbcType=VARCHAR},
+        AG_URL = #{url,jdbcType=VARCHAR},
+        AG_FAX = #{fax,jdbcType=VARCHAR},
+        AG_CONTACT_DEFAULT = #{contactDefault,jdbcType=VARCHAR},
+        AG_NOTES = #{notes,jdbcType=VARCHAR}
+        WHERE  AGENCY_ID = #{id,jdbcType=NUMERIC}
+    </update>
+    <select id="getOrganizationById" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT a.organization_id as id
+        FROM ORGANIZATION A
+        WHERE  a.organization_id = #{value}
+    </select>
+
+    <update id="removeAgency" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.ADMIN_PKG.DeleteAgency(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <select id="getAgency" parameterType="java.lang.Long" resultMap="agencyResultMap">
+        SELECT
+        A.AGENCY_ID,
+        A.AGENCY_NAME,
+        A.AG_PHONE,
+        A.AG_ADDRESS1,
+        A.AG_ADDRESS2,
+        A.AG_CITY,
+        A.AG_STATE,
+        A.AG_ZIP,
+        A.AG_COUNTRY,
+        A.AG_URL,
+        A.AG_FAX,
+        A.AG_CONTACT_DEFAULT,
+        A.AG_NOTES,
+        A.IS_ACTIVE,
+        A.DOMAIN_ID,
+        A.HTML_INJECTION_ENABLE,
+        A.LOGICAL_DELETE,
+        A.CREATED_TPWS_KEY,
+        A.MODIFIED_TPWS_KEY,
+        A.CREATED,
+        A.MODIFIED
+        FROM   AGENCY A
+        WHERE  A.AGENCY_ID = #{value}
+        AND (A.LOGICAL_DELETE = 'N' OR A.LOGICAL_DELETE IS NULL)
+        ORDER BY LOWER(A.AGENCY_NAME)
+    </select>
+
+    <select id="getCampaigns" parameterType="java.util.Map" resultType="CampaignDTO">
+        SELECT
+               C.CAMPAIGN_ID             as id,
+               C.COOKIE_DOMAIN_ID        as cookieDomainId,
+               C.CAMPAIGN_STATUS_ID      as statusId,
+               C.AGENCY_ID               as agencyId,
+               C.BRAND_ID                as brandId,
+               C.CONTACT_ID              as contactId,
+               C.ADVERTISER_ID           as advertiserId,
+               C.CAMPAIGN_NAME           as name,
+               C.DUP_CAMPAIGN_NAME       as dupName,
+               C.START_DATE              as startDate,
+               C.END_DATE                as endDate,
+               C.OBJECTIVE               as objective,
+               C.DESCRIPTION             as description,
+               C.AGENCY_NOTES            as agencyNotes,
+               C.TRAFFIC_TO_OWNER        as trafficToOwner,
+               C.LOGICAL_DELETE          as logicalDelete,
+               C.CREATED_TPWS_KEY        as createdTpwsKey,
+               C.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+               C.CREATED                 as createdDate,
+               C.MODIFIED                as modifiedDate,
+               C.RESOURCE_PATH_ID        as resourcePathId,
+               C.IS_HIDDEN               as isHidden,
+               C.IS_ACTIVE               as isActive,
+               A.ADVERTISER_NAME         as advertiserName,
+               B.BRAND_NAME              as brandName,
+               D.DOMAIN                  as domain
+        FROM TE_XLS.CAMPAIGN C
+            INNER JOIN (
+                <include refid="DataAccessControlPkg.userAdvertisers"/>
+            ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+            INNER JOIN TE_XLS.ADVERTISER A ON A.ADVERTISER_ID = UADV.ADVERTISER_ID
+                AND DECODE(A.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.BRAND B ON B.BRAND_ID = C.BRAND_ID
+                AND DECODE(B.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            LEFT JOIN TE_XLS.COOKIE_DOMAIN D ON D.COOKIE_DOMAIN_ID = C.COOKIE_DOMAIN_ID
+                AND DECODE(D.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE C.AGENCY_ID = #{id,jdbcType=NUMERIC}
+            AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getExistsAgency" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT COUNT (1)
+        FROM AGENCY
+        WHERE  LOWER( agency_name ) = LOWER( '${value}' )
+    </select>
+    
+     
+    <select id="getAllPackagesIds" parameterType="java.lang.Long"
+            resultType="java.lang.Long">
+        SELECT P.PACKAGE_ID
+          FROM TE_XLS.AGENCY AG,
+               TE_XLS.ADVERTISER AD,
+               TE_XLS.BRAND B,
+               TE_XLS.CAMPAIGN C,
+               TE_XLS.PACKAGE P
+         WHERE AG.AGENCY_ID = AD.AGENCY_ID
+           AND AD.ADVERTISER_ID = B.ADVERTISER_ID
+           AND B.BRAND_ID = C.BRAND_ID
+           AND C.CAMPAIGN_ID=P.CAMPAIGN_ID
+           AND AG.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+    </select>
+    
+    <select id="getAllPlacementsIds" parameterType="java.lang.Long"
+            resultType="java.lang.Long">
+        SELECT P.PLACEMENT_ID
+          FROM TE_XLS.AGENCY AG,
+               TE_XLS.ADVERTISER AD,
+               TE_XLS.BRAND B,
+               TE_XLS.CAMPAIGN C,
+               TE_XLS.MEDIA_BUY_CAMPAIGN MBC,
+               TE_XLS.INSERTION_ORDER IO,
+               TE_XLS.PLACEMENT P
+         WHERE AG.AGENCY_ID = AD.AGENCY_ID
+           AND AD.ADVERTISER_ID = B.ADVERTISER_ID
+           AND B.BRAND_ID = C.BRAND_ID
+           AND C.CAMPAIGN_ID=MBC.CAMPAIGN_ID
+           AND IO.MEDIA_BUY_ID=MBC.MEDIA_BUY_ID
+           AND IO.IO_ID=P.IO_ID
+           AND AG.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+    </select>
+</mapper>

@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Campaign">
+
+    <resultMap id="campaignResultMap" type="trueffect.truconnect.api.commons.model.Campaign">
+        <id     property="id"               column="CAMPAIGN_ID"/>
+        <result property="cookieDomainId"   column="COOKIE_DOMAIN_ID"/>
+        <result property="statusId"         column="CAMPAIGN_STATUS_ID"/>
+        <result property="agencyId"         column="AGENCY_ID"/>
+        <result property="brandId"          column="BRAND_ID"/>
+        <result property="contactId"        column="CONTACT_ID"/>
+        <result property="advertiserId"     column="ADVERTISER_ID"/>
+        <result property="name"             column="CAMPAIGN_NAME"/>
+        <result property="dupName"          column="DUP_CAMPAIGN_NAME"/>
+        <result property="startDate"        column="START_DATE"/>
+        <result property="endDate"          column="END_DATE"/>
+        <result property="objective"        column="OBJECTIVE"/>
+        <result property="description"      column="DESCRIPTION"/>
+        <result property="agencyNotes"      column="AGENCY_NOTES"/>
+        <result property="trafficToOwner"   column="TRAFFIC_TO_OWNER"/>
+        <result property="logicalDelete"    column="LOGICAL_DELETE"/>
+        <result property="createdTpwsKey"   column="CREATED_TPWS_KEY"/>
+        <result property="modifiedTpwsKey"  column="MODIFIED_TPWS_KEY"/>
+        <result property="createdDate"      column="CREATED"/>
+        <result property="modifiedDate"     column="MODIFIED"/>
+        <result property="resourcePathId"   column="RESOURCE_PATH_ID"/>
+        <result property="mediaBuyId"       column="MEDIA_BUY_ID"/>
+        <result property="isHidden"         column="IS_HIDDEN"/>
+    </resultMap>
+    
+    <resultMap id="creativeGroupCreativeView" type="trueffect.truconnect.api.commons.model.dto.CreativeGroupCreativeView">
+        <result property="campaignId"                   column="CAMPAIGN_ID"/>
+        <result property="creativeId"                   column="CREATIVE_ID"/>
+        <result property="creativeFileName"             column="FILENAME"/>
+        <result property="creativeAlias"                column="ALIAS"/>
+        <result property="creativeGroupId"              column="CREATIVE_GROUP_ID"/>
+        <result property="creativeGroupName"            column="GROUP_NAME"/>
+        <result property="creativeWidth"                column="WIDTH"/>
+        <result property="creativeHeight"               column="HEIGHT"/>
+        <result property="creativeDefaultClickthrough"  column="CLICKTHROUGH"/>
+        <result property="creativeGroupWeight"          column="WEIGHT"/>
+        <result property="creativeGroupWeightEnabled"   column="ENABLE_GROUP_WEIGHT"/>
+    </resultMap>
+
+    <select id="getCreativeGroupsForCampaign" parameterType="java.lang.Long"
+            resultType="trueffect.truconnect.api.commons.model.dto.CreativeGroupDtoForCampaigns">
+        SELECT cg4c.*
+        <include refid="getDataCreativeGroupsForCampaign"/>
+        WHERE ROWNUMBER > #{inferiorLimit,jdbcType=NUMERIC}
+            AND #{superiorLimit,jdbcType=NUMERIC} >= ROWNUM
+    </select>
+
+    <select id="getCountCreativeGroupsForCampaign" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT count(1)
+        <include refid="getDataCreativeGroupsForCampaign"/>
+    </select>
+
+    <sql id="getDataCreativeGroupsForCampaign">
+        FROM (
+            SELECT cgr.*,
+                ROWNUM AS ROWNUMBER
+            FROM (
+                SELECT cg.CREATIVE_GROUP_ID AS id,
+                    cg.CAMPAIGN_ID AS campaignId,
+                    cg.GROUP_NAME AS NAME,
+                    cg.DO_GEO_TARGET AS doGeoTargeting,
+                    cg.DO_COOKIE_TARGET AS doCookieTargeting,
+                    cg.DO_DAYPART_TARGET AS doDaypartTargeting,
+                    cg.PRIORITY AS priority,
+                    cg.ENABLE_GROUP_WEIGHT AS enableGroupWeight,
+                    (
+                        SELECT count(1)
+                        FROM TE_XLS.creative_group_creative cgcr
+                        INNER JOIN TE_XLS.creative cr
+                            ON cr.CREATIVE_ID = cgcr.CREATIVE_ID
+                                AND DECODE(cr.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                        WHERE DECODE(cgcr.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                            AND cgcr.CREATIVE_GROUP_ID = cg.CREATIVE_GROUP_ID
+                        ) AS numberOfCreativesInGroup,
+                    cg.IS_DEFAULT AS isDefault
+                FROM TE_XLS.CREATIVE_GROUP cg
+                WHERE cg.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+                    AND DECODE(CG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                    GROUP BY cg.CREATIVE_GROUP_ID,
+                    cg.CAMPAIGN_ID,
+                    cg.GROUP_NAME,
+                    cg.DO_GEO_TARGET,
+                    cg.DO_COOKIE_TARGET,
+                    cg.DO_DAYPART_TARGET,
+                    cg.PRIORITY,
+                    cg.ENABLE_GROUP_WEIGHT,
+                    cg.IS_DEFAULT
+                ORDER BY lower(cg.GROUP_NAME)
+                ) cgr
+            ) cg4c
+    </sql>
+
+    <select id="getLimitAdvertisers" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT  U.LIMIT_ADVERTISERS
+        FROM    TE_XLS.USERS U
+        WHERE   U.USER_ID = '${value}'
+        AND     U.LOGICAL_DELETE = 'N'
+    </select>
+
+    <select id="getAdvertiserId" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT      ADVERTISER.ADVERTISER_ID
+        FROM        USERS
+        INNER JOIN  AGENCY_CONTACT
+        ON          USERS.CONTACT_ID = AGENCY_CONTACT.CONTACT_ID
+        INNER JOIN  ADVERTISER
+        ON          AGENCY_CONTACT.AGENCY_ID = ADVERTISER.AGENCY_ID
+        INNER JOIN  BRAND
+        ON          ADVERTISER.ADVERTISER_ID = BRAND.ADVERTISER_ID
+        WHERE       ( USERS.USER_ID = #{userId,jdbcType=VARCHAR} )
+        AND         ( AGENCY_CONTACT.TYPE_ID = 1 )
+        AND         ( BRAND.BRAND_ID = #{brandId,jdbcType=NUMERIC} )
+        AND         USERS.LOGICAL_DELETE = 'N'
+        AND         AGENCY_CONTACT.LOGICAL_DELETE = 'N'
+        AND         ADVERTISER.LOGICAL_DELETE = 'N'
+        AND         BRAND.LOGICAL_DELETE = 'N'
+    </select>
+
+    <select id="getAdvertiserIdElse" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT      ADVERTISER.ADVERTISER_ID
+        FROM        USERS
+        INNER JOIN  AGENCY_CONTACT
+        ON          USERS.CONTACT_ID = AGENCY_CONTACT.CONTACT_ID
+        INNER JOIN  ADVERTISER
+        ON          AGENCY_CONTACT.AGENCY_ID = ADVERTISER.AGENCY_ID
+        INNER JOIN  BRAND
+        ON          ADVERTISER.ADVERTISER_ID = BRAND.ADVERTISER_ID
+        INNER JOIN  USER_ADVERTISER
+        ON          USERS.USER_ID = USER_ADVERTISER.USER_ID
+        AND         ADVERTISER.ADVERTISER_ID = USER_ADVERTISER.ADVERTISER_ID
+        WHERE       ( USERS.USER_ID = #{userId,jdbcType=VARCHAR} )
+        AND         ( AGENCY_CONTACT.TYPE_ID = 1 )
+        AND         ( BRAND.BRAND_ID = #{brandId,jdbcType=NUMERIC} )
+        AND         USERS.logical_delete = 'N'
+        AND         AGENCY_CONTACT.logical_delete = 'N'
+        AND         ADVERTISER.logical_delete = 'N'
+        AND         BRAND.logical_delete = 'N'
+    </select>
+
+    <select id="getCampaignCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT  COUNT( 1 )
+        FROM    BRAND INNER JOIN CAMPAIGN ON BRAND.BRAND_ID = CAMPAIGN.BRAND_ID
+        WHERE   ( BRAND.BRAND_ID = #{brandId,jdbcType=NUMERIC} )
+        AND     ( CAMPAIGN.DUP_CAMPAIGN_NAME = LOWER( #{name,jdbcType=VARCHAR} ) )
+    </select>
+
+    <insert id="saveCampaign" parameterType="java.util.Map">
+        INSERT INTO CAMPAIGN(
+        CAMPAIGN_ID,
+        COOKIE_DOMAIN_ID,
+        AGENCY_ID,
+        ADVERTISER_ID,
+        BRAND_ID,
+        CAMPAIGN_NAME,
+        DUP_CAMPAIGN_NAME,
+        CAMPAIGN_STATUS_ID,
+        START_DATE,
+        END_DATE,
+        DESCRIPTION,
+        LOGICAL_DELETE,
+        CREATED_TPWS_KEY,
+        MODIFIED_TPWS_KEY,
+        CREATED,
+        MODIFIED,
+        RESOURCE_PATH_ID)
+        VALUES (    #{id,jdbcType=NUMERIC},
+                    #{cookieDomainId,jdbcType=NUMERIC},
+                    #{agencyId,jdbcType=NUMERIC},
+                    #{advertiserId,jdbcType=NUMERIC},
+                    #{brandId,jdbcType=NUMERIC},
+                    #{name,jdbcType=VARCHAR},
+                    LOWER( #{name,jdbcType=VARCHAR} ),
+                    1,
+                    #{startDate,jdbcType=TIMESTAMP},
+                    #{endDate,jdbcType=TIMESTAMP},
+                    #{description,jdbcType=VARCHAR},
+                    'N',
+                    #{tpwsKey,jdbcType=VARCHAR},
+                    #{tpwsKey,jdbcType=VARCHAR},
+                    SYSDATE,
+                    SYSDATE,
+                    #{resourcePathId,jdbcType=NUMERIC})
+    </insert>
+
+    <update id="updateCampaign" parameterType="trueffect.truconnect.api.commons.model.Campaign" statementType="PREPARED">
+        UPDATE CAMPAIGN
+        SET
+          AGENCY_ID = #{agencyId,jdbcType=NUMERIC},
+          ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC},
+          BRAND_ID = #{brandId,jdbcType=NUMERIC},
+          CAMPAIGN_NAME = #{name,jdbcType=VARCHAR},
+          DUP_CAMPAIGN_NAME = #{dupName,jdbcType=VARCHAR},
+          <if test="statusId != null">
+              CAMPAIGN_STATUS_ID = #{statusId,jdbcType=NUMERIC},
+          </if>
+          <if test="startDate != null">
+              START_DATE = #{startDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="endDate != null">
+              END_DATE = #{endDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="objective != null">
+              OBJECTIVE = #{objective,jdbcType=VARCHAR},
+          </if>
+          <if test="description != null">
+              DESCRIPTION = #{description,jdbcType=VARCHAR},
+          </if>
+          <if test="agencyNotes != null">
+              AGENCY_NOTES = #{agencyNotes,jdbcType=VARCHAR},
+          </if>
+          <if test="contactId != null">
+              CONTACT_ID = #{contactId,jdbcType=NUMERIC},
+          </if>
+          <if test="trafficToOwner != null">
+              TRAFFIC_TO_OWNER = #{trafficToOwner,jdbcType=NUMERIC},
+          </if>
+          <if test="cookieDomainId != null">
+              COOKIE_DOMAIN_ID = #{cookieDomainId,jdbcType=NUMERIC},
+          </if>
+          <if test="logicalDelete != null">
+              LOGICAL_DELETE = #{logicalDelete,jdbcType=CHAR},
+          </if>
+          <if test="resourcePathId != null">
+              RESOURCE_PATH_ID = #{resourcePathId,jdbcType=NUMERIC},
+          </if>
+          <if test="isHidden != null">
+              IS_HIDDEN = #{isHidden,jdbcType=CHAR},
+          </if>
+          <if test="isActive != null">
+              IS_ACTIVE = #{isActive,jdbcType=CHAR},
+          </if>
+          MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR},
+          MODIFIED = SYSDATE
+        WHERE
+          CAMPAIGN_ID = #{id,jdbcType=NUMERIC}
+    </update>
+
+    <insert id="insertMediaBuy" parameterType="java.util.Map">
+        INSERT INTO MEDIA_BUY( MEDIA_BUY_ID,
+        AGENCY_ID,
+        BUY_NAME,
+        STATE,
+        OVERALL_BUDGET,
+        CREATED_TPWS_KEY,
+        MODIFIED_TPWS_KEY,
+        CREATED,
+        MODIFIED )
+        VALUES (
+                    #{mediaBuyId,jdbcType=NUMERIC},
+                    #{agencyId,jdbcType=NUMERIC},
+                    #{mbName,jdbcType=VARCHAR},
+                    #{mbState,jdbcType=VARCHAR},
+                    #{mbBudget,jdbcType=NUMERIC},
+                    #{tpwsKey,jdbcType=VARCHAR},
+                    #{tpwsKey,jdbcType=VARCHAR},
+                    SYSDATE,
+                    SYSDATE )
+    </insert>
+
+    <insert id="insertMediaBuyCampaign" parameterType="java.util.Map">
+        INSERT INTO MEDIA_BUY_CAMPAIGN(
+        CAMPAIGN_ID,
+        MEDIA_BUY_ID,
+        LOGICAL_DELETE,
+        CREATED_TPWS_KEY,
+        MODIFIED_TPWS_KEY,
+        CREATED,
+        MODIFIED )
+        VALUES (
+                    #{id,jdbcType=NUMERIC},
+                    #{mediaBuyId,jdbcType=NUMERIC},
+                    'N',
+                    #{tpwsKey,jdbcType=VARCHAR},
+                    #{tpwsKey,jdbcType=VARCHAR},
+                    SYSDATE,
+                    SYSDATE )
+    </insert>
+
+    <select id="checkForDuplicateName" parameterType="trueffect.truconnect.api.commons.model.Campaign" resultType="java.lang.Long">
+        SELECT
+          COUNT(1)
+        FROM
+          CAMPAIGN
+        WHERE
+          DUP_CAMPAIGN_NAME = LOWER(#{name,jdbcType=VARCHAR})
+          AND
+          BRAND_ID = #{brandId,jdbcType=NUMERIC}
+          AND
+          CAMPAIGN_ID != #{id,jdbcType=NUMERIC}
+    </select>
+
+    <select id="getOnlyCampaign" parameterType="java.lang.Long" resultType="Campaign">
+        SELECT C.CAMPAIGN_ID         as id,
+               C.COOKIE_DOMAIN_ID    as cookieDomainId,
+               C.CAMPAIGN_STATUS_ID  as statusId,
+               C.AGENCY_ID           as agencyId,
+               C.BRAND_ID            as brandId,
+               C.CONTACT_ID          as contactId,
+               C.ADVERTISER_ID       as advertiserId,
+               C.CAMPAIGN_NAME       as name,
+               C.DUP_CAMPAIGN_NAME   as dupName,
+               C.START_DATE          as startDate,
+               C.END_DATE            as endDate,
+               C.OBJECTIVE           as objective,
+               C.DESCRIPTION         as description,
+               C.AGENCY_NOTES        as agencyNotes,
+               C.TRAFFIC_TO_OWNER    as trafficToOwner,
+               C.LOGICAL_DELETE      as logicalDelete,
+               C.CREATED_TPWS_KEY    as createdTpwsKey,
+               C.MODIFIED_TPWS_KEY   as modifiedTpwsKey,
+               C.CREATED             as createdDate,
+               C.MODIFIED            as modifiedDate,
+               C.RESOURCE_PATH_ID    as resourcePathId,
+               C.IS_HIDDEN           as isHidden,
+               C.IS_ACTIVE           as isActive,
+               MB.OVERALL_BUDGET     as overallBudget,
+               ta.registered_user_id as userId
+          FROM TE_XLS.CAMPAIGN C
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON ( C.CAMPAIGN_ID = MBC.CAMPAIGN_ID )
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON ( MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID )
+               INNER JOIN TE_XLS.TPWSKEY_ARCHIVE TA ON (C.CREATED_TPWS_KEY = TA.KEY)
+         WHERE C.CAMPAIGN_ID = #{value}
+           AND (C.LOGICAL_DELETE = 'N')
+           AND (MB.LOGICAL_DELETE = 'N')
+           AND (MBC.LOGICAL_DELETE = 'N')
+    </select>
+
+    <select id="getCurrentStatus"  parameterType="java.lang.Long"
+            resultType="java.lang.Long" >
+        SELECT CAMPAIGN_STATUS_ID
+        FROM TE_XLS.CAMPAIGN
+        WHERE CAMPAIGN_ID = #{value}
+    </select>
+
+    <update id="setStatus" parameterType="java.util.Map">
+        UPDATE  CAMPAIGN
+        SET     CAMPAIGN_STATUS_ID = #{statusId,jdbcType=NUMERIC}
+        WHERE   LOGICAL_DELETE = 'N'
+        AND     CAMPAIGN_ID = #{id,jdbcType=NUMERIC}
+    </update>
+
+    <update id="setStatusIfTrafficked" parameterType="java.util.Map">
+        UPDATE  CREATIVE_INSERTION
+        SET     RELEASED = 1
+        WHERE   CAMPAIGN_ID = #{id,jdbcType=NUMERIC}
+        AND     RELEASED = 0
+        AND     LOGICAL_DELETE = 'N'
+    </update>
+
+    <update id="updateDomainId" parameterType="java.util.Map">
+        UPDATE
+            TE_XLS.CAMPAIGN
+        SET
+            COOKIE_DOMAIN_ID = #{cookieDomainId,jdbcType=NUMERIC},
+            MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR},
+            MODIFIED = SYSDATE
+        WHERE
+            CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC} AND
+            DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+    </update>
+
+    <!-- Queries: utilities campaign-->
+    <select id="getCountCampaignsByAdvertiserBrand" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM TE_XLS.CAMPAIGN C
+         WHERE C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC,mode=IN}
+           AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC,mode=IN}
+            <if test="ids != null and ids.size() > 0">
+               AND C.CAMPAIGN_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: utilities campaign-->
+</mapper>

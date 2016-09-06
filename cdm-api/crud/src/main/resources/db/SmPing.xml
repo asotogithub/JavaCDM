@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SmPing">
+    <select id="getSmPingEvent" parameterType="java.lang.Long" resultType="SmPingEventDTO">
+        SELECT
+        SM_EVENT.SM_EVENT_ID                            AS id,
+        SM_EVENT.SM_GROUP_ID                            AS smGroupId,
+        SM_EVENT.EVENT_NAME                             AS eventName,
+        SM_EVENT.LOCATION                               AS location,
+        SM_EVENT.EVENT_TYPE                             AS eventType,
+        SM_EVENT.SM_EVENT_TYPE                          AS smEventType,
+        SM_GROUP.GROUP_NAME                             AS groupName,
+        SM_EVENT_PING_ID                                AS pingId,
+        SM_EVENT_PING.PING_CONTENT                      AS pingContent,
+        SM_EVENT_PING.DESCRIPTION                       AS description,
+        SM_EVENT_PING.SITE_ID                           AS siteId,
+        SITE.SITE_NAME                                  AS siteName,
+        SM_EVENT_PING.PING_TYPE                         AS pingType,
+        SM_EVENT_PING.TAG_TYPE                          AS pingTagType
+        FROM TE_XLS.SM_EVENT
+        INNER JOIN TE_XLS.SM_GROUP
+        ON SM_EVENT.SM_GROUP_ID = SM_GROUP.SM_GROUP_ID
+        AND DECODE(SM_GROUP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN TE_XLS.SM_EVENT_PING
+        ON SM_EVENT_PING.SM_EVENT_ID = SM_EVENT.SM_EVENT_ID
+        AND DECODE(SM_EVENT_PING.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN TE_XLS.SITE
+        ON SITE.SITE_ID = SM_EVENT_PING.SITE_ID
+        AND DECODE(SITE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE DECODE(SM_EVENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        AND SM_EVENT_PING.SM_EVENT_PING_ID = #{id}
+    </select>
+    <update id="deletePings" parameterType="java.util.Map">
+     UPDATE TE_XLS.SM_EVENT_PING
+     SET LOGICAL_DELETE = 'Y',
+         MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+         MODIFIED = SYSDATE
+     WHERE LOGICAL_DELETE='N' AND SM_EVENT_PING_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+    </update>
+    <insert id="insertSmEventPing" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.InsertSMEventPing(
+        #{pingId,jdbcType=NUMERIC,mode=IN},
+        #{smEventId,jdbcType=NUMERIC,mode=IN},
+        #{siteId,jdbcType=NUMERIC,mode=IN},
+        #{pingContent,jdbcType=VARCHAR,mode=IN},
+        #{pingDescription,jdbcType=VARCHAR,mode=IN},
+        #{pingType,jdbcType=NUMERIC,mode=IN},
+        #{pingTagType,jdbcType=NUMERIC,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN})}
+    </insert>
+    <update id="updateSmEventPing" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.UpDateSMEventPing(
+        #{pingId,jdbcType=NUMERIC,mode=IN},
+        #{pingContent,jdbcType=VARCHAR,mode=IN},
+        #{pingDescription,jdbcType=VARCHAR,mode=IN},
+        #{pingType,jdbcType=NUMERIC,mode=IN},
+        #{pingTagType,jdbcType=NUMERIC,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN})}
+    </update>
+
+</mapper>

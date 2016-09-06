@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logImpl" value="COMMONS_LOGGING"/>
+    </settings>
+    <typeAliases>
+        <typeAlias alias="DimPackageCostDetail" type="trueffect.truconnect.api.commons.model.dim.DimPackageCostDetail"/>
+        <typeAlias alias="DimPackageDTO" type="trueffect.truconnect.api.commons.model.dto.dim.DimPackageDTO"/>
+        <typeAlias alias="DimPlacementCost" type="trueffect.truconnect.api.commons.model.dim.DimPlacementCost"/>
+        <typeAlias alias="DimPlacementCostDetail" type="trueffect.truconnect.api.commons.model.dim.DimPlacementCostDetail"/>
+        <typeAlias alias="DimProductBuyCost" type="trueffect.truconnect.api.commons.model.dim.DimProductBuyCost"/>
+        <typeAlias alias="PackagePlacement" type="trueffect.truconnect.api.commons.model.PackagePlacement"/>
+    </typeAliases>
+    <environments default="property">
+        <environment id="property">
+            <transactionManager type="JDBC" />
+            <dataSource type="trueffect.truconnect.api.crud.mybatis.C3P0DataSourceFactory">
+                <property name="dataSourceName" value="DIM" />
+                <property name="driverClass" value="${driver}" />
+                <property name="jdbcUrl" value="${url}" />
+                <property name="user" value="${username}" />
+                <property name="password" value="${password}" />
+                <property name="acquireIncrement" value="1" />
+                <property name="initialPoolSize" value="1" />
+                <property name="minPoolSize" value="1" />
+                <property name="maxPoolSize" value="30" />
+                <property name="maxIdleTime" value="3600" />
+                <property name="contextClassLoaderSource" value="library" />
+                <property name="privilegeSpawnedThreads" value="true" />
+                <property name="idleConnectionTestPeriod" value="3600" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="db/dim/CostDetail.xml" />
+        <mapper resource="db/dim/Package.xml" />
+    </mappers>
+</configuration>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GeoLocation">
+    <select id="getLocations" parameterType="java.lang.String" resultType="trueffect.truconnect.api.commons.model.GeoLocation">
+        SELECT  TV.TARGET_VALUE_ID        as id,
+                TV.TYPE_ID                as typeId,
+                TV.TARGET_CODE            as code,
+                TV.TARGET_LABEL           as label,
+                TV.PARENT_CODE            as parentCode
+        FROM    TE_XLS.TARGET_VALUE TV
+        JOIN    TE_XLS.TARGET_TYPE TT on TV.TYPE_ID = TT.TYPE_ID
+        WHERE   TT.TYPE_CODE = #{value}
+    </select>
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CookieDomain">
+
+    <update id="insertCookieDomain" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL COOKIE_PKG.InsertCookieDomain(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{agencyId,jdbcType=NUMERIC,mode=IN},
+        #{domain,jdbcType=VARCHAR,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    
+    <update id="deleteCookieDomain" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL COOKIE_PKG.DeleteCookieDomain(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+   
+    <select id="getCookieDomain" parameterType="java.lang.Long"
+            resultType="trueffect.truconnect.api.commons.model.CookieDomain">
+        SELECT COOKIE_DOMAIN_ID     AS id
+            , AGENCY_ID             AS agencyId
+            , DOMAIN                AS domain
+            , LOGICAL_DELETE        AS logicalDelete
+            , CREATED_TPWS_KEY      AS createdTpwsKey
+            , MODIFIED_TPWS_KEY     AS modifiedTpwsKey
+            , CREATED               AS createdDate
+            , MODIFIED              AS modifiedDate
+            , COOKIE_DOMAIN_ROOT_ID AS cookieDomainRootId
+        FROM TE_XLS.COOKIE_DOMAIN
+        WHERE COOKIE_DOMAIN_ID = #{id}
+        AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL )
+
+    </select>
+        
+    <select id="existsCookieDomain" parameterType="java.util.Map"
+                resultType="java.lang.String">
+        SELECT DECODE(count(*),0,'false','true')
+        FROM TE_XLS.COOKIE_DOMAIN
+        WHERE LOWER(DOMAIN) = LOWER(#{domain,jdbcType=VARCHAR})
+        AND AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+        AND ( LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL )
+    </select>
+
+    <select id="getUserDomains" parameterType="java.lang.String" resultType="trueffect.truconnect.api.commons.model.dto.CookieDomainDTO">
+        SELECT
+            D.COOKIE_DOMAIN_ID              as id,
+            D.AGENCY_ID                     as agencyId,
+            D.DOMAIN                        as domain,
+            D.LOGICAL_DELETE                as logicalDelete,
+            D.CREATED_TPWS_KEY              as createdTpwsKey,
+            D.MODIFIED_TPWS_KEY             as modifiedTpwsKey,
+            D.CREATED                       as createdDate,
+            D.MODIFIED                      as modifiedDate,
+            D.COOKIE_DOMAIN_ROOT_ID         as cookieDomainRootId,
+            CASE LOWER(D.DOMAIN)
+            WHEN 'ad.adlegend.com' THEN 'Y'
+            WHEN 'ad.adlegend.net' THEN 'Y'
+            WHEN 'qa.adlegend.net' THEN 'Y'
+            WHEN 'int.adlegend.net' THEN 'Y'
+            ELSE 'N'
+            END                             as isThirdParty
+        FROM COOKIE_DOMAIN D
+            INNER JOIN AGENCY A ON A.AGENCY_ID = D.AGENCY_ID
+            INNER JOIN USERS U ON U.AGENCY_ID = A.AGENCY_ID
+        WHERE U.USER_ID = '${value}'
+            AND UPPER(U.LIMIT_DOMAINS) = 'N'
+        UNION
+        SELECT
+            D.COOKIE_DOMAIN_ID              as id,
+            D.AGENCY_ID                     as agencyId,
+            D.DOMAIN                        as domain,
+            D.LOGICAL_DELETE                as logicalDelete,
+            D.CREATED_TPWS_KEY              as createdTpwsKey,
+            D.MODIFIED_TPWS_KEY             as modifiedTpwsKey,
+            D.CREATED                       as createdDate,
+            D.MODIFIED                      as modifiedDate,
+            D.COOKIE_DOMAIN_ROOT_ID         as cookieDomainRootId,
+            CASE LOWER(D.DOMAIN)
+            WHEN 'ad.adlegend.com' THEN 'Y'
+            WHEN 'ad.adlegend.net' THEN 'Y'
+            WHEN 'qa.adlegend.net' THEN 'Y'
+            WHEN 'int.adlegend.net' THEN 'Y'
+            ELSE 'N'
+            END                             as isThirdParty
+        FROM COOKIE_DOMAIN D
+            INNER JOIN USER_DOMAIN UD ON D.COOKIE_DOMAIN_ID = UD.DOMAIN_ID
+            INNER JOIN USERS U ON U.USER_ID = UD.USER_ID
+        WHERE U.USER_ID = '${value}'
+            AND UPPER(U.LIMIT_DOMAINS) = 'Y'
+    </select>
+</mapper>

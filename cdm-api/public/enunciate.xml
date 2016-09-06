@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enunciate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://enunciate.webcohesion.com/schemas/enunciate-2.5.0.xsd">
+    <!--TODO Reenable when we fix the problem with Entities not being documented propely-->
+    <api-classes>
+        <include pattern="trueffect.truconnect.api.commons.model.Size"/>
+        <exclude pattern="com.fasterxml.jackson.core.**"/>
+        <!--<exclude pattern="com.microsoft.schemas._2003._10.serialization.arrays.**"/>-->
+    </api-classes>
+    <modules>
+        <c-xml-client disabled="true"/>
+        <csharp-xml-client disabled="true"/>
+        <java-json-client disabled="true"/>
+        <java-xml-client disabled="true"/>
+        <javascript-client disabled="true"/>
+        <gwt-json-overlay disabled="true"/>
+        <obj-c-xml-client disabled="true"/>
+        <php-json-client disabled="true"/>
+        <php-xml-client disabled="true"/>
+        <java-json-client disabled="true"/>
+        <ruby-json-client disabled="true"/>
+        <swagger disabled="false" />
+        <jaxws disabled="true" />
+        <jackson disabled="true" />
+    </modules>
+</enunciate>

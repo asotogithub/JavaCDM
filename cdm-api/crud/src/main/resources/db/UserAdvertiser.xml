@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserAdvertiser">
+    <!--Add_User_AdvertiserRef-->
+    <update id="addUserAdvertiserRef" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL USER_PKG.Add_User_AdvertiserRef(
+                #{userId,jdbcType=VARCHAR,mode=IN},
+                #{advertiserId,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--Clear_User_AdvertiserRefs-->
+    <update id="cleanUserAdvertiserRef" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL USER_PKG.Clear_User_AdvertiserRefs(#{userId,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    
+</mapper>

@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CreativeGroup">
+    <resultMap id="creativeGroupResultMap" type="trueffect.truconnect.api.commons.model.CreativeGroup">
+        <id     property="id"                    column="CREATIVE_GROUP_ID" />
+        <result property="campaignId"            column="CAMPAIGN_ID" />
+        <result property="name"                  column="GROUP_NAME" />
+        <result property="rotationType"          column="ROTATION_TYPE" />
+        <result property="impressionCap"         column="IMPRESSION_CAP" />
+        <result property="clickthroughCap"       column="CLICKTHROUGH_CAP" />
+        <result property="weight"                column="WEIGHT" />
+        <result property="isReleased"            column="RELEASED" />
+        <result property="isDefault"             column="IS_DEFAULT" />
+        <result property="cookieTarget"          column="COOKIE_TARGET" />
+        <result property="doOptimization"        column="DO_OPTIMIZATION" />
+        <result property="optimizationType"      column="OPTIMIZATION_TYPE" />
+        <result property="optimizationSpeed"     column="OPTIMIZATION_SPEED" />
+        <result property="minOptimizationWeight" column="MIN_OPTIMIZATION_WEIGHT" />
+        <result property="doGeoTargeting"        column="DO_GEO_TARGET" />
+        <result property="doCookieTargeting"     column="DO_COOKIE_TARGET" />
+        <result property="doStoryboarding"       column="DO_STORYBOARDING" />
+        <result property="createdDate"           column="CREATED" />
+        <result property="modifiedDate"          column="MODIFIED" />
+        <result property="daypartTarget"         column="DAYPART_TARGET" />
+        <result property="doDaypartTargeting"    column="DO_DAYPART_TARGET" />
+        <result property="enableGroupWeight"     column="ENABLE_GROUP_WEIGHT"/>
+        <result property="priority"              column="PRIORITY"/>
+        <result property="enableFrequencyCap"    column="ENABLE_FREQUENCY_CAP"/>
+        <result property="frequencyCap"          column="FREQUENCY_CAP"/>
+        <result property="frequencyCapWindow"    column="FREQUENCY_CAP_WINDOW"/>
+    </resultMap>
+
+    <select id="getCreativeGroup" parameterType="java.lang.Long" resultType="trueffect.truconnect.api.commons.model.CreativeGroup">
+        SELECT  CG.CREATIVE_GROUP_ID       as id,
+                CG.CAMPAIGN_ID             as campaignId,
+                CG.GROUP_NAME              as name,
+                CG.ROTATION_TYPE           as rotationType,
+                CG.IMPRESSION_CAP          as impressionCap,
+                CG.CLICKTHROUGH_CAP        as clickthroughCap,
+                CG.WEIGHT                  as weight,
+                CG.RELEASED                as isReleased,
+                CG.IS_DEFAULT              as isDefault,
+                CG.COOKIE_TARGET           as cookieTarget,
+                CG.DO_OPTIMIZATION         as doOptimization,
+                CG.OPTIMIZATION_TYPE       as optimizationType,
+                CG.OPTIMIZATION_SPEED      as optimizationSpeed,
+                CG.MIN_OPTIMIZATION_WEIGHT as minOptimizationWeight,
+                CG.DO_GEO_TARGET           as doGeoTargeting,
+                CG.DO_COOKIE_TARGET        as doCookieTargeting,
+                CG.DO_STORYBOARDING        as doStoryboarding,
+                CG.CREATED                 as createdDate,
+                CG.MODIFIED                as modifiedDate,
+                CG.CREATED_TPWS_KEY        as createdTpwsKey,
+                CG.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+                CG.DAYPART_TARGET          as daypartTarget,
+                CG.DO_DAYPART_TARGET       as doDaypartTargeting,
+                CG.ENABLE_GROUP_WEIGHT     as enableGroupWeight,
+                CG.PRIORITY                as priority,
+                CG.ENABLE_FREQUENCY_CAP    as enableFrequencyCap,
+                CG.FREQUENCY_CAP           as frequencyCap,
+                CG.FREQUENCY_CAP_WINDOW    as frequencyCapWindow,
+                EXT.externalId             as externalId
+        FROM TE_XLS.CREATIVE_GROUP CG
+            LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeGroupId, EPV.VALUE as externalId
+                    FROM EXTENDED_PROPERTIES EP
+                      INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                    WHERE  LOWER(OBJECT_NAME) = LOWER('CreativeGroup') AND LOWER(FIELD_NAME) = LOWER('MediaID'))  EXT ON EXT.creativeGroupId = CG.CREATIVE_GROUP_ID
+        WHERE ( CG.LOGICAL_DELETE = 'N' ) AND ( CG.CREATIVE_GROUP_ID = #{value} )
+        ORDER BY CG.GROUP_NAME
+    </select>
+    
+    <select id="getCreativeGroupTargets"  parameterType="java.lang.Long"
+                resultType="trueffect.truconnect.api.commons.model.CreativeGroupTarget" >
+        SELECT  cgt.TARGET_VALUE_ID   as valueId,
+                cgt.LOGICAL_DELETE    as logicalDelete,
+                cgt.CREATED_TPWS_KEY  as createdTpwsKey,
+                cgt.MODIFIED_TPWS_KEY as modifiedTpwsKey,
+                cgt.CREATED           as createdDate,
+                cgt.MODIFIED          as modifieddate,
+                tt.TYPE_CODE          as typeCode,
+                cgt.IS_ANTI_TARGET    as antiTarget,
+                tv.TARGET_LABEL       as targetLabel
+        FROM    TE_XLS.CREATIVE_GROUP_TARGET cgt
+        JOIN    TE_XLS.TARGET_VALUE tv on cgt.TARGET_VALUE_ID = tv.TARGET_VALUE_ID
+        JOIN    TE_XLS.TARGET_TYPE tt on tv.TYPE_ID = tt.TYPE_ID
+        WHERE   cgt.CREATIVE_GROUP_ID = #{value}
+        AND     (cgt.LOGICAL_DELETE   != 'Y' OR cgt.LOGICAL_DELETE IS NULL)
+    </select>
+    
+    <select id="getCreativeGroupsByCriteria" parameterType="java.util.Map"  resultType="CreativeGroup">
+        SELECT CREATIVE_GROUP.CREATIVE_GROUP_ID    as id,
+               CREATIVE_GROUP.CAMPAIGN_ID             as campaignId,
+               CREATIVE_GROUP.GROUP_NAME              as name,
+               CREATIVE_GROUP.ROTATION_TYPE           as rotationType,
+               CREATIVE_GROUP.IMPRESSION_CAP          as impressionCap,
+               CREATIVE_GROUP.CLICKTHROUGH_CAP        as clickthroughCap,
+               CREATIVE_GROUP.WEIGHT                  as weight,
+               CREATIVE_GROUP.RELEASED                as isReleased,
+               CREATIVE_GROUP.IS_DEFAULT              as isDefault,
+               CREATIVE_GROUP.COOKIE_TARGET           as cookieTarget,
+               CREATIVE_GROUP.DO_OPTIMIZATION         as doOptimization,
+               CREATIVE_GROUP.OPTIMIZATION_TYPE       as optimizationType,
+               CREATIVE_GROUP.OPTIMIZATION_SPEED      as optimizationSpeed,
+               CREATIVE_GROUP.MIN_OPTIMIZATION_WEIGHT as minOptimizationWeight,
+               CREATIVE_GROUP.DO_GEO_TARGET           as doGeoTargeting,
+               CREATIVE_GROUP.DO_COOKIE_TARGET        as doCookieTargeting,
+               CREATIVE_GROUP.DO_STORYBOARDING        as doStoryboarding,
+               CREATIVE_GROUP.CREATED                 as createdDate,
+               CREATIVE_GROUP.MODIFIED                as modifiedDate,
+               CREATIVE_GROUP.CREATED_TPWS_KEY        as createdTpwsKey,
+               CREATIVE_GROUP.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+               CREATIVE_GROUP.DAYPART_TARGET          as daypartTarget,
+               CREATIVE_GROUP.DO_DAYPART_TARGET       as doDaypartTargeting,
+               CREATIVE_GROUP.ENABLE_GROUP_WEIGHT     as enableGroupWeight,
+               CREATIVE_GROUP.PRIORITY                as priority,
+               CREATIVE_GROUP.ENABLE_FREQUENCY_CAP    as enableFrequencyCap,
+               CREATIVE_GROUP.FREQUENCY_CAP           as frequencyCap,
+               CREATIVE_GROUP.FREQUENCY_CAP_WINDOW    as frequencyCapWindow,
+               EXT.EXTERNALID                         as externalId
+          FROM CREATIVE_GROUP
+               INNER JOIN CAMPAIGN C ON CREATIVE_GROUP.CAMPAIGN_ID = C.CAMPAIGN_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+               INNER JOIN AGENCY A ON C.AGENCY_ID = A.AGENCY_ID
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U INNER JOIN AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                             WHERE U.USER_ID = #{userId,jdbcType=VARCHAR}
+                               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeGroupId, EPV.VALUE as externalId
+                                  FROM EXTENDED_PROPERTIES EP
+                                       INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                 WHERE LOWER(OBJECT_NAME) = LOWER('CreativeGroup')
+                                   AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                                )  EXT ON EXT.creativeGroupId = CREATIVE_GROUP.CREATIVE_GROUP_ID
+        WHERE DECODE(CREATIVE_GROUP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(A.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+        <if test="order != null">
+               ${order}
+           </if>
+    </select>
+
+    <select id="getCreativeGroupByIds" parameterType="java.util.Map" resultType="CreativeGroup">
+        SELECT  CG.CREATIVE_GROUP_ID       as id,
+                CG.CAMPAIGN_ID             as campaignId,
+                CG.GROUP_NAME              as name,
+                CG.ROTATION_TYPE           as rotationType,
+                CG.IMPRESSION_CAP          as impressionCap,
+                CG.CLICKTHROUGH_CAP        as clickthroughCap,
+                CG.WEIGHT                  as weight,
+                CG.RELEASED                as isReleased,
+                CG.IS_DEFAULT              as isDefault,
+                CG.COOKIE_TARGET           as cookieTarget,
+                CG.DO_OPTIMIZATION         as doOptimization,
+                CG.OPTIMIZATION_TYPE       as optimizationType,
+                CG.OPTIMIZATION_SPEED      as optimizationSpeed,
+                CG.MIN_OPTIMIZATION_WEIGHT as minOptimizationWeight,
+                CG.DO_GEO_TARGET           as doGeoTargeting,
+                CG.DO_COOKIE_TARGET        as doCookieTargeting,
+                CG.DO_STORYBOARDING        as doStoryboarding,
+                CG.CREATED                 as createdDate,
+                CG.MODIFIED                as modifiedDate,
+                CG.CREATED_TPWS_KEY        as createdTpwsKey,
+                CG.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+                CG.DAYPART_TARGET          as daypartTarget,
+                CG.DO_DAYPART_TARGET       as doDaypartTargeting,
+                CG.ENABLE_GROUP_WEIGHT     as enableGroupWeight,
+                CG.PRIORITY                as priority,
+                CG.ENABLE_FREQUENCY_CAP    as enableFrequencyCap,
+                CG.FREQUENCY_CAP           as frequencyCap,
+                CG.FREQUENCY_CAP_WINDOW    as frequencyCapWindow,
+                EXT.externalId             as externalId
+           FROM TE_XLS.CREATIVE_GROUP CG
+                LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeGroupId, EPV.VALUE as externalId
+                                   FROM EXTENDED_PROPERTIES EP
+                                        INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                  WHERE LOWER(OBJECT_NAME) = LOWER('CreativeGroup') 
+                                    AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                                )  EXT ON EXT.creativeGroupId = CG.CREATIVE_GROUP_ID
+          WHERE CG.CREATIVE_GROUP_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>        
+    
+    <select id="getCreativeGroupsNumberOfRecordsByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalRecords
+          FROM CREATIVE_GROUP
+               INNER JOIN CAMPAIGN C ON CREATIVE_GROUP.CAMPAIGN_ID = C.CAMPAIGN_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+               INNER JOIN AGENCY A ON C.AGENCY_ID = A.AGENCY_ID
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U INNER JOIN AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                             WHERE U.USER_ID = #{userId,jdbcType=VARCHAR}
+                               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeGroupId, EPV.VALUE as externalId
+                                  FROM EXTENDED_PROPERTIES EP
+                                       INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                 WHERE LOWER(OBJECT_NAME) = LOWER('CreativeGroup')
+                                   AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                               ) EXT ON EXT.creativeGroupId = CREATIVE_GROUP.CREATIVE_GROUP_ID
+        WHERE DECODE(CREATIVE_GROUP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(A.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+
+    <insert id="saveCreativeGroup" parameterType="java.util.Map">
+    INSERT INTO creative_group( creative_group_id, campaign_id, group_name, rotation_type, 
+        impression_cap, clickthrough_cap, weight, released, is_default, cookie_target, 
+        daypart_target, do_optimization, optimization_type, optimization_speed, 
+        min_optimization_weight, do_geo_target, do_cookie_target, do_daypart_target, 
+        do_storyboarding, created_tpws_key, modified_tpws_key, enable_group_weight, 
+        priority, enable_frequency_cap, frequency_cap, frequency_cap_window, created, modified ) 
+    VALUES (#{id, jdbcType=NUMERIC}, #{campaignId, jdbcType=NUMERIC}, #{name, jdbcType=VARCHAR}, 
+        #{rotationType, jdbcType=VARCHAR}, #{impressionCap, jdbcType=NUMERIC}, #{clickthroughCap, jdbcType=NUMERIC}, 
+        #{weight, jdbcType=NUMERIC}, #{isReleased, jdbcType=NUMERIC}, #{isDefault, jdbcType=NUMERIC}, 
+        #{cookieTarget, jdbcType=NUMERIC}, #{daypartTarget, jdbcType=VARCHAR}, #{doOptimization, jdbcType=NUMERIC}, 
+        #{optimizationType, jdbcType=VARCHAR}, #{optimizationSpeed, jdbcType=VARCHAR}, #{minOptimizationWeight, jdbcType=NUMERIC}, 
+        #{doGeoTargeting, jdbcType=NUMERIC}, #{doCookieTarget, jdbcType=NUMERIC}, #{doDaypartTarget, jdbcType=NUMERIC}, 
+        #{doStoryboarding, jdbcType=NUMERIC}, #{tpwsKey, jdbcType=VARCHAR}, #{tpwsKey, jdbcType=VARCHAR}, 
+        #{enableGroupWeight, jdbcType=NUMERIC}, #{priority, jdbcType=NUMERIC}, #{enableFrequencyCap, jdbcType=NUMERIC}, 
+        #{frequencyCap, jdbcType=NUMERIC}, #{frequencyCapWindow, jdbcType=NUMERIC}, SYSDATE, SYSDATE )
+    </insert>
+
+    <insert id="insertCreativeGroupTarget" parameterType="trueffect.truconnect.api.commons.model.CreativeGroupTarget">
+      INSERT INTO CREATIVE_GROUP_TARGET (
+        CREATIVE_GROUP_ID,
+        TARGET_VALUE_ID,
+        CREATED_TPWS_KEY,
+        MODIFIED_TPWS_KEY,
+        CREATED,
+        MODIFIED,
+        IS_ANTI_TARGET
+      ) VALUES (
+        #{creativeGroupId},
+        #{valueId},
+        #{createdTpwsKey},
+        #{modifiedTpwsKey},
+        SYSDATE,
+        SYSDATE,
+        #{antiTarget}
+      )
+    </insert>
+
+    <update id="updateCreativeGroup" parameterType="java.util.Map">
+        UPDATE  CREATIVE_GROUP 
+        SET     GROUP_NAME = #{name, jdbcType=VARCHAR}, 
+            ROTATION_TYPE = #{rotationType, jdbcType=VARCHAR}, 
+            IMPRESSION_CAP = #{impressionCap, jdbcType=NUMERIC}, 
+            CLICKTHROUGH_CAP = #{clickthroughCap, jdbcType=NUMERIC}, 
+            WEIGHT = #{weight, jdbcType=NUMERIC}, 
+            RELEASED = #{isReleased, jdbcType=NUMERIC}, 
+            IS_DEFAULT = #{isDefault, jdbcType=NUMERIC}, 
+            DO_OPTIMIZATION = #{doOptimization, jdbcType=NUMERIC}, 
+            OPTIMIZATION_TYPE = #{optimizationType, jdbcType=VARCHAR}, 
+            OPTIMIZATION_SPEED = #{optimizationSpeed, jdbcType=VARCHAR}, 
+            MIN_OPTIMIZATION_WEIGHT = #{minOptimizationWeight, jdbcType=NUMERIC}, 
+            DO_GEO_TARGET = #{doGeoTargeting, jdbcType=NUMERIC}, 
+            DO_COOKIE_TARGET = #{doCookieTarget, jdbcType=NUMERIC}, 
+            DO_DAYPART_TARGET = #{doDaypartTarget, jdbcType=NUMERIC}, 
+            DO_STORYBOARDING = #{doStoryboarding, jdbcType=NUMERIC}, 
+            COOKIE_TARGET = #{cookieTarget, jdbcType=NUMERIC}, 
+            DAYPART_TARGET = #{daypartTarget, jdbcType=VARCHAR}, 
+            MODIFIED_TPWS_KEY = #{tpwsKey, jdbcType=VARCHAR}, 
+            ENABLE_GROUP_WEIGHT = #{enableGroupWeight, jdbcType=NUMERIC}, 
+            PRIORITY = #{priority, jdbcType=NUMERIC}, 
+            ENABLE_FREQUENCY_CAP = #{enableFrequencyCap, jdbcType=NUMERIC}, 
+            FREQUENCY_CAP = #{frequencyCap, jdbcType=NUMERIC}, 
+            FREQUENCY_CAP_WINDOW = #{frequencyCapWindow, jdbcType=NUMERIC}, 
+            MODIFIED = SYSDATE 
+        WHERE   CREATIVE_GROUP_ID = #{id, jdbcType=NUMERIC}
+    </update>
+    
+    <update id="updateCreativeGroupOnImport" parameterType="CreativeInsertionRawDataView">
+        UPDATE TE_XLS.CREATIVE_GROUP 
+           SET MODIFIED_TPWS_KEY = #{modifiedTpwsKey}
+              ,MODIFIED = SYSDATE
+              ,WEIGHT = TO_NUMBER(#{groupWeight})
+         WHERE CREATIVE_GROUP_ID = TO_NUMBER(#{creativeGroupId})
+    </update>
+    
+    <update id="removeCreativeGroup" parameterType="java.util.Map">
+        UPDATE  creative_group
+        SET     logical_delete = 'Y', 
+                modified_tpws_key = #{modifiedTpwsKey, jdbcType=VARCHAR}, 
+                modified = SYSDATE
+        WHERE   creative_group_id = #{id, jdbcType=NUMERIC}
+    </update>
+    
+    <select id="getCreativeGroupByFields" parameterType="trueffect.truconnect.api.commons.model.CreativeGroup" 
+            resultType="trueffect.truconnect.api.commons.model.CreativeGroup">
+        SELECT  CG.CREATIVE_GROUP_ID       as id,
+                CG.CAMPAIGN_ID             as campaignId,
+                CG.GROUP_NAME              as name,
+                CG.ROTATION_TYPE           as rotationType,
+                CG.IMPRESSION_CAP          as impressionCap,
+                CG.CLICKTHROUGH_CAP        as clickthroughCap,
+                CG.WEIGHT                  as weight,
+                CG.RELEASED                as isReleased,
+                CG.IS_DEFAULT              as isDefault,
+                CG.COOKIE_TARGET           as cookieTarget,
+                CG.DO_OPTIMIZATION         as doOptimization,
+                CG.OPTIMIZATION_TYPE       as optimizationType,
+                CG.OPTIMIZATION_SPEED      as optimizationSpeed,
+                CG.MIN_OPTIMIZATION_WEIGHT as minOptimizationWeight,
+                CG.DO_GEO_TARGET           as doGeoTargeting,
+                CG.DO_COOKIE_TARGET        as doCookieTargeting,
+                CG.DO_STORYBOARDING        as doStoryboarding,
+                CG.CREATED                 as createdDate,
+                CG.MODIFIED                as modifiedDate,
+                CG.CREATED_TPWS_KEY        as createdTpwsKey,
+                CG.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+                CG.DAYPART_TARGET          as daypartTarget,
+                CG.DO_DAYPART_TARGET       as doDaypartTargeting,
+                CG.ENABLE_GROUP_WEIGHT     as enableGroupWeight,
+                CG.PRIORITY                as priority,
+                CG.ENABLE_FREQUENCY_CAP    as enableFrequencyCap,
+                CG.FREQUENCY_CAP           as frequencyCap,
+                CG.FREQUENCY_CAP_WINDOW    as frequencyCapWindow,
+                EXT.EXTERNALID             as externalId
+        FROM TE_XLS.CREATIVE_GROUP CG
+            LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeGroupId, EPV.VALUE as externalId
+                    FROM EXTENDED_PROPERTIES EP
+                      INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                    WHERE  LOWER(OBJECT_NAME) = LOWER('CreativeGroup') AND LOWER(FIELD_NAME) = LOWER('MediaID'))  EXT ON EXT.creativeGroupId = CG.CREATIVE_GROUP_ID
+        WHERE ( UPPER( CG.LOGICAL_DELETE ) != 'Y' )
+        <if test="campaignId != null">
+            AND CG.campaign_id = #{campaignId}
+        </if>
+        <if test="name != null">
+            AND UPPER(CG.GROUP_NAME) = UPPER(#{name})
+        </if>
+        <if test="isDefault != null">
+            AND CG.IS_DEFAULT  = #{isDefault}
+        </if>
+    </select>    
+    <select id="getCountCreativeGroupsBelongsCampaign" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM TE_XLS.CREATIVE_GROUP CG
+         WHERE CG.CAMPAIGN_ID = #{campaignId}
+        <if test="ids != null and ids.size() > 0">
+            AND CG.CREATIVE_GROUP_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>        
+           AND DECODE(CG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>        
+    <insert id="insertCreativeGroup" parameterType="java.util.Map">
+        INSERT INTO CREATIVE_GROUP( CREATIVE_GROUP_ID,
+                                    CAMPAIGN_ID,
+                                    GROUP_NAME,
+                                    ROTATION_TYPE,
+                                    IMPRESSION_CAP,
+                                    CLICKTHROUGH_CAP,
+                                    WEIGHT,
+                                    RELEASED,
+                                    IS_DEFAULT,
+                                    DO_OPTIMIZATION,
+                                    OPTIMIZATION_TYPE,
+                                    OPTIMIZATION_SPEED,
+                                    MIN_OPTIMIZATION_WEIGHT,
+                                    DO_GEO_TARGET,
+                                    DO_COOKIE_TARGET,
+                                    DO_DAYPART_TARGET,
+                                    FREQUENCY_CAP,
+                                    FREQUENCY_CAP_WINDOW,
+                                    ENABLE_GROUP_WEIGHT,
+                                    LOGICAL_DELETE,
+                                    CREATED_TPWS_KEY,
+                                    MODIFIED_TPWS_KEY,
+                                    CREATED,
+                                    MODIFIED )
+        VALUES ( #{id,jdbcType=NUMERIC},
+                 #{campaignId,jdbcType=NUMERIC},
+                 #{name,jdbcType=VARCHAR},
+                 #{rotationType,jdbcType=VARCHAR},
+                 #{impressionCap,jdbcType=VARCHAR},
+                 #{ctCap,jdbcType=NUMERIC},
+                 #{weight,jdbcType=NUMERIC},
+                 #{isReleased,jdbcType=NUMERIC},
+                 #{isDefault,jdbcType=NUMERIC},
+                 #{doOpt,jdbcType=NUMERIC},
+                 #{optType,jdbcType=VARCHAR},
+                 #{optSpeed,jdbcType=VARCHAR},
+                 #{minOptWeight,jdbcType=NUMERIC},
+                 #{doGeoTargeting,jdbcType=NUMERIC},
+                 #{doCookieTarget,jdbcType=NUMERIC},
+                 #{doDaypartTarget,jdbcType=NUMERIC},
+                 #{frequencyCap,jdbcType=NUMERIC},
+                 #{frequencyCapWindow,jdbcType=NUMERIC},
+                 #{enableGroupWeight,jdbcType=NUMERIC},
+                 'N',
+                 #{tpwsKey,jdbcType=VARCHAR},
+                 #{tpwsKey,jdbcType=VARCHAR},
+                 SYSDATE,
+                 SYSDATE )
+    </insert>
+    
+    <update id="setDefaultCampaignCreative" parameterType="java.util.Map">
+        UPDATE TE_XLS.CREATIVE_GROUP SET 
+            IS_DEFAULT = '0' 
+        WHERE TE_XLS.CREATIVE_GROUP.CAMPAIGN_ID=#{campaignId,jdbcType=NUMERIC} 
+            AND  TE_XLS.CREATIVE_GROUP.CREATIVE_GROUP_ID != #{creativeGroupId,jdbcType=NUMERIC}
+    </update>
+    
+    <select id="creativeGroupAlreadyExists" parameterType="trueffect.truconnect.api.commons.model.CreativeGroup" resultType="java.lang.Long">
+        SELECT COUNT (CG.CREATIVE_GROUP_ID)
+        FROM TE_XLS.CREATIVE_GROUP CG
+        WHERE LOWER(CG.GROUP_NAME) = LOWER(#{name})
+        AND CG.CAMPAIGN_ID = #{campaignId}
+        AND ( UPPER( CG.LOGICAL_DELETE ) != 'Y' )
+        <if test="id != null">
+          AND CG.creative_group_id != #{id}
+        </if>
+    </select>
+    
+    <select id="validTargetValues"  parameterType="trueffect.truconnect.api.commons.model.CreativeGroupTarget"
+            resultType="java.lang.Long" >
+        SELECT TV.TARGET_VALUE_ID
+        FROM TE_XLS.TARGET_VALUE TV
+        WHERE TV.TARGET_VALUE_ID IN 
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getCreativeGroupsByCampaign" parameterType="java.lang.Long" 
+            resultType="trueffect.truconnect.api.commons.model.CreativeGroup">
+        SELECT  CG.CREATIVE_GROUP_ID       as id,
+                CG.CAMPAIGN_ID             as campaignId,
+                CG.GROUP_NAME              as name,
+                CG.ROTATION_TYPE           as rotationType,
+                CG.IMPRESSION_CAP          as impressionCap,
+                CG.CLICKTHROUGH_CAP        as clickthroughCap,
+                CG.WEIGHT                  as weight,
+                CG.RELEASED                as isReleased,
+                CG.IS_DEFAULT              as isDefault,
+                CG.COOKIE_TARGET           as cookieTarget,
+                CG.DO_OPTIMIZATION         as doOptimization,
+                CG.OPTIMIZATION_TYPE       as optimizationType,
+                CG.OPTIMIZATION_SPEED      as optimizationSpeed,
+                CG.MIN_OPTIMIZATION_WEIGHT as minOptimizationWeight,
+                CG.DO_GEO_TARGET           as doGeoTargeting,
+                CG.DO_COOKIE_TARGET        as doCookieTargeting,
+                CG.DO_STORYBOARDING        as doStoryboarding,
+                CG.CREATED                 as createdDate,
+                CG.MODIFIED                as modifiedDate,
+                CG.CREATED_TPWS_KEY        as createdTpwsKey,
+                CG.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+                CG.DAYPART_TARGET          as daypartTarget,
+                CG.DO_DAYPART_TARGET       as doDaypartTargeting,
+                CG.ENABLE_GROUP_WEIGHT     as enableGroupWeight,
+                CG.PRIORITY                as priority,
+                CG.ENABLE_FREQUENCY_CAP    as enableFrequencyCap,
+                CG.FREQUENCY_CAP           as frequencyCap,
+                CG.FREQUENCY_CAP_WINDOW    as frequencyCapWindow,
+                EXT.externalId             as externalId
+        FROM TE_XLS.CREATIVE_GROUP CG
+            LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeGroupId, EPV.VALUE as externalId
+                    FROM EXTENDED_PROPERTIES EP
+                      INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                    WHERE  LOWER(OBJECT_NAME) = LOWER('CreativeGroup') AND LOWER(FIELD_NAME) = LOWER('MediaID'))  EXT ON EXT.creativeGroupId = CG.CREATIVE_GROUP_ID
+        WHERE ( CG.LOGICAL_DELETE = 'N' ) AND ( CG.CAMPAIGN_ID = #{value} )
+        ORDER BY CG.GROUP_NAME
+    </select>
+    
+    <update id="deleteCreativeGroupTarget" parameterType="java.util.Map">
+        DELETE FROM CREATIVE_GROUP_TARGET
+        WHERE  CREATIVE_GROUP_ID = #{creativeGroupId,jdbcType=NUMERIC}
+    </update>
+
+    <update id="deleteCreatives" parameterType="java.lang.Long">
+        UPDATE
+            TE_XLS.CREATIVE
+        SET
+            LOGICAL_DELETE = 'Y',
+            MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType = VARCHAR, mode = IN},
+            MODIFIED = SYSDATE
+        WHERE
+            CREATIVE_ID IN (
+                SELECT
+                    CREATIVE_ID
+                FROM (
+                    SELECT
+                        COUNT(CREATIVE_GROUP_ID) AS CREATIVETOTAL, CREATIVE_ID
+                    FROM
+                        TE_XLS.CREATIVE_GROUP_CREATIVE
+                    WHERE
+                        DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                        AND CREATIVE_ID IN (
+                            SELECT
+                                CREATIVE_ID
+                            FROM
+                                TE_XLS.CREATIVE_GROUP_CREATIVE
+                            WHERE
+                                DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                AND CREATIVE_GROUP_ID = #{creativeGroupId,jdbcType=NUMERIC,mode=IN}
+                        )
+                    GROUP BY CREATIVE_ID
+                )
+                WHERE CREATIVETOTAL = 1
+            )
+        AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </update>
+
+</mapper>

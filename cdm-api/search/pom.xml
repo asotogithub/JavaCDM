@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>trueffect.truconnect.api</groupId>
+        <artifactId>trueffect-api</artifactId>
+        <version>2.24.1</version>
+    </parent>
+
+    <artifactId>search</artifactId>
+    <packaging>jar</packaging>
+    <name>Trueffect Search API</name>
+    <description>API Search module</description>
+    <url>https://www.trueffect.com</url>
+
+    <dependencies>
+        <dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4</artifactId>
+			<version>4.2</version>
+		</dependency>
+		
+		<!-- Model dependency -->
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>commons</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr4-maven-plugin</artifactId>
+				<version>4.2</version>
+				<configuration>
+					<configuration>
+						<listener>true</listener>
+						<visitor>false</visitor>
+						<arguments>
+							<argument>-package</argument>
+						</arguments>
+					</configuration>
+				</configuration>
+				<executions>
+					<execution>
+						<id>antlr-generate</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>antlr4</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

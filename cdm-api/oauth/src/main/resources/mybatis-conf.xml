@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Document : mybatis.xml Created on : November 30, 2013, 5:20 PM
+     Description: Purpose of the document follows. -->
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="oauth">
+        <environment id="oauth">
+            <transactionManager type="JDBC" />
+            <dataSource type="trueffect.truconnect.api.oauth.mybatis.C3P0DataSourceFactory">
+                <property name="dataSourceName" value="OAUTH" />
+                <property name="driverClass" value="${driver}" />
+                <property name="jdbcUrl" value="${url}" />
+                <property name="user" value="${username}" />
+                <property name="password" value="${password}" />
+                <property name="acquireIncrement" value="1" />
+                <property name="initialPoolSize" value="1" />
+                <property name="minPoolSize" value="1" />
+                <property name="maxPoolSize" value="30" />
+                <property name="maxIdleTime" value="3600" />
+                <property name="contextClassLoaderSource" value="library" />
+                <property name="privilegeSpawnedThreads" value="true" />
+                <property name="idleConnectionTestPeriod" value="3600" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="db/UserPkg.xml" />
+    </mappers>
+</configuration>

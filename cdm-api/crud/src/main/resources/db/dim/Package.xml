@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Package">
+
+    <!-- Queries: getData Package-->
+        <select id="getPackage" parameterType="java.lang.Long" resultType="DIMPackageDTO">
+        SELECT PACKAGE_ID           as id,
+               PACKAGE_NAME         as name,
+               PACKAGE_DESC         as description,
+               CAMPAIGN_ID          as campaignId,
+               EXT_PACKAGE_ID       as externalId,
+               LOGICAL_DELETE       as logicalDelete,
+               CREATED              as createdDate,
+               CREATED_TPWS_KEY     as createdTpwsKey,
+               MODIFIED             as modifiedDate,
+               MODIFIED_TPWS_KEY    as modifiedTpwsKey
+          FROM DIM_OWNER.D_PACKAGE
+         WHERE PACKAGE_ID = #{packageId,jdbcType=NUMERIC}
+           AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: getData Package-->
+
+    <!-- Queries: getData PackagePlacement-->
+    <select id="getPackagePlacement" parameterType="java.lang.Long" resultType="PackagePlacement">
+        SELECT PACKAGE_PLACEMENT_ID as id,
+               PACKAGE_ID                  as packageId,
+               PLACEMENT_ID                as placementId,
+               LOGICAL_DELETE              as logicalDelete,
+               CREATED                     as createdDate,
+               CREATED_TPWS_KEY            as createdTpwsKey,
+               MODIFIED                    as modifiedDate,
+               MODIFIED_TPWS_KEY           as modifiedTpwsKey
+          FROM DIM_OWNER.D_PACKAGE_PLACEMENT
+         WHERE PACKAGE_ID = #{packageId,jdbcType=NUMERIC}
+           AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: getData PackagePlacement-->
+
+    <!-- Queries: Create/update/delete Package-->
+    <select id="package" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL DIM_OWNER.PKG_PACKAGE.p_package(
+            #{action,jdbcType=VARCHAR,mode=IN},
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{packageName,jdbcType=VARCHAR,mode=IN},
+            #{packageDesc,jdbcType=VARCHAR,mode=IN},
+            #{campaignId,jdbcType=NUMERIC,mode=IN},
+            #{extPackageId,jdbcType=NUMERIC,mode=IN},
+            #{logicalDelete,jdbcType=CHAR,mode=IN},
+            #{created,jdbcType=TIMESTAMP,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{modified,jdbcType=TIMESTAMP,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{errorCode,jdbcType=NUMERIC,mode=OUT,javaType=java.lang.Long},
+            #{error,jdbcType=VARCHAR,mode=OUT,javaType=java.lang.String}) }
+    </select>
+
+    <select id="packagePlacement" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL DIM_OWNER.PKG_PACKAGE.p_package_placement(
+            #{action,jdbcType=VARCHAR,mode=IN},
+            #{packagePlacementId,jdbcType=NUMERIC,mode=IN},
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{placementId,jdbcType=NUMERIC,mode=IN},
+            #{logicalDelete,jdbcType=CHAR,mode=IN},
+            #{created,jdbcType=TIMESTAMP,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{modified,jdbcType=TIMESTAMP,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{errorCode,jdbcType=NUMERIC,mode=OUT,javaType=java.lang.Long},
+            #{error,jdbcType=VARCHAR,mode=OUT,javaType=java.lang.String}) }
+    </select>
+    <!-- Queries: Create/update/delete Package/CostDetails-->
+</mapper>

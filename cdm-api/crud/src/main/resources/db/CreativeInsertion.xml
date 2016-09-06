@@ -1,0 +1,1121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CreativeInsertion">
+
+    <resultMap id="creativeInsertionView" type="trueffect.truconnect.api.commons.model.dto.CreativeInsertionView">
+        <result property="id"                              column="CREATIVE_INSERTION_ID"/>
+        <result property="campaignId"                      column="CAMPAIGN_ID"/>
+        <result property="creativeInsertionRootId"         column="CREATIVE_INSERTION_ROOT_ID"/>
+        <result property="createdDate"                     column="CREATED"/>
+        <result property="createdTpwsKey"                  column="CREATED_TPWS_KEY"/>
+        <result property="endDate"                         column="END_DATE"/>
+        <result property="logicalDelete"                   column="LOGICAL_DELETE"/>
+        <result property="modifiedDate"                    column="MODIFIED"/>
+        <result property="modifiedTpwsKey"                 column="MODIFIED_TPWS_KEY"/>
+        <result property="released"                        column="RELEASED"/>
+        <result property="sequence"                        column="SEQUENCE"/>
+        <result property="startDate"                       column="START_DATE"/>
+        <result property="timeZone"                        column="TIME_ZONE"/>
+        <result property="weight"                          column="WEIGHT"/>
+        <result property="primaryClickthrough"             column="CLICKTHROUGH"/>
+        <result property="creativeId"                      column="CREATIVE_ID"/>
+        <result property="creativeAlias"                   column="CREATIVE_ALIAS"/>
+        <result property="filename"                        column="FILENAME"/>
+        <result property="creativeType"                    column="CREATIVE_TYPE"/>
+        <result property="creativeSize"                    column="CREATIVE_SIZE"/>
+        <result property="creativeGroupId"                 column="CREATIVE_GROUP_ID"/>
+        <result property="creativeGroupName"               column="CREATIVE_GROUP_NAME"/>
+        <result property="creativeGroupWeight"             column="CREATIVE_GROUP_WEIGHT"/>
+        <result property="creativeGroupWeightEnabled"      column="CREATIVE_GROUP_WEIGHT_ENABLED"/>
+        <result property="creativeGroupRotationType"       column="CREATIVE_GROUP_ROTATION_TYPE"/>
+        <result property="creativeGroupDoGeoTargeting"     column="CREATIVE_GROUP_DO_GEOTARGET"/>
+        <result property="creativeGroupDoCookieTargeting"  column="CREATIVE_GROUP_DO_COOKIETARGET"/>
+        <result property="creativeGroupFrequencyCap"       column="CREATIVE_GROUP_FREQUENCY_CAP"/>
+        <result property="creativeGroupFrequencyCapWindow" column="CREATIVE_GROUP_FREQ_CAP_WINDOW"/>
+        <result property="creativeGroupPriority"           column="CREATIVE_GROUP_PRIORITY"/>
+        <result property="creativeGroupDaypartTarget"      column="CREATIVE_GROUP_DAYPART_TARGET"/>
+        <result property="creativeGroupDoDaypartTarget"    column="CREATIVE_GROUP_DO_DAYPART_TAR"/>
+        <result property="placementId"                     column="PLACEMENT_ID"/>
+        <result property="placementEndDate"                column="PLACEMENT_END_DATE"/>
+        <result property="placementName"                   column="PLACEMENT_NAME"/>
+        <result property="placementStartDate"              column="PLACEMENT_START_DATE"/>
+        <result property="placementStatus"                 column="PLACEMENT_STATUS"/>
+        <result property="siteId"                          column="SITE_ID"/>
+        <result property="siteName"                        column="SITE_NAME"/>
+        <result property="siteSectionId"                   column="SITE_SECTION_ID"/>
+        <result property="siteSectionName"                 column="SITE_SECTION_NAME"/>
+        <result property="sizeName"                        column="SIZE_NAME"/>
+        <result property="placementAssociationsWithCreativeGroups" column="PASSOCSWITHCREATIVEGROUPS"/>
+        <result property="creativeGroupAssociationsWithPlacements" column="CGASSOCSWITHPLACEMENTS"/>
+        <result property="creativeGroupAssociationsWithCreatives"  column="CGASSOCSWITHCREATIVES"/>
+        <result property="creativeAssociationsWithPlacements"      column="CASSOCSWITHPLACEMENTS"/>
+        <result property="creativeAssociationsWithCreativeGroups"  column="CASSOCSWITHCREATIVEGROUPS"/>
+        <collection property="additionalClickthroughs" ofType="trueffect.truconnect.api.commons.model.Clickthrough">
+            <result property="sequence"                    column="CLICKTHROUGH_SEQUENCE"/>
+            <result property="url"                         column="CLICKTHROUGH_NAME"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="placementClassification" type="hashmap">
+        <result property="CLASSIFICATION" column="CLASSIFICATION" javaType="java.lang.String"/>
+        <result property="PLACEMENT_ID" column="PLACEMENT_ID" javaType="java.lang.Long"/>
+    </resultMap>
+
+    <select id="creativeInsertionRootCnt" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM CREATIVE_INSERTION_ROOT
+        WHERE PLACEMENT_ID = #{placementId, jdbcType=NUMERIC}
+        AND CREATIVE_GROUP_ID = #{creativeGroupId, jdbcType=NUMERIC}
+        AND CREATIVE_ID = #{creativeId, jdbcType=NUMERIC}
+    </select>
+    
+    <select id="creativeInsertionRootId" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT CREATIVE_INSERTION_ROOT_ID
+        FROM CREATIVE_INSERTION_ROOT
+        WHERE PLACEMENT_ID = #{placementId, jdbcType=NUMERIC}
+        AND CREATIVE_GROUP_ID = #{creativeGroupId, jdbcType=NUMERIC}
+        AND CREATIVE_ID = #{creativeId, jdbcType=NUMERIC}
+    </select>
+    
+    <insert id="insertCreativeInsertionRoot" parameterType="java.util.Map">
+        INSERT INTO CREATIVE_INSERTION_ROOT
+        ( CREATIVE_INSERTION_ROOT_ID, 
+        PLACEMENT_ID, 
+        CREATIVE_GROUP_ID,
+        CREATIVE_ID, 
+        CAMPAIGN_ID, 
+        CREATE_DATE )
+        VALUES
+        ( #{creativeInsertionRootId, jdbcType=NUMERIC},
+        #{placementId, jdbcType=NUMERIC},
+        #{creativeGroupId, jdbcType=NUMERIC},
+        #{creativeId, jdbcType=NUMERIC},
+        #{campaignId, jdbcType=NUMERIC},
+        SYSDATE )
+    </insert>
+    
+    <insert id="insertCreativeInsertionRootRMI" parameterType="java.util.Map">
+        INSERT INTO CREATIVE_INSERTION_ROOT
+        ( CREATIVE_INSERTION_ROOT_ID, 
+        PLACEMENT_ID, 
+        CREATIVE_GROUP_ID,
+        CREATIVE_ID, 
+        CAMPAIGN_ID, 
+        CREATE_DATE )
+        VALUES
+        ( #{creativeInsertionRootId, jdbcType=NUMERIC},
+        #{placementId, jdbcType=NUMERIC},
+        #{creativeGroupId, jdbcType=NUMERIC},
+        #{richMediaId, jdbcType=NUMERIC},
+        #{campaignId, jdbcType=NUMERIC},
+        SYSDATE )
+    </insert>
+    
+    <insert id="insertCreativeInsertion" parameterType="java.util.Map">
+        INSERT INTO CREATIVE_INSERTION( CREATIVE_INSERTION_ID,
+                                        CAMPAIGN_ID,
+                                        CREATIVE_GROUP_ID,
+                                        CREATIVE_ID,
+                                        PLACEMENT_ID,
+                                        START_DATE,
+                                        END_DATE,
+                                        TIME_ZONE,
+                                        WEIGHT,
+                                        CLICKTHROUGH,
+                                        RELEASED,
+                                        SEQUENCE,
+                                        CREATED_TPWS_KEY,
+                                        MODIFIED_TPWS_KEY,
+                                        CREATED,
+                                        MODIFIED,
+                                        CREATIVE_INSERTION_ROOT_ID )
+        VALUES ( #{id, jdbcType=NUMERIC},
+        #{campaignId, jdbcType=NUMERIC},
+        #{creativeGroupId, jdbcType=NUMERIC},
+        #{creativeId, jdbcType=NUMERIC},
+        #{placementId, jdbcType=NUMERIC},
+        #{startDate,jdbcType=TIMESTAMP},
+        #{endDate,jdbcType=TIMESTAMP},
+        #{timeZone,jdbcType=VARCHAR},
+        #{weight, jdbcType=NUMERIC},
+        #{clickthrough,jdbcType=VARCHAR},
+        #{released, jdbcType=NUMERIC},
+        #{sequence, jdbcType=NUMERIC},
+        #{tpwsKey, jdbcType=VARCHAR},
+        #{tpwsKey, jdbcType=VARCHAR},
+        SYSDATE,
+        SYSDATE,
+        #{creativeInsertionRootId, jdbcType=NUMERIC} )
+    </insert>
+    
+    <select id="richMediaId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT RICH_MEDIA_ID
+        FROM CREATIVE
+        WHERE CREATIVE_ID = #{value}
+    </select>
+    
+    <select id="creativeInsertionRootCntRMI" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM CREATIVE_INSERTION_ROOT
+        WHERE PLACEMENT_ID = #{placementId, jdbcType=NUMERIC}
+        AND CREATIVE_GROUP_ID = #{creativeGroupId, jdbcType=NUMERIC}
+        AND CREATIVE_ID = #{richMediaId, jdbcType=NUMERIC}  
+    </select>
+    
+    <insert id="insertCreativeInsertionclick" parameterType="Clickthrough">
+        INSERT INTO CREATIVE_INSERT_CLICKTHROUGH( CREATIVE_INSERTION_ID,
+                                                  CLICKTHROUGH,
+                                                  SEQUENCE,
+                                                  CREATED_TPWS_KEY,
+                                                  MODIFIED_TPWS_KEY,
+                                                  CREATED,
+                                                  MODIFIED )
+        VALUES ( #{creativeInsertionId,jdbcType=NUMERIC,mode=IN},
+                 #{url,jdbcType=VARCHAR,mode=IN},
+                 #{sequence,jdbcType=NUMERIC,mode=IN},
+                 #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+                 #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+                 SYSDATE,
+                 SYSDATE )
+    </insert>
+
+    <update id="deleteCreativeInsertionclick" parameterType="java.lang.Long">
+        DELETE FROM CREATIVE_INSERT_CLICKTHROUGH
+        WHERE  CREATIVE_INSERTION_ID = #{value,jdbcType=NUMERIC,mode=IN}
+    </update>
+    
+    <update id="updateCreativeInsertion" parameterType="java.util.Map">
+        UPDATE CREATIVE_INSERTION
+        SET    START_DATE = #{startDate,jdbcType=TIMESTAMP,mode=IN},
+               END_DATE = #{endDate,jdbcType=TIMESTAMP,mode=IN},
+               WEIGHT =  #{weight,jdbcType=NUMERIC,mode=IN},
+               CLICKTHROUGH = #{clickthrough,jdbcType=VARCHAR,mode=IN},
+               SEQUENCE = #{sequence,jdbcType=NUMERIC,mode=IN},
+               RELEASED = #{released,jdbcType=NUMERIC,mode=IN},
+               MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+               MODIFIED = SYSDATE
+        WHERE  CREATIVE_INSERTION_ID = #{id,jdbcType=NUMERIC,mode=IN}
+    </update>
+    
+    <update id="updateCreativeInsertionOnImport" parameterType="CreativeInsertionRawDataView">
+        UPDATE TE_XLS.CREATIVE_INSERTION
+           SET MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR}
+              , MODIFIED = SYSDATE
+          <if test="creativeStartDate != null">
+              , START_DATE = TO_DATE(TO_CHAR(TO_TIMESTAMP_TZ(#{creativeStartDate}, 
+                             'MM/DD/YYYY HH24:MI:SS TZR TZD'),'MM/DD/YYYY HH24:MI:SS'),'MM/DD/YYYY HH24:MI:SS')
+          </if> 
+          <if test="creativeEndDate != null">
+              , END_DATE = TO_DATE(TO_CHAR(TO_TIMESTAMP_TZ(#{creativeEndDate}, 
+                           'MM/DD/YYYY HH24:MI:SS TZR TZD'),'MM/DD/YYYY HH24:MI:SS'),'MM/DD/YYYY HH24:MI:SS')
+          </if>
+          <if test="creativeWeight != null">
+              , WEIGHT =  TO_NUMBER(#{creativeWeight})
+          </if>      
+          <if test="creativeClickThroughUrl != null">
+              , CLICKTHROUGH = #{creativeClickThroughUrl,jdbcType=VARCHAR}
+          </if>      
+        WHERE  CREATIVE_INSERTION_ID = TO_NUMBER(#{creativeInsertionId})
+    </update>
+
+    <update id="deleteCreativeInsertion" parameterType="java.util.Map">
+        UPDATE CREATIVE_INSERTION
+        SET    LOGICAL_DELETE = 'Y',
+        MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+        MODIFIED = SYSDATE
+        WHERE  CREATIVE_INSERTION_ID = #{id,jdbcType=NUMERIC,mode=IN}
+    </update>
+
+    <update id="bulkDeleteById" parameterType="java.util.Map">
+        UPDATE
+            CREATIVE_INSERTION
+        SET
+            LOGICAL_DELETE = 'Y',
+            MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            MODIFIED = SYSDATE
+        WHERE
+            CREATIVE_INSERTION_ID IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+            AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL)
+    </update>
+
+    <update id="deleteCreativeInsertionByCgId" parameterType="java.util.Map">
+        UPDATE CREATIVE_INSERTION
+        SET    LOGICAL_DELETE = 'Y', 
+        MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR,mode=IN}, 
+        MODIFIED = SYSDATE
+        WHERE  CREATIVE_GROUP_ID = #{id,jdbcType=NUMERIC,mode=IN}
+    </update>
+    
+    <select id="getCreativeInsertionById"  parameterType="java.lang.Long" 
+            resultType="trueffect.truconnect.api.commons.model.CreativeInsertion" >
+        SELECT  CI.CREATIVE_INSERTION_ID       as id,
+                CI.CAMPAIGN_ID                 as campaignId,
+                CI.CREATIVE_GROUP_ID           as creativeGroupId,
+                CI.CREATIVE_ID                 as creativeId,
+                CI.PLACEMENT_ID                as placementId,
+                CI.START_DATE                  as startDate,
+                CI.END_DATE                    as endDate,
+                CI.TIME_ZONE                   as timeZone,
+                CI.WEIGHT                      as weight,
+                CI.SEQUENCE                    as sequence,
+                CI.CLICKTHROUGH                as clickthrough,
+                CI.RELEASED                    as released,
+                CI.LOGICAL_DELETE              as logicalDelete,
+                CI.CREATED_TPWS_KEY            as createdTpwsKey,
+                CI.MODIFIED_TPWS_KEY           as modifiedTpwsKey,
+                CI.CREATED                     as createdDate,
+                CI.MODIFIED                    as modifiedDate,
+                CI.SET_COOKIE_STRING           as setCookieString,
+                CI.CREATIVE_INSERTION_ROOT_ID  as creativeInsertionRootId,
+                C.CREATIVE_TYPE                as creativeType
+           FROM TE_XLS.CREATIVE_INSERTION CI, TE_XLS.CREATIVE C
+          WHERE CI.creative_insertion_id = #{id}
+            AND C.CREATIVE_ID = CI.CREATIVE_ID
+            AND DECODE(CI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    
+    <select id="getCreativeInsertionByCreativeGroupId"  parameterType="java.lang.Long" 
+            resultType="trueffect.truconnect.api.commons.model.CreativeInsertion" >
+        SELECT  CREATIVE_INSERTION_ID       as id,
+                CAMPAIGN_ID                 as campaignId,
+                CREATIVE_GROUP_ID           as creativeGroupId,
+                CREATIVE_ID                 as creativeId,
+                PLACEMENT_ID                as placementId,
+                START_DATE                  as startDate,
+                END_DATE                    as endDate,
+                TIME_ZONE                   as timeZone,
+                WEIGHT                      as weight,
+                SEQUENCE                    as sequence,
+                CLICKTHROUGH                as clickthrough,
+                RELEASED                    as released,
+                LOGICAL_DELETE              as logicalDelete,
+                CREATED_TPWS_KEY            as createdTpwsKey,
+                MODIFIED_TPWS_KEY           as modifiedTpwsKey,
+                CREATED                     as createdDate,
+                MODIFIED                    as modifiedDate,
+                SET_COOKIE_STRING           as setCookieString,
+                CREATIVE_INSERTION_ROOT_ID  as creativeInsertionRootId
+        FROM TE_XLS.CREATIVE_INSERTION
+        WHERE creative_group_id = #{creativeGroupId}  
+        AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL) 
+    </select> 
+    
+    <select id="getDistinctCreativeInsertionsPlacements"  parameterType="java.lang.Long" 
+                   resultType="trueffect.truconnect.api.commons.model.TupleSchedule" >
+    
+               SELECT DISTINCT PLACEMENT_ID as placementId, 
+                        CREATIVE_ID as creativeId
+        FROM(SELECT ci.CREATIVE_INSERTION_ID, ci.PLACEMENT_ID, ci.CREATIVE_ID
+        FROM TE_XLS.CREATIVE_INSERTION CI INNER JOIN TE_XLS.CREATIVE_GROUP CG 
+        ON (CI.CREATIVE_GROUP_ID = CG.CREATIVE_GROUP_ID)
+        AND (CG.LOGICAL_DELETE != 'Y' OR CG.LOGICAL_DELETE IS NULL)
+        WHERE ci.CREATIVE_GROUP_ID =  #{creativeGroupId}) order by placementId, creativeId
+    </select>
+    
+    <select id="getDistinctCreativeInsertionByCreativeGroupIdAndPlacementId"  parameterType="java.lang.Long" 
+            resultType="trueffect.truconnect.api.commons.model.CreativeInsertion" >
+        SELECT  distinct CREATIVE_INSERTION_ID       as id,
+                CAMPAIGN_ID                 as campaignId,
+                CREATIVE_GROUP_ID           as creativeGroupId,
+                CREATIVE_ID                 as creativeId,
+                PLACEMENT_ID                as placementId,
+                START_DATE                  as startDate,
+                END_DATE                    as endDate,
+                TIME_ZONE                   as timeZone,
+                WEIGHT                      as weight,
+                SEQUENCE                    as sequence,
+                CLICKTHROUGH                as clickthrough,
+                RELEASED                    as released,
+                LOGICAL_DELETE              as logicalDelete,
+                CREATED_TPWS_KEY            as createdTpwsKey,
+                MODIFIED_TPWS_KEY           as modifiedTpwsKey,
+                CREATED                     as createdDate,
+                MODIFIED                    as modifiedDate,
+                SET_COOKIE_STRING           as setCookieString,
+                CREATIVE_INSERTION_ROOT_ID  as creativeInsertionRootId
+        FROM TE_XLS.CREATIVE_INSERTION
+        WHERE creative_group_id = #{creativeGroupId} AND placement_id = #{placementId} 
+        AND creative_id = #{creativeId} AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL) 
+    </select> 
+    
+    <select id="getCreativeInsertionClickthroughs"  parameterType="java.lang.Long" 
+            resultType="trueffect.truconnect.api.commons.model.Clickthrough" >
+        SELECT  SEQUENCE as sequence, 
+                CLICKTHROUGH as url
+        FROM TE_XLS.CREATIVE_INSERT_CLICKTHROUGH
+        WHERE CREATIVE_INSERTION_ID = #{value}
+            AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL)
+    </select>   
+    
+    <select id="getCreativeInsertionRootIdByCreativeGroupId"  parameterType="java.util.Map" resultType="java.lang.Long" >
+        SELECT  CREATIVE_INSERTION_ROOT_ID  as creativeInsertionRootId
+        FROM TE_XLS.CREATIVE_INSERTION_ROOT
+        WHERE creative_group_id = #{creativeGroupId} AND placement_id = #{placementId} 
+        AND creative_id = #{creativeId}
+    </select>    
+    
+    <select id="getCreativeInsertionsByCriteria" parameterType="java.util.Map" resultType="CreativeInsertion">
+        SELECT  CREATIVE_INSERTION.CREATIVE_INSERTION_ID       as id,
+                CREATIVE_INSERTION.CAMPAIGN_ID                 as campaignId,
+                CREATIVE_INSERTION.CREATIVE_GROUP_ID           as creativeGroupId,
+                CREATIVE_INSERTION.CREATIVE_ID                 as creativeId,
+                CREATIVE_INSERTION.PLACEMENT_ID                as placementId,
+                CREATIVE_INSERTION.START_DATE                  as startDate,
+                CREATIVE_INSERTION.END_DATE                    as endDate,
+                CREATIVE_INSERTION.TIME_ZONE                   as timeZone,
+                CREATIVE_INSERTION.WEIGHT                      as weight,
+                CREATIVE_INSERTION.SEQUENCE                    as sequence,
+                CREATIVE_INSERTION.CLICKTHROUGH                as clickthrough,
+                CREATIVE_INSERTION.RELEASED                    as released,
+                CREATIVE_INSERTION.LOGICAL_DELETE              as logicalDelete,
+                CREATIVE_INSERTION.CREATED_TPWS_KEY            as createdTpwsKey,
+                CREATIVE_INSERTION.MODIFIED_TPWS_KEY           as modifiedTpwsKey,
+                CREATIVE_INSERTION.CREATED                     as createdDate,
+                CREATIVE_INSERTION.MODIFIED                    as modifiedDate,
+                CREATIVE_INSERTION.SET_COOKIE_STRING           as setCookieString,
+                CREATIVE_INSERTION.CREATIVE_INSERTION_ROOT_ID  as creativeInsertionRootId,
+                CREATIVE.CREATIVE_TYPE                         as creativeType
+           FROM TE_XLS.CREATIVE_INSERTION
+                INNER JOIN CAMPAIGN ON CAMPAIGN.CAMPAIGN_ID = CREATIVE_INSERTION.CAMPAIGN_ID
+                INNER JOIN ( SELECT AI.AGENCY_ID
+                               FROM TE_XLS.USERS U
+                                    INNER JOIN AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                                      AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                              WHERE U.USER_ID = '${userId}'
+                                AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                           ) AU ON AU.AGENCY_ID = CAMPAIGN.AGENCY_ID
+                INNER JOIN (
+                                <include refid="DataAccessControlPkg.userAdvertisers"/>
+                           ) UADV ON UADV.ADVERTISER_ID = CAMPAIGN.ADVERTISER_ID
+                INNER JOIN CREATIVE ON CREATIVE.CREATIVE_ID = CREATIVE_INSERTION.CREATIVE_ID
+                  AND DECODE(CREATIVE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE DECODE(CAMPAIGN.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(CREATIVE_INSERTION.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+               ${order}
+            </if>
+    </select>
+    
+    <select id="getCreativeInsertionsNumberOfRecordsByCriteria" parameterType="java.util.Map"
+        resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalRecords
+          FROM TE_XLS.CREATIVE_INSERTION
+               INNER JOIN TE_XLS.CAMPAIGN ON CAMPAIGN.CAMPAIGN_ID = CREATIVE_INSERTION.CAMPAIGN_ID
+                INNER JOIN ( SELECT AI.AGENCY_ID
+                               FROM TE_XLS.USERS U
+                                    INNER JOIN AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                                      AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                              WHERE U.USER_ID = '${userId}'
+                                AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                           ) AU ON AU.AGENCY_ID = CAMPAIGN.AGENCY_ID
+                INNER JOIN (
+                                <include refid="DataAccessControlPkg.userAdvertisers"/>
+                           ) UADV ON UADV.ADVERTISER_ID = CAMPAIGN.ADVERTISER_ID
+        WHERE DECODE(CAMPAIGN.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(CREATIVE_INSERTION.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        <if test="condition != null">
+            AND ${condition}
+        </if>
+    </select>    
+    
+    <select id="getCampaingIdByGreativeGroupId"  
+            parameterType="java.lang.Long" resultType="java.lang.Long" >
+        SELECT CAMPAIGN_ID
+        FROM TE_XLS.CREATIVE_GROUP
+        WHERE CREATIVE_GROUP_ID = #{value}
+            AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL)
+    </select> 
+    
+    <select id="getCreativeInsertionsToExport" parameterType="java.util.Map" resultType="CreativeInsertionRawDataView">
+            SELECT s.site_name          AS siteName, 
+                    p.placement_name     AS placementName, 
+                    p.placement_id       AS placementId,
+                    cg.group_name        AS creativeGroupName,
+                    cg.weight            AS groupWeight, 
+                    c.filename           AS placementCreativeName,
+                    ci.weight            AS creativeWeight,
+                    TO_CHAR(ci.start_date, 'mm/dd/yyyy hh:mi:ss PM') AS creativeStartDate,
+                    TO_CHAR(ci.end_date, 'mm/dd/yyyy hh:mi:ss PM')   AS creativeEndDate,
+                    ci.clickthrough || ( SELECT CASE WHEN ( listagg(cic.clickthrough, ',') within group (order by cic.SEQUENCE) ) IS NOT NULL 
+                                                  THEN ',' || listagg(cic.clickthrough, ',') within group (order by cic.SEQUENCE) 
+                                                  ELSE '' 
+                                                END
+                                           FROM TE_XLS.CREATIVE_INSERT_CLICKTHROUGH cic
+                                          WHERE cic.creative_insertion_id = ci.creative_insertion_id
+                                            AND DECODE(CIC.LOGICAL_DELETE, 'Y', '1', '0') = '0') AS creativeClickThroughUrl,
+                    ci.creative_insertion_id AS creativeInsertionId
+              FROM TE_XLS.CREATIVE_INSERTION CI, TE_XLS.PLACEMENT P, TE_XLS.SITE S, TE_XLS.CREATIVE_GROUP CG, TE_XLS.CREATIVE C
+             WHERE ci.placement_id = p.placement_id
+               AND p.site_id = s.site_id
+               AND ci.creative_group_id = cg.creative_group_id
+               AND ci.creative_id = c.creative_id
+               AND ci.campaign_id = #{campaignId,jdbcType=NUMERIC}
+               AND DECODE(CI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0')  = '0'
+               AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0')  = '0'
+               AND DECODE(CG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0')  = '0'
+    </select>
+
+    <select id="getCreativeInsertionsByUserId" parameterType="java.util.Map" resultType="CreativeInsertionRawDataView">
+        SELECT
+            CI.creative_insertion_id    AS creativeInsertionId,
+            CI.creative_group_id        AS creativeGroupId,
+            CI.weight                   AS creativeWeight,
+            CG.weight                   AS groupWeight,
+            C.creative_type             AS creativeType,
+            CONCAT(TO_CHAR(CI.start_date, 'mm/dd/yyyy HH24:mi:ss ') , #{timezone, jdbcType=VARCHAR})
+                                        AS creativeStartDate,
+            CONCAT(TO_CHAR(CI.end_date  , 'mm/dd/yyyy HH24:mi:ss ') , #{timezone, jdbcType=VARCHAR})
+                                        AS creativeEndDate,
+            CI.clickthrough || ( SELECT CASE WHEN ( listagg(CIC.clickthrough, ',') within group (order by CIC.SEQUENCE) ) IS NOT NULL
+                                          THEN ',' || listagg(CIC.clickthrough, ',') within group (order by CIC.SEQUENCE)
+                                          ELSE ''
+                                        END
+                                   FROM TE_XLS.CREATIVE_INSERT_CLICKTHROUGH CIC
+                                  WHERE CIC.creative_insertion_id = CI.creative_insertion_id
+                                    AND DECODE(CIC.LOGICAL_DELETE, 'Y', '1', '0') = '0')
+                                        AS creativeClickThroughUrl
+        FROM TE_XLS.CREATIVE_INSERTION CI,
+             TE_XLS.CAMPAIGN CP,
+             TE_XLS.CREATIVE_GROUP CG,
+             TE_XLS.AGENCY AI,
+             TE_XLS.USERS U,
+             TE_XLS.CREATIVE C
+        WHERE CI.CAMPAIGN_ID = CP.CAMPAIGN_ID
+          AND CP.AGENCY_ID = AI.AGENCY_ID
+          AND AI.AGENCY_ID = U.AGENCY_ID
+          AND U.USER_ID = #{userId, jdbcType=VARCHAR}
+          AND CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+          AND CI.CREATIVE_GROUP_ID = CG.CREATIVE_GROUP_ID
+          AND CI.CREATIVE_ID = C.CREATIVE_ID
+          AND CI.CREATIVE_INSERTION_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+          AND DECODE(CI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(CP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(CG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <update id="bulkDeleteByFilterParam" parameterType="java.util.Map">
+        UPDATE TE_XLS.CREATIVE_INSERTION
+           SET LOGICAL_DELETE = 'Y',
+               MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+               MODIFIED = SYSDATE
+         WHERE CREATIVE_INSERTION_ID IN (
+               SELECT ci.CREATIVE_INSERTION_ID
+                 FROM TE_XLS.CREATIVE_INSERTION ci, TE_XLS.PLACEMENT p
+                WHERE ci.PLACEMENT_ID = p.PLACEMENT_ID
+                  AND ci.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="siteId != null">
+                    AND p.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                </if>
+                <if test="sectionId != null">
+                    AND p.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                </if>
+                <if test="placementId != null">
+                    AND ci.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                <if test="groupId != null">
+                    AND ci.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                </if>
+                <if test="creativeId != null">
+                    AND ci.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                </if>
+                  AND DECODE(CI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                  AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            )
+    </update>
+    
+    <select id="getAllCreativeInsertions" parameterType="java.util.Map" resultMap="creativeInsertionView">
+        SELECT DISTINCT CRIC.*, 
+            CIC.SEQUENCE      AS CLICKTHROUGH_SEQUENCE,
+            CIC.CLICKTHROUGH  AS CLICKTHROUGH_NAME
+        FROM ( SELECT CRI.*
+            FROM ( SELECT CG.CAMPAIGN_ID, 
+                    CI.CREATIVE_INSERTION_ID, 
+                    CI.CREATIVE_INSERTION_ROOT_ID, 
+                    CI.END_DATE, 
+                    CI.RELEASED, 
+                    CI.SEQUENCE, 
+                    CI.START_DATE, 
+                    CI.TIME_ZONE, 
+                    CI.WEIGHT, 
+                    CI.CLICKTHROUGH               AS CLICKTHROUGH,
+                    C.CREATIVE_ID, 
+                    C.ALIAS                       AS CREATIVE_ALIAS, 
+                    C.CREATIVE_TYPE,
+                    C.FILENAME,
+                    (C.WIDTH || 'x' || C.HEIGHT)  AS CREATIVE_SIZE,
+                    CG.CREATIVE_GROUP_ID, 
+                    CG.GROUP_NAME                 AS CREATIVE_GROUP_NAME, 
+                    CG.WEIGHT                     AS CREATIVE_GROUP_WEIGHT, 
+                    CG.ENABLE_GROUP_WEIGHT        AS CREATIVE_GROUP_WEIGHT_ENABLED,
+                    CG.ROTATION_TYPE              AS CREATIVE_GROUP_ROTATION_TYPE,
+                    CG.DO_GEO_TARGET              AS CREATIVE_GROUP_DO_GEOTARGET,
+                    CG.DO_COOKIE_TARGET           AS CREATIVE_GROUP_DO_COOKIETARGET,
+                    CG.FREQUENCY_CAP              AS CREATIVE_GROUP_FREQUENCY_CAP,
+                    CG.FREQUENCY_CAP_WINDOW       AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+                    CG.PRIORITY                   AS CREATIVE_GROUP_PRIORITY,
+                    CG.DAYPART_TARGET             AS CREATIVE_GROUP_DAYPART_TARGET,
+                    CG.DO_DAYPART_TARGET          AS CREATIVE_GROUP_DO_DAYPART_TAR,
+                    P.PLACEMENT_ID, 
+                    P.PLACEMENT_NAME, 
+                    P.END_DATE                    AS PLACEMENT_END_DATE, 
+                    P.START_DATE                  AS PLACEMENT_START_DATE, 
+                    (SELECT DECODE(styp.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New') 
+                        FROM TE_XLS.STATUS_TYPES styp
+                        WHERE st.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS, 
+                    S.SITE_ID, 
+                    S.SITE_NAME, 
+                    SS.SECTION_ID                 AS SITE_SECTION_ID, 
+                    SS.SECTION_NAME               AS SITE_SECTION_NAME,
+                    CI.LOGICAL_DELETE, 
+                    CI.CREATED, 
+                    CI.CREATED_TPWS_KEY, 
+                    CI.MODIFIED, 
+                    CI.MODIFIED_TPWS_KEY,
+                    ADS.SIZE_NAME, 
+                    ROW_NUMBER() OVER(ORDER BY CI.CREATIVE_INSERTION_ID DESC) AS ROWNUMBER
+                FROM TE_XLS.CREATIVE_INSERTION ci, TE_XLS.CREATIVE c, TE_XLS.CREATIVE_GROUP cg, 
+                    TE_XLS.PLACEMENT p, TE_XLS.AD_SIZE ads, 
+                    (SELECT * 
+                        FROM (SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                            FROM TE_XLS.PLACEMENT_STATUS ps
+                            WHERE Decode(PS.logical_delete, 'Y', '1', '0') = '0'
+                            ) status
+                        WHERE range = 1
+                    ) st,
+                    TE_XLS.SITE s, TE_XLS.SITE_SECTION ss
+                WHERE CI.CREATIVE_ID  = C.CREATIVE_ID
+                    AND CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID 
+                    AND CI.PLACEMENT_ID = P.PLACEMENT_ID
+                    AND P.PLACEMENT_ID = ST.PLACEMENT_ID 
+                    AND P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                    AND S.SITE_ID = P.SITE_ID 
+                    AND SS.SECTION_ID = P.SECTION_ID 
+                    AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                    AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                    AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                ) CRI
+            WHERE #{superiorLimit,jdbcType=NUMERIC} >= ROWNUMBER
+                AND ROWNUMBER > #{inferiorLimit,jdbcType=NUMERIC} 
+            ) CRIC, TE_XLS.CREATIVE_INSERT_CLICKTHROUGH cic
+        WHERE CRIC.CREATIVE_INSERTION_ID = CIC.CREATIVE_INSERTION_ID (+)
+            AND DECODE(CIC.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+    
+    <select id="getAllCreativeInsertionsCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM TE_XLS.CREATIVE_INSERTION ci, TE_XLS.CREATIVE c, TE_XLS.CREATIVE_GROUP cg, 
+            TE_XLS.PLACEMENT p, TE_XLS.AD_SIZE ads, 
+            (SELECT * 
+                FROM (SELECT ps.placement_id, ps.status_id, ps.status_date,
+                        rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                    FROM TE_XLS.PLACEMENT_STATUS ps
+                    WHERE Decode(PS.logical_delete, 'Y', '1', '0') = '0'
+                    ) status
+                WHERE range = 1
+            ) st,
+            TE_XLS.SITE s, TE_XLS.SITE_SECTION ss
+        WHERE CI.CREATIVE_ID  = C.CREATIVE_ID
+            AND CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID 
+            AND CI.PLACEMENT_ID = P.PLACEMENT_ID
+            AND P.PLACEMENT_ID = ST.PLACEMENT_ID 
+            AND P.AD_SIZE_ID = ADS.AD_SIZE_ID
+            AND S.SITE_ID = P.SITE_ID 
+            AND SS.SECTION_ID = P.SECTION_ID 
+            AND CG.CAMPAIGN_ID =  #{campaignId,jdbcType=NUMERIC}
+            AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+            AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+            AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+            AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+            AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+            AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <sql id="getCreativeInsertionsSiteLevelData">
+        SELECT S.SITE_ID,
+               S.SITE_NAME
+          FROM TE_XLS.SITE S
+               INNER JOIN ( SELECT DISTINCT p.site_id
+                              FROM TE_XLS.PLACEMENT P, TE_XLS.CREATIVE_INSERTION CI
+                             WHERE p.placement_id = ci.placement_id
+                               AND ci.campaign_id =  #{campaignId,jdbcType=NUMERIC}
+                                <if test="pivotType == 'group'">
+                                    AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                </if>
+                                <if test="pivotType == 'creative'">
+                                    AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                                </if>
+                               AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                               AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                           ) PLA ON s.site_id = pla.site_id
+         WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getCreativeInsertionsSiteLevel" parameterType="java.util.Map" resultMap="creativeInsertionView">
+        <include refid="getCreativeInsertionsSiteLevelData"/>
+    </select>
+
+    <select id="getCountCreativeInsertionsSiteLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM ( 
+                <include refid="getCreativeInsertionsSiteLevelData"/>
+               )
+    </select>
+
+    <sql id="getCreativeInsertionsSectionLevelData">
+        SELECT DISTINCT SS.SECTION_ID  AS SITE_SECTION_ID,
+               SS.SECTION_NAME         AS SITE_SECTION_NAME,
+               SS.SITE_ID
+          FROM TE_XLS.CREATIVE_INSERTION CI
+               INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                 AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                 AND SS.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                 AND P.SITE_ID = SS.SITE_ID
+                 AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+         WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+           AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getCreativeInsertionsSectionLevel" parameterType="java.util.Map" resultMap="creativeInsertionView">
+        <include refid="getCreativeInsertionsSectionLevelData"/>
+    </select>
+
+    <select id="getCountCreativeInsertionsSectionLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM ( 
+                <include refid="getCreativeInsertionsSectionLevelData"/>
+               )
+    </select>
+
+    <sql id="getCreativeInsertionsPlacementLevelData">
+        SELECT P.PLACEMENT_ID,
+               P.PLACEMENT_NAME,
+               P.END_DATE               AS PLACEMENT_END_DATE,
+               P.START_DATE             AS PLACEMENT_START_DATE,
+               (SELECT DECODE(STYP.STATUS_NAME, 'IO_ACPT', 'Accepted', 'IO_NEW', 'New', 'IO_RJCT', 'Rejected', 'New')
+                  FROM TE_XLS.STATUS_TYPES STYP
+                 WHERE ST.STATUS_ID = STYP.STATUS_ID) AS PLACEMENT_STATUS,
+               P.SITE_ID,
+               P.SECTION_ID             AS SITE_SECTION_ID,
+               CP.pAssocsWithCreativeGroups
+          FROM TE_XLS.PLACEMENT P
+               INNER JOIN (SELECT *
+                             FROM ( SELECT ps.placement_id, ps.status_id, ps.status_date,
+                                           rank() OVER (PARTITION BY PLACEMENT_ID order by PS.STATUS_DATE desc)  range
+                                      FROM TE_XLS.PLACEMENT_STATUS ps
+                                     WHERE DECODE(PS.logical_delete, 'Y', '1', '0') = '0'
+                                  ) status
+                            WHERE range = 1
+                          ) ST ON P.PLACEMENT_ID = ST.PLACEMENT_ID
+               INNER JOIN ( SELECT PLACEMENT_ID,
+                                   COUNT(DISTINCT CREATIVE_GROUP_ID) AS pAssocsWithCreativeGroups
+                              FROM TE_XLS.CREATIVE_INSERTION
+                             WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                               AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+                             GROUP BY PLACEMENT_ID
+                          ) CP ON P.PLACEMENT_ID = CP.PLACEMENT_ID
+         WHERE P.PLACEMENT_ID IN ( SELECT DISTINCT ci.placement_id
+                                     FROM TE_XLS.CREATIVE_INSERTION CI
+                                    WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                      <if test="pivotType == 'group'">
+                                          AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                                      </if>
+                                      <if test="pivotType == 'creative'">
+                                          AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                                      </if>                   
+                                      AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                 )
+        <if test="pivotType == 'site'">
+            AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+            AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+        </if>
+        <if test="pivotType == 'group'">
+            AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+        </if>
+        <if test="pivotType == 'creative'">
+            AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+        </if>
+         AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getCreativeInsertionsPlacementLevel" parameterType="java.util.Map" resultMap="creativeInsertionView">
+        <include refid="getCreativeInsertionsPlacementLevelData"/>
+    </select>
+
+    <select id="getCountCreativeInsertionsPlacementLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM ( 
+                <include refid="getCreativeInsertionsPlacementLevelData"/>
+               )
+    </select>
+
+    <sql id="getCreativeInsertionsGroupLevelData">
+        SELECT
+            CG.CREATIVE_GROUP_ID,
+            CG.GROUP_NAME                   AS CREATIVE_GROUP_NAME,
+            CG.WEIGHT                       AS CREATIVE_GROUP_WEIGHT,
+            CG.ENABLE_GROUP_WEIGHT          AS CREATIVE_GROUP_WEIGHT_ENABLED,
+            CG.ROTATION_TYPE                AS CREATIVE_GROUP_ROTATION_TYPE,
+            CG.DO_GEO_TARGET                AS CREATIVE_GROUP_DO_GEOTARGET,
+            CG.DO_COOKIE_TARGET             AS CREATIVE_GROUP_DO_COOKIETARGET,
+            CG.FREQUENCY_CAP                AS CREATIVE_GROUP_FREQUENCY_CAP,
+            CG.FREQUENCY_CAP_WINDOW         AS CREATIVE_GROUP_FREQ_CAP_WINDOW,
+            CG.PRIORITY                     AS CREATIVE_GROUP_PRIORITY,
+            CG.DAYPART_TARGET               AS CREATIVE_GROUP_DAYPART_TARGET,
+            CG.DO_DAYPART_TARGET            AS CREATIVE_GROUP_DO_DAYPART_TAR
+        FROM TE_XLS.CREATIVE_GROUP CG
+       WHERE CG.CREATIVE_GROUP_ID IN (SELECT DISTINCT CI.CREATIVE_GROUP_ID
+                                         FROM TE_XLS.CREATIVE_INSERTION CI
+                                            <if test="pivotType != 'group'">
+                                               INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                                                    AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                                    AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'    
+                                            </if>
+                                                <if test="pivotType == 'site'">
+                                                    AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                                                    AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                                                </if>
+                                                <if test="pivotType == 'creative'">
+                                                    AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                                                </if>
+                                        WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                            <if test="pivotType != 'group'">
+                                                AND CI.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                                            </if>
+                                            <if test="pivotType == 'creative'">
+                                                AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                                            </if>
+                                          AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                                      )
+          AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+          AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getCreativeInsertionsGroupLevel" parameterType="java.util.Map" resultMap="creativeInsertionView">
+        <include refid="getCreativeInsertionsGroupLevelData"/>
+    </select>
+
+    <select id="getCountCreativeInsertionsGroupLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM ( 
+                <include refid="getCreativeInsertionsGroupLevelData"/>
+               )
+    </select>
+
+    <select id="getCreativeInsertionsGroupLevelAssociations" parameterType="java.util.Map" resultMap="creativeInsertionView">
+        SELECT
+            DISTINCT CCG.CREATIVE_GROUP_ID,
+            CCG.cgAssocsWithPlacements,
+            CC.cgAssocsWithCreatives
+        FROM (
+                SELECT CREATIVE_GROUP_ID,
+                    COUNT(DISTINCT PLACEMENT_ID) AS cgAssocsWithPlacements
+                FROM TE_XLS.CREATIVE_INSERTION
+                WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+                    AND CREATIVE_GROUP_ID IN 
+                    <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                GROUP BY CREATIVE_GROUP_ID) CCG
+            INNER JOIN (
+                SELECT CREATIVE_GROUP_ID,
+                    COUNT(DISTINCT CREATIVE_ID) AS cgAssocsWithCreatives
+                FROM TE_XLS.CREATIVE_INSERTION
+                WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    <if test="pivotType != 'group'">
+                        AND PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                    </if>
+                    AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+                    AND CREATIVE_GROUP_ID IN 
+                    <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                GROUP BY CREATIVE_GROUP_ID) CC ON CCG.CREATIVE_GROUP_ID = CC.CREATIVE_GROUP_ID
+    </select>
+
+    <select id="getCreativeInsertionsCreativeLevel" parameterType="java.util.Map" resultMap="creativeInsertionView">
+        SELECT DISTINCT CRIC.*,
+            CC.cAssocsWithPlacements,
+            CC.cAssocsWithCreativeGroups
+        FROM (SELECT CRI.*
+            FROM (
+                SELECT OC.*,
+                    ROWNUM as ROWNUMBER
+                FROM (
+                    SELECT
+                        DISTINCT C.CREATIVE_ID,
+                        C.CAMPAIGN_ID,
+                        C.ALIAS                       AS CREATIVE_ALIAS,
+                        C.CREATIVE_TYPE,
+                        C.FILENAME,
+                        C.CLICKTHROUGH,
+                        (C.WIDTH || 'x' || C.HEIGHT) AS SIZE_NAME
+                    FROM TE_XLS.CREATIVE_INSERTION CI
+                        INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                            AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                            AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                    ORDER BY C.CREATIVE_ID
+                    ) OC
+                ) CRI
+            WHERE ROWNUMBER > #{inferiorLimit,jdbcType=NUMERIC}
+                AND #{pageSize,jdbcType=NUMERIC} >= ROWNUM
+            ) CRIC
+            INNER JOIN ( SELECT CREATIVE_ID,
+                    COUNT(DISTINCT PLACEMENT_ID) AS cAssocsWithPlacements,
+                    COUNT(DISTINCT CREATIVE_GROUP_ID) AS cAssocsWithCreativeGroups
+                FROM TE_XLS.CREATIVE_INSERTION
+                WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+                GROUP BY CREATIVE_ID
+                ) CC ON CRIC.CREATIVE_ID = CC.CREATIVE_ID
+    </select>
+
+    <select id="getCountCreativeInsertionsCreativeLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT C.CREATIVE_ID)
+        FROM TE_XLS.CREATIVE_INSERTION CI
+            INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+        WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+            AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="getCreativeInsertionsScheduleLevel" parameterType="java.util.Map" resultMap="creativeInsertionView">
+        SELECT DISTINCT CRIC.*, 
+            CIC.SEQUENCE      AS CLICKTHROUGH_SEQUENCE,
+            CIC.CLICKTHROUGH  AS CLICKTHROUGH_NAME,
+            CC.cAssocsWithPlacements,
+            CC.cAssocsWithCreativeGroups
+        FROM ( SELECT CRI.*
+                FROM (SELECT
+                        DISTINCT CI.CAMPAIGN_ID,
+                        ADS.SIZE_NAME,
+                        CI.CREATIVE_INSERTION_ID,
+                        CI.CREATIVE_INSERTION_ROOT_ID,
+                        CI.END_DATE,
+                        CI.RELEASED,
+                        CI.SEQUENCE,
+                        CI.START_DATE,
+                        CI.TIME_ZONE,
+                        CI.WEIGHT,
+                        CI.CLICKTHROUGH               AS CLICKTHROUGH,
+                        C.CREATIVE_ID,
+                        C.ALIAS                       AS CREATIVE_ALIAS,
+                        C.CREATIVE_TYPE,
+                        C.FILENAME,
+                        CI.CREATIVE_GROUP_ID,
+                        P.PLACEMENT_ID,
+                        P.SITE_ID,
+                        P.SECTION_ID                  AS SITE_SECTION_ID,
+                        CI.LOGICAL_DELETE,
+                        CI.CREATED,
+                        CI.CREATED_TPWS_KEY,
+                        CI.MODIFIED,
+                        CI.MODIFIED_TPWS_KEY,
+                        ROWNUM AS ROWNUMBER
+                    FROM TE_XLS.CREATIVE_INSERTION CI
+                        INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                            AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                            <if test="pivotType == 'site'">
+                                AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                                AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                            </if>
+                            <if test="pivotType == 'group'">
+                                AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                            </if>
+                                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                            INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                                AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                            INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                                AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                <if test="pivotType == 'creative'">
+                                    AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                                </if>
+                                AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                    WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                        AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+                        AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+                    ORDER BY CI.CREATIVE_INSERTION_ID
+                    ) CRI
+                WHERE ROWNUMBER > #{inferiorLimit,jdbcType=NUMERIC} 
+                    AND #{pageSize,jdbcType=NUMERIC} >= ROWNUM
+            ) CRIC
+            INNER JOIN ( SELECT CREATIVE_ID,
+                    COUNT(DISTINCT PLACEMENT_ID) AS cAssocsWithPlacements,
+                    COUNT(DISTINCT CREATIVE_GROUP_ID) AS cAssocsWithCreativeGroups
+                FROM TE_XLS.CREATIVE_INSERTION
+                WHERE CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                    AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+                GROUP BY CREATIVE_ID
+                ) CC ON CRIC.CREATIVE_ID = CC.CREATIVE_ID
+            LEFT JOIN TE_XLS.CREATIVE_INSERT_CLICKTHROUGH CIC ON CRIC.CREATIVE_INSERTION_ID = CIC.CREATIVE_INSERTION_ID
+                AND DECODE(CIC.LOGICAL_DELETE,'Y','1','0')='0'
+        WHERE DECODE(CIC.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="getCountCreativeInsertionsScheduleLevel" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM TE_XLS.CREATIVE_INSERTION CI
+            INNER JOIN TE_XLS.PLACEMENT P ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                <if test="pivotType != 'creative'">
+                    AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                <if test="pivotType == 'site'">
+                    AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                    AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                </if>
+                <if test="pivotType == 'group'">
+                    AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                </if>
+                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="pivotType != 'creative'">
+                    INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                    AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+                </if>
+           INNER JOIN TE_XLS.CREATIVE C ON C.CREATIVE_ID = CI.CREATIVE_ID
+                AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                <if test="pivotType == 'creative'">
+                    AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                </if>
+                AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+        WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+            <if test="pivotType != 'creative'">
+               AND CI.CREATIVE_GROUP_ID = #{groupId,jdbcType=NUMERIC}
+            </if>
+            AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="getCountAffectedSchedulesDueToImport" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM TE_XLS.CREATIVE_INSERTION CI
+        WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+          AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+          AND CI.CREATIVE_GROUP_ID IN
+            <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+    <select id="creativeClassificationByPlacement" parameterType="java.util.Map" resultMap="placementClassification">
+        SELECT DISTINCT CI.PLACEMENT_ID,
+            CASE
+                WHEN CR.CREATIVE_TYPE IN ( 'xml' , 'vmap' , 'vast') THEN 'XML'
+                ELSE 'NON_XML'
+            END AS CLASSIFICATION
+        FROM TE_XLS.CREATIVE_INSERTION CI
+            INNER JOIN TE_XLS.PLACEMENT P ON P.PLACEMENT_ID = CI.PLACEMENT_ID
+                AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+            INNER JOIN TE_XLS.CREATIVE CR ON CR.CREATIVE_ID = CI.CREATIVE_ID
+                AND DECODE(CR.LOGICAL_DELETE,'Y','1','0')='0'
+        WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+            AND CI.PLACEMENT_ID IN
+            <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <sql id="getCreativeInsertionsByCreativeIdData">
+        SELECT CG.CAMPAIGN_ID                AS campaignId,
+               CI.CREATIVE_INSERTION_ID      AS id,
+               C.CREATIVE_ID                 AS creativeId,
+               C.ALIAS                       AS creativeAlias,
+               C.CREATIVE_TYPE               AS creativeType,
+               C.FILENAME                    AS filename,
+               CG.CREATIVE_GROUP_ID          AS creativeGroupId,
+               CG.GROUP_NAME                 AS creativeGroupName,
+               CG.WEIGHT                     AS creativeGroupWeight,
+               P.PLACEMENT_ID                AS placementId,
+               P.PLACEMENT_NAME              AS placementName,
+               P.START_DATE                  AS placementStartDate,
+               P.END_DATE                    AS placementEndDate,
+               ADS.SIZE_NAME                 AS sizeName,
+               S.SITE_ID                     AS siteId,
+               S.SITE_NAME                   AS siteName,
+               SS.SECTION_ID                 AS siteSectionId,
+               SS.SECTION_NAME               AS siteSectionName
+          FROM TE_XLS.CREATIVE_INSERTION CI
+               INNER JOIN  TE_XLS.PLACEMENT p ON CI.PLACEMENT_ID = P.PLACEMENT_ID
+                 AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.SITE s ON P.SITE_ID  = S.SITE_ID
+                 AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN  TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                 AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN  TE_XLS.AD_SIZE ads ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                 AND DECODE(ADS.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CREATIVE c ON C.CREATIVE_ID = CI.CREATIVE_ID
+                 AND C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                 AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CREATIVE_GROUP cg ON CG.CREATIVE_GROUP_ID = CI.CREATIVE_GROUP_ID
+                 AND CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                 AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN CA ON CA.CAMPAIGN_ID = CI.CAMPAIGN_ID
+                 AND DECODE(CA.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = CA.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                           ) UADV ON UADV.ADVERTISER_ID = CA.ADVERTISER_ID
+         WHERE CI.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+           AND CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+           AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+    </sql>
+
+    <select id="getCreativeInsertionsByCreativeId" parameterType="java.util.Map" resultType="CreativeInsertionView">
+        <include refid="getCreativeInsertionsByCreativeIdData"/>
+    </select>
+
+    <select id="getCountCreativeInsertionsByCreativeId" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getCreativeInsertionsByCreativeIdData"/>
+               )
+    </select>
+
+    <select id="getCountCreativeInsertionsByCreativeAndGroupId" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM TE_XLS.CREATIVE_INSERTION CI
+               INNER JOIN TE_XLS.CAMPAIGN CA ON CA.CAMPAIGN_ID = CI.CAMPAIGN_ID
+                 AND DECODE(CA.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = CA.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                           ) UADV ON UADV.ADVERTISER_ID = CA.ADVERTISER_ID
+         WHERE CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+           AND CI.CREATIVE_GROUP_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+</mapper>

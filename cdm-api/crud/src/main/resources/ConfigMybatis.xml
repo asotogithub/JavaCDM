@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Document : mybatis.xml Created on : November 30, 2013, 5:20 PM 
+     Description: Purpose of the document follows. -->
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+    	<setting name="logImpl" value="COMMONS_LOGGING"/>
+    </settings>
+    <typeAliases>
+        <typeAlias alias="Advertiser" type="trueffect.truconnect.api.commons.model.Advertiser"/>
+        <typeAlias alias="AgencyContact" type="trueffect.truconnect.api.commons.model.AgencyContact"/>
+        <typeAlias alias="Brand" type="trueffect.truconnect.api.commons.model.Brand"/>
+        <typeAlias alias="Campaign" type="trueffect.truconnect.api.commons.model.Campaign"/>
+        <typeAlias alias="CampaignDTO" type="trueffect.truconnect.api.commons.model.dto.CampaignDTO"/>
+        <typeAlias alias="Clickthrough" type="trueffect.truconnect.api.commons.model.Clickthrough"/>
+        <typeAlias alias="Contact" type="trueffect.truconnect.api.commons.model.Contact"/>
+        <typeAlias alias="CostDetail" type="trueffect.truconnect.api.commons.model.CostDetail"/>
+        <typeAlias alias="CostDetailRawDataView" type="trueffect.truconnect.api.commons.model.importexport.CostDetailRawDataView"/>
+        <typeAlias alias="Creative" type="trueffect.truconnect.api.commons.model.Creative"/>
+        <typeAlias alias="CreativeAssociationsDTO" type="trueffect.truconnect.api.commons.model.dto.CreativeAssociationsDTO"/>
+        <typeAlias alias="CreativeGroup" type="trueffect.truconnect.api.commons.model.CreativeGroup"/>
+        <typeAlias alias="CreativeGroupCreativeView" type="trueffect.truconnect.api.commons.model.dto.CreativeGroupCreativeView"/>
+        <typeAlias alias="CreativeInsertion" type="trueffect.truconnect.api.commons.model.CreativeInsertion"/>
+        <typeAlias alias="CreativeInsertionRawDataView" type="trueffect.truconnect.api.commons.model.importexport.CreativeInsertionRawDataView"/>
+        <typeAlias alias="CreativeInsertionView" type="trueffect.truconnect.api.commons.model.dto.CreativeInsertionView"/>
+        <typeAlias alias="CreativeVersion" type="trueffect.truconnect.api.commons.model.CreativeVersion"/>
+        <typeAlias alias="ExtendedProperties" type="trueffect.truconnect.api.commons.model.ExtendedProperties"/>
+        <typeAlias alias="HtmlInjectionTagAssociation" type="trueffect.truconnect.api.commons.model.HtmlInjectionTagAssociation"/>
+        <typeAlias alias="HtmlInjectionTags" type="trueffect.truconnect.api.commons.model.HtmlInjectionTags"/>
+        <typeAlias alias="InsertionOrder" type="trueffect.truconnect.api.commons.model.InsertionOrder"/>
+        <typeAlias alias="InsertionOrderStatus" type="trueffect.truconnect.api.commons.model.InsertionOrderStatus"/>
+        <typeAlias alias="MediaBuy" type="trueffect.truconnect.api.commons.model.MediaBuy"/>
+        <typeAlias alias="MediaRawDataView" type="trueffect.truconnect.api.commons.model.importexport.MediaRawDataView"/>
+        <typeAlias alias="Placement" type="trueffect.truconnect.api.commons.model.Placement"/>
+        <typeAlias alias="PlacementView" type="trueffect.truconnect.api.commons.model.dto.PlacementView"/>
+        <typeAlias alias="Package" type="trueffect.truconnect.api.commons.model.Package"/>
+        <typeAlias alias="PackagePlacement" type="trueffect.truconnect.api.commons.model.PackagePlacement"/>
+        <typeAlias alias="PackagePlacementView" type="trueffect.truconnect.api.commons.model.dto.PackagePlacementView"/>
+        <typeAlias alias="Publisher" type="trueffect.truconnect.api.commons.model.Publisher"/>
+        <typeAlias alias="SearchCriteria" type="trueffect.truconnect.api.commons.model.SearchCriteria"/>
+        <typeAlias alias="Site" type="trueffect.truconnect.api.commons.model.Site"/>
+        <typeAlias alias="SiteContact" type="trueffect.truconnect.api.commons.model.SiteContact"/>
+        <typeAlias alias="SiteContactView" type="trueffect.truconnect.api.commons.model.dto.SiteContactView"/>
+        <typeAlias alias="SiteSection" type="trueffect.truconnect.api.commons.model.SiteSection"/>
+        <typeAlias alias="SiteMeasurementCampaignDTO" type="trueffect.truconnect.api.commons.model.dto.SiteMeasurementCampaignDTO"/>
+        <typeAlias alias="SiteMeasurementDTO" type="trueffect.truconnect.api.commons.model.dto.SiteMeasurementDTO"/>
+        <typeAlias alias="Size" type="trueffect.truconnect.api.commons.model.Size"/>
+        <typeAlias alias="SmEventDTO" type="trueffect.truconnect.api.commons.model.dto.SmEventDTO"/>
+        <typeAlias alias="SmEvent" type="trueffect.truconnect.api.commons.model.SmEvent"/>
+        <typeAlias alias="SmGroup" type="trueffect.truconnect.api.commons.model.SmGroup"/>
+        <typeAlias alias="SmPingEventDTO" type="trueffect.truconnect.api.commons.model.dto.SmPingEventDTO"/>
+        <typeAlias alias="RolePermission" type="trueffect.truconnect.api.commons.model.RolePermission"/>
+        <typeAlias alias="User" type="trueffect.truconnect.api.commons.model.User"/>
+        <typeAlias alias="UserView" type="trueffect.truconnect.api.commons.model.dto.UserView"/>
+    </typeAliases>
+    <environments default="property">
+        <environment id="property">
+            <transactionManager type="JDBC" />
+            <dataSource type="trueffect.truconnect.api.crud.mybatis.C3P0DataSourceFactory">
+                <property name="dataSourceName" value="CRUD" />
+                <property name="driverClass" value="${driver}" />
+                <property name="jdbcUrl" value="${url}" />
+                <property name="user" value="${username}" />
+                <property name="password" value="${password}" />
+                <property name="acquireIncrement" value="1" />
+                <property name="initialPoolSize" value="1" />
+                <property name="minPoolSize" value="1" />
+                <property name="maxPoolSize" value="30" />
+                <property name="maxIdleTime" value="3600" />
+                <property name="contextClassLoaderSource" value="library" />
+                <property name="privilegeSpawnedThreads" value="true" />
+                <property name="idleConnectionTestPeriod" value="3600" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="db/AdminPkg.xml" />
+        <mapper resource="db/AdvertiserPkg.xml" />
+        <mapper resource="db/BrandPkg.xml" />
+        <mapper resource="db/CampaignPkg.xml"/>
+        <mapper resource="db/CmsPkg.xml" />
+        <mapper resource="db/CookiePkg.xml" />
+        <mapper resource="db/CreativePkg.xml" />
+        <mapper resource="db/DeletePkg.xml" />
+        <mapper resource="db/ExtendedPropertiesPkg.xml" />
+        <mapper resource="db/GenericQueries.xml" />
+        <mapper resource="db/HtmlInjectionPkg.xml" />
+        <mapper resource="db/HtmlTagPkg.xml" />
+        <mapper resource="db/IOPkg.xml" />
+        <mapper resource="db/MediaBuy.xml" />
+        <mapper resource="db/NotificationPkg.xml" />
+        <mapper resource="db/PublisherPkg.xml" />
+        <mapper resource="db/SiteMeasurementPkg.xml" />
+        <mapper resource="db/TargetPkg.xml" />
+        <mapper resource="db/TrafficPkg.xml" />
+        <mapper resource="db/UserPkg.xml" />
+        <mapper resource="db/DataAccessControlPkg.xml" />
+        
+        <!--New xml mapper-->
+        <mapper resource="db/Agency.xml" />
+        <mapper resource="db/Advertiser.xml" />
+        <mapper resource="db/Brand.xml" />
+        <mapper resource="db/Campaign.xml"/>
+        <mapper resource="db/Contact.xml" />
+        <mapper resource="db/CookieDomain.xml" />
+        <mapper resource="db/CreativeGroup.xml" />
+        <mapper resource="db/CreativeGroupCreative.xml" />
+        <mapper resource="db/CreativeInsertion.xml" />
+        <mapper resource="db/CreativeInsertionSearch.xml" />
+        <mapper resource="db/Package.xml" />
+        <mapper resource="db/Placement.xml" />
+        <mapper resource="db/Site.xml" />
+        <mapper resource="db/SiteSection.xml" />
+        <mapper resource="db/Size.xml" />
+        <mapper resource="db/SmEvent.xml" />
+        <mapper resource="db/SmGroup.xml" />
+        <mapper resource="db/UserAdvertiser.xml" />
+        <mapper resource="db/UserDomain.xml" />
+        <mapper resource="db/GeoLocation.xml" />
+        <mapper resource="db/Status.xml" />
+        <mapper resource="db/HtmlInjectionTags.xml" />
+        <mapper resource="db/SmPing.xml" />
+    </mappers>
+</configuration>

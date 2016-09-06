@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Package">
+    <resultMap id="pkgResultMap" type="trueffect.truconnect.api.commons.model.Package">
+        <id     property="id"                   column="id"/>
+        <result property="name"                 column="name"/>
+        <result property="description"          column="description"/>
+        <result property="campaignId"           column="campaignId"/>
+        <result property="externalId"           column="externalId"/>
+        <result property="logicalDelete"        column="logicalDelete"/>
+        <result property="createdDate"          column="createdDate"/>
+        <result property="createdTpwsKey"       column="createdTpwsKey"/>
+        <result property="modifiedDate"         column="modifiedDate"/>
+        <result property="modifiedTpwsKey"      column="modifiedTpwsKey"/>
+        <result property="countryCurrencyId"    column="countryCurrencyId"/>
+        <result property="placementCount"       column="placementCount"/>
+        <collection property="costDetails" ofType="trueffect.truconnect.api.commons.model.CostDetail">
+            <result property="id"          column="pcd_packageCostId"/>
+            <result property="foreignId"              column="pcd_packageId"/>
+            <result property="startDate"              column="pcd_startDate"/>
+            <result property="endDate"                column="pcd_endDate"/>
+            <result property="inventory"              column="pcd_inventory"/>
+            <result property="rateType"               column="pcd_rateType"/>
+            <result property="logicalDelete"          column="pcd_logicalDelete"/>
+            <result property="createdDate"            column="pcd_created"/>
+            <result property="createdTpwsKey"         column="pcd_createdTpwsKey"/>
+            <result property="modifiedDate"           column="pcd_modified"/>
+            <result property="modifiedTpwsKey"        column="pcd_modifiedTpwsKey"/>
+            <result property="plannedNetRate"         column="pcd_plannedNetRate"/>
+            <result property="plannedGrossRate"       column="pcd_plannedGrossRate"/>
+            <result property="plannedNetAdSpend"      column="pcd_plannedNetAdSpend"/>
+            <result property="plannedGrossAdSpend"    column="pcd_plannedGrossAdSpend"/>
+            <result property="actualNetRate"          column="pcd_actualNetRate"/>
+            <result property="actualGrossRate"        column="pcd_actualGrossRate"/>
+            <result property="actualNetAdSpend"       column="pcd_actualNetAdSpend"/>
+            <result property="actualGrossAdSpend"     column="pcd_actualGrossAdSpend"/>
+            <result property="margin"                 column="pcd_margin"/>
+        </collection>
+        <collection property="placements" ofType="Placement">
+            <result property="id"            column="placementId"/>
+            <result property="name"          column="placementName"/>
+            <result property="siteId"        column="siteId"/>
+            <result property="siteName"      column="siteName"/>
+            <result property="siteSectionId" column="siteSectionId"/>
+            <result property="ioId"          column="ioId"/>
+            <result property="sizeId"        column="sizeId"/>
+            <result property="width"         column="width"/>
+            <result property="height"        column="height"/>
+            <result property="startDate"     column="startDate"/>
+            <result property="endDate"       column="endDate"/>
+            <result property="inventory"     column="inventory"/>
+            <result property="rate"       	 column="rate"/>
+            <result property="rateType"      column="rateType"/>
+            <result property="adSpend"       column="adSpend"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="mediaRawResultMap" type="MediaRawDataView">
+        <id     property="mediaPackageId"                   column="mediaPackageId"/>
+        <result property="mediaPackageName"                 column="mediaPackageName"/>
+        <result property="existingPlacements"               column="existingPlacements"/>
+        <collection property="costDetails" ofType="CostDetailRawDataView">
+            <result property="inventory"                column="inventory"/>
+            <result property="rateType"                 column="rateType"/>
+            <result property="rate"                     column="rate"/>
+            <result property="plannedAdSpend"           column="plannedAdSpend"/>
+            <result property="startDate"                column="startDate"/>
+            <result property="endDate"                  column="endDate"/>
+        </collection>
+    </resultMap>
+
+    <!-- Queries: get Package data-->
+    <select id="getPackage"  parameterType="Long" resultMap="pkgResultMap" flushCache="true">
+         SELECT DISTINCT PACKAGE.PACKAGE_ID               as id, 
+                PACKAGE.PACKAGE_NAME                      as name,
+                PACKAGE.PACKAGE_DESC                      as description,
+                PACKAGE.CAMPAIGN_ID                       as campaignId,
+                PACKAGE.EXT_PACKAGE_ID                    as externalId,
+                PACKAGE.LOGICAL_DELETE                    as logicalDelete,
+                PACKAGE.CREATED                           as createdDate,
+                PACKAGE.CREATED_TPWS_KEY                  as createdTpwsKey,
+                PACKAGE.MODIFIED                          as modifiedDate,
+                PACKAGE.MODIFIED_TPWS_KEY                 as modifiedTpwsKey,
+                PACKAGE.COUNTRY_CURRENCY_ID               as countryCurrencyId,
+                PCD.package_cost_id                       as pcd_packageCostId,
+                PCD.package_id                            as pcd_packageId,
+                PCD.start_date                            as pcd_startDate,
+                PCD.end_date                              as pcd_endDate,
+                PCD.inventory                             as pcd_inventory,
+                PCD.rate_type                             as pcd_rateType,
+                PCD.logical_delete                        as pcd_logicalDelete,
+                PCD.created                               as pcd_created,
+                PCD.created_tpws_key                      as pcd_createdTpwsKey,
+                PCD.modified                              as pcd_modified,
+                PCD.modified_tpws_key                     as pcd_modifiedTpwsKey,
+                PCD.planned_net_rate                      as pcd_plannedNetRate,
+                PCD.planned_gross_rate                    as pcd_plannedGrossRate,
+                PCD.planned_net_ad_spend                  as pcd_plannedNetAdSpend,
+                PCD.planned_gross_ad_spend                as pcd_plannedGrossAdSpend,
+                PCD.actual_net_rate                       as pcd_actualNetRate,
+                PCD.actual_gross_rate                     as pcd_actualGrossRate,
+                PCD.actual_net_ad_spend                   as pcd_actualNetAdSpend,
+                PCD.actual_gross_ad_spend                 as pcd_actualGrossAdSpend,
+                NVL(PKG_PLAC_COUNT.totalPlacements,0)     as placementCount,
+                CASE
+                   WHEN ((PCD.PLANNED_GROSS_AD_SPEND = 0 OR PCD.PLANNED_GROSS_AD_SPEND IS NULL) AND 
+                        (PCD.PLANNED_GROSS_RATE = 0 OR PCD.PLANNED_GROSS_RATE IS NULL))
+                      THEN 100 
+                   WHEN (PCD.PLANNED_GROSS_AD_SPEND != 0 AND PCD.PLANNED_GROSS_AD_SPEND IS NOT NULL) 
+                      THEN ROUND(((PCD.PLANNED_GROSS_AD_SPEND - nvl(PCD.PLANNED_NET_AD_SPEND,0) )/PCD.PLANNED_GROSS_AD_SPEND)*100 ,2)
+                   ELSE  ROUND(((PCD.PLANNED_GROSS_RATE - nvl(PCD.PLANNED_NET_RATE,0) )/PCD.PLANNED_GROSS_RATE)*100 ,2)
+                END AS pcd_margin
+           FROM TE_XLS.PACKAGE
+                LEFT JOIN TE_XLS.PACKAGE_COST_DETAIL PCD ON PCD.PACKAGE_ID = PACKAGE.PACKAGE_ID
+                 AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                LEFT JOIN (SELECT PP.PACKAGE_ID, COUNT(1) as totalPlacements
+                             FROM TE_XLS.PACKAGE_PLACEMENT PP
+                            WHERE PP.PACKAGE_ID = #{packageId}
+                              AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                            GROUP BY PACKAGE_ID
+                          ) PKG_PLAC_COUNT ON PKG_PLAC_COUNT.PACKAGE_ID = PACKAGE.PACKAGE_ID
+          WHERE PACKAGE.PACKAGE_ID = #{packageId}
+            AND DECODE(PACKAGE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          ORDER BY package.package_id, pcd_startDate
+    </select>
+
+    <select id="getPackagesByCriteria" parameterType="java.util.Map" resultMap="pkgResultMap" >
+         SELECT DISTINCT PACKAGE.PACKAGE_ID               as id, 
+                PACKAGE.PACKAGE_NAME                      as name,
+                PACKAGE.PACKAGE_DESC                      as description,
+                PACKAGE.CAMPAIGN_ID                       as campaignId,
+                PACKAGE.EXT_PACKAGE_ID                    as externalId,
+                PACKAGE.LOGICAL_DELETE                    as logicalDelete,
+                PACKAGE.CREATED                           as createdDate,
+                PACKAGE.CREATED_TPWS_KEY                  as createdTpwsKey,
+                PACKAGE.MODIFIED                          as modifiedDate,
+                PACKAGE.MODIFIED_TPWS_KEY                 as modifiedTpwsKey,
+                PACKAGE.COUNTRY_CURRENCY_ID               as countryCurrencyId,
+                PCD.package_cost_id                       as pcd_packageCostId,
+                PCD.package_id                            as pcd_packageId,
+                PCD.start_date                            as pcd_startDate,
+                PCD.end_date                              as pcd_endDate,
+                PCD.inventory                             as pcd_inventory,
+                PCD.rate_type                             as pcd_rateType,
+                PCD.logical_delete                        as pcd_logicalDelete,
+                PCD.created                               as pcd_created,
+                PCD.created_tpws_key                      as pcd_createdTpwsKey,
+                PCD.modified                              as pcd_modified,
+                PCD.modified_tpws_key                     as pcd_modifiedTpwsKey,
+                PCD.planned_net_rate                      as pcd_plannedNetRate,
+                PCD.planned_gross_rate                    as pcd_plannedGrossRate,
+                PCD.planned_net_ad_spend                  as pcd_plannedNetAdSpend,
+                PCD.planned_gross_ad_spend                as pcd_plannedGrossAdSpend,
+                PCD.actual_net_rate                       as pcd_actualNetRate,
+                PCD.actual_gross_rate                     as pcd_actualGrossRate,
+                PCD.actual_net_ad_spend                   as pcd_actualNetAdSpend,
+                PCD.actual_gross_ad_spend                 as pcd_actualGrossAdSpend,
+                NVL(PKG_PLAC_COUNT.totalPlacements,0)     as placementCount,
+                CASE
+                   WHEN ((PCD.PLANNED_GROSS_AD_SPEND = 0 OR PCD.PLANNED_GROSS_AD_SPEND IS NULL) AND 
+                        (PCD.PLANNED_GROSS_RATE = 0 OR PCD.PLANNED_GROSS_RATE IS NULL))
+                      THEN 0 
+                   WHEN (PCD.PLANNED_GROSS_AD_SPEND != 0 AND PCD.PLANNED_GROSS_AD_SPEND IS NOT NULL) 
+                      THEN ROUND(((PCD.PLANNED_GROSS_AD_SPEND - nvl(PCD.PLANNED_NET_AD_SPEND,0) )/PCD.PLANNED_GROSS_AD_SPEND)*100 , 2)
+                   ELSE  ROUND(((PCD.PLANNED_GROSS_RATE - nvl(PCD.PLANNED_NET_RATE,0) )/PCD.PLANNED_GROSS_RATE)*100 , 2)
+                END AS pcd_margin       
+          FROM TE_XLS.PACKAGE 
+               INNER JOIN TE_XLS.CAMPAIGN C ON PACKAGE.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               LEFT JOIN TE_XLS.PACKAGE_COST_DETAIL PCD ON PCD.PACKAGE_ID = PACKAGE.PACKAGE_ID
+                 AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               LEFT JOIN (SELECT PP.PACKAGE_ID, COUNT(1) as totalPlacements
+                            FROM TE_XLS.PACKAGE_PLACEMENT PP
+                           WHERE DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                           GROUP BY PACKAGE_ID
+                         ) PKG_PLAC_COUNT ON PKG_PLAC_COUNT.PACKAGE_ID = PACKAGE.PACKAGE_ID
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                                     AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                             WHERE U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN}
+                               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE DECODE(PACKAGE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        <if test="condition != null">
+            AND ${condition}
+        </if>
+        <if test="order != null">
+            ${order}
+        </if>
+    </select>
+
+    <sql id="getPackageByCampaignAndIoIdData">
+        SELECT P.PACKAGE_ID                          AS id, 
+               P.PACKAGE_NAME                        AS name,
+               P.PACKAGE_DESC                        AS description,
+               P.CAMPAIGN_ID                         AS campaignId,
+               P.EXT_PACKAGE_ID                      AS externalId,
+               P.COUNTRY_CURRENCY_ID                 AS countryCurrencyId,
+               NVL(PKG_PLAC_COUNT.totalPlacements,0) AS placementCount,
+               P.LOGICAL_DELETE                      AS logicalDelete,
+               P.CREATED                             AS createdDate,
+               P.CREATED_TPWS_KEY                    AS createdTpwsKey,
+               P.MODIFIED                            AS modifiedDate,
+               P.MODIFIED_TPWS_KEY                   AS modifiedTpwsKey,
+               (SELECT NVL(SUM(PCD.PLANNED_GROSS_AD_SPEND),0.0)
+                  FROM TE_XLS.PACKAGE_COST_DETAIL PCD
+                 WHERE PCD.PACKAGE_ID = P.PACKAGE_ID
+                   AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               ) AS totalAdSpend,
+               ROW_NUMBER() OVER(ORDER BY P.PACKAGE_ID) AS ROWNUMBER
+          FROM TE_XLS.PACKAGE P
+               LEFT JOIN (SELECT PP.PACKAGE_ID, COUNT(1) AS totalPlacements
+                            FROM TE_XLS.PACKAGE_PLACEMENT PP
+                           WHERE DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                           GROUP BY PP.PACKAGE_ID
+                         ) PKG_PLAC_COUNT ON PKG_PLAC_COUNT.PACKAGE_ID = P.PACKAGE_ID
+               LEFT JOIN (SELECT DISTINCT PP.PACKAGE_ID, PLA.IO_ID
+                            FROM TE_XLS.PACKAGE_PLACEMENT PP
+                                 INNER JOIN TE_XLS.PLACEMENT PLA ON PP.PLACEMENT_ID = PLA.PLACEMENT_ID
+                                   AND DECODE(PLA.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                           WHERE PLA.IO_ID = #{ioId,jdbcType=NUMERIC}
+                             AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                         ) PP ON PP.PACKAGE_ID = P.PACKAGE_ID
+         WHERE ((P.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                 AND NVL(PKG_PLAC_COUNT.totalPlacements,0) = 0
+                )
+                OR
+                (PP.IO_ID = #{ioId,jdbcType=NUMERIC}
+                 AND  PKG_PLAC_COUNT.totalPlacements > 0
+                )
+               )
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </sql>
+
+    <select id="getPackagesByCampaignAndIoId" parameterType="java.util.Map" resultMap="pkgResultMap" >
+        SELECT P.*,
+               PCD.package_cost_id                   AS pcd_packageCostId,
+               PCD.package_id                        AS pcd_packageId,
+               PCD.start_date                        AS pcd_startDate,
+               PCD.end_date                          AS pcd_endDate,
+               PCD.inventory                         AS pcd_inventory,
+               PCD.rate_type                         AS pcd_rateType,
+               PCD.logical_delete                    AS pcd_logicalDelete,
+               PCD.created                           AS pcd_created,
+               PCD.created_tpws_key                  AS pcd_createdTpwsKey,
+               PCD.modified                          AS pcd_modified,
+               PCD.modified_tpws_key                 AS pcd_modifiedTpwsKey,
+               PCD.planned_net_rate                  AS pcd_plannedNetRate,
+               PCD.planned_gross_rate                AS pcd_plannedGrossRate,
+               PCD.planned_net_ad_spend              AS pcd_plannedNetAdSpend,
+               PCD.planned_gross_ad_spend            AS pcd_plannedGrossAdSpend,
+               PCD.actual_net_rate                   AS pcd_actualNetRate,
+               PCD.actual_gross_rate                 AS pcd_actualGrossRate,
+               PCD.actual_net_ad_spend               AS pcd_actualNetAdSpend,
+               PCD.actual_gross_ad_spend             AS pcd_actualGrossAdSpend,
+               CASE
+                  WHEN ((PCD.PLANNED_GROSS_AD_SPEND = 0 OR PCD.PLANNED_GROSS_AD_SPEND IS NULL) AND 
+                       (PCD.PLANNED_GROSS_RATE = 0 OR PCD.PLANNED_GROSS_RATE IS NULL))
+                     THEN 0 
+                  WHEN (PCD.PLANNED_GROSS_AD_SPEND != 0 AND PCD.PLANNED_GROSS_AD_SPEND IS NOT NULL) 
+                     THEN ROUND(((PCD.PLANNED_GROSS_AD_SPEND - nvl(PCD.PLANNED_NET_AD_SPEND,0) )/PCD.PLANNED_GROSS_AD_SPEND)*100 , 2)
+                  ELSE  ROUND(((PCD.PLANNED_GROSS_RATE - nvl(PCD.PLANNED_NET_RATE,0) )/PCD.PLANNED_GROSS_RATE)*100 , 2)
+               END                                    AS pcd_margin,
+               PLA.*,
+               DECODE(P.placementCount,0, 0.0, (P.totalAdSpend/ P.placementCount)) AS adSpend
+          FROM (SELECT PKG.*
+                  FROM (
+                        <include refid="getPackageByCampaignAndIoIdData"/>
+                       ) PKG
+                 WHERE #{superiorLimit,jdbcType=NUMERIC} >= ROWNUMBER
+                   AND ROWNUMBER > #{inferiorLimit,jdbcType=NUMERIC}
+               ) P
+               LEFT JOIN TE_XLS.PACKAGE_COST_DETAIL PCD ON PCD.PACKAGE_ID = P.ID
+                AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               LEFT JOIN ( SELECT PP.PACKAGE_ID,
+                                  P.PLACEMENT_ID                       AS placementId,
+                                  P.PLACEMENT_NAME                     AS placementName,
+                                  P.SITE_ID                            AS siteId,
+                                  S.SITE_NAME                          AS siteName,
+                                  P.SECTION_ID                         AS siteSectionId,
+                                  P.IO_ID                              AS ioId,
+                                  P.AD_SIZE_ID                         AS sizeId,
+                                  ADS.WIDTH                            AS width,
+                                  ADS.HEIGHT                           AS height,
+                                  P.START_DATE                         AS startDate,
+                                  P.END_DATE                           AS endDate,
+                                  P.INVENTORY                          AS inventory,
+                                  P.RATE                               AS rate,
+                                  P.RATE_TYPE                          AS rateType
+                             FROM TE_XLS.PACKAGE_PLACEMENT PP
+                                  INNER JOIN TE_XLS.PLACEMENT P ON PP.PLACEMENT_ID = P.PLACEMENT_ID
+                                    AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                  INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                                    AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                  INNER JOIN TE_XLS.AD_SIZE ADS ON P.AD_SIZE_ID = ADS.AD_SIZE_ID
+                                    AND DECODE(ADS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                            WHERE P.IO_ID = #{ioId,jdbcType=NUMERIC}
+                              AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                          ) PLA ON P.ID = PLA.PACKAGE_ID
+    </select>
+
+    <select id="getCountPackagesByCampaignAndIoId" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getPackageByCampaignAndIoIdData"/>
+               )
+    </select>
+
+    <select id="getPackagesNumberOfRecordsByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1) as totalRecords
+          FROM TE_XLS.PACKAGE
+               INNER JOIN TE_XLS.CAMPAIGN C ON PACKAGE.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                                     AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                             WHERE U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN}
+                               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE DECODE(PACKAGE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        <if test="condition != null">
+            AND ${condition}
+        </if>
+    </select>
+
+    <select id="packagePPV" parameterType="java.util.Map" resultType="PackagePlacementView">
+        SELECT DISTINCT PACKAGE.PACKAGE_ID           as packageId,
+               PACKAGE.PACKAGE_NAME                  as packageName,
+               PPCD.START_DATE                       as startDate,
+               PPCD.END_DATE                         as endDate,
+               PPCD.INVENTORY                        as inventory,
+               PPCD.RATE_TYPE                        as rateType,
+               PPCD.rate                             as rate,
+               NVL(AD_SPEND.adSpend, 0.0)            as adSpend,
+               NVL(PKG_PLAC_COUNT.totalPlacements,0) as placementCount,
+               PACKAGE.CAMPAIGN_ID                   as campaignId,
+               DECODE(NVL(PKG_PLAC_COUNT.totalPlacements,0.0),0.0, 0.0,
+                      (NVL(AD_SPEND.adSpend, 0.0) / NVL(PKG_PLAC_COUNT.totalPlacements,0.0))
+                      ) as placementAdSpend
+          FROM TE_XLS.PACKAGE, TE_XLS.CAMPAIGN C,
+               (SELECT P.PACKAGE_ID,
+                       PCD.START_DATE, PCD.END_DATE,
+                       PCD.INVENTORY,
+                       NVL(PCD.PLANNED_GROSS_RATE, 0.0) as rate,
+                       PCD.RATE_TYPE
+                  FROM TE_XLS.PACKAGE P
+                       INNER JOIN TE_XLS.PACKAGE_COST_DETAIL PCD ON PCD.PACKAGE_ID = P.PACKAGE_ID
+                         AND PCD.PACKAGE_COST_ID = (SELECT MIN(PACKAGE_COST_ID) AS PACKAGE_COST_ID
+                                                      FROM TE_XLS.PACKAGE_COST_DETAIL
+                                                     WHERE PACKAGE_ID = P.PACKAGE_ID
+                                                       AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                                   )
+                         AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                  WHERE DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               ) PPCD,
+               (SELECT PCD.PACKAGE_ID,
+                       SUM(NVL(PCD.PLANNED_GROSS_AD_SPEND, 0.0)) as adSpend
+                  FROM TE_XLS.PACKAGE_COST_DETAIL PCD
+                 WHERE DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                 GROUP BY PCD.PACKAGE_ID
+               ) AD_SPEND,
+               TE_XLS.PACKAGE_PLACEMENT PP, TE_XLS.PLACEMENT,
+               (SELECT PP.PACKAGE_ID, COUNT(1) as totalPlacements
+                  FROM TE_XLS.PACKAGE_PLACEMENT PP
+                 WHERE DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                 GROUP BY PACKAGE_ID
+               ) PKG_PLAC_COUNT
+         WHERE PACKAGE.CAMPAIGN_ID = C.CAMPAIGN_ID
+           AND PACKAGE.PACKAGE_ID = PPCD.PACKAGE_ID (+)
+           AND PPCD.PACKAGE_ID = AD_SPEND.PACKAGE_ID (+)
+           AND PACKAGE.PACKAGE_ID = PP.PACKAGE_ID (+)
+           AND PP.PLACEMENT_ID = PLACEMENT.PLACEMENT_ID (+)
+           AND PKG_PLAC_COUNT.PACKAGE_ID  (+) = PACKAGE.PACKAGE_ID
+            <if test="ioId != null">
+                AND PLACEMENT.IO_ID = #{ioId,jdbcType=NUMERIC}
+            </if>
+            <if test="campaignId != null">
+                AND PACKAGE.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+            </if>
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(PLACEMENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(PACKAGE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: get Package data-->
+
+    <!-- Queries: get Media Data for Export -->
+    <select id="getPackageCostsForExport" parameterType="java.util.Map" resultType="MediaRawDataView">
+        SELECT 
+            DISTINCT PCD.PACKAGE_ID     AS mediaPackageId,
+            PCD.PLANNED_GROSS_AD_SPEND  AS plannedAdSpend,
+            PCD.INVENTORY               AS inventory,
+            PCD.PLANNED_GROSS_RATE      AS rate,
+            PCD.RATE_TYPE               AS rateType,
+            PCD.START_DATE              AS startDateOriginal,
+            TO_CHAR(PCD.START_DATE, 'mm/dd/yyyy hh:mi:ss PM') AS startDate,
+            TO_CHAR(PCD.END_DATE, 'mm/dd/yyyy hh:mi:ss PM')   AS endDate
+        FROM TE_XLS.PACKAGE_COST_DETAIL PCD
+        WHERE DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="ids != null and ids.size() > 0">
+                AND PCD.PACKAGE_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>    
+        ORDER BY PCD.PACKAGE_ID, PCD.START_DATE
+    </select>
+    <!-- Queries: get Media Data for Export -->
+    
+    <!-- Queries: Create/update/delete Packages-->
+    <update id="insertPackage" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.InsertPackage(
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{description,jdbcType=VARCHAR,mode=IN},
+            #{campaignId,jdbcType=NUMERIC,mode=IN},
+            #{externalId,jdbcType=VARCHAR,mode=IN},
+            #{logicalDelete,jdbcType=CHAR,mode=IN},
+            #{created,jdbcType=TIMESTAMP,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{modified,jdbcType=TIMESTAMP,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <update id="updatePackage" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.UpdatePackage(
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{description,jdbcType=VARCHAR,mode=IN},
+            #{externalId,jdbcType=VARCHAR,mode=IN},
+            #{modified,jdbcType=TIMESTAMP,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <update id="updatePackageOnImport" parameterType="Package">
+        UPDATE TE_XLS.PACKAGE
+            SET MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR},
+            MODIFIED = SYSDATE
+        <if test="name != null">
+            , PACKAGE_NAME = #{name,jdbcType=VARCHAR}
+        </if>
+        WHERE PACKAGE_ID = TO_NUMBER(#{id})
+    </update>
+
+    <update id="deletePackage" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.DeletePackage(
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <update id="bulkDeleteByIds" parameterType="java.util.Map">
+        UPDATE TE_XLS.PACKAGE P
+           SET P.LOGICAL_DELETE = 'Y',
+               MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+               MODIFIED = SYSDATE
+         WHERE P.PACKAGE_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </update>
+
+    <!-- Queries: Create/update/delete Packages-->
+
+    <!-- Queries: Get/Insert/Update/Delete PackagePlacements Associations-->
+    <select id="getPackagePlacementAsso" parameterType="java.util.Map" resultType="PackagePlacement">
+        SELECT PP.PACKAGE_PLACEMENT_ID as  id,
+               PP.PACKAGE_ID as  packageId,
+               PP.PLACEMENT_ID as  placementId,
+               PP.LOGICAL_DELETE as  logicalDelete,
+               PP.CREATED as  created,
+               PP.CREATED_TPWS_KEY as  createdTpwsKey,
+               PP.MODIFIED as  modified,
+               PP.MODIFIED_TPWS_KEY as  modifiedTpwsKey
+          FROM TE_XLS.PACKAGE_PLACEMENT PP
+        WHERE PP.PACKAGE_ID = #{packageId,jdbcType=NUMERIC,mode=IN}
+            <if test="ids != null and ids.size() > 0">
+                AND PP.PACKAGE_PLACEMENT_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="placementIds != null and placementIds.size() > 0">
+                AND PP.PLACEMENT_ID IN
+                <foreach item="item" index="index" collection="placementIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+          AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <update id="insertPackagePlacementAsso" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.InsertPackagePlacementAsso(
+            #{packagePlacementId,jdbcType=NUMERIC,mode=IN},
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{placementId,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <update id="deletePackagePlacementAsso" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.DeletePackagePlacementAsso(
+            #{packagePlacementId,jdbcType=NUMERIC,mode=IN},
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{placementId,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!-- Queries: Get/Insert/Update/Delete PackagePlacements Associations-->
+    
+    <!-- Queries: Get/Create/update/delete packageCostDetatails-->
+    <select id="getPackageCostDetail"  parameterType="long" resultType="CostDetail" >
+        SELECT PCD.PACKAGE_COST_ID         as id,
+               PCD.PACKAGE_ID              as foreignId,
+               PCD.START_DATE              as startDate,
+               PCD.END_DATE                as endDate,
+               PCD.INVENTORY               as inventory,
+               PCD.RATE_TYPE               as rateType,
+               PCD.LOGICAL_DELETE          as logicalDelete,
+               PCD.CREATED                 as createdDate,
+               PCD.CREATED_TPWS_KEY        as createdTpwsKey,
+               PCD.MODIFIED                as modifiedDate,
+               PCD.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+               PCD.PLANNED_NET_RATE        as plannedNetRate,
+               PCD.PLANNED_GROSS_RATE      as plannedGrossRate,
+               PCD.PLANNED_NET_AD_SPEND    as plannedNetAdSpend,
+               PCD.PLANNED_GROSS_AD_SPEND  as plannedGrossAdSpend,
+               PCD.ACTUAL_NET_RATE         as actualNetRate,
+               PCD.ACTUAL_GROSS_RATE       as actualGrossRate,
+               PCD.ACTUAL_NET_AD_SPEND     as actualNetAdSpend,
+               PCD.ACTUAL_GROSS_AD_SPEND   as actualGrossAdSpend,
+               CASE
+                  WHEN ((PCD.PLANNED_GROSS_AD_SPEND = 0 OR PCD.PLANNED_GROSS_AD_SPEND IS NULL) AND 
+                       (PCD.PLANNED_GROSS_RATE = 0 OR PCD.PLANNED_GROSS_RATE IS NULL))
+                     THEN 100 
+                  WHEN (PCD.PLANNED_GROSS_AD_SPEND != 0 AND PCD.PLANNED_GROSS_AD_SPEND IS NOT NULL) 
+                     THEN ROUND(((PCD.PLANNED_GROSS_AD_SPEND - nvl(PCD.PLANNED_NET_AD_SPEND,0) )/PCD.PLANNED_GROSS_AD_SPEND)*100 , 2)
+                  ELSE  ROUND(((PCD.PLANNED_GROSS_RATE - nvl(PCD.PLANNED_NET_RATE,0) )/PCD.PLANNED_GROSS_RATE)*100 , 2)
+               END AS margin
+          FROM TE_XLS.PACKAGE_COST_DETAIL PCD
+         WHERE PCD.PACKAGE_COST_ID = #{id}
+           AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getPackageCostDetailByPackageId"  parameterType="java.util.Map" resultType="CostDetail" >
+        SELECT PCD.PACKAGE_COST_ID         as id,
+               PCD.PACKAGE_ID              as foreignId,
+               PCD.START_DATE              as startDate,
+               PCD.END_DATE                as endDate,
+               PCD.INVENTORY               as inventory,
+               PCD.RATE_TYPE               as rateType,
+               PCD.LOGICAL_DELETE          as logicalDelete,
+               PCD.CREATED                 as createdDate,
+               PCD.CREATED_TPWS_KEY        as createdTpwsKey,
+               PCD.MODIFIED                as modifiedDate,
+               PCD.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+               PCD.PLANNED_NET_RATE        as plannedNetRate,
+               PCD.PLANNED_GROSS_RATE      as plannedGrossRate,
+               PCD.PLANNED_NET_AD_SPEND    as plannedNetAdSpend,
+               PCD.PLANNED_GROSS_AD_SPEND  as plannedGrossAdSpend,
+               PCD.ACTUAL_NET_RATE         as actualNetRate,
+               PCD.ACTUAL_GROSS_RATE       as actualGrossRate,
+               PCD.ACTUAL_NET_AD_SPEND     as actualNetAdSpend,
+               PCD.ACTUAL_GROSS_AD_SPEND   as actualGrossAdSpend,
+               CASE
+                  WHEN ((PCD.PLANNED_GROSS_AD_SPEND = 0 OR PCD.PLANNED_GROSS_AD_SPEND IS NULL) AND 
+                       (PCD.PLANNED_GROSS_RATE = 0 OR PCD.PLANNED_GROSS_RATE IS NULL))
+                     THEN 100 
+                  WHEN (PCD.PLANNED_GROSS_AD_SPEND != 0 AND PCD.PLANNED_GROSS_AD_SPEND IS NOT NULL) 
+                     THEN ROUND(((PCD.PLANNED_GROSS_AD_SPEND - nvl(PCD.PLANNED_NET_AD_SPEND,0) )/PCD.PLANNED_GROSS_AD_SPEND)*100 , 2)
+                  ELSE  ROUND(((PCD.PLANNED_GROSS_RATE - nvl(PCD.PLANNED_NET_RATE,0) )/PCD.PLANNED_GROSS_RATE)*100 , 2)
+               END AS margin
+          FROM TE_XLS.PACKAGE_COST_DETAIL PCD
+         WHERE PCD.PACKAGE_ID = #{packageId,jdbcType=NUMERIC,mode=IN}
+           AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+         ORDER BY PCD.START_DATE, PCD.CREATED
+    </select>
+
+    <select id="getPackagesCostDetailsByPkgNames"  parameterType="java.util.Map" resultMap="mediaRawResultMap" >
+        SELECT P.PACKAGE_ID                  AS mediaPackageId, 
+               P.PACKAGE_NAME                AS mediaPackageName, 
+               PCD.INVENTORY                 AS inventory, 
+               DECODE(PCD.RATE_TYPE, 1, 'CPA', 2, 'CPC', 3, 'CPL', 4, 'CPM', 5, 'FLT') AS rateType,
+               PCD.PLANNED_GROSS_RATE        AS rate, 
+               PCD.PLANNED_GROSS_AD_SPEND    AS plannedAdSpend, 
+               TO_CHAR(PCD.START_DATE, 'mm/dd/yyyy hh24:mi:ss ') || #{timezone, jdbcType=VARCHAR} AS startDate,
+               DECODE(PCD.END_DATE, NULL, NULL, TO_CHAR(PCD.END_DATE, 'mm/dd/yyyy hh24:mi:ss ') || #{timezone, jdbcType=VARCHAR}) AS endDate,
+               (SELECT COUNT(1)
+                  FROM TE_XLS.PACKAGE_PLACEMENT PP, TE_XLS.PLACEMENT P
+                 WHERE PP.PLACEMENT_ID = P.PLACEMENT_ID
+                   AND PP.PACKAGE_ID = P.PACKAGE_ID
+                   AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                   AND DECODE(PP.LOGICAL_DELETE,'Y','1','0')='0'
+               ) AS existingPlacements
+          FROM TE_XLS.PACKAGE P
+               INNER JOIN TE_XLS.PACKAGE_COST_DETAIL PCD ON P.PACKAGE_ID = PCD.PACKAGE_ID
+                 AND DECODE(PCD.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="ids != null">
+                    INNER JOIN TE_XLS.CAMPAIGN C ON P.CAMPAIGN_ID = C.CAMPAIGN_ID
+                      AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                    INNER JOIN (
+                                 <include refid="DataAccessControlPkg.getUserAgencies"/>
+                               ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+                    INNER JOIN (
+                                 <include refid="DataAccessControlPkg.userAdvertisers"/>
+                               ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+                </if>
+         WHERE P.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+            <if test="names != null">
+                AND LOWER(P.PACKAGE_NAME) IN
+                <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                    LOWER(#{item})
+                </foreach>
+            </if>
+            <if test="ids != null">
+                AND P.PACKAGE_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+           AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+         ORDER BY P.PACKAGE_ID, PCD.START_DATE
+    </select>
+
+    <update id="insertPackageCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL PUBLISHER_PKG.InsertPackageCost(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{packageId,jdbcType=NUMERIC,mode=IN},
+            #{inventory,jdbcType=NUMERIC,mode=IN},
+            #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            #{rateType,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            ROUND(#{plannedNetRate,jdbcType=NUMERIC,mode=IN},14) ,
+            ROUND(#{plannedGrossRate,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedNetAdSpend,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedGrossAdSpend,jdbcType=NUMERIC,mode=IN},14),
+            #{actualNetRate,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossRate,jdbcType=NUMERIC,mode=IN},
+            #{actualNetAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossAdSpend,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+
+    <update id="updatePackageCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL PUBLISHER_PKG.UpdatePackageCost(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{inventory,jdbcType=NUMERIC,mode=IN},
+            #{startDate,jdbcType=TIMESTAMP,mode=IN},
+            #{endDate,jdbcType=TIMESTAMP,mode=IN},
+            #{rateType,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            ROUND(#{plannedNetRate,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedGrossRate,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedNetAdSpend,jdbcType=NUMERIC,mode=IN},14),
+            ROUND(#{plannedGrossAdSpend,jdbcType=NUMERIC,mode=IN},14),
+            #{actualNetRate,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossRate,jdbcType=NUMERIC,mode=IN},
+            #{actualNetAdSpend,jdbcType=NUMERIC,mode=IN},
+            #{actualGrossAdSpend,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+
+    <update id="deletePackageCostDetail" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL PUBLISHER_PKG.deletePackageCost(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!-- Queries: Get/Create/update/delete packageCostDetatails-->
+    
+    <!-- Queries: utilities Packages-->
+    <select id="getExistActiveCampaign"  parameterType="long"
+            resultType="trueffect.truconnect.api.commons.model.Package" >
+        SELECT P.package_id           as  id,
+               P.package_name            as  name,
+               P.package_desc            as  description,
+               P.campaign_id             as  campaignId,
+               P.ext_package_id          as  externalId,
+               P.logical_delete          as  logicalDelete,
+               P.created                 as  createdDate,
+               P.created_tpws_key        as  createdTpwsKey,
+               P.modified                as  modifiedDate,
+               P.modified_tpws_key       as  modifiedTpwsKey,
+               P.country_currency_id     as  countryCurrencyId
+          FROM PACKAGE P, CAMPAIGN C
+         WHERE P.CAMPAIGN_ID = C.CAMPAIGN_ID
+          AND P.PACKAGE_ID = #{value}
+          AND C.CAMPAIGN_STATUS_ID in (1,2,3)
+          AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="packageNameAlreadyExists" parameterType="trueffect.truconnect.api.commons.model.Package" resultType="java.lang.Long">
+        SELECT COUNT (P.PACKAGE_ID)
+          FROM TE_XLS.PACKAGE P
+         WHERE P.CAMPAIGN_ID = #{campaignId}
+           AND LOWER(P.PACKAGE_NAME) = LOWER(#{name})
+            <if test="id != null">
+              AND P.package_id != #{id,jdbcType=NUMERIC,mode=IN}
+            </if>
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: utilities Packages-->
+</mapper>

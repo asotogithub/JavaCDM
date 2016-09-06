@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserDomain">
+    <update id="removeUserDomains" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.User_Pkg.Clear_User_DomainRefs(
+        #{userId,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="createUserDomain" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.User_Pkg.Add_User_DomainRef(
+        #{userId,jdbcType=VARCHAR,mode=IN},
+        #{domainId,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+</mapper>

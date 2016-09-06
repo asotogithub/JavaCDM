@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HtmlInjectionTags">
+
+    <resultMap id="HtmlInjectionTags" type="HtmlInjectionTags">
+        <result property="id"                  column="HTML_INJECTION_ID"/>
+        <result property="name"                column="HTML_INJECTION_NAME"/>
+        <result property="htmlContent"         column="HTML_CONTENT"/>
+        <result property="secureHtmlContent"   column="SECURE_HTML_CONTENT"/>
+        <result property="isEnabled"           column="IS_ENABLED"/>
+        <result property="createdDate"         column="CREATED"/>
+        <result property="modifiedDate"        column="MODIFIED"/>
+        <result property="createdTpwsKey"      column="CREATED_TPWS_KEY"/>
+        <result property="modifiedTpwsKey"     column="MODIFIED_TPWS_KEY"/>
+        <result property="agencyId"            column="AGENCY_ID"/>
+        <result property="isVisible"           column="IS_VISIBLE"/>
+    </resultMap>
+
+    <!-- Queries: get Tag data-->
+    <select id="getHtmlInjectionById"  parameterType="java.lang.Long" resultType="HtmlInjectionTags" >
+        SELECT HTML_INJECTION_ID        as id,
+               HTML_INJECTION_NAME      as name,
+               HTML_CONTENT             as htmlContent,
+               SECURE_HTML_CONTENT      as secureHtmlContent,
+               IS_ENABLED               as isEnabled,
+               CREATED                  as createdDate,
+               MODIFIED                 as modifiedDate,
+               CREATED_TPWS_KEY         as createdTpwsKey,
+               MODIFIED_TPWS_KEY        as modifiedTpwsKey,
+               AGENCY_ID                as agencyId,
+               IS_VISIBLE               as isVisible
+        FROM TE_XLS.HTML_INJECTION
+        WHERE HTML_INJECTION_ID = #{id}
+    </select>
+
+    <select id="getHtmlInjectionTagsForAgency"  parameterType="java.lang.Long" resultType="HtmlInjectionTags" >
+        SELECT HTML_INJECTION_ID        as id,
+               HTML_INJECTION_NAME      as name,
+               HTML_CONTENT             as htmlContent,
+               SECURE_HTML_CONTENT      as secureHtmlContent,
+               IS_ENABLED               as isEnabled,
+               CREATED                  as createdDate,
+               MODIFIED                 as modifiedDate,
+               CREATED_TPWS_KEY         as createdTpwsKey,
+               MODIFIED_TPWS_KEY        as modifiedTpwsKey,
+               AGENCY_ID                as agencyId,
+               IS_VISIBLE               as isVisible
+        FROM TE_XLS.HTML_INJECTION
+        WHERE AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+        AND IS_ENABLED = '1'
+    </select>
+    <sql id="getTagsByPlacementIdData">
+        SELECT TI.HTML_INJECTION_ID     AS id,
+               TI.HTML_INJECTION_NAME   AS name,
+               TI.HTML_CONTENT          AS htmlContent,
+               TI.SECURE_HTML_CONTENT   AS secureHtmlContent,
+               TI.IS_ENABLED            AS isEnabled,
+               TI.AGENCY_ID             AS agencyId,
+               TI.IS_VISIBLE            AS isVisible
+          FROM TE_XLS.HTML_INJECTION TI
+               INNER JOIN TE_XLS.HTML_INJECTION_VAL_REF VR ON TI.HTML_INJECTION_ID = VR.HTML_INJECTION_ID
+                 AND VR.CAMPAIGN_ID  = #{campaignId,jdbcType=NUMERIC}
+                 AND VR.HTML_REF_ENTITY_TYPE = 5
+                 AND VR.HTML_REF_ENTITY_ID = #{placementId,jdbcType=NUMERIC}
+                 AND VR.IS_DELETED = 0
+         WHERE TI.IS_ENABLED = 1
+    </sql>
+
+    <select id="getTagsByPlacementId" parameterType="java.util.Map" resultType="HtmlInjectionTags">
+        <include refid="getTagsByPlacementIdData"/>
+    </select>
+
+    <select id="getTagsByPlacementIdCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getTagsByPlacementIdData"/>
+               )
+    </select>    
+    <!-- Queries: get Tag data-->
+
+    <!-- Queries: get Associations data-->
+    <sql id="getAssociationsByFilterParamData">
+        SELECT TR.HTML_INJECTION_VAL_REF_ID  AS id,
+               TR.CAMPAIGN_ID                AS campaignId,
+               TR.HTML_INJECTION_ID          AS htmlInjectionId,
+               IC.HTML_INJECTION_NAME        AS htmlInjectionName,
+               TR.HTML_REF_ENTITY_TYPE       AS entityType,
+               TR.HTML_REF_ENTITY_ID         AS entityId,
+               TR.IS_ENABLED                 AS isEnabled,
+               DECODE(IC.CONT, 1, 0, 1)      AS isInherited
+          FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+               INNER JOIN ( SELECT TR.HTML_INJECTION_ID,
+                                   TI.HTML_INJECTION_NAME,
+                                   COUNT(1) AS cont
+                              FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                   INNER JOIN ( SELECT DISTINCT TR.HTML_INJECTION_ID,
+                                                       T.HTML_INJECTION_NAME
+                                                  FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                                       INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                                         AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                                         AND T.IS_ENABLED = 1
+                                                 WHERE TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                                   AND TR.HTML_REF_ENTITY_TYPE = #{entityTypeId,jdbcType=NUMERIC}
+                                                   AND TR.HTML_REF_ENTITY_ID = #{entityId,jdbcType=NUMERIC}
+                                                   AND TR.IS_DELETED = 0
+                                               ) TI ON TR.HTML_INJECTION_ID = TI.HTML_INJECTION_ID
+                             WHERE TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                               AND ((TR.HTML_REF_ENTITY_TYPE = 11 AND TR.HTML_REF_ENTITY_ID = #{campaignId,jdbcType=NUMERIC})
+                                    <if test="levelType == 'site' or levelType == 'section' or levelType == 'placement'">
+                                        OR (TR.HTML_REF_ENTITY_TYPE = 10 AND TR.HTML_REF_ENTITY_ID = #{siteId,jdbcType=NUMERIC})
+                                    </if>
+                                    <if test="levelType == 'section' or levelType == 'placement'">
+                                        OR (TR.HTML_REF_ENTITY_TYPE = 9 AND TR.HTML_REF_ENTITY_ID = #{sectionId,jdbcType=NUMERIC})
+                                    </if>
+                                    <if test="levelType == 'placement'">
+                                        OR (TR.HTML_REF_ENTITY_TYPE = 5 AND TR.HTML_REF_ENTITY_ID = #{placementId,jdbcType=NUMERIC})
+                                    </if>
+                                   )
+                               AND TR.IS_DELETED = 0
+                             GROUP BY TR.HTML_INJECTION_ID, TI.HTML_INJECTION_NAME
+                          ) IC ON TR.HTML_INJECTION_ID = IC.HTML_INJECTION_ID
+         WHERE TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+           AND TR.HTML_REF_ENTITY_TYPE = #{entityTypeId,jdbcType=NUMERIC}
+           AND TR.HTML_REF_ENTITY_ID = #{entityId,jdbcType=NUMERIC}
+           AND TR.IS_DELETED = 0
+    </sql>
+
+    <select id="getAssociationsByFilterParam" parameterType="java.util.Map" resultType="HtmlInjectionTagAssociation">
+        <include refid="getAssociationsByFilterParamData"/>
+    </select>
+
+    <select id="getCountAssociationsByFilterParam" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM (
+                <include refid="getAssociationsByFilterParamData"/>
+               )
+    </select>
+    <!-- Queries: get Associations data-->
+
+    <!-- Queries: Add/Update/Delete Tags data-->
+    <update id="bulkDeleteByIds" parameterType="java.util.Map">
+        UPDATE TE_XLS.HTML_INJECTION T
+           SET T.IS_ENABLED = 0,
+               MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+               MODIFIED = SYSDATE
+         WHERE T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+           AND T.HTML_INJECTION_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </update>
+
+    <insert id="insertHtmlInjection" parameterType="java.util.Map">
+        INSERT INTO TE_XLS.HTML_INJECTION(
+        html_injection_id,
+        html_injection_name,
+        html_content,
+        is_enabled,
+        created,
+        modified,
+        created_tpws_key,
+        modified_tpws_key,
+        agency_id,
+        is_visible,
+        secure_html_content)
+        VALUES(
+        #{id,jdbcType=NUMERIC},
+        #{name,jdbcType=VARCHAR},
+        #{htmlContent,jdbcType=VARCHAR},
+        #{isEnabled,jdbcType=NUMERIC},
+        SYSDATE,
+        SYSDATE,
+        #{createdTpwsKey,jdbcType=VARCHAR},
+        #{modifiedTpwsKey,jdbcType=VARCHAR},
+        #{agencyId,jdbcType=NUMERIC},
+        #{isVisible,jdbcType=NUMERIC},
+        #{secureHtmlContent,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateHtmlInjection" parameterType="java.util.Map">
+        UPDATE TE_XLS.HTML_INJECTION SET
+            <if test="name != null">
+                html_injection_name     = #{name,jdbcType=VARCHAR},
+            </if>
+            html_content                = #{htmlContent,jdbcType=VARCHAR},
+            modified                    = SYSDATE,
+            modified_tpws_key           = #{modifiedTpwsKey,jdbcType=VARCHAR},
+            <if test="isVisible != null">
+                is_visible              = #{isVisible,jdbcType=NUMERIC},
+            </if>
+            secure_html_content         = #{secureHtmlContent,jdbcType=VARCHAR}
+        WHERE html_injection_id = #{id}
+    </update>
+    <!-- Queries: Add/Update/Delete Tags data-->
+
+    <!--Queries: insert associations bulk-->
+    <sql id="getNewTagAssociationsData">
+        <if test="levelType == 'campaign'">
+            (SELECT NULL                                    AS id,
+                    C.CAMPAIGN_ID                           AS campaignId,
+                    #{htmlInjectionId,jdbcType=NUMERIC}  AS htmlInjectionId,
+                    11                                      AS entityType,
+                    C.CAMPAIGN_ID                           AS entityId,
+                    1                                       AS isEnabled,
+                    0                                       AS isDeleted,
+                    NULL                                    AS createdDate,
+                    NULL                                    AS modifiedDate,
+                    #{tpwsKey,jdbcType=VARCHAR,mode=IN}     AS createdTpwsKey,
+                    NULL                                    AS modifiedTpwsKey
+               FROM TE_XLS.CAMPAIGN C
+              WHERE C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND NOT EXISTS ( SELECT TR.*
+                                   FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                        INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                          AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                          AND T.IS_ENABLED = 1
+                                  WHERE TR.CAMPAIGN_ID = C.CAMPAIGN_ID
+                                    AND TR.HTML_REF_ENTITY_TYPE = 11
+                                    AND TR.HTML_REF_ENTITY_ID = C.CAMPAIGN_ID
+                                    AND TR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                                    AND TR.HTML_REF_ENTITY_ID = #{campaignId,jdbcType=NUMERIC}
+                                    AND TR.IS_DELETED = 0
+                                  )
+                AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="levelType == 'site' or levelType == 'campaign'">
+            <if test="levelType == 'campaign'">
+                UNION
+            </if>
+            (SELECT NULL                                    AS id,
+                    PLA.CAMPAIGN_ID                         AS campaignId,
+                    #{htmlInjectionId,jdbcType=NUMERIC}  AS htmlInjectionId,
+                    10                                      AS entityType,
+                    S.SITE_ID                               AS entityId,
+                    1                                       AS isEnabled,
+                    0                                       AS isDeleted,
+                    NULL                                    AS createdDate,
+                    NULL                                    AS modifiedDate,
+                    #{tpwsKey,jdbcType=VARCHAR,mode=IN}     AS createdTpwsKey,
+                    NULL                                    AS modifiedTpwsKey
+               FROM TE_XLS.SITE S
+                    INNER JOIN ( SELECT DISTINCT SITE_ID, mbc.campaign_id
+                                   FROM TE_XLS.PLACEMENT P
+                                        INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                          AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                          AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                          AND MBC.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                  WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                ) PLA ON s.site_id = pla.site_id
+              WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="levelType == 'site'">
+                    AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                </if>
+                AND (S.SITE_ID, #{htmlInjectionId,jdbcType=NUMERIC})
+                        NOT IN (SELECT TR.HTML_REF_ENTITY_ID,  TR.HTML_INJECTION_ID
+                                  FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                       INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                         AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                         AND T.IS_ENABLED = 1
+                                 WHERE TR.HTML_REF_ENTITY_TYPE  = 10
+                                   AND TR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                                   AND TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="levelType == 'site'">
+                                        AND TR.HTML_REF_ENTITY_ID = #{siteId,jdbcType=NUMERIC}
+                                    </if>
+                                   AND TR.IS_DELETED = 0
+                               )
+            )
+        </if>
+        <if test="levelType == 'section' or levelType == 'site' or levelType == 'campaign'">
+            <if test="levelType == 'campaign' or levelType == 'site'">
+                UNION
+            </if>
+            (SELECT NULL                                    AS id,
+                    PLA.CAMPAIGN_ID                         AS campaignId,
+                    #{htmlInjectionId,jdbcType=NUMERIC}  AS htmlInjectionId,
+                    9                                       AS entityType,
+                    SS.SECTION_ID                           AS entityId,
+                    1                                       AS isEnabled,
+                    0                                       AS isDeleted,
+                    NULL                                    AS createdDate,
+                    NULL                                    AS modifiedDate,
+                    #{tpwsKey,jdbcType=VARCHAR,mode=IN}     AS createdTpwsKey,
+                    NULL                                    AS modifiedTpwsKey
+               FROM TE_XLS.SITE_SECTION SS
+                    INNER JOIN ( SELECT DISTINCT SECTION_ID, mbc.campaign_id
+                                   FROM TE_XLS.PLACEMENT P
+                                        INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                          AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                          AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                          AND MBC.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                  WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                    <if test="(levelType == 'site') or (levelType == 'section')">
+                                        AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                                    </if>
+                                ) PLA ON ss.SECTION_ID = pla.SECTION_ID
+              WHERE DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="levelType == 'section'"> 
+                    AND SS.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                </if>
+                AND (SS.SECTION_ID , #{htmlInjectionId,jdbcType=NUMERIC})
+                        NOT IN (SELECT TR.HTML_REF_ENTITY_ID, TR.HTML_INJECTION_ID
+                                  FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                       INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                         AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                         AND T.IS_ENABLED = 1
+                                 WHERE TR.HTML_REF_ENTITY_TYPE = 9
+                                   AND TR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                                   AND TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="levelType == 'section'"> 
+                                        AND TR.HTML_REF_ENTITY_ID = #{sectionId,jdbcType=NUMERIC}
+                                    </if>
+                                   AND TR.IS_DELETED = 0
+                               )
+            )
+        </if>
+        <if test="levelType == 'placement' or levelType == 'section' or levelType == 'site' or levelType == 'campaign'">
+            <if test="levelType == 'campaign' or levelType == 'site' or levelType == 'section'">
+                UNION
+            </if>
+            (SELECT NULL                                    AS id,
+                    MBC.CAMPAIGN_ID                         AS campaignId,
+                    #{htmlInjectionId,jdbcType=NUMERIC}     AS htmlInjectionId,
+                    5                                       AS entityType,
+                    P.PLACEMENT_ID                          AS entityId,
+                    1                                       AS isEnabled,
+                    0                                       AS isDeleted,
+                    NULL                                    AS createdDate,
+                    NULL                                    AS modifiedDate,
+                    #{tpwsKey,jdbcType=VARCHAR,mode=IN}     AS createdTpwsKey,
+                    NULL                                    AS modifiedTpwsKey
+               FROM TE_XLS.PLACEMENT P
+                    INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                      AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                      AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                      AND MBC.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                      AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                    <if test="(levelType == 'site') or (levelType == 'section') or (levelType == 'placement')">
+                        INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                          AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                          AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    </if>
+                    <if test="(levelType == 'section') or (levelType == 'placement')">
+                        INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                          AND SS.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                          AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    </if>
+              WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="(levelType == 'placement')">
+                    AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                    AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                    AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                AND (P.PLACEMENT_ID, #{htmlInjectionId,jdbcType=NUMERIC})
+                        NOT IN (SELECT TR.HTML_REF_ENTITY_ID, TR.HTML_INJECTION_ID
+                                  FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                       INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                         AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                         AND T.IS_ENABLED = 1
+                                 WHERE TR.HTML_REF_ENTITY_TYPE = 5
+                                   AND TR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                                   AND TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                    <if test="(levelType == 'placement')">
+                                        AND TR.HTML_REF_ENTITY_ID = #{placementId,jdbcType=NUMERIC}
+                                    </if>
+                                   AND TR.IS_DELETED = 0
+                                )
+            )
+        </if>
+    </sql>
+    <insert id="createNewTagAssociations" parameterType="java.util.Map">
+        INSERT INTO TE_XLS.HTML_INJECTION_VAL_REF (
+            HTML_INJECTION_VAL_REF_ID,
+            CAMPAIGN_ID,
+            HTML_INJECTION_ID,
+            HTML_REF_ENTITY_TYPE,
+            HTML_REF_ENTITY_ID,
+            IS_ENABLED,
+            IS_DELETED,
+            CREATED,
+            MODIFIED,
+            CREATED_TPWS_KEY,
+            MODIFIED_TPWS_KEY)
+        <include refid="getNewTagAssociationsData"/>
+    </insert>
+    <!--Queries: insert associations bulk-->
+
+    <!-- Start Delete association bulk -->
+    <sql id="getDeleteTagAssociationsData">
+        <if test="levelType == 'campaign'">
+            (SELECT VR.HTML_INJECTION_VAL_REF_ID
+               FROM TE_XLS.CAMPAIGN C
+                    INNER JOIN TE_XLS.HTML_INJECTION_VAL_REF VR ON C.CAMPAIGN_ID = VR.HTML_REF_ENTITY_ID
+                      AND VR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                      AND VR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                      AND VR.IS_DELETED = 0
+              WHERE C.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                AND C.ADVERTISER_ID = #{advertiserId,jdbcType=NUMERIC}
+                AND C.BRAND_ID = #{brandId,jdbcType=NUMERIC}
+                AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                AND EXISTS (SELECT TR.HTML_INJECTION_ID
+                              FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                   INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                     AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                     AND T.IS_ENABLED = 1
+                             WHERE TR.CAMPAIGN_ID = C.CAMPAIGN_ID
+                               AND TR.HTML_REF_ENTITY_TYPE = 11
+                               AND TR.HTML_REF_ENTITY_ID = C.CAMPAIGN_ID
+                               AND TR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                               AND TR.HTML_REF_ENTITY_ID = #{campaignId,jdbcType=NUMERIC}
+                               AND TR.IS_DELETED = 0
+                           )
+                AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+            )
+        </if>
+        <if test="levelType == 'site' or levelType == 'campaign'">
+            <if test="levelType == 'campaign'">
+                UNION
+            </if>
+            (SELECT VR.HTML_INJECTION_VAL_REF_ID
+               FROM TE_XLS.SITE S
+                    INNER JOIN (SELECT DISTINCT SITE_ID, mbc.campaign_id
+                                  FROM TE_XLS.PLACEMENT P
+                                       INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                         AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                       INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                         AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                       INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                         AND MBC.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                         AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                 WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                               ) PLA ON s.site_id = pla.site_id
+                    INNER JOIN TE_XLS.HTML_INJECTION_VAL_REF VR ON S.SITE_ID = VR.HTML_REF_ENTITY_ID
+                      AND VR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                      AND VR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                      AND VR.IS_DELETED = 0
+              WHERE DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="levelType == 'site'">
+                    AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                </if>
+                AND (S.SITE_ID, #{htmlInjectionId,jdbcType=NUMERIC})
+                        IN (SELECT TR.HTML_REF_ENTITY_ID,  TR.HTML_INJECTION_ID
+                              FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                   INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                     AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                     AND T.IS_ENABLED = 1
+                             WHERE TR.HTML_REF_ENTITY_TYPE  = 10
+                               AND TR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                               AND TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                <if test="levelType == 'site'">
+                                    AND TR.HTML_REF_ENTITY_ID = #{siteId,jdbcType=NUMERIC}
+                                </if>
+                               AND TR.IS_DELETED = 0
+                           )
+            )
+        </if>
+        <if test="levelType == 'section' or levelType == 'site' or levelType == 'campaign'">
+            <if test="levelType == 'campaign' or levelType == 'site'">
+                UNION
+            </if>
+            (SELECT VR.HTML_INJECTION_VAL_REF_ID
+               FROM TE_XLS.SITE_SECTION SS
+                    INNER JOIN ( SELECT DISTINCT SECTION_ID, mbc.campaign_id
+                                   FROM TE_XLS.PLACEMENT P
+                                        INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                                          AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                                          AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                                        INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                                          AND MBC.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                          AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                                  WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                                    <if test="(levelType == 'site') or (levelType == 'section')">
+                                        AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                                    </if>
+                               ) PLA ON SS.SECTION_ID = PLA.SECTION_ID
+                    INNER JOIN TE_XLS.HTML_INJECTION_VAL_REF VR ON SS.SECTION_ID = VR.HTML_REF_ENTITY_ID
+                      AND VR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                      AND VR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                      AND VR.IS_DELETED = 0
+              WHERE DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="levelType == 'section'">
+                    AND SS.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                </if>
+                AND (SS.SECTION_ID , #{htmlInjectionId,jdbcType=NUMERIC})
+                        IN (SELECT TR.HTML_REF_ENTITY_ID, TR.HTML_INJECTION_ID
+                              FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                   INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                    AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                    AND T.IS_ENABLED = 1
+                             WHERE TR.HTML_REF_ENTITY_TYPE = 9
+                               AND TR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                               AND TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                <if test="levelType == 'section'">
+                                    AND TR.HTML_REF_ENTITY_ID = #{sectionId,jdbcType=NUMERIC}
+                                </if>
+                               AND TR.IS_DELETED = 0
+                           )
+            )
+        </if>
+        <if test="levelType == 'placement' or levelType == 'section' or levelType == 'site' or levelType == 'campaign'">
+            <if test="levelType == 'campaign' or levelType == 'site' or levelType == 'section'">
+                UNION
+            </if>
+            (SELECT VR.HTML_INJECTION_VAL_REF_ID
+               FROM TE_XLS.PLACEMENT P
+                    INNER JOIN TE_XLS.INSERTION_ORDER IO ON P.IO_ID = IO.IO_ID
+                      AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                      AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                      AND MBC.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                      AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+                    INNER JOIN TE_XLS.HTML_INJECTION_VAL_REF VR ON P.PLACEMENT_ID = VR.HTML_REF_ENTITY_ID
+                      AND VR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                      AND VR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                      AND VR.IS_DELETED = 0
+                    <if test="(levelType == 'site') or (levelType == 'section') or (levelType == 'placement')">
+                        INNER JOIN TE_XLS.SITE S ON P.SITE_ID = S.SITE_ID
+                          AND S.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                          AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+                    </if>
+                    <if test="(levelType == 'section') or (levelType == 'placement')">
+                        INNER JOIN TE_XLS.SITE_SECTION SS ON P.SECTION_ID = SS.SECTION_ID
+                          AND SS.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                          AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+                    </if>
+              WHERE DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+                <if test="(levelType == 'placement')">
+                    AND P.SITE_ID = #{siteId,jdbcType=NUMERIC}
+                    AND P.SECTION_ID = #{sectionId,jdbcType=NUMERIC}
+                    AND P.PLACEMENT_ID = #{placementId,jdbcType=NUMERIC}
+                </if>
+                AND (P.PLACEMENT_ID, #{htmlInjectionId,jdbcType=NUMERIC})
+                        IN (SELECT TR.HTML_REF_ENTITY_ID, TR.HTML_INJECTION_ID
+                              FROM TE_XLS.HTML_INJECTION_VAL_REF TR
+                                   INNER JOIN TE_XLS.HTML_INJECTION T ON TR.HTML_INJECTION_ID = T.HTML_INJECTION_ID
+                                     AND T.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+                                     AND T.IS_ENABLED = 1
+                             WHERE TR.HTML_REF_ENTITY_TYPE = 5
+                               AND TR.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+                               AND TR.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                                <if test="(levelType == 'placement')">
+                                    AND TR.HTML_REF_ENTITY_ID = #{placementId,jdbcType=NUMERIC}
+                                </if>
+                               AND TR.IS_DELETED = 0
+                           )
+            )
+        </if>
+    </sql>
+
+    <update id="deleteTagAssociationsData" statementType="CALLABLE" parameterType="java.util.Map">
+        UPDATE TE_XLS.HTML_INJECTION_VAL_REF PP
+           SET PP.IS_DELETED = 1,
+               PP.MODIFIED   = SYSDATE,
+               PP.MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR}
+         WHERE PP.HTML_INJECTION_ID = #{htmlInjectionId,jdbcType=NUMERIC}
+           AND PP.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+           AND PP.HTML_INJECTION_VAL_REF_ID IN
+               (
+                    <include refid="getDeleteTagAssociationsData"/>
+               )
+    </update>
+    <!-- End Delete association bulk -->
+</mapper>

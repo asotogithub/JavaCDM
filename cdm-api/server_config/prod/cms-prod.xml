@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for each web application -->
+<Context>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    
+    <Environment name="server.authorization.uri" value="http://truapi-localhost/oauth/{version}/" type="java.lang.String" override="false"/>
+    <Environment name="public.path" value="http://truapi-localhost/cms/{version}/" type="java.lang.String" override="false"/>
+    <Environment name="public.delivery" value="https://truconnect.trueffect.com/TruAPI/Delivery/" type="java.lang.String" override="false"/> 
+    <Environment name="image.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/" type="java.lang.String" override="false"/>
+    <Environment name="tmp.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/tmp/" type="java.lang.String" override="false"/>
+    <Environment name="unittest.folderpath" value="src/main/resources/files/" type="java.lang.String" override="false"/>
+    <Environment name="stub.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/tmp/creative.jpg" type="java.lang.String" override="false"/>
+    <Environment name="public.wsdlTrafficking" value="https://trafficking.trueffect.com/1.1/TraffickingService.xamlx?wsdl" type="java.lang.String" override="false"/>
+    <Environment name="public.maxValue.frecuencyCapWindow" value="999" type="java.lang.String" override="false"/>
+		
+    <Environment name="log.level" value="trace" type="java.lang.String" override="false"/> <!-- Log levels can be one of these: TRACE, DEBUG, INFO, WARN, ERROR, FATAL, ALL, OFF -->
+
+    <Resource 
+        name="jdbc/mybatis" 
+        auth="Container" 
+        type="javax.sql.DataSource"
+        removeAbandoned="true" removeAbandonedTimeout="30" logAbandoned="true"
+        testWhileIdle="true" validationQuery="SELECT 1 FROM DUAL" timeBetweenEvictionRunsMillis="60000"
+        maxActive="30" maxIdle="5" maxWait="50000"
+        username="TE_XLS" 
+        password="t3ux1$" 
+        driverClassName="oracle.jdbc.OracleDriver"
+        url="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=optimus.trueffect.com)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=tfaprod.trueffect.com)))"/>
+
+</Context>

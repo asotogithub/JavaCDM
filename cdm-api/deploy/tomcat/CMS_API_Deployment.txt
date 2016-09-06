@@ -1,0 +1,65 @@
+Trueffect API
+
+------------------------------------------------------------------------
+AUTO Deployment:
+------------------------------------------------------------------------
+
+This approach is able to replace a running version of the API with a new
+version, or to simply deploy a new version.  If the target version exists,
+but Tomcat is not running, this script will hang, as it will wait for
+Tomcat to undeploy the current version, which won't happen if Tomcat is not
+running.
+
+If Tomcat is not running and you want to overwrite a current version, be sure
+to go to the webapps directory and delete the unpacked war file (the directory
+with the same name as the war file).
+
+Usage:
+
+./deploy -e env -v version
+
+For example: ./deploy -e prod -v v1.4
+
+"env"     - the environment: dev, qa, alpha, prod, etc.
+"version" - the target version, which typically something like "v1.3"
+            or "v1.2.0-rc3"
+
+------------------------------------------------------------------------
+MANUAL Deployment:
+------------------------------------------------------------------------
+
+The example commands below assume that you unpack the war file to a folder
+like /opt/trueffect/truapi/builds.  You can use whatever source folder you
+wish, though.
+
+All destination folders are relative to the tomcat home directory.
+This may be something like:
+
+    /opt/trueffect/truapi/apache-tomcat-7.0.42
+
+1. Stop tomcat
+
+2. As the "prodman" user, copy the updated XML files to the following
+   tomcat folder:  conf/Catalina/localhost
+
+   Examples:
+   NOTE: you will need to change the filenames below to match this version
+
+   cd /opt/trueffect/truapi/builds/api1.0.0-build2
+   cp cms#v1.0.xml /opt/trueffect/truapi/apache-tomcat-7.0.42/conf/Catalina/localhost
+   cp oauth#v1.0.xml /opt/trueffect/truapi/apache-tomcat-7.0.42/conf/Catalina/localhost
+   cp 3pasapi#v1.0.xml /opt/trueffect/truapi/apache-tomcat-7.0.42/conf/Catalina/localhost
+
+3. As the "prodman" user, copy the war files and rename them to match
+   the API version.  The war files have the full version name, including
+   the build, but they need to be renamed to match the name of each XML file.
+
+   Examples:
+
+   cd /opt/trueffect/truapi/builds/api1.0.0-build2
+   cp cms#v1.0.war /opt/trueffect/truapi/apache-tomcat-7.0.42/webapps  
+   cp oauth#v1.0.war /opt/trueffect/truapi/apache-tomcat-7.0.42/webapps
+   cp 3pasapi#v1.0.war /opt/trueffect/truapi/apache-tomcat-7.0.42/webapps
+
+4. Start tomcat
+

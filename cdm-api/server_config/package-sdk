@@ -1,0 +1,39 @@
+#!/bin/bash
+
+version=`cat pom.xml | grep -E -m 1 -o "<version>(.*)</version>" | sed -e 's,.*<version>\([^<]*\)</version>.*,\1,g'`
+shortversion=`echo $version | sed -e 's/\(.*\)-.*/\1/g'`
+
+dir="TE_SDK_$version"
+
+rm -rf $dir
+rm -rf *.zip
+
+mkdir $dir
+
+cp fitnesse-test/target/lib/commons-tpasapi-$version.jar $dir/trueffect-tpasapi-common-$version.jar
+cp fitnesse-test/target/lib/commons-$version.jar $dir/trueffect-common-$version.jar
+cp fitnesse-test/target/lib/search-$version.jar $dir/trueffect-search-$version.jar
+cp fitnesse-test/target/lib/tpasapi-client-$version.jar $dir/trueffect-tpasapi-client-$version.jar
+
+cp fitnesse-test/target/lib/commons-beanutils*.jar $dir
+cp fitnesse-test/target/lib/commons-lang*.jar $dir
+cp fitnesse-test/target/lib/jackson*.jar $dir
+cp fitnesse-test/target/lib/jaxb*.jar $dir
+cp fitnesse-test/target/lib/jersey-client*.jar $dir
+cp fitnesse-test/target/lib/jersey-core*.jar $dir
+cp fitnesse-test/target/lib/jersey-json*.jar $dir
+
+cp server_config/sdk_assets/* $dir
+
+sed s!\{version\}!${version}!g $dir/compile.bat > $dir/compile.bat2
+sed s!\{version\}!${version}!g $dir/getimage.bat > $dir/getimage.bat2
+sed s!\{version\}!${version}!g $dir/getcg.bat > $dir/getcg.bat2
+
+mv $dir/compile.bat2 $dir/compile.bat
+mv $dir/getimage.bat2 $dir/getimage.bat
+mv $dir/getcg.bat2 $dir/getcg.bat
+
+zip $dir.zip -xi $dir/*
+
+rm -rf $dir
+

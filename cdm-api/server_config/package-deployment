@@ -1,0 +1,19 @@
+#!/bin/bash
+
+version=`cat pom.xml | grep -E -m 1 -o "<version>(.*)</version>" | sed -e 's,.*<version>\([^<]*\)</version>.*,\1,g'`
+
+rm -rf api-$version
+rm -f *.tar
+
+mkdir api-$version
+cp public/target/public*.war api-$version/cms#$version.war
+cp tpasapi/target/tpasapi*.war api-$version/3pasapi#$version.war
+cp oauth/target/oauth*.war api-$version/oauth#$version.war
+cp server_config/*.txt api-$version
+cp server_config/deploy api-$version
+
+chmod +x api-$version/deploy
+
+tar cf api-$version.tar api-$version
+
+rm -rf api-$version

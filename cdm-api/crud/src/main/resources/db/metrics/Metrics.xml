@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MetricsEDW">
+
+    <resultMap id="campaignListMetrics" type="trueffect.truconnect.api.commons.model.Metrics">
+        <id     property="id"               column="CAMPAIGN_ID"/>
+        <result property="day"              column="DAY_DT"/>
+        <result property="cost"             column="COST"/>
+        <result property="impressions"      column="IMPRESSIONS"/>
+        <result property="clicks"           column="CLICKS"/>
+        <result property="conversions"      column="CONVERSIONS"/>
+        <result property="ctr"              column="CTR"/>
+        <result property="eCPA"             column="ECPA"/>
+    </resultMap>
+
+    <select id="getMetricsByCampaignIds"  parameterType="java.lang.Long"
+            resultMap="campaignListMetrics">
+        SELECT
+          CAMPAIGN_ID,
+          DAY_DT,
+          IMPRESSIONS,
+          CLICKS,
+          CTR,
+          COST,
+          CONVERSIONS,
+          ECPA
+        FROM
+          DV_OWNER.AGG_CAMPAIGN
+        WHERE 
+          CAMPAIGN_ID || '_' || TO_CHAR (DAY_DT, 'MM-DD-YYYY') IN 
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+        
+    <select id="getMetricsByAgencyAndDateRange" fetchSize="1500" parameterType="java.util.Map"
+            resultMap="campaignListMetrics">
+        SELECT
+          CAMPAIGN_ID,
+          DAY_DT,
+          IMPRESSIONS,
+          CLICKS,
+          CTR,
+          COST,
+          CONVERSIONS,
+          ECPA
+        FROM
+          DV_OWNER.AGG_CAMPAIGN
+        WHERE
+          DAY_DT &gt;= #{startDate,jdbcType=DATE} AND
+          DAY_DT &lt;= #{endDate,jdbcType=DATE} AND
+          AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="getCampaignMetricsAndDateRange" fetchSize="1500" parameterType="java.util.Map"
+            resultMap="campaignListMetrics">
+        SELECT
+          CAMPAIGN_ID,
+          DAY_DT,
+          IMPRESSIONS,
+          CLICKS,
+          CTR,
+          COST,
+          CONVERSIONS,
+          ECPA
+        FROM
+          DV_OWNER.AGG_CAMPAIGN
+        WHERE
+          DAY_DT &gt;= #{startDate,jdbcType=DATE} AND
+          DAY_DT &lt;= #{endDate,jdbcType=DATE} AND
+          CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+    </select>
+
+    <insert id="saveMetrics" parameterType="java.util.Map">
+        INSERT INTO DV_OWNER.AGG_CAMPAIGN(
+        CAMPAIGN_ID,
+        AGENCY_ID,
+        DAY_ID,
+        DAY_DT,
+        IMPRESSIONS,
+        CLICKS,
+        CTR,
+        COST,
+        CONVERSIONS,
+        ECPA)
+        VALUES (#{campaignId,jdbcType=NUMERIC},
+        #{agencyId,jdbcType=NUMERIC},
+        #{dayId,jdbcType=NUMERIC},
+        #{day,jdbcType=DATE},
+        #{impressions,jdbcType=NUMERIC},
+        #{clicks,jdbcType=NUMERIC},
+        #{ctr,jdbcType=NUMERIC},
+        #{cost,jdbcType=NUMERIC},
+        #{conversions,jdbcType=NUMERIC},
+        #{eCPA,jdbcType=NUMERIC}
+        )
+    </insert>
+
+    <select id="getCreativeMetricsByCampaign" fetchSize="1500" parameterType="java.util.Map"
+            resultMap="campaignListMetrics">
+        SELECT a.campaign_id
+        , a.creative_id
+        , a.impressions
+        , a.clicks
+        , a.conversions
+        , a.ctr
+        , a.cost
+        , a.ecpa
+        FROM agg_cm_cr a
+        WHERE a.time_grain = 30
+        AND a.campaign_id = #{campaignId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="getTopTenCreativesByCampaign" fetchSize="1500" parameterType="java.util.Map"
+            resultMap="campaignListMetrics">
+        SELECT campaign_id
+        , creative_id
+        , impressions
+        , clicks
+        , conversions
+        , ctr
+        , cost
+        , ecpa
+        FROM (
+        SELECT a.campaign_id
+        , a.creative_id
+        , a.impressions
+        , a.clicks
+        , a.conversions
+        , a.ctr
+        , a.cost
+        , a.ecpa
+        , row_number() OVER (PARTITION BY a.campaign_id ORDER BY a.ctr DESC) r
+        FROM agg_cm_cr a
+        WHERE a.time_grain = 30
+        AND a.campaign_id = #{campaignId,jdbcType=NUMERIC}
+        )
+        WHERE r &lt;=10
+    </select>
+
+    <select id="getGblControlRefreshAggCampaign" resultType="java.lang.String">
+        SELECT min_time FROM DV_OWNER.GBL_CONTROL WHERE control_name = 'REFRESH_AGG_CAMPAIGN'
+    </select>
+</mapper>

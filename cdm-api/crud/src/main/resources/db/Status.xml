@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Status">
+    <select id="currentSchema" resultType="java.lang.String">
+        SELECT
+          sys_context('userenv', 'current_schema')
+        FROM
+          dual
+    </select>
+
+    <select id="checkConnection" resultType="java.lang.Long">
+        SELECT
+          1
+        FROM
+          dual
+    </select>
+</mapper>

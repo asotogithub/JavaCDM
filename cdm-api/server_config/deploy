@@ -1,0 +1,56 @@
+#!/bin/bash
+
+version=
+env=
+
+DEST=/opt/trueffect/truapi/apache-tomcat
+
+CONF=$DEST/conf/Catalina/localhost
+WAR=$DEST/webapps
+
+while test $# -gt 0
+do
+  case $1 in
+  -v)
+      version=$2
+echo "version = $version"
+      shift
+      ;;
+  esac
+  shift
+done
+
+one=`echo $input | sed 's/v.*\.war/'$version'\.war/g'`
+
+arrfiles=( *.war )
+arrparts=
+
+for curfile in ${arrfiles[*]}
+do
+
+    if [[ ! $version ]]; then
+      version=$curver
+      echo "No version (-v v1.1) specified, exiting."
+    fi
+
+    numitems=${#arrparts[*]}
+    newname=""
+
+    newname=`echo $curfile | sed 's/\#.*\.war/#'$version'\.war/g'`
+    unpacked=`echo $newname | sed 's/\.war//g'`
+
+    echo deploying $curfile as $newname, unpacked is $unpacked
+
+    if [ -f $WAR/$newname ]; then
+        echo $newname already deployed.  Undeploying.
+        rm -f $WAR/$newname
+        while [ -d $WAR/$unpacked ]
+        do
+          sleep 1
+          echo waiting for tomcat to undeploy $WAR/$unpacked
+        done
+        echo done
+    fi
+
+    cp $curfile $WAR/$newname
+done

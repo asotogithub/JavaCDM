@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/">
+    <xs:import schemaLocation="http://trafficking-dev.trueffect.com/Integration/TraffickingService.xamlx?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+    <xs:element name="TrafficCampaign">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="EntityId" type="xs:int"/>
+                <xs:element minOccurs="0" name="PriorStatusId" type="xs:int"/>
+                <xs:element minOccurs="0" name="SelectedAgencyContacts" nillable="true" type="q1:ArrayOfint" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+                <xs:element minOccurs="0" name="SelectedSiteContacts" nillable="true" type="q2:ArrayOfint" xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+                <xs:element minOccurs="0" name="CampaignOwner" type="xs:int"/>
+                <xs:element minOccurs="0" name="TraffickingUserId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TrafficSiteMeasurement">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="EntityId" type="xs:int"/>
+                <xs:element minOccurs="0" name="PriorStatusId" type="xs:int"/>
+                <xs:element minOccurs="0" name="SiteMeasurementOwner" type="xs:int"/>
+                <xs:element minOccurs="0" name="TraffickingUserId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

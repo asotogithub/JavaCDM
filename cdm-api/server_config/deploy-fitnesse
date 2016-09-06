@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "Deploying Fitnesse ............................"
+rm -rf /opt/trueffect/fitnesse/FitNesseRoot/FrontPage;
+rm -rf /opt/trueffect/fitnesse/FitNesseRoot/Trueffect*;
+rm -rf /opt/trueffect/fitnesse/FitNesseRoot/Feature*;
+cp -r /opt/trueffect/truapi/apache-tomcat/wars/fitnesse-deploy/fitnesse/FrontPage /opt/trueffect/fitnesse/FitNesseRoot/;
+cp -r /opt/trueffect/truapi/apache-tomcat/wars/fitnesse-deploy/fitnesse/Trueffect* /opt/trueffect/fitnesse/FitNesseRoot/;
+cp -r /opt/trueffect/truapi/apache-tomcat/wars/fitnesse-deploy/fitnesse/Feature* /opt/trueffect/fitnesse/FitNesseRoot/;
+rm -rf /opt/trueffect/fitnesse/lib;
+cp -r /opt/trueffect/truapi/apache-tomcat/wars/fitnesse-deploy/lib /opt/trueffect/fitnesse/;
+
+rm -rf /opt/trueffect/fitnesse/resources;
+cp -r /opt/trueffect/truapi/apache-tomcat/wars/fitnesse-deploy/resources /opt/trueffect/fitnesse/

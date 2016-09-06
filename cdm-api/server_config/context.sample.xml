@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for each web application -->
+<Context>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    
+    <Environment name="server.authorization.uri" value="https://truapi-int.trueffect.com/oauth/v1.0.0/" type="java.lang.String" override="false"/> 
+    <Environment name="public.path" value="https://truapi-int.trueffect.com/cms/v1.0.0/" type="java.lang.String" override="false"/> 
+    <Environment name="crud.path" value="https://truapi-int.trueffect.com/internal/v1.0.0/" type="java.lang.String" override="false"/> 
+    
+    <Environment name="image.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/" type="java.lang.String" override="false"/>
+    <Environment name="tmp.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/tmp/" type="java.lang.String" override="false"/>
+    <Environment name="unittest.folderpath" value="src/main/resources/files/" type="java.lang.String" override="false"/>
+    <Environment name="stub.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/tmp/creative.jpg" type="java.lang.String" override="false"/>
+
+    <Resource 
+        name="jdbc/mybatis" 
+        auth="Container" 
+        type="javax.sql.DataSource"
+        removeAbandoned="true" removeAbandonedTimeout="30" logAbandoned="true"
+        testWhileIdle="true" validationQuery="SELECT 1 FROM DUAL" timeBetweenEvictionRunsMillis="60000"
+        maxActive="30" maxIdle="5" maxWait="50000"
+        username="USERNAME" 
+        password="PASSWORD" 
+        driverClassName="oracle.jdbc.OracleDriver"
+        url="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=runamuck.trueffect.com)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=tfadev.trueffect.com)))"/>
+
+</Context>
