@@ -1,0 +1,153 @@
+<div class="schedule-tab" data-cg-busy="vmList.promise">
+  <div class="row schedule-row">
+    <schedule-insertions data-model="vmList.model"
+                         data-on-select-item="vmList.onSelectItem"
+                         data-row-collapsed="vmList.rowCollapsed"
+                         data-row-expanded="vmList.rowExpanded">
+    </schedule-insertions>
+    <te-tree-grid id="scheduleGrid"
+                  class="col-xs-12"
+                  data-te-tree-grid-custom-search="true"
+                  data-te-tree-grid-on-search="vmList.serverSideSearch(searchText)"
+                  data-te-tree-grid-on-clear-search-field="vmList.serverSideClearSearch()"
+                  data-te-tree-grid-search-options="{{vmList.SERVER_SIDE_SEARCH_OPTIONS}}"
+                  data-search-fields="vmList.searchFields"
+                  data-model="vmList.model"
+                  data-pagination-enabled="true"
+                  data-page-size="{{vmList.PAGE_SIZE}}"
+                  data-uuid = "vmList.treeUUID"
+                  data-te-tree-grid-select="vmList.onSelect($selection, $level, $coords)"
+                  data-te-tree-grid-row-collapse="vmList.rowCollapsed($row)"
+                  data-te-tree-grid-row-expand="vmList.rowExpanded($row)"
+                  data-columns-resize="true">
+      <te-btns>
+        <te-table-add-btn data-ng-click="vmList.addScheduleAssignments()"></te-table-add-btn>
+          <select class="form-control"
+                  data-ng-class="{'site-selected' : vmList.selectedPivot.KEY == 'site',
+                                'placement-selected' : vmList.selectedPivot.KEY == 'placement',
+                                'group-selected' : vmList.selectedPivot.KEY == 'group',
+                                'creative-selected' : vmList.selectedPivot.KEY == 'schedule'}"
+                  data-ng-change="vmList.changePivot()"
+                  data-ng-model="vmList.selectedPivot"
+                  data-ng-options="pivot.NAME | translate for pivot in vmList.pivotList | filter:'!' + (pivot.NAME = 'global.section') track by pivot.KEY">
+          </select>
+      </te-btns>
+      <te-secondary-btns>
+          <div class="dropdown" data-ng-if="vmList.hasExportCreativeInsertionsPermission || vmList.hasImportCreativeInsertionsPermission">
+              <button id="bulk-dropdown"
+                      class="dropdown-toggle btn btn-warning"
+                      data-toggle="dropdown"
+                      data-ng-disabled="vmList.model.length === 0">
+                  {{'global.bulk'| translate}}
+              </button>
+              <ul id="bulk-dropdown-list" class="dropdown-menu dropdown-menu-right">
+                  <li data-ng-if="vmList.hasImportCreativeInsertionsPermission">
+                      <a id="importAll" data-ng-click="vmList.openImport()">
+                          {{'global.importAll' | translate}}
+                      </a>
+                  </li>
+                  <li data-ng-if="vmList.hasExportCreativeInsertionsPermission" >
+                      <a id="exportAll" data-ng-click="vmList.getExportAll()">
+                          {{'global.exportAll' | translate}}
+                          <span id="downloadSuccessful" data-ng-show="false">{{vmList.downloadSuccessful}}</span>
+                      </a>
+                  </li>
+              </ul>
+          </div>
+      </te-secondary-btns>
+      <te-columns>
+        <te-column data-field="creativeAssociations" data-hidden="true"></te-column>
+        <te-column data-field="creativeGroupAssociations" data-hidden="true"></te-column>
+        <te-column data-field="expanded" data-hidden="true"></te-column>
+        <te-column data-field="placementAssociations" data-hidden="true"></te-column>
+        <te-column data-field="placementStatus" data-hidden="true"></te-column>
+        <te-column data-field="field" data-hidden="true"></te-column>
+        <te-column data-field="id" data-hidden="true"></te-column>
+
+        <te-column data-field="siteLabel"
+                   data-filterable="vmList.getFilterable(vmList.SCHEDULE_LEVEL.SITE.KEY)"
+                   data-hidden="true"
+                   data-title="'global.site' | translate"
+                   data-position="vmList.getPosition(vmList.SCHEDULE_LEVEL.SITE.KEY)">
+        </te-column>
+        <te-column data-field="siteSectionLabel"
+                   data-filterable="vmList.getFilterable(vmList.SCHEDULE_LEVEL.SECTION.KEY)"
+                   data-hidden="true"
+                   data-title="'global.section' | translate"
+                   data-position="vmList.getPosition(vmList.SCHEDULE_LEVEL.SECTION.KEY)">
+        </te-column>
+        <te-column data-field="placementLabel"
+                   data-filterable="vmList.getFilterable(vmList.SCHEDULE_LEVEL.PLACEMENT.KEY)"
+                   data-hidden="true"
+                   data-title="'global.placement' | translate"
+                   data-position="vmList.getPosition(vmList.SCHEDULE_LEVEL.PLACEMENT.KEY)">
+        </te-column>
+        <te-column data-field="creativeGroupLabel"
+                   data-filterable="vmList.getFilterable(vmList.SCHEDULE_LEVEL.CREATIVE_GROUP.KEY)"
+                   data-hidden="true"
+                   data-title="'creativeGroup.creativeGroup' | translate"
+                   data-position="vmList.getPosition(vmList.SCHEDULE_LEVEL.CREATIVE_GROUP.KEY)">
+        </te-column>
+        <te-column data-field="creativeLabel"
+                   data-filterable="vmList.getFilterable(vmList.SCHEDULE_LEVEL.SCHEDULE.KEY)"
+                   data-hidden="true"
+                   data-title="'creative.creative' | translate"
+                   data-position="vmList.getPosition(vmList.SCHEDULE_LEVEL.SCHEDULE.KEY)">
+        </te-column>
+
+        <te-column data-field="siteDetailLabel"
+                   data-cells-renderer="vmList.getRowRenderer($rowData, $cellText)"
+                   data-sortable="true"
+                   data-title="vmList.getDetailColumnTitle()"
+                   data-width="25%"
+                   data-min-width="115">
+        </te-column>
+        <te-column data-field="placementStatusLabel"
+                   data-cells-renderer="vmList.placementStatusCellsRenderer($rowData, $cellText)"
+                   data-cells-align="center"
+                   data-title="'schedule.placementStatus' | translate"
+                   data-width="10%"
+                   data-min-width="95">
+        </te-column>
+        <te-column data-field="associations"
+                   data-cells-align="center"
+                   data-cells-renderer="vmList.associationsCellsRenderer($rowData)"
+                   data-title="'global.associations' | translate"
+                   data-width="10%"
+                   data-min-width="95">
+        </te-column>
+        <te-column data-field="weight"
+                   data-cells-align="center"
+                   data-title="'creativeGroup.weight' | translate"
+                   data-cells-format="'d'"
+                   data-type="number"
+                   data-width="7%"
+                   data-min-width="60">
+        </te-column>
+        <te-column data-field="flightDates"
+                   data-cells-renderer="vmList.flightDatesCellsRenderer($cellText)"
+                   data-cells-align="center"
+                   data-title="'schedule.flightDates' | translate"
+                   data-width="28%"
+                   data-min-width="95">
+        </te-column>
+        <te-column data-field="clickThroughUrl"
+                   data-cells-renderer="vmList.clickThroughUrlCellsRenderer($cellValue)"
+                   data-title="'schedule.clickThroughUrl' | translate"
+                   data-type="array"
+                   data-resizable="false"
+                   data-min-width="65">
+        </te-column>
+      </te-columns>
+    </te-tree-grid>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button id="traffic"
+              class="btn btn-primary pull-right btn-right-bottom"
+              data-ng-click="vmList.save()">
+        {{vmList.trafficButtonLabel}}
+      </button>
+    </div>
+  </div>
+</div>

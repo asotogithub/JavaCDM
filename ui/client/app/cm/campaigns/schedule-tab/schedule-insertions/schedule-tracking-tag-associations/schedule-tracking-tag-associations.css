@@ -1,0 +1,31 @@
+.html-content-column {
+    width: 150px;
+}
+
+.html-content {
+    word-wrap: break-word;
+}
+
+.html-content-column .popover {
+    border-color: #ccc;
+    border-radius: 15px;
+    box-shadow: 1px 1px 10px #999;
+    max-width: 400px;
+    cursor: default;
+}
+
+.html-secure-content .popover {
+    margin-left: -115px;
+}
+
+.html-secure-content .popover.top > .arrow {
+    margin-left: 105px !important;
+}
+
+.panel-group .panel + #tagAssociationsPanel {
+    overflow: visible;
+}
+
+.schedule-insertions-container {
+    overflow-x: visible;
+}

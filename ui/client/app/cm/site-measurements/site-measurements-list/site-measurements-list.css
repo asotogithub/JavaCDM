@@ -1,0 +1,64 @@
+/*Name*/
+.measurement-grid > thead > tr > th:nth-child(1) {
+    width: 230px;
+    min-width: 230px;
+}
+
+/*Id*/
+.measurement-grid > thead > tr > th:nth-child(2) {
+    width: 90px;
+    min-width: 90px;
+}
+
+/*Advertiser*/
+.measurement-grid > thead > tr > th:nth-child(3) {
+    width: 210px;
+    min-width: 210px;
+}
+
+/*Brand*/
+.measurement-grid > thead > tr > th:nth-child(4) {
+    width: 150px;
+    min-width: 150px;
+}
+
+/*Domain*/
+.measurement-grid > thead > tr > th:nth-child(5) {
+    width: 90px;
+    min-width: 90px;
+}
+/*Events*/
+.measurement-grid > thead > tr > th:nth-child(6) {
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+}
+
+/*Status*/
+.measurement-grid > thead > tr > th:nth-child(7) {
+    width: 90px;
+    min-width: 90px;
+    max-width: 110px;
+}
+
+/*Trafficked*/
+.measurement-grid > thead > tr > th:nth-child(8) {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+}
+
+.measurement-truncate-text-name {
+    white-space: nowrap !important;
+    max-width: 230px !important;
+}
+
+.measurement-truncate-text-id {
+    white-space: nowrap !important;
+    max-width: 90px !important;
+}
+
+.measurement-truncate-text-brand {
+    white-space: nowrap !important;
+    max-width: 160px !important;
+}

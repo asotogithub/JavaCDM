@@ -1,0 +1,12 @@
+<div data-ng-controller="AddTrackingTagNameController as vm">
+    <data-ng-form name="vm.nameForm" novalidate>
+        <div class="col-md-12">
+            <div data-ng-if="vmAddTrackingTag.htmlTagType == vm.HTML_TAG_TYPE.AD_CHOICES"
+                 data-ng-include="'app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/name/partials/adChoices.html'"></div>
+            <div data-ng-if="vmAddTrackingTag.htmlTagType == vm.HTML_TAG_TYPE.FACEBOOK_CUSTOM"
+                 data-ng-include="'app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/name/partials/facebookCustomTracking.html'"></div>
+            <div data-ng-if="vmAddTrackingTag.htmlTagType == vm.HTML_TAG_TYPE.CUSTOM"
+                 data-ng-include="'app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/name/partials/custom.html'"></div>
+        </div>
+    </data-ng-form>
+</div>

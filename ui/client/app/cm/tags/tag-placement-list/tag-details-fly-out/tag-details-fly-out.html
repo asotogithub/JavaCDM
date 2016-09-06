@@ -1,0 +1,234 @@
+<div id="fly-out-tag-details" data-ng-controller="TagDetailsFlyOutController as vmTagDetailsFlyOut"
+     class="panel-fly-out-accordion"
+     data-cg-busy="vmTagDetailsFlyOut.promiseTDFlyOut">
+<div class="row">
+    <div class="col-md-12">
+        <div class="content">
+            <div class="group-button padding-top20 ">
+                <div class="pull-right">
+                    <button id="tagsDetailsSendBtnId"
+                            class="btn"
+                            data-ng-disabled="!vmTagDetailsFlyOut.model.enableSendBtn"
+                            data-ng-click="vmTagDetailsFlyOut.closeAction(!vmTagDetailsFlyOut.openSendTagDialog)"
+                            data-ng-class="vmTagDetailsFlyOut.model.enableSendBtn ? 'btn-success' : 'btn-default'">
+                        {{'global.send' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-info summary">
+    <div class="panel-heading" role="tab" id="headingOne">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                {{'global.summary'| translate}}
+            </a>
+        </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-horizontal">
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                {{'global.campaign'| translate}}:
+                            </label>
+                            <div class="col-md-8">
+                                <div class="form-control-static">
+                                    {{vmTagDetailsFlyOut.model.campaignName}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                {{'global.flightDates'| translate}}:
+                            </label>
+                            <div class="col-md-8">
+                                <div class="form-control-static">
+                                    {{vmTagDetailsFlyOut.model.flightDates}}
+                                </div>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                             <label class="control-label col-md-4">
+                                 {{'global.impressions'| translate}}:
+                             </label>
+                             <div class="col-md-8">
+                                 <div class="form-control-static">
+                                     {{vmTagDetailsFlyOut.model.impressions}}
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"
+                                   data-ng-class="vmTagDetailsFlyOut.flyoutState == vmTagDetailsFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-4' : 'col-md-5'">
+                                {{'global.io'| translate}}:
+                            </label>
+                            <div data-ng-class="vmTagDetailsFlyOut.flyoutState == vmTagDetailsFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-8' : 'col-md-7'">
+                                <div class="form-control-static">
+                                    {{vmTagDetailsFlyOut.model.ioNumber}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"
+                                   data-ng-class="vmTagDetailsFlyOut.flyoutState == vmTagDetailsFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-4' : 'col-md-5'">
+                                {{'global.ioDescription'| translate}}:
+                            </label>
+                            <div data-ng-class="vmTagDetailsFlyOut.flyoutState == vmTagDetailsFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-8' : 'col-md-7'">
+                                <div class="form-control-static">
+                                    {{vmTagDetailsFlyOut.model.ioDescription}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Instructions - Considerations-->
+<div class="panel panel-info">
+    <div class="panel-heading" role="tab" id="headingTwo">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                {{'tags.details.instructionsConsiderations'| translate}}:
+            </a>
+        </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label padding-right18 col-md-2">
+                            {{'tags.details.instructions'| translate}}:
+                        </label>
+                        <div class="col-md-10">
+                            <div class="form-control-static"  data-ng-bind-html="vmTagDetailsFlyOut.resource.instructions | translate | htmlSafe"></div>
+                        </div>
+                    </div>
+                    <div class="form-group padding-right18">
+                        <label class="control-label col-md-2">
+                            {{'tags.details.partialTags'| translate}}:
+                        </label>
+                        <div class="col-md-10">
+                            <div class="form-control-static">
+                                {{'tags.details.partialTagsDescription' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group padding-right18">
+                        <label class="control-label col-md-2">
+                            {{'tags.details.clickWindows' | translate}}:
+                        </label>
+                        <div class="col-md-10">
+                            <div class="form-control-static">
+                                {{'tags.details.clickWindowsDescription' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Full Ad Tags-->
+<div class="panel panel-info">
+    <div class="panel-heading" role="tab" id="headingThree">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree">
+                {{'tags.details.fullAdTag'| translate}}:
+            </a>
+        </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-md-12">
+                        <div class="col-md-12 text-script">{{vmTagDetailsFlyOut.model.fullAdTag.trim()}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Script Version-->
+<div class="panel panel-info">
+    <div class="panel-heading" role="tab" id="headingFour">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour">
+                {{'tags.details.scriptVersion'| translate}}:
+            </a>
+        </h4>
+    </div>
+    <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-md-12">
+                        <div class="col-md-12 text-script">{{vmTagDetailsFlyOut.model.scriptVersion.trim()}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Script Version-->
+<div class="panel panel-info">
+    <div class="panel-heading" role="tab" id="headingFive">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive">
+                {{'tags.details.noScriptVersion'| translate}}:
+            </a>
+        </h4>
+    </div>
+    <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-md-12">
+                        <div class="col-md-12 text-script">{{vmTagDetailsFlyOut.model.noScriptVersion.trim()}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Click Redirect -->
+<div class="panel panel-info">
+    <div class="panel-heading" role="tab" id="headingSix">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSix">
+                {{'tags.details.clickRedirect'| translate}}:
+            </a>
+        </h4>
+    </div>
+    <div id="collapseSix" class="panel-collapse collapse in" role="tabpanel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-md-12">
+                        <div class="col-md-12 text-script">{{vmTagDetailsFlyOut.model.clickRedirect.trim()}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="col-md-12 group-button">
+        <div class="pull-right">
+            <button class="btn btn-default"
+                    data-ng-click="vmTagDetailsFlyOut.closeAction(vmTagDetailsFlyOut.openSendTagDialog)">
+                {{'global.close' | translate}}
+            </button>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,6 @@
+@media screen and (min-width: 992px) and (max-width: 1480px) {
+    #placementsTree .form-group.te-tree-search,
+    #placementsTree .te-tree-toolbar .te-tree-search .input-group .te-tree-search {
+        width: 190px !important;
+    }
+}

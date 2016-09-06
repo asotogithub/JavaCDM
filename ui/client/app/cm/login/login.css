@@ -1,0 +1,43 @@
+.login-background {
+    background: url("/assets/images/login/background.jpg") center top fixed;
+    background-size: cover;
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+}
+
+.login-logo {
+    margin: 50px 0 100px;
+}
+
+.login-panel {
+    border: none;
+}
+
+.login-footer {
+    color: gray;
+    font-size: 12px;
+}
+
+.footer-nav li {
+    display: inline-block;
+}
+
+.footer-nav li:before {
+    content: '\00a0\2022\00a0\00a0';
+    font-size: 11px;
+    padding-right: 11px;
+    color: gray;
+}
+
+.footer-nav li:first-child:before {
+    content: '';
+}
+
+.login-copyright {
+    width: 100%;
+    position: fixed;
+    bottom: 10px;
+    font-size: 11px;
+    color: gray;
+}

@@ -1,0 +1,111 @@
+.apply-button-margin {
+    margin-right: 5px;
+}
+
+.apply-columnHeader {
+    position: relative;
+    height: 100%;
+    width: calc(28% - -47px);
+    left: 0px;
+    padding-top: 3px;
+    float: left;
+}
+
+.apply-container {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-left: 4px;
+    margin-right: 4px;
+    text-align: right;
+}
+
+.weight-columnHeader {
+    position: relative;
+    width: 7%;
+    bottom: 11px;
+    display: inline-block;
+    padding: 0px 2px 0px 2px;
+}
+
+.weight-columnHeader-top {
+    top: 3px;
+}
+
+.date-columHeader {
+    position: relative;
+    width: 15%;
+    margin-top: 3px;
+    display: inline-block;
+}
+
+.startDate-columHeader {
+    padding-right: 8px;
+}
+
+.endDate-columHeader {
+    padding-right: 8px;
+    left: -4px;
+}
+
+.ctrl-columnHeader {
+    position: relative;
+    bottom: 11px;
+    width: calc(100% - 65% - 56px);
+    left: -7px;
+    right: 0px;
+    display: inline-block;
+}
+
+.camera-opt {
+    padding-left: 20px;
+    padding-top: 9px;
+}
+
+.creativeAlign {
+    padding-right: 3px;
+}
+
+.creativeGroupAlign {
+    padding-left: 20px;
+    padding-top: 9px;
+}
+
+.dateContainer {
+    width: 100% !important;
+}
+
+.dateContainer input{
+    width: 100% !important;
+}
+
+.dateContainer .jqx-action-button{
+    left: inherit !important;
+    right: 0px;
+}
+
+input.weightInput {
+    width: 100%;
+    height: 32px;
+    text-align:center;
+    border: 1px solid #c7c7c7;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+input.weightInput:focus {
+    height: 32px;
+    text-align:center;
+    border: 1px solid #2f2f2f;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+input.weightInputDisabled {
+    height: 32px;
+    text-align:center;
+    background: #fcfcfc;
+    border: 1px solid #c7c7c7;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}

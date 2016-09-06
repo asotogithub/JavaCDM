@@ -1,0 +1,34 @@
+<div data-cg-busy="vm.promise">
+  <h3 id="campaignsHeader">{{'creativeGroup.newCreativeGroup' | translate}}</h3>
+    <a id="listOfCreativeGroupBtn" class="btn btn-default margin-bottom20" data-ng-click="vm.goToCreativeGroupsTab()" data-ui-sref-opts="{reload:true}">
+        <i class="fa fa-angle-left"></i> {{'creativeGroup.listOfCreativeGroup' | translate}}
+    </a>
+  <div class="alert alert-danger" role="alert" data-ng-if="vm.errorMessage">
+    {{'creativeGroup.errors' | translate}}
+    <ul>
+      <li id="errorMessageText">{{vm.errorMessage}}</li>
+    </ul>
+  </div>
+  <creative-group-details-form data-model="vm.creativeGroup"
+                               data-pristine="vm.pristine"
+                               data-submit-disabled="vm.submitDisabled">
+    <div class="form-group">
+      <div class="col-xs-12">
+        <div class="pull-right">
+            <button id="saveButton"
+                    type="submit"
+                    class="btn btn-primary"
+                    data-ng-click="vm.save()"
+                    data-ng-disabled="vm.submitDisabled">
+                {{'global.save' | translate}}
+            </button>
+            <a class="btn btn-default"
+             data-ng-click="vm.close($event)"
+             data-ui-sref="creative-groups-tab({campaignId: vm.campaignId})">
+             {{'global.close' | translate}}
+            </a>
+        </div>
+      </div>
+    </div>
+  </creative-group-details-form>
+</div>

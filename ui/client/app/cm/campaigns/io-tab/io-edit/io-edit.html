@@ -1,0 +1,134 @@
+<div class="alert alert-danger" role="alert" data-ng-if="vmEdit.errorMessage">
+    {{'insertionOrder.details.errors' | translate}}
+    <ul>
+        <li id="errorMessageText">{{vmEdit.errorMessage}}</li>
+    </ul>
+</div>
+<form class="form-horizontal" name="vmEdit.editForm" data-ng-submit="vmEdit.submit()"
+      data-cg-busy="vmEdit.promise || vm.promise" novalidate>
+    <div class="panel-body row">
+        <div class="col-sm-6">
+            <div class="form-group form-campaign"
+                 data-ng-class="{'has-error': vmEdit.editForm.ioName.$dirty && vmEdit.editForm.ioName.$invalid}">
+                <label id="ioNameLabel" class="col-sm-4 control-label">{{'global.name' | translate}}:</label>
+                <div class="col-sm-6">
+                    <input id="ioName"
+                           class="form-control"
+                           name="ioName"
+                           type="text"
+                           data-ng-model="vmEdit.io.name"
+                           data-ng-maxlength="{{vmEdit.validations.maxLength}}"
+                           data-ng-pattern="vmEdit.validations.alphanumeric"
+                           required/>
+                    <p id="ioNameRequired" class="help-block"
+                       data-ng-if="vmEdit.editForm.ioName.$dirty && vmEdit.editForm.ioName.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p id="ioNameMaxLength" class="help-block"
+                       data-ng-if="vmEdit.editForm.ioName.$dirty && vmEdit.editForm.ioName.$error.maxlength"
+                       translate="validation.error.maxlength" translate-values="{length: vmEdit.validations.maxLength}">
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vmEdit.editForm.ioName.$dirty && vmEdit.editForm.ioName.$error.pattern">
+                        {{'validation.error.alphanumeric' | translate}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group form-campaign"
+                 data-ng-class="{'has-error': vmEdit.editForm.ioNumber.$dirty && vmEdit.editForm.ioNumber.$invalid}">
+                <label id="ioNumberLabel" class="col-sm-4 control-label">{{'global.number' | translate}}:</label>
+                <div class="col-sm-6">
+                    <input id="ioNumber"
+                           class="form-control input-max-int"
+                           name="ioNumber"
+                           type="number"
+                           data-ng-model="vmEdit.io.ioNumber"
+                           data-ng-max="{{vmEdit.validations.maxIONumber}}"
+                           data-ng-pattern="vmEdit.validations.numeric"/>
+                    <p id="ioNumberMax" class="help-block"
+                       data-ng-if="vmEdit.editForm.ioNumber.$dirty && vmEdit.editForm.ioNumber.$error.max">
+                        {{'validation.error.max'| translate}} {{vmEdit.validations.maxIONumber}}
+                    </p>
+                    <p id="ioNumberNatural" class="help-block"
+                       data-ng-if="vmEdit.editForm.ioNumber.$dirty && !vmEdit.editForm.ioNumber.$error.max
+                       && (vmEdit.editForm.ioNumber.$error.number || vmEdit.editForm.ioNumber.$error.pattern)">
+                        {{'validation.error.positiveNumber' | translate}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="ioStatusLabel" class="col-sm-4 control-label">{{'global.status' | translate}}:</label>
+                <div class="col-sm-6">
+                    <select id="ioStatusSelect"
+                            class="form-control"
+                            data-ng-model="vmEdit.io.status"
+                            data-ng-options="status.name | translate for status in vmEdit.statusList track by status.key">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-campaign"
+                 data-ng-class="{'has-error': vmEdit.editForm.ioNotes.$dirty && vmEdit.editForm.ioNotes.$invalid}">
+                <label id="ioNotesLabel" class="col-sm-4 control-label">{{'global.notes' | translate}}:</label>
+                <div class="col-sm-6">
+                    <textarea id="ioNotes"
+                              class="form-control"
+                              name="ioNotes"
+                              type="text"
+                              data-ng-model="vmEdit.io.notes"
+                              data-ng-maxlength="{{vmEdit.validations.maxLengthNotes}}">
+                    </textarea>
+                    <p id="ioNotesMaxLength" class="help-block"
+                       data-ng-if="vmEdit.editForm.ioNotes.$dirty && vmEdit.editForm.ioNotes.$error.maxlength"
+                       translate="validation.error.maxlength" translate-values="{length: vmEdit.validations.maxLengthNotes}">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group form-campaign">
+                <label id="ioTotalAdSpendLabel" class="col-sm-4 control-label">{{'insertionOrder.totalAdSpend' |
+                    translate}}:</label>
+                <div class="col-sm-6">
+                    <p id="ioTotalAdSpend" class="form-control-static">{{vmEdit.io.totalAdSpend | currency:"$"}}</p>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="ioIdLabel" class="col-sm-4 control-label">{{'global.id' | translate}}:</label>
+                <div class="col-sm-6">
+                    <p id="ioId" class="form-control-static">{{vmEdit.io.id}}</p>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="ioLastUpdatedLabel" class="col-sm-4 control-label">{{'insertionOrder.lastUpdated' |
+                    translate}}:</label>
+                <div class="col-sm-6">
+                    <p id="ioLastUpdated" class="form-control-static">{{vmEdit.io.lastUpdated |
+                        date:vmEdit.validations.dateFormat}} - {{vmEdit.io.lastUpdatedAuthor}}</p>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="ioPlacementsCountLabel" class="col-sm-4 control-label">{{'global.placements' |
+                    translate}}:</label>
+                <div class="col-sm-6">
+                    <p id="ioPlacementsCount" class="form-control-static">{{vmEdit.io.placementsCount}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <a class="btn btn-default" data-ng-click="vmEdit.cancel()">
+                    {{'global.cancel' | translate}}
+                </a>
+                <button id="saveButton"
+                        type="submit"
+                        class="btn btn-primary"
+                        data-ng-disabled="vmEdit.editForm.$invalid || vmEdit.editForm.$pristine"
+                        data-ng-click="vmEdit.save(vmEdit.io)">
+                    {{'global.save' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

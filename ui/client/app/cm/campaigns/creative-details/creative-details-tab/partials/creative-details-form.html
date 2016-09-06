@@ -1,0 +1,147 @@
+<div class="row">
+    <div class="col-md-6">
+        <form class="form-horizontal" name="vmEdit.creativeDetailsForm" novalidate>
+            <div class="form-group"
+                 data-ng-class="{'has-error': vmEdit.creativeDetailsForm.creativeAlias.$dirty && vmEdit.creativeDetailsForm.creativeAlias.$invalid}">
+                <label class="col-sm-2 control-label">{{'global.alias' | translate}}:</label>
+                <div class="col-sm-6">
+                    <input class="form-control"
+                           id="creativeAlias"
+                           name="creativeAlias"
+                           type="text"
+                           data-ng-model="vmEdit.creative.alias"
+                           data-ng-maxlength="{{vmEdit.maxLength}}"
+                           data-ng-change="vmEdit.aliasChanged()"
+                           validate-duplicate="vmEdit.validateDuplicatedAlias(vmEdit.creative.versions)"
+                           form-duplicates="vmEdit.creativeVersionsForm"
+                           required/>
+                    <p id="creativeAliasRequired" class="help-block"
+                       data-ng-if="vmEdit.creativeDetailsForm.creativeAlias.$dirty && vmEdit.creativeDetailsForm.creativeAlias.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p id="creativeAliasMaxLength" class="help-block"
+                       data-ng-if="vmEdit.creativeDetailsForm.creativeAlias.$dirty && vmEdit.creativeDetailsForm.creativeAlias.$error.maxlength"
+                       translate="validation.error.maxlength" translate-values="{length: vmEdit.maxLength}">
+                    </p>
+                    <p id="creativeAliasRepeated" class="help-block"
+                       data-ng-if="vmEdit.creativeDetailsForm.creativeAlias.$dirty && vmEdit.creativeDetailsForm.creativeAlias.$error.duplicatedField && !vmEdit.creativeDetailsForm.creativeAlias.$error.required">
+                        {{'creative.error.duplicatedAliasFound' | translate}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group"
+                 data-ng-class="{'has-error': vmEdit.creativeDetailsForm.creativeExtId.$dirty && vmEdit.creativeDetailsForm.creativeExtId.$invalid}">
+                <label class="col-sm-2 control-label">{{'creative.extId' | translate}}:</label>
+                <div class="col-sm-3">
+                    <input class="form-control input-12-char"
+                           id="creativeExtId"
+                           name="creativeExtId"
+                           type="text"
+                           data-ng-trim="false"
+                           data-ng-change="vmEdit.externalIdChange()"
+                           data-ng-model-options="{ debounce: 1 }"
+                           data-ng-model="vmEdit.creative.externalId"
+                           data-ng-maxlength="{{vmEdit.maxLength}}"/>
+                    <p id="creativeExtIdMaxLength" class="help-block"
+                       data-ng-if="vmEdit.creativeDetailsForm.creativeExtId.$dirty && vmEdit.creativeDetailsForm.creativeExtId.$invalid"
+                       translate="validation.error.maxlength" translate-values="{length: vmEdit.maxLength}">
+                    </p>
+                </div>
+            </div>
+            <div class="form-group"
+                 data-ng-class="{'has-error': vmEdit.creativeDetailsForm.creativePurpose.$dirty && vmEdit.creativeDetailsForm.creativePurpose.$invalid}">
+                <label class="col-sm-2 control-label">{{'global.purpose' | translate}}:</label>
+                <div class="col-sm-6">
+                    <input class="form-control"
+                           id="creativePurpose"
+                           name="creativePurpose"
+                           type="text"
+                           data-ng-model="vmEdit.creative.purpose"
+                           data-ng-maxlength="{{vmEdit.maxLength}}"/>
+                    <p id="creativePurposeMaxLength" class="help-block"
+                       data-ng-if="vmEdit.creativeDetailsForm.creativePurpose.$dirty && vmEdit.creativeDetailsForm.creativePurpose.$invalid"
+                       translate="validation.error.maxlength" translate-values="{length: vmEdit.maxLength}">
+                    </p>
+                </div>
+            </div>
+            <div class="form-group"
+                 data-ng-class="{'has-error': vmEdit.creativeDetailsForm.creativeAssociations.$dirty && vmEdit.creativeDetailsForm.creativeAssociations.$invalid}">
+                <label class="col-sm-2 control-label">{{'global.associations' | translate}}:</label>
+                <div class="col-sm-6">
+                    <tags-input class="bootstrap"
+                                name="creativeAssociations"
+                                add-from-autocomplete-only="true"
+                                data-add-on-comma="false"
+                                data-add-on-blur="false"
+                                data-add-on-space="false"
+                                data-enable-editing-last-tag="false"
+                                data-ng-model="vmEdit.creative.creativeGroups[0].creativeGroups"
+                                data-display-property="name"
+                                data-placeholder="{{'creative.associations.searchPlaceHolder' | translate}}"
+                                data-replace-spaces-with-dashes="false"
+                                data-spellcheck="true"
+                                required>
+                        <auto-complete source="vmEdit.loadCreativeGroups($query)" max-results-to-show="{{vmEdit.maxSearchElements}}"></auto-complete>
+                    </tags-input>
+                    <p id="creativeAssociationsRequired" class="help-block"
+                       data-ng-if="vmEdit.creativeDetailsForm.creativeAssociations.$dirty && vmEdit.creativeDetailsForm.creativeAssociations.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{'global.filename' | translate}}:</label>
+                <div class="col-sm-6">
+                    <p class="form-control-static">{{vmEdit.creative.filename}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{'global.size' | translate}}:</label>
+                <div class="col-sm-6">
+                    <p class="form-control-static">{{vmEdit.creative.width + 'x' + vmEdit.creative.height}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{'global.type' | translate}}:</label>
+                <div class="col-sm-6">
+                    <p data-ng-if="!vmEdit.isCreativeXML(vmEdit.creative.creativeType)" class="form-control-static">{{vmEdit.creative.creativeType}}</p>
+                    <p data-ng-if="vmEdit.isCreativeXML(vmEdit.creative.creativeType)" class="form-control-static">{{'global.template' | translate | lowercase}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{'global.shared' | translate}}:</label>
+                <div class="col-sm-6">
+                    <p class="form-control-static"
+                       data-ng-show="vmEdit.creative.creativeGroups[0].creativeGroups.length > 1">{{'global.yes' | translate}}</p>
+                    <p class="form-control-static"
+                       data-ng-show="vmEdit.creative.creativeGroups[0].creativeGroups.length <= 1">{{'global.no' | translate}}</p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="col-sm-2 control-label margin-left-15">{{'global.preview' | translate}}:</label>
+            <div class="col-sm-10 pull-right">
+                <div data-ng-if="!vmEdit.urlCreative && !vmEdit.promise" class="error-message">
+                    {{'creative.imageFailed' | translate}}
+                </div>
+                <div id="videoErrorMessage" data-ng-if="!vmEdit.video.isLoaded" class="error-message">
+                    {{'creative.videoFailed' | translate}}
+                </div>
+                <video data-ng-if="vmEdit.video.isLoaded && vmEdit.isCreativeVideoTemplate"
+                       id="videoPlayerPreview"
+                       autoplay
+                       controls
+                       data-ng-src="{{vmEdit.video.url}}"
+                       data-on-error="vmEdit.video.onError()"
+                       type="{{vmEdit.video.type}}"
+                       width="{{vmEdit.video.defaultWidth}}"
+                       height="{{vmEdit.video.defaultHeight}}">
+                </video>
+                <img data-ng-if="vmEdit.urlCreative && !vmEdit.isCreativeText(vmEdit.creative.creativeType)" data-ng-src="{{vmEdit.urlCreative}}" class="img-thumbnail center-block">
+                <textarea class="text-creative" data-ng-if="vmEdit.isCreativeText(vmEdit.creative.creativeType)" name="textarea" readonly>{{vmEdit.urlCreative}}</textarea>
+            </div>
+        </div>
+    </div>
+</div>

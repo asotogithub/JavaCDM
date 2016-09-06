@@ -1,0 +1,108 @@
+<!--This is to allow load schedule-checkbox as a template from cache-->
+<script type="text/ng-template" id="package-list-checkbox-renderer.html">
+    <div class="checkbox c-checkbox customTreeGridColumnCheckbox">
+        <label>
+            <input data-row-key="{{vm.rowId}}"
+                   data-check-value="{{vm.checked}}"
+                   type="checkbox"
+                   class="customTreeGridCheckbox"
+                   {{vm.checked === true? 'checked="checked"': ''}}/>
+            <span class="fa fa-check"></span>
+        </label>
+    </div>
+</script>
+
+<script type="text/ng-template" id="package-row-renderer.html">
+    <div class="display-inline">
+        <i class="ico-placement {{vm.class}}"></i>
+        <span class="wrapped-text" title="{{vm.label}}">{{vm.label}}</span>
+    </div>
+</script>
+
+<div data-cg-busy="vmPackageList.promise">
+    <div class="row">
+        <te-tree-grid id="packageGrid"
+                      class="col-xs-12"
+                      data-model="vmPackageList.packageList"
+                      data-uuid="vmPackageList.flyoutUUID"
+                      data-pagination-enabled="true"
+                      data-page-size="{{vmPackageList.PAGE_SIZE}}"
+                      data-selection-mode="{{vmPackageList.selectionMode}}"
+                      data-columns-resize="true"
+                      data-te-tree-grid-checked="vmPackageList.getAllCheckedData($allChecked)"
+                      data-te-tree-grid-row-collapse="vmPackageList.rowCollapsed($row)"
+                      data-te-tree-grid-row-expand="vmPackageList.rowExpanded($row)">
+            <te-btns class="edit-package-button">
+                <te-table-add-btn data-ng-disabled="true">
+                </te-table-add-btn>
+                <button class="btn btn-default edit-package-button"
+                        data-ng-click="vmPackageList.editPackage(vmPackageList.selection)"
+                        data-ng-disabled="vmPackageList.countRowSelected !== 1">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-danger"
+                        data-ng-disabled="true">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+            </te-btns>
+            <te-columns>
+                <te-column data-field="id" data-hidden="true"></te-column>
+                <te-column data-field="isParent" data-hidden="true"></te-column>
+                <te-column data-field="expanded" data-hidden="true"></te-column>
+
+                <te-column data-field="name"
+                           data-filterable="true"
+                           data-sortable="true"
+                           data-title="'package.name' | translate"
+                           data-width="19%">
+                </te-column>
+                <te-column data-field="checked"
+                           data-cells-align="center"
+                           data-width="5%"
+                           data-resizable="false"
+                           data-cells-renderer="vmPackageList.getCheckboxRenderer($rowData, $cellValue)"
+                           data-title="' '">
+                </te-column>
+                <te-column data-field="placementName"
+                           data-filterable="true"
+                           data-sortable="true"
+                           data-cells-renderer="vmPackageList.getRowRenderer($rowData, $cellValue)"
+                           data-title="'global.placements' | translate"
+                           data-width="29%">
+                </te-column>
+                <te-column data-field="size"
+                           data-filterable="true"
+                           data-sortable="true"
+                           data-title="'global.size' | translate"
+                           data-width="10.5%">
+                </te-column>
+                <te-column data-field="site"
+                           data-filterable="true"
+                           data-sortable="true"
+                           data-title="'global.site' | translate"
+                           data-width="10.5%">
+                </te-column>
+                <te-column data-field="adSpend"
+                           data-title="'insertionOrder.ioTotalAdSpend' | translate"
+                           data-width="8%">
+                </te-column>
+                <te-column data-field="startDate"
+                           data-cells-align="right"
+                           data-cells-format="vmPackageList.DATE_FORMAT"
+                           data-title="'global.startDate' | translate"
+                           data-type="date"
+                           data-width="9%">
+                </te-column>
+                <te-column data-field="endDate"
+                           data-cells-align="right"
+                           data-cells-format="vmPackageList.DATE_FORMAT"
+                           data-resizable="false"
+                           data-title="'global.endDate' | translate"
+                           data-type="date"
+                           data-width="9%">
+                </te-column>
+            </te-columns>
+        </te-tree-grid>
+    </div>
+</div>
+

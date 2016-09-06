@@ -1,0 +1,51 @@
+<div class="aside-toggled min-width-wrapper" ng-class="{'wrapper': !mainVm.status.cm.schedule.isFlyoutVisible,'wrapper overflow-x-visible': mainVm.status.cm.schedule.isFlyoutVisible}">
+    <header class="topnavbar-wrapper">
+        <nav role="navigation" class="navbar topnavbar">
+            <div class="navbar-header">
+                <a class="navbar-brand">
+                    <div class="brand-logo">
+                        <img src="/assets/images/logo.png" alt="App Logo" class="img-responsive">
+                    </div>
+                    <div class="brand-logo-collapsed">
+                        <img src="/assets/images/logo-single.png" alt="App Logo" class="img-responsive nativeLogoWidth">
+                    </div>
+                </a>
+            </div>
+            <div class="nav-wrapper">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a data-ng-click="mainVm.toggleMenu()" class="hidden-xs">
+                            <em class="fa fa-navicon"></em>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a id="userLoginName" class="user-Name">{{mainVm.userName}}</a>
+                    </li>
+                    <li>
+                        <a class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <em class="fa fa-sign-out"></em>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a id="logout" href="" data-ng-click="mainVm.logout()">
+                                        {{'global.logout' | translate}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside data-ng-include="'app/cm/main/sidebar/sidebar.html'" class="aside"></aside>
+    <section>
+        <div data-ncy-breadcrumb>
+        </div>
+        <div class="content-wrapper" data-ui-view="">
+        </div>
+    </section>
+</div>

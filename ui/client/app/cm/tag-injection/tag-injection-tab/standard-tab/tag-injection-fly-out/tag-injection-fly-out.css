@@ -1,0 +1,102 @@
+.panel-fly-out-accordion .panel {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 15px;
+}
+
+.panel-fly-out-accordion .summary {
+    margin-top: 20px;
+}
+
+.panel-fly-out-accordion .associations-panel {
+    min-height: 250px;
+}
+
+.panel-fly-out-accordion .associations-panel.associations-panel-large {
+    min-height: 310px;
+}
+
+.panel-fly-out-accordion .panel #collapseOne div.panel-body {
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+.panel-fly-out-accordion .panel #collapseTwo div.panel-body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1350px) {
+    .panel-fly-out-accordion .panel #collapseTwo div.te-table .form-group.te-table-search,
+    .panel-fly-out-accordion .panel #collapseTwo div.te-table .te-table-toolbar .te-table-search .input-group .te-table-search {
+        width: 200px !important;
+    }
+}
+
+.panel-fly-out-accordion .panel #collapseTwo div.te-table .te-table-thirdly-btns div.legend-table label {
+    margin-top: 7px;
+    margin-left: 7px;
+    font-weight: normal;
+}
+
+.panel-fly-out-accordion .panel #collapseTwo div.te-table div.te-table-body div.ng-table-pager {
+    margin-bottom: -4px;
+}
+
+.panel-fly-out-accordion .panel #collapseTwo div.te-table div.well {
+    margin-bottom: 0;
+}
+
+.panel-fly-out-accordion .group-button {
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+@media screen and (min-width: 1480px) {
+    .ti-flyuot-placement-name-width {
+        max-width: 350px;
+    }
+
+    .ti-flyout-site-width {
+        max-width: 150px;
+    }
+
+    .ti-flyout-campaigns-width {
+        max-width: 200px;
+    }
+
+    .ti-flyout-date {
+        max-width: 95px;
+    }
+}
+
+@media screen and (max-width: 1480px) {
+    .ti-flyuot-placement-name-width {
+        max-width: 220px;
+    }
+
+    .ti-flyout-site-width {
+        max-width: 100px;
+    }
+
+    .ti-flyout-campaigns-width {
+        max-width: 130px;
+    }
+
+    .ti-flyout-date {
+        max-width: 95px;
+    }
+}
+
+.thirdly-btns-position {
+    font-weight: normal;
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+.macros-container-min-width {
+    min-width: 380px;
+}

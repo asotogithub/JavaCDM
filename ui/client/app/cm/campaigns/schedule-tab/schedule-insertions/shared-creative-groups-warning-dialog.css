@@ -1,0 +1,33 @@
+.ellipsis-content {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#sharedCreativeGroup {
+    position: relative;
+    left: -98px;
+    top: 5px;
+    width: 558px;
+}
+
+/*Placements*/
+.shared-groups-grid > thead > tr > th:nth-child(2) {
+    width: 80px;
+}
+
+/*Current Weight*/
+.shared-groups-grid > thead > tr > th:nth-child(3) {
+    width: 80px;
+}
+
+/*New Weight*/
+.shared-groups-grid > thead > tr > th:nth-child(4) {
+    width: 80px;
+}
+
+.new-weight-width {
+    width: 60px;
+    padding: 0;
+}

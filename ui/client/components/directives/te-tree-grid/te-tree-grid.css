@@ -1,0 +1,191 @@
+.te-tree-grid .form-group.te-tree-grid-search, .te-tree-grid .te-tree-grid-toolbar .te-tree-grid-search .input-group .te-tree-grid-search {
+    width: 210px;
+}
+
+.te-tree-grid .form-group.te-tree-grid-search .form-control-feedback {
+    z-index: 2;
+}
+
+.te-tree-grid .input-group .form-control.te-tree-grid-search {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.te-tree-grid .jqx-cell {
+    line-height: 20px;
+    padding: 8px;
+}
+
+.te-tree-grid .jqx-fill-state-hover,
+.te-tree-grid .jqx-fill-state-normal,
+.te-tree-grid .jqx-fill-state-pressed,
+.te-tree-grid .jqx-widget,
+.te-tree-grid .jqx-widget-content,
+.te-tree-grid .jqx-widget-header {
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+.te-tree-grid .jqx-grid {
+    border-radius: 0;
+}
+
+.te-tree-grid .jqx-grid-cell {
+    border-color: #ddd !important;
+}
+
+.te-tree-grid .jqx-grid-cell-hover {
+    background-color: #f2f2f2 !important;
+}
+
+.te-tree-grid .jqx-grid-cell-hover,
+.te-tree-grid .jqx-grid-cell-selected,
+.te-tree-grid .jqx-widget {
+    color: #656565 !important;
+}
+
+.te-tree-grid .jqx-grid-cell-hover.jqx-grid-cell-selected {
+    background-color: #c4e3f3 !important;
+}
+
+.te-tree-grid .jqx-grid-cell-selected {
+    background-color: #d9edf7 !important;
+}
+
+.te-tree-grid .jqx-grid-cell-sort {
+    background-color: inherit;
+}
+
+.te-tree-grid .jqx-grid-cell.jqx-grid-cell-selected > .jqx-grid-group-collapse,
+.te-tree-grid .jqx-grid-group-collapse {
+    background-image: url('/bower_components/jqwidgets/jqwidgets/styles/images/icon-right.png');
+}
+
+.te-tree-grid .jqx-grid-cell.jqx-grid-cell-selected > .jqx-grid-group-expand,
+.te-tree-grid .jqx-grid-group-expand {
+    background-image: url('/bower_components/jqwidgets/jqwidgets/styles/images/icon-down.png');
+}
+
+.te-tree-grid .jqx-grid-column-header {
+    border-color: #ddd;
+    color: #888;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.te-tree-grid .jqx-grid-column-header:last-child {
+    border-right: none;
+}
+
+.te-tree-grid .jqx-grid-column-header .filtericon {
+    display: none !important;
+}
+
+.te-tree-grid .jqx-grid-column-header .sortasc,
+.te-tree-grid .jqx-grid-column-header .sortdesc {
+    margin-right: 8px;
+}
+
+.te-tree-grid .jqx-grid-column-header > div > div:first-child {
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+    text-align: center !important;
+}
+
+.te-tree-grid .jqx-grid-column-header > div > div:first-child > span {
+    cursor: pointer !important;
+}
+
+.te-tree-grid .jqx-grid-column-sortascbutton {
+    background-image: url('/bower_components/jqwidgets/jqwidgets/styles/images/icon-up.png');
+}
+
+.te-tree-grid .jqx-grid-column-sortdescbutton {
+    background-image: url('/bower_components/jqwidgets/jqwidgets/styles/images/icon-down.png');
+}
+
+.te-tree-grid .jqx-grid-load {
+    background-image: url('/bower_components/jqwidgets/jqwidgets/styles/images/loader.gif');
+}
+
+.te-tree-grid .jqx-grid-table {
+    font-size: 14px;
+}
+
+.te-tree-grid .jqx-widget-content {
+    font-size: 14px;
+}
+
+.te-tree-grid .jqx-widget-header {
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+.te-tree-grid .jqx-grid-cell-wrap {
+    white-space: nowrap !important;
+}
+
+.te-tree-grid .te-tree-grid-secondary-btns button {
+    margin-left: -1px;
+}
+
+.te-tree-grid .te-tree-grid-toolbar {
+    margin-bottom: 3px;
+}
+
+.te-tree-grid tbody > tr:nth-child(odd) > td {
+    background-color: #f9f9f9;
+}
+
+.te-tree-grid .te-tree-grid-toolbar .te-tree-grid-btns button {
+    margin-right: 3px;
+}
+
+.te-tree-grid .te-tree-grid-toolbar .te-tree-grid-btns select {
+    margin-right: 3px;
+    height: 32px;
+    padding: 5px 12px;
+}
+
+.te-tree-grid .te-tree-grid-search {
+    margin-left: 0;
+}
+
+.te-tree-grid .te-tree-grid-search .input-group {
+    margin-left: 0;
+}
+
+.te-tree-grid .te-tree-grid-search .input-group .input-group-btn {
+    margin-left: 0;
+}
+
+.te-tree-grid .te-tree-grid-search .input-group .input-group-btn button.dropdown-toggle {
+    height: 32px;
+    padding: 5px 12px;
+}
+
+.te-tree-grid .te-tree-grid-search .input-group input.te-tree-grid-search {
+    height: 32px;
+    padding: 5px 26px 5px 12px;
+}
+
+.legend-padding {
+    padding-bottom: 15px;
+    font-weight: bold
+}
+
+#customTreeGridHeaderCheckboxContainer, #customTreeGridHeaderCheckboxCheckedContainer {
+    text-align: center;
+    margin-top: 15px;
+    margin-left: 13px !important;
+    position: absolute;
+}
+
+.customTreeGridColumnCheckbox {
+    margin: 0px 0px 0px 4px;
+}
+
+.customTreeGridSearchButton {
+    position: relative;
+    left: 46px;
+    margin-left: 5px;
+}

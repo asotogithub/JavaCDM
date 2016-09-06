@@ -1,0 +1,39 @@
+<div id="trafficModalWindow" data-ng-controller="CampaignReviewController as vmCampaignReview" data-cg-busy="vmCampaignReview.promiseRequest">
+    <form class="form-horizontal" name="vmCampaignReview.campaignDetailsForm" novalidate>
+        <div class="form-group">
+            <label id="campaignNameLabel" class="col-sm-4 control-label">{{'global.campaign' | translate}}:</label>
+            <div class="col-sm-4">
+                <p id="campaignName" class="form-control-static">{{vmCampaignReview.campaignModel.name}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="domainSelectionLabel" class="col-sm-4 control-label">{{'domain.domainSelection' | translate}}:</label>
+            <div class="col-sm-4">
+                <select id="selectDomains"
+                        data-ng-model="vmCampaignReview.selectDomains"
+                        data-ng-options="domain as domain.domain for domain in vmCampaignReview.domains track by domain.id"
+                        data-ng-change="vmCampaignReview.updateSelectedDomain()"
+                        data-ng-if="vmCampaignReview.campaignModel.statusId === 1">
+                </select>
+                <div id="domainSelection" class="form-control-static" data-ng-if="vmCampaignReview.campaignModel.statusId !== 1">
+                    {{vmCampaignReview.campaignModel.domain}}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="internalTraffickingContactsLabel" class="col-sm-4 control-label">{{'global.internalTraffickingContacts' | translate}}:</label>
+            <div class="col-sm-6 div-scroll">
+                <div class="checkbox c-checkbox" data-ng-repeat="contact in vmCampaignReview.contacts">
+                    <label>
+                        <input id="usrName{{contact.userName}}"
+                               type="checkbox"
+                               data-ng-disabled="contact.readonly"
+                               data-ng-model="contact.checked"/>
+                        <span class="fa fa-check"></span>
+                        {{contact.realName + ' - ' + contact.userName}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

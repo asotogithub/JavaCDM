@@ -1,0 +1,123 @@
+{
+  "disallowEmptyBlocks": true,
+  "disallowKeywords": [
+    "with"
+  ],
+  "disallowMixedSpacesAndTabs": true,
+  "disallowMultipleLineBreaks": true,
+  "disallowMultipleLineStrings": true,
+  "disallowMultipleSpaces": true,
+  "disallowNamedUnassignedFunctions": true,
+  "disallowNewlineBeforeBlockStatements": true,
+  "disallowNotOperatorsInConditionals": true,
+  "disallowOperatorBeforeLineBreak": [
+    "."
+  ],
+  "disallowPaddingNewlinesInBlocks": true,
+  "disallowQuotedKeysInObjects": true,
+  "disallowSpaceAfterObjectKeys": true,
+  "disallowSpaceAfterPrefixUnaryOperators": true,
+  "disallowSpaceBeforePostfixUnaryOperators": true,
+  "disallowSpacesInCallExpression": true,
+  "disallowSpacesInFunctionDeclaration": {
+    "beforeOpeningRoundBrace": true
+  },
+  "disallowSpacesInsideArrayBrackets": "all",
+  "disallowSpacesInsideObjectBrackets": "all",
+  "disallowSpacesInsideParentheses": true,
+  "disallowTrailingComma": true,
+  "disallowTrailingWhitespace": true,
+  "disallowYodaConditions": true,
+  "maximumLineLength": 120,
+  "requireBlocksOnNewline": true,
+  "requireCamelCaseOrUpperCaseIdentifiers": true,
+  "requireCapitalizedConstructors": true,
+  "requireCommaBeforeLineBreak": true,
+  "requireCurlyBraces": [
+    "catch",
+    "do",
+    "else",
+    "for",
+    "if",
+    "try",
+    "while"
+  ],
+  "requireDollarBeforejQueryAssignment": true,
+  "requireDotNotation": true,
+  "requireKeywordsOnNewLine": [
+    "catch",
+    "else"
+  ],
+  "requireLineBreakAfterVariableAssignment": true,
+  "requireLineFeedAtFileEnd": true,
+  "requireMultipleVarDecl": "onevar",
+  "requireOperatorBeforeLineBreak": [
+    "!=",
+    "!==",
+    "*",
+    "+",
+    "-",
+    "/",
+    "<",
+    "<=",
+    "=",
+    "==",
+    "===",
+    ">",
+    ">=",
+    "?"
+  ],
+  "requirePaddingNewLineAfterVariableDeclaration": true,
+  "requirePaddingNewLinesAfterBlocks": true,
+  "requirePaddingNewLinesAfterUseStrict": true,
+  "requirePaddingNewLinesBeforeExport": true,
+  "requirePaddingNewLinesInObjects": true,
+  "requireParenthesesAroundIIFE": true,
+  "requireSemicolons": true,
+  "requireSpaceAfterBinaryOperators": true,
+  "requireSpaceAfterKeywords": [
+    "case",
+    "catch",
+    "do",
+    "else",
+    "for",
+    "function",
+    "if",
+    "return",
+    "switch",
+    "try",
+    "typeof",
+    "void",
+    "while",
+    "with"
+  ],
+  "requireSpaceBeforeBinaryOperators": true,
+  "requireSpaceBeforeBlockStatements": true,
+  "requireSpaceBeforeObjectValues": true,
+  "requireSpaceBetweenArguments": true,
+  "requireSpacesInAnonymousFunctionExpression": {
+    "beforeOpeningCurlyBrace": true,
+    "beforeOpeningRoundBrace": true
+  },
+  "requireSpacesInConditionalExpression": true,
+  "requireSpacesInForStatement": true,
+  "requireSpacesInFunctionDeclaration": {
+    "beforeOpeningCurlyBrace": true
+  },
+  "requireSpacesInFunctionExpression": {
+    "beforeOpeningCurlyBrace": true,
+    "beforeOpeningRoundBrace": true
+  },
+  "safeContextKeyword": [
+    "that",
+    "vm"
+  ],
+  "validateAlignedFunctionParameters": {
+    "lineBreakAfterOpeningBraces": false,
+    "lineBreakBeforeClosingBraces": false
+  },
+  "validateIndentation": 4,
+  "validateNewlineAfterArrayElements": true,
+  "validateParameterSeparator": ", ",
+  "validateQuoteMarks": "'"
+}

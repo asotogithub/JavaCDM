@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="PhantomJS 1.9.8 (Windows 8)" package="(Test Files 31 to 60)" timestamp="2016-08-22T17:03:50" id="0" hostname="ascbomvillarroe" tests="252" errors="0" failures="0" time="10.296">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34"/>
+    </properties>
+    <testcase name="Should create an instance of the controller." time="0.072" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageEditController"/>
+    <testcase name="should redirect to placement edit view" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageEditController"/>
+    <testcase name="should set placementList when PackageService.getPackage() is resolved" time="0.031" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageEditController"/>
+    <testcase name="Should resolve the promise to be updated" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageEditController"/>
+    <testcase name="should invoke CampaignsService.getPackageList()" time="0.019" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageListController activate()"/>
+    <testcase name="should set promise from CampaignsService.getPackageList()" time="0.019" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageListController activate()"/>
+    <testcase name="should set placementList when CampaignsService.getPackageList() is resolved" time="0.04" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageListController activate()"/>
+    <testcase name="should invoke getAllCheckedData()" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageListController Controller functions"/>
+    <testcase name="should expand/collapse row" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageListController Controller functions"/>
+    <testcase name="should invoke $state.go()" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PackageListController Controller functions"/>
+    <testcase name="Should create an instance of the controller." time="0.047" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CostDetailsController"/>
+    <testcase name="should add new costDetails" time="0.027" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CostDetailsController CostDetail"/>
+    <testcase name="should add placeHolder costDetails" time="0.019" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CostDetailsController CostDetail"/>
+    <testcase name="should calculate cost inventory" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CostDetailsController CostDetail"/>
+    <testcase name="should disable startDate from first costDetail" time="0.02" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CostDetailsController CostDetail"/>
+    <testcase name="should remove costDetail" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CostDetailsController CostDetail"/>
+    <testcase name="should update placeHolder when remove a costDetails" time="0.02" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CostDetailsController CostDetail"/>
+    <testcase name="Should create an instance of the controller." time="0.053" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: NewPlacementsInputController"/>
+    <testcase name="Should verify placement is valid" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: NewPlacementsInputController"/>
+    <testcase name="should keep the model" time="0.029" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Directive: newPlacementsInput controllerAs"/>
+    <testcase name="Should create an instance of the controller." time="0.02" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddPlacementDetailsController"/>
+    <testcase name="Should create an instance of the controller." time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddPlacementController"/>
+    <testcase name="Should call a modal dialog when cancel() is resolved" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddPlacementController"/>
+    <testcase name="should parse all data from previuos step into a grid" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddPlacementPropertiesController activate()"/>
+    <testcase name="should auto generated value to placement name " time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddPlacementPropertiesController activate()"/>
+    <testcase name="should truncate placement name to 256 max length" time="0.027" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddPlacementPropertiesController activate()"/>
+    <testcase name="Add a new Publisher" time="0.07" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PropertiesAddController Section Add Site:"/>
+    <testcase name="Add a new Publisher and new Site" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PropertiesAddController Section Add Site:"/>
+    <testcase name="Add a new Publisher, new Site and new section" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PropertiesAddController Section Add Site:"/>
+    <testcase name="Add a new Publisher, new Site, new section and new size" time="0.019" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PropertiesAddController Section Add Site:"/>
+    <testcase name="Add only new size" time="0.02" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PropertiesAddController Section Add Site:"/>
+    <testcase name="Should create an instance of the controller." time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementEditController"/>
+    <testcase name="Should resolve the promise to be saved" time="0.027" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementEditController"/>
+    <testcase name="Should resolve the promise to be saved without cost detail" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementEditController"/>
+    <testcase name="Should show notification when setting the last active placement in a IO to inactive" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementEditController"/>
+    <testcase name="should save extended properties" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementEditController"/>
+    <testcase name="should order size list" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementEditController"/>
+    <testcase name="should remove with package" time="0.033" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementEditController removeAssociation"/>
+    <testcase name="should remove the last placement from package" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementEditController removeAssociation"/>
+    <testcase name="should invoke CampaignsService.getPackagePlacements()" time="0.095" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementListController activate()"/>
+    <testcase name="should set promise from CampaignsService.getPackagePlacements()" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementListController activate()"/>
+    <testcase name="should set placementList when CampaignsService.getPackagePlacements() is resolved" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: PlacementListController activate()"/>
+    <testcase name="should be the controller" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddGroupCreativeAssociationsController AddGroupCreativeAssociationsController Suite:"/>
+    <testcase name="should load the dialog with available data to be associated" time="0.02" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddGroupCreativeAssociationsController AddGroupCreativeAssociationsController Suite:"/>
+    <testcase name="should invoke DialogFactory.showCustomDialog()" time="0.02" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddGroupCreativeAssociationsController saveAndClose() on failure"/>
+    <testcase name="should invoke DialogFactory.showDialog() if error code is not available" time="0.031" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddGroupCreativeAssociationsController saveAndClose() on failure"/>
+    <testcase name="should invoke DialogFactory.showDialog() as default error catch" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddGroupCreativeAssociationsController saveAndClose() on failure"/>
+    <testcase name="should be the controller" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController $scope vm"/>
+    <testcase name="should set creatives and placements" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController activate()"/>
+    <testcase name="should dismiss() $uibModalInstance" time="0.029" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController dismiss()"/>
+    <testcase name="should remove selection from pending" time="0.029" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController removePending()"/>
+    <testcase name="should updatePending() with selectedCreatives" time="0.029" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController selectCreatives()"/>
+    <testcase name="should updatePending() with selectedPlacements" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController selectPlacements()"/>
+    <testcase name="should invoke DialogFactory.showCustomDialog()" time="0.032" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController saveAndClose() on failure"/>
+    <testcase name="should invoke DialogFactory.showDialog() if error code is not available" time="0.042" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController saveAndClose() on failure"/>
+    <testcase name="should invoke DialogFactory.showDialog() as default error catch" time="0.037" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: AddScheduleAssignmentsController saveAndClose() on failure"/>
+    <testcase name="should be the controller" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DuplicateScheduleAssignmentsController $scope vm"/>
+    <testcase name="should set duplicates" time="0.111" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DuplicateScheduleAssignmentsController activate()"/>
+    <testcase name="should dismiss() $modalInstance" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DuplicateScheduleAssignmentsController dismiss()"/>
+    <testcase name="should return schedule weight " time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Service: scheduleConfig Schedule Config"/>
+    <testcase name="should allow put max weight value for creative insertion" time="0.041" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Service: scheduleConfig Schedule Config"/>
+    <testcase name="should not allow put higher than max weight value for creative insertion" time="0.033" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Service: scheduleConfig Schedule Config"/>
+    <testcase name="should allow set a valid start date" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Service: scheduleConfig Schedule Config"/>
+    <testcase name="should allow set a valid end date" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Service: scheduleConfig Schedule Config"/>
+    <testcase name="should not allow start date higher than end date" time="0.019" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Service: scheduleConfig Schedule Config"/>
+    <testcase name="should not allow end date lower than start date" time="0.02" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Service: scheduleConfig Schedule Config"/>
+    <testcase name="Should create an instance of the controller Schedule Import." time="0.02" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleImportController"/>
+    <testcase name="should define isValidFile" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleImportController"/>
+    <testcase name="Should be call upload function." time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleImportController"/>
+    <testcase name="Should return false to invalid file." time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleImportController"/>
+    <testcase name="Should return true to valid file." time="0.036" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleImportController"/>
+    <testcase name="Should Call Service Upload." time="0.038" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleImportController"/>
+    <testcase name="Should Call Complete Bulk and return message success." time="0.029" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleImportErrorsController"/>
+    <testcase name="Should Call Export Issues and return a file." time="0.031" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleImportErrorsController"/>
+    <testcase name="should set the controller data model" time="0.033" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleEditClickThroughController initializeModel()"/>
+    <testcase name="should add a new click-through element" time="0.032" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleEditClickThroughController Clickthrough list"/>
+    <testcase name="should NOT add a new click-through element, if some element is empty" time="0.031" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleEditClickThroughController Clickthrough list"/>
+    <testcase name="should remove element of the specified index" time="0.035" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleEditClickThroughController Clickthrough list"/>
+    <testcase name="should NOT remove the element if it is the last one" time="0.044" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleEditClickThroughController Clickthrough list"/>
+    <testcase name="should NOT remove the element if the index does not exists" time="0.037" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleEditClickThroughController Clickthrough list"/>
+    <testcase name="Should create an instance of the controller." time="0.034" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: FlyoutFiltersController Filter controller"/>
+    <testcase name="should invoke activate()" time="0.032" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: FlyoutFiltersController Filter controller"/>
+    <testcase name="should log after timeout" time="0.035" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: FlyoutFiltersController Filter controller"/>
+    <testcase name="should be the controller" time="0.171" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController $scope vm"/>
+    <testcase name="Should create an instance of the controller." time="0.03" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController $scope vm"/>
+    <testcase name="should invoke CampaignsService.bulkDeleteCreativeInsertions()" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController delete()"/>
+    <testcase name="should invoke getDateRenderer()" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController getDateRenderer()"/>
+    <testcase name="should verify if a parent was checked then show a dialog confirmation" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController confirmDelete()"/>
+    <testcase name="should not show a dialog confirmation if not changes were made" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController confirmClose()"/>
+    <testcase name="should show a dialog confirmation if any changes were made" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController confirmClose()"/>
+    <testcase name="should save the model" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController bulkUpdate()"/>
+    <testcase name="should apply bulk edit for creative to model" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController applyTo()"/>
+    <testcase name="should apply bulk edit for creative group to model" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController applyTo()"/>
+    <testcase name="should get all nodes as checked" time="0.034" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController getAllChecked()"/>
+    <testcase name="should get leaf node as checked" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController getAllChecked()"/>
+    <testcase name="should set Creative List in flyout when  level Site is selected" time="0.037" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController Search Server Flyout with levels differents "/>
+    <testcase name="should set Creative List in flyout when  level Section is selected" time="0.032" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController Search Server Flyout with levels differents "/>
+    <testcase name="should set Creative List in flyout when  level Placement is selected" time="0.036" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController Search Server Flyout with levels differents "/>
+    <testcase name="should set Creative List in flyout when level Creative Group is selected" time="0.036" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleInsertionsController Search Server Flyout with levels differents "/>
+    <testcase name="should invoke PlacementService.getHtmlInjectionTags()" time="0.033" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTrackingTagAssociationsController activate()"/>
+    <testcase name="should set creativeList when PlacementService.getHtmlInjectionTags() is resolved" time="0.047" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTrackingTagAssociationsController activate()"/>
+    <testcase name="should initializeClosedPopovers() arrays" time="0.045" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTrackingTagAssociationsController activate()"/>
+    <testcase name="should verify contentType variable" time="0.035" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTrackingTagAssociationsController viewHTMLContent()"/>
+    <testcase name="should stopPropagation() have been called" time="0.033" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTrackingTagAssociationsController viewHTMLContent()"/>
+    <testcase name="should show a dialog confirmation" time="0.035" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTrackingTagAssociationsController deleteAssociations()"/>
+    <testcase name="should invoke CampaignsService.getCreativeInsertions()" time="0.037" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController activate()"/>
+    <testcase name="should set promise" time="0.037" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController activate()"/>
+    <testcase name="should set creativeInsertionList when service call is resolved" time="0.054" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController activate()"/>
+    <testcase name="should updateModel() when service call is resolved" time="0.047" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController activate()"/>
+    <testcase name="should showCustomDialog()" time="0.042" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController addScheduleAssignments()"/>
+    <testcase name="should not showDuplicateScheduleAssignments() if result has no duplicate assignments" time="0.043" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController addScheduleAssignments()"/>
+    <testcase name="should not update creativeInsertionList when there are no new assignments" time="0.043" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController addScheduleAssignments()"/>
+    <testcase name="should not updateModel() when there are no new assignments" time="0.042" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController addScheduleAssignments()"/>
+    <testcase name="should render creative group associations at placement level" time="0.05" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController associationsCellsRenderer()"/>
+    <testcase name="should render placement and creative associations at creative group level" time="0.048" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController associationsCellsRenderer()"/>
+    <testcase name="should render placement and creative group associations at creative level" time="0.042" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController associationsCellsRenderer()"/>
+    <testcase name="should render clickthrough URLs" time="0.038" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController clickThroughUrlCellsRenderer()"/>
+    <testcase name="should render placement status w/ `status-active` styling when `Accepted`" time="0.213" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController placementStatusCellsRenderer()"/>
+    <testcase name="should render placement status w/ `status-planning` styling when `New`" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController placementStatusCellsRenderer()"/>
+    <testcase name="should render placement status w/ `status-inactive` styling when `Rejected`" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController placementStatusCellsRenderer()"/>
+    <testcase name="should render placement status w/o styling when not a valid value" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController placementStatusCellsRenderer()"/>
+    <testcase name="should remove entries from expanded by row IDs" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController rowCollapsed()"/>
+    <testcase name="should push row IDs to expanded" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController rowExpanded()"/>
+    <testcase name="should render placement icon at placement level" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController getRowRenderer()"/>
+    <testcase name="should render creative group icon at creative group level" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController getRowRenderer()"/>
+    <testcase name="should render creative icon at schedule level" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController getRowRenderer()"/>
+    <testcase name="should invoke CampaignsService.exportResource()" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController getExportAll()"/>
+    <testcase name="should set Creative List when service call a search server with Site Pivot" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController Search Server with all pivots_"/>
+    <testcase name="should set  Creative List when service call a search server with Placement Pivot" time="0.035" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController Search Server with all pivots_"/>
+    <testcase name="should set Creative List when service call a search server with Creative Group Pivot" time="0.044" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController Search Server with all pivots_"/>
+    <testcase name="should set Creative List when service call a search server with Creative Pivot" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: ScheduleTabController Search Server with all pivots_"/>
+    <testcase name="should load needed data on Activate(): traffic user contacts, domains, campaign" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CampaignReviewController"/>
+    <testcase name="should load needed data on Activate(): traffic user site contacts" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: SiteTraffickingContactsController"/>
+    <testcase name="should check if all contacts were selected" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: SiteTraffickingContactsController"/>
+    <testcase name="Should create an instance of the controller." time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: TraffickingModalController"/>
+    <testcase name="should start with undefined data" time="0.027" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: TraffickingModalController"/>
+    <testcase name="should set vm.cookieTargets" time="0.042" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController getCookieTargets()"/>
+    <testcase name="should set $form as dirty" time="0.041" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController setDirty()"/>
+    <testcase name="should strip brackets from field names" time="0.049" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController cleanSql()"/>
+    <testcase name="should clean up statements that start with not" time="0.043" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController cleanSql()"/>
+    <testcase name="should correct the Between syntax for strings" time="0.041" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController cleanSql()"/>
+    <testcase name="should correct the Not Between syntax for the parser" time="0.042" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController cleanSql()"/>
+    <testcase name="should correct the Between syntax for numbers" time="0.05" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController cleanSql()"/>
+    <testcase name="should be case-insensitive matching" time="0.062" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController cleanSql()"/>
+    <testcase name="should used default operator when only 1 rule" time="0.07" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for equals" time="0.052" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for not equals" time="0.053" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for greater than" time="0.056" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for greater than or equal to" time="0.065" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for less than" time="0.06" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for less than or equal to" time="0.058" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for between" time="0.056" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for not between" time="0.061" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for contains" time="0.081" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for not contains" time="0.055" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for begins with" time="0.058" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for ends with" time="0.068" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is like" time="0.065" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is not like" time="0.06" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is null" time="0.061" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is not null" time="0.073" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is any of with single value" time="0.312" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is any of with multiple values" time="0.034" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is none of with single value" time="0.031" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is none of with multiple values" time="0.03" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is blank" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the rule for is not blank" time="0.031" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create multiple rules for several conditions" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should allow for grouping conditions with same operator" time="0.029" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should allow for grouping conditions with different operators" time="0.04" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should allow for OR conditions" time="0.034" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should work for very large queries" time="0.046" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController sqlToRules()"/>
+    <testcase name="should create the sql for equal" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for not equals" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for greater than" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for greater than or equal to" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for less than" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for less than or equal to" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for between" time="0.034" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for not between" time="0.033" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for contains" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for not contains" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for begins with" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for ends with" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for is like" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for is not like" time="0.034" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for is null" time="0.035" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for is not null" time="0.057" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="with single value" time="0.051" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql() should create the sql for is any of"/>
+    <testcase name="with multiple values" time="0.042" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql() should create the sql for is any of"/>
+    <testcase name="with single value" time="0.045" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql() should create the sql for is none of"/>
+    <testcase name="with multiple values" time="0.05" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql() should create the sql for is none of"/>
+    <testcase name="should create the sql for is blank" time="0.065" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create the sql for is not blank" time="0.062" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should create a conditional statement from multiple rules" time="0.06" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should allow for grouping conditions with same operator" time="0.06" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should allow for grouping conditions with different operators" time="0.077" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should allow for OR conditions" time="0.08" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController rulesToSql()"/>
+    <testcase name="should parse the list" time="0.063" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController splitValueToArray()"/>
+    <testcase name="should allow values to be quoted" time="0.061" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController splitValueToArray()"/>
+    <testcase name="should allow a comma in a value" time="0.078" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController splitValueToArray()"/>
+    <testcase name="should allow for a sql escaped quote" time="0.068" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController splitValueToArray()"/>
+    <testcase name="should allow for a quote when values are not quoted" time="0.063" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController splitValueToArray()"/>
+    <testcase name="should allow values to contain both comma and quote" time="0.064" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController splitValueToArray()"/>
+    <testcase name="should only allow commas when values are quoted" time="0.079" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController splitValueToArray()"/>
+    <testcase name="should not affect values that are already arrays" time="0.08" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController splitValueToArray()"/>
+    <testcase name="should have no errors for valid sql" time="0.069" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController validateSql()"/>
+    <testcase name="should return error when a field is not configured" time="0.071" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController validateSql()"/>
+    <testcase name="should return errors on parsing errors" time="0.082" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController validateSql()"/>
+    <testcase name="should return error when an invalid function is used" time="0.077" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController validateSql()"/>
+    <testcase name="should not return error on valid functions" time="0.072" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController validateSql()"/>
+    <testcase name="should catch errors in functions" time="0.079" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CookieTargetingController validateSql()"/>
+    <testcase name="should set $form with FormController" time="0.157" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Directive: cookieTargeting link()"/>
+    <testcase name="should be CONSTANTS.CREATIVE_GROUP" time="0.057" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController CREATIVE_GROUP"/>
+    <testcase name="should be CONSTANTS.REGEX.CREATIVE_GROUP_NAME" time="0.059" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController REGEX_CREATIVE_GROUP_NAME"/>
+    <testcase name="should be true if $scope.detailsForm.cookieTarget is $invalid, but only when prerequisites are met" time="0.071" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController cookieTargetInvalid"/>
+    <testcase name="should be true if $scope.detailsForm.daypartTarget is $invalid, but only when prerequisites are met" time="0.062" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController daypartTargetInvalid"/>
+    <testcase name="should be true if $scope.detailsForm.frequencyCap is $invalid, but only when prerequisites are met" time="0.379" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController frequencyCapInvalid"/>
+    <testcase name="should be true if $scope.detailsForm.frequencyCapWindow is $invalid, but only when prerequisites are met" time="0.029" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController frequencyCapWindowInvalid"/>
+    <testcase name="should be true if $scope.detailsForm.creativeGroupName is $invalid" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController nameInvalid"/>
+    <testcase name="should be true if $scope.detailsForm.priority is $invalid, but only when prerequisites are met" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController priorityInvalid"/>
+    <testcase name="should be true if $scope.detailsForm.weight is $invalid, but only when prerequisites are met" time="0.023" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController weightInvalid"/>
+    <testcase name="should be true if $scope.detailsForm is pristine" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController submitDisabled"/>
+    <testcase name="should be true if cookieTargetInvalid is true" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController submitDisabled"/>
+    <testcase name="should be true if daypartTargetInvalid is true" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController submitDisabled"/>
+    <testcase name="should be true if frequencyCapInvalid is true" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController submitDisabled"/>
+    <testcase name="should be true if frequencyCapWindowInvalid is true" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController submitDisabled"/>
+    <testcase name="should be true if nameInvalid is true" time="0.033" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController submitDisabled"/>
+    <testcase name="should be true if priorityInvalid is true" time="0.029" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController submitDisabled"/>
+    <testcase name="should be true if weightInvalid is true" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController submitDisabled"/>
+    <testcase name="should return $scope.detailsForm.$pristine" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController pristine get"/>
+    <testcase name="should invoke $scope.detailsForm.$setPristine()" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsFormController pristine set"/>
+    <testcase name="should be `vm`" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Directive: creativeGroupDetailsForm controllerAs"/>
+    <testcase name="should be true" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Directive: creativeGroupDetailsForm bindToController"/>
+    <testcase name="should be true" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Directive: creativeGroupDetailsForm transclude"/>
+    <testcase name="should reconcileModel() when model is changed" time="0.031" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController activate()"/>
+    <testcase name="should add to customOptions" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController addCustomOption()"/>
+    <testcase name="should update() if entries are added to customOptions" time="0.033" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController addCustomOption()"/>
+    <testcase name="should not update() if no entries are added" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController addCustomOption()"/>
+    <testcase name="should return true if no days are selected" time="0.026" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController addDisabled()"/>
+    <testcase name="should return false if days are selected" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController addDisabled()"/>
+    <testcase name="should clear customOptions" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController clearCustomOptions()"/>
+    <testcase name="should update() if customOptions is cleared" time="0.021" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController clearCustomOptions()"/>
+    <testcase name="should not update() if there were no customOptions to clear" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController clearCustomOptions()"/>
+    <testcase name="should remove selected entries from customOptions" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController clearSelectedCustomOptions()"/>
+    <testcase name="should update if entires are removed from customOptions" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController clearSelectedCustomOptions()"/>
+    <testcase name="shoud not update() if no entries are removed" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController clearSelectedCustomOptions()"/>
+    <testcase name="should leave endTime as is if after startTime" time="0.025" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController ensureValidTimes()"/>
+    <testcase name="should set endTime to startTime if not after startTime" time="0.034" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController ensureValidTimes()"/>
+    <testcase name="should set daypartTarget with IAB standard options if custom is false" time="0.028" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController update()"/>
+    <testcase name="should set daypartTarget with custom options if custom is true" time="0.022" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController update()"/>
+    <testcase name="should setDirty()" time="0.024" classname="(Test Files 31 to 60) PhantomJS 1.9.8 (Windows 8).Controller: DaypartTargetingController update()"/>
+    <system-out><![CDATA[
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

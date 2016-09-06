@@ -1,0 +1,24 @@
+<div data-ng-controller="CreatePlacementsController as vmPkgCreatePlac">
+    <fieldset>
+        <legend>{{'package.packageAssociation' | translate}}</legend>
+        <div>
+            <h5>{{'placement.step2.createNewPlacements' | translate}}</h5>
+            <br/>
+            <new-placements-input data-model="vmPkgCreatePlac.placementList"
+                                  data-options="vmPkgCreatePlac.options">
+            </new-placements-input>
+            <div class="text-center">
+                <button class="btn btn-default"
+                        data-ng-click="vmPkgCreatePlac.addToAssociatedPlacements()"
+                        data-ng-disabled="!vmPkgCreatePlac.placementList.isValid">
+                    {{'global.addToAssociatedList' | translate}}
+                </button>
+            </div>
+        </div>
+    </fieldset>
+    <associated-placements data-model="vmPkgCreatePlac.currentPackage.placements"
+                           data-column-options="vmAssoc.STEP.PACKAGE_ASSOCIATION.options.column"
+                           table-template="'app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/templates/associated-placements.html'"
+                           table-title="'package.currentAssociatedPlacements' | translate">
+    </associated-placements>
+</div>

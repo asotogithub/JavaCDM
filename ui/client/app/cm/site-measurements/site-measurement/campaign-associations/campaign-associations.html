@@ -1,0 +1,29 @@
+<div data-cg-busy="vmAssociation.promise" id="smCampaignAssociationsPanel">
+    <div class="row">
+        <div class="col-md-12 search-container">
+            <association-maker input-model="vmAssociation.unassociatedCampaignList"
+                               output-model="vmAssociation.associatedCampaignList"
+                               filter-options="vmAssociation.filterOptions"
+                               empty-input-msg="'siteMeasurement.campaignAssociation.noRecords' | translate"
+                               empty-output-msg="'siteMeasurement.campaignAssociation.noRecords' | translate"
+                               template-left-table="vmAssociation.templateLeft"
+                               template-right-table="vmAssociation.templateRight"
+                               on-add="vmAssociation.setChanges()"
+                               on-remove="vmAssociation.setChanges()"
+                               external-controller="vmAssociation">
+            </association-maker>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <button id="saveBtn"
+                        class="btn btn-primary"
+                        data-ng-click="vmAssociation.save()"
+                        data-ng-disabled="vmAssociation.savedChanges">
+                    {{'global.save' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

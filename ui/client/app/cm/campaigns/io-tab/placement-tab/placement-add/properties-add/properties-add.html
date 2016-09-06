@@ -1,0 +1,112 @@
+<div class="modal-header dialog-header-confirm" id="dialog-mp">
+    <h4 class="modal-title">{{'placement.properties.newTitle' | translate}}</h4>
+    <a class="modal-close-btn" data-ng-click="vm.cancel()"><span class="fa fa-close"></span></a>
+</div>
+<div class="modal-body" data-cg-busy="vm.promise">
+    <div data-ng-form name="vm.propertiesAddForm" novalidate>
+        <div class="row properties-add-dialog" data-ng-init="vm.init()" >
+            <!-- PUBLISHER -->
+            <div class="col-xs-3" data-cg-busy="vm.promises.publisher">
+                <div class="form-group"
+                     data-ng-class="{'has-success': vm.model.publisher.name && !vm.model.publisher.id && !vm.model.publisher.$invalid && !vm.model.publisher.$maxlength,
+                                     'has-error': vm.model.publisher.$invalid || vm.model.publisher.$maxlength}">
+                    <label class="control-label" for="publisher">{{'global.publisher' | translate}}</label>
+                    <select chosen="{width: '100%'}"
+                            id="publisher"
+                            data-ng-model="vm.selectedPublisher"
+                            class="form-control"
+                            data-ng-options="publisher as publisher.name for publisher in vm.publisherList"
+                            disable-search="false"
+                            data-ng-change="vm.selectPublisher(vm.selectedPublisher)">
+                        <option value="">
+                        </option>
+                    </select>
+                    <span class="help-block" data-ng-if="vm.model.publisher.name && !vm.model.publisher.id && !vm.model.publisher.$invalid && !vm.model.publisher.$maxlength">
+                        {{'global.newWillBeCreated' | translate: '{object: "publisher"}'}}</span>
+                    <span class="help-block" data-ng-if="vm.model.publisher.$invalid" type="danger">{{'validation.error.invalid' | translate}}</span>
+                    <span class="help-block" data-ng-if="vm.model.publisher.$maxlength" translate="validation.error.maxlength" translate-values="{length: vm.PUBLISHER_MAX_LENGTH}"></span>
+                </div>
+            </div>
+            <!-- SITE -->
+            <div class="col-xs-3" data-cg-busy="vm.promises.site">
+                <div class="form-group site-section-dropdown-width"
+                     data-ng-class="{'has-success': vm.model.site.name && !vm.model.site.id && !vm.model.site.$invalid && !vm.model.site.$maxlength,
+                                     'has-error': (vm.model.publisher.$dirty && vm.model.site.$required) || vm.model.site.$invalid || vm.model.site.$maxlength}">
+                    <label class="control-label" for="site">{{'global.site' | translate}}</label>
+                    <select id="site" chosen="{width: '100%'}"
+                            data-ng-model="vm.selectedSite"
+                            class="chosen-select form-control"
+                            data-ng-options="site as site.name for site in vm.siteList"
+                            data-ng-disabled="!vm.model.publisher.name"
+                            disable-search="false"
+                            data-ng-change="vm.selectSite(vm.selectedSite)">
+                        <option value="">
+                        </option>
+                    </select>
+                    <span class="help-block" data-ng-if="vm.model.site.name && !vm.model.site.id && !vm.model.site.$invalid && !vm.model.site.$maxlength">
+                        {{'global.newWillBeCreated' | translate: '{object: "site"}'}}</span>
+                    <span class="help-block" data-ng-if="vm.model.site.$required && vm.model.publisher.$dirty">{{'validation.error.required' | translate}}</span>
+                    <span id="invalidSiteName" class="help-block" data-ng-if="vm.model.site.$invalid">{{'validation.error.invalid' | translate}}</span>
+                    <span class="help-block" data-ng-if="vm.model.site.$maxlength" translate="validation.error.maxlength" translate-values="{length: vm.SITE_MAX_LENGTH}"></span>
+                </div>
+            </div>
+            <!-- SECTION -->
+            <div class="col-xs-3" data-cg-busy="vm.sectionPromise">
+                <div class="form-group site-section-dropdown-width"
+                     data-ng-class="{'has-success': vm.model.section.name && !vm.model.section.id && !vm.model.section.$invalid && !vm.model.section.$maxlength,
+                                     'has-error': vm.model.section.$invalid || vm.model.section.$maxlength}">
+                    <label class="control-label" for="section">{{'global.section' | translate}}</label>
+                    <select id="section" chosen="{width: '100%'}"
+                            data-ng-model="vm.selectedSection"
+                            class="chosen-select form-control"
+                            data-ng-options="section as section.name for section in vm.sectionList"
+                            data-ng-disabled="!vm.model.site.name"
+                            disable-search="false"
+                            data-ng-change="vm.selectSection(vm.selectedSection)">
+                        <option value="">
+                        </option>
+                    </select>
+                    <span class="help-block" data-ng-if="vm.model.section.name && !vm.model.section.id && !vm.model.section.$invalid && !vm.model.section.$maxlength">
+                        {{'global.newWillBeCreated' | translate: '{object: "section"}'}}</span>
+                    <span id="invalidSectionName" class="help-block" data-ng-if="vm.model.section.$invalid">{{'validation.error.invalid' | translate}}</span>
+                    <span class="help-block" data-ng-if="vm.model.section.$maxlength" translate="validation.error.maxlength" translate-values="{length: vm.SECTION_MAX_LENGTH}"></span>
+                </div>
+            </div>
+            <!-- SIZE -->
+            <div class="col-xs-3">
+                <div class="form-group"
+                     data-ng-class="{'has-success': vm.model.size.name && !vm.model.size.id && !vm.model.size.$invalid,
+                                     'has-error': vm.model.size.$invalid}">
+                    <label class="control-label" for="size">{{'global.size' | translate}}</label>
+                    <select id="size" chosen="{width: '100%'}"
+                            data-ng-model="vm.selectedSize"
+                            class="chosen-select form-control"
+                            data-ng-options="size as size.label for size in vm.sizeList"
+                            disable-search="false"
+                            data-ng-change="vm.selectSize(vm.selectedSize)">
+                        <option value="">
+                        </option>
+                    </select>
+                    <span class="help-block" data-ng-if="vm.model.size.name && !vm.model.size.id && !vm.model.size.$invalid">{{'global.newWillBeCreated' | translate: '{object: "size"}'}}</span>
+                    <span class="help-block" data-ng-if="vm.model.size.$invalid">{{'validation.error.invalid' | translate}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button"
+            class="btn btn-default"
+            data-ng-click="vm.cancel()">
+        {{'global.cancel' | translate}}
+    </button>
+    <button type="button"
+            class="btn btn-default"
+            data-ng-click="vm.add()"
+            data-ng-disabled="((!vm.model.publisher.name || !vm.model.site.name) && (!vm.model.size.label)) || (vm.model.size.label && vm.model.publisher.name && !vm.model.site.name)
+                              || vm.model.publisher.$invalid || vm.model.site.$invalid || vm.model.section.$invalid || vm.model.size.$invalid
+                              || vm.model.publisher.$maxlength || vm.model.site.$maxlength || vm.model.section.$maxlength
+                              || (!vm.model.publisher.$dirty && !vm.model.site.$dirty && !vm.model.section.$dirty && !vm.model.size.$dirty)">
+        {{'global.add' | translate}}
+    </button>
+</div>

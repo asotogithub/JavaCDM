@@ -1,0 +1,35 @@
+.content-padding{
+    padding-top: 50px;
+}
+
+.header-text-td {
+    width: 115px;
+}
+
+.event-column {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 35%;
+    white-space: nowrap;
+}
+
+.group-column {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tag-column {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 120px;
+}
+
+#eventPingCounter label {
+    margin-left: 20px;
+    margin-top: 7px;
+    font-size: 13px;
+    margin-bottom: 1px;
+}

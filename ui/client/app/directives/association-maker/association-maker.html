@@ -1,0 +1,53 @@
+<div class="association-panel">
+    <div class="content-ng-table">
+        <div class="panel-assoc" data-ng-include="templateLeftTable">
+
+        </div>
+    </div>
+    <div class="center-btns">
+        <div class="asso-group-btns">
+            <div>
+                <button type="submit"
+                        class="btn fw"
+                        data-ng-class="allowAddAll ? 'btn-success' : 'btn-default'"
+                        data-ng-click="addAllAssociation()"
+                        data-ng-disabled="!allowAddAll">
+                    <i class="fa fa-angle-double-right"></i>
+                </button>
+            </div>
+            <div class="pb">
+                <button type="submit"
+                        class="btn btn-default fw"
+                        data-ng-class="allowAdd ? 'btn-primary' : 'btn-default'"
+                        data-ng-click="addAssociation()"
+                        data-ng-disabled="!allowAdd">
+                    <i class="fa fa-angle-right"></i>
+                </button>
+            </div>
+            <div class="pt">
+                <button type="submit"
+                        class="btn fw"
+                        data-ng-class="allowRemove ? 'btn-primary' : 'btn-default'"
+                        data-ng-click="removeAssociation()"
+                        data-ng-disabled="!allowRemove">
+                    <i class="fa fa-angle-left"></i>
+                </button>
+            </div>
+            <div>
+                <button type="submit"
+                        class="btn fw"
+                        data-ng-class="allowRemoveAll ? 'btn-success' : 'btn-default'"
+                        data-ng-click="removeAllAssociation()"
+                        data-ng-disabled="!allowRemoveAll">
+                    <i class="fa fa-angle-double-left"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="content-ng-table">
+        <div class="panel-assoc" data-ng-include="templateRightTable">
+
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

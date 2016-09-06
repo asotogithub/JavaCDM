@@ -1,0 +1,44 @@
+<div class="warning-creative-groups">
+    <p>
+        {{'creative.confirm.duplicateCreativeAlias' | translate}}
+    </p>
+</div>
+<div>
+    <te-table data-empty-message="'global.listEmpty' | translate"
+              data-model="data.partialHTMLParams.creatives">
+        <table>
+            <tr class="actionable-row" data-ng-repeat="creative in $data">
+                <td data-title="'global.alias' | translate"
+                    data-sortable="'alias'"
+                    class="wrap-text-td">
+                    {{creative.alias}}
+                </td>
+                <td data-title="'global.filename' | translate"
+                    data-sortable="'filename'"
+                    class="wrap-text-td">
+                    {{creative.filename}}
+                </td>
+                <td data-title="'global.version' | translate"
+                    data-sortable="'creativeVersion'"
+                    class="wrap-text-td text-center">
+                    {{creative.creativeVersion}}
+                </td>
+                <td data-title="'global.width' | translate"
+                    data-sortable="'width'"
+                    class="wrap-text-td text-center">
+                    {{creative.width}}
+                </td>
+                <td data-title="'global.height' | translate"
+                    data-sortable="'height'"
+                    class="wrap-text-td text-center">
+                    {{creative.height}}
+                </td>
+                <td data-title="'global.type' | translate"
+                    data-sortable="'creativeType'"
+                    class="wrap-text-td text-center">
+                    {{creative.creativeType}}
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

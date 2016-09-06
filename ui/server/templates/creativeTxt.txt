@@ -1,0 +1,114 @@
+Subject: Traffic Order - Weebly - Weebly - AOL - Weebly RT Test Below are the tags and rafficking instructions for the Weebly RT Test campaign on AOL.
+
+Please import the following TruEffect DirectServe(TM) tags into your site's ad management software.
+
+
+------------------------------------------------------------
+             TruEffect Tag Implementation Notes:
+------------------------------------------------------------
+
+For more detailed TruEffect implementation instructions, please go to:
+  http://www.trueffect.com/sitesupport/site.index.html
+
+
+TruEffect PARTIAL TAGS:  If you choose not to implement an IFRAME tag in its
+entirety, you must change the value of the "ML_NIF=" parameters from "Y" to "N"
+to let us know that you have broken the tag apart.
+
+
+TruEffect TARGETS:  You may change target parameters in any or all of the tags
+from "_blank" to "_top" (or any other valid targeting string) to conform to
+your site's policy.
+
+
+TruEffect CACHEBUSTER:  Cachebusting macros are not required as the TruEffect 
+tags already contain cachebusting.
+
+
+TruEffect CLICKTHROUGHS:  In order for your site to track clickthroughs on
+these banners, append the url for your clickthrough counter (sometimes called
+a redirector) to the IFRAME/SCRIPT SRC strings (after the &@CPSC@=), and
+prepend it to the HREF strings.
+
+If your site does not use a clickthrough counter, then you do not have to
+do anything.  You can use the TruEffect tags as-is and everything will be
+reported and tracked by our system.
+
+
+------------------------------------------------------------
+AD PLACEMENTS:  Please use these URLs:
+------------------------------------------------------------
+
+
+
+
+
+
+
+*********************************************************************************
+Placement: AOL - 300x250 - RT
+*********************************************************************************
+
+Insertion Order: 8119980
+IO  Description: AOL RT
+Campaign Name:  Weebly RT Test
+Flight Dates:  07/05/2012 - 09/01/2012
+Impressions:  1
+
+
+<!-- iframe/script/href/image tag -->
+<IFRAME SRC="http://teffect.weebly.com/cookE/geoip/iframe?spacedesc=8119993_1120750_300x250_8119992_8119993&target=_blank&@CPSC@=" WIDTH=300 HEIGHT=250 SCROLLING="No" FRAMEBORDER=0 MARGINHEIGHT=0 MARGINWIDTH=0>
+<SCRIPT SRC="http://teffect.weebly.com/cookE/geoip/jscript?spacedesc=8119993_1120750_300x250_8119992_8119993&ML_NIF=Y&target=_blank&@CPSC@="></SCRIPT>
+<NOSCRIPT>
+  <A HREF="http://teffect.weebly.com/cookE/geoip/click?spacedesc=8119993_1120750_300x250_8119992_8119993&ML_NIF=Y" TARGET="_blank">
+  <IMG SRC="http://teffect.weebly.com/cookE/geoip/image?spacedesc=8119993_1120750_300x250_8119992_8119993&ML_NIF=Y" WIDTH=300 HEIGHT=250 ALT="Click Here" BORDER=0>
+  </A>
+</NOSCRIPT>
+</IFRAME>
+
+
+*********************************************************************************
+Placement: AOL - 160x600 - RT
+*********************************************************************************
+
+Insertion Order: 8119980
+IO  Description: AOL RT
+Campaign Name:  Weebly RT Test
+Flight Dates:  07/05/2012 - 09/01/2012
+Impressions:  1
+
+
+<!-- iframe/script/href/image tag -->
+<IFRAME SRC="http://teffect.weebly.com/cookE/geoip/iframe?spacedesc=8119995_1120750_160x600_8119992_8119995&target=_blank&@CPSC@=" WIDTH=160 HEIGHT=600 SCROLLING="No" FRAMEBORDER=0 MARGINHEIGHT=0 MARGINWIDTH=0>
+<SCRIPT SRC="http://teffect.weebly.com/cookE/geoip/jscript?spacedesc=8119995_1120750_160x600_8119992_8119995&ML_NIF=Y&target=_blank&@CPSC@="></SCRIPT>
+<NOSCRIPT>
+  <A HREF="http://teffect.weebly.com/cookE/geoip/click?spacedesc=8119995_1120750_160x600_8119992_8119995&ML_NIF=Y" TARGET="_blank">
+  <IMG SRC="http://teffect.weebly.com/cookE/geoip/image?spacedesc=8119995_1120750_160x600_8119992_8119995&ML_NIF=Y" WIDTH=160 HEIGHT=600 ALT="Click Here" BORDER=0>
+  </A>
+</NOSCRIPT>
+</IFRAME>
+
+
+*********************************************************************************
+Placement: AOL - 728x90 - RT
+*********************************************************************************
+
+Insertion Order: 8119980
+IO  Description: AOL RT
+Campaign Name:  Weebly RT Test
+Flight Dates:  07/05/2012 - 09/01/2012
+Impressions:  1
+
+
+<!-- iframe/script/href/image tag -->
+<IFRAME SRC="http://teffect.weebly.com/cookE/geoip/iframe?spacedesc=8119997_1120750_728x90_8119992_8119997&target=_blank&@CPSC@=" WIDTH=728 HEIGHT=90 SCROLLING="No" FRAMEBORDER=0 MARGINHEIGHT=0 MARGINWIDTH=0>
+<SCRIPT SRC="http://teffect.weebly.com/cookE/geoip/jscript?spacedesc=8119997_1120750_728x90_8119992_8119997&ML_NIF=Y&target=_blank&@CPSC@="></SCRIPT>
+<NOSCRIPT>
+  <A HREF="http://teffect.weebly.com/cookE/geoip/click?spacedesc=8119997_1120750_728x90_8119992_8119997&ML_NIF=Y" TARGET="_blank">
+  <IMG SRC="http://teffect.weebly.com/cookE/geoip/image?spacedesc=8119997_1120750_728x90_8119992_8119997&ML_NIF=Y" WIDTH=728 HEIGHT=90 ALT="Click Here" BORDER=0>
+  </A>
+</NOSCRIPT>
+</IFRAME>
+
+
+*********************************************************************************

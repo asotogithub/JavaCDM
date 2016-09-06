@@ -1,0 +1,80 @@
+.add-schedule-assignments .creatives-table .creative-group-column {
+    width: 130px;
+    min-width: 130px;
+    max-width: 130px;
+}
+
+.add-schedule-assignments .creatives-table .size-column,
+.add-schedule-assignments .placements-table .size-column {
+    width: 73px;
+    max-width: 73px;
+}
+
+.add-schedule-assignments .placements-table .site-column {
+    width: 160px;
+    min-width: 160px;
+    max-width: 160px;
+}
+
+.add-schedule-assignments .pending-table .alias-column {
+    width: 23%;
+}
+
+.add-schedule-assignments .pending-table .placement-id-column {
+    width: 100px;
+}
+
+.add-schedule-assignments .pending-table .creative-group-column {
+    width: 120px;
+}
+
+.add-schedule-assignments .pending-table .section-column {
+    width: 14%;
+}
+
+.add-schedule-assignments .pending-table .site-column {
+    width: 120px;
+}
+
+.add-schedule-assignments .pending-table .size-column {
+    width: 90px;
+}
+
+.add-schedule-assignments .placements-table .placement-id-column {
+    width: 86px;
+    min-width: 86px;
+    max-width: 86px;
+}
+
+.add-schedule-assignments .table {
+    margin-bottom: 20px;
+    table-layout: fixed;
+}
+
+.add-schedule-assignments .table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.add-schedule-assignments .te-table .form-group.te-table-search {
+    width: 100%;
+}
+
+.add-schedule-assignments .well {
+    text-align: center;
+}
+
+.add-schedule-assignments #pendingScheduleAssignments {
+    margin-top: 20px;
+}
+
+.header-padding {
+    padding: 10px 20px;
+}
+
+.tooltip-width-schedule {
+    padding-left: 0;
+    padding-right: 10px;
+    width: auto;
+}

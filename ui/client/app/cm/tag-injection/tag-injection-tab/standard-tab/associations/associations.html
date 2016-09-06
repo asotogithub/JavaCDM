@@ -1,0 +1,29 @@
+<div class="col-md-12 title">
+    <b>{{'global.associations' | translate}}</b>
+</div>
+<div class="col-md-12 association-tags direct-tags">
+    <h5>
+        <i>{{'global.direct' | translate}}</i>
+    </h5>
+    <div id="directAssociations" class="bootstrap-tagsinput">
+        <span class="hide" data-ng-repeat-start="direct in vmTIStandard.directAssociations | orderBy:'htmlInjectionName'"></span>
+            <span class="tag label">
+                {{ direct.htmlInjectionName | limitTo: vmTIStandard.limitStringView }}{{direct.htmlInjectionName.length > vmTIStandard.limitStringView ? '...' : ''}}
+                <span data-role="remove" data-ng-click="vmTIStandard.removeAssociation(direct)"></span>
+            </span>
+        <span class="hide" data-ng-repeat-end=""></span>
+    </div>
+</div>
+<div class="col-md-12 association-tags inherited-tags margin-bottom20">
+    <h5>
+        <i>{{'global.inherited' | translate}}</i>
+    </h5>
+    <div id="inheritedAssociations" class="bootstrap-tagsinput">
+        <span class="hide" data-ng-repeat-start="inherited in vmTIStandard.inheritedAssociations | orderBy:'htmlInjectionName'"></span>
+            <span class="tag label">
+                {{ inherited.htmlInjectionName | limitTo: vmTIStandard.limitStringView }}{{inherited.htmlInjectionName.length > vmTIStandard.limitStringView ? '...' : ''}}
+                <span data-role="remove" data-ng-click="vmTIStandard.removeAssociation(inherited)"></span>
+            </span>
+        <span class="hide" data-ng-repeat-end=""></span>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+.event-details-fly-out .panel-primary {
+    min-height: auto!important;
+}
+
+.has-error a.chosen-single {
+    border-color: #f05050 !important;
+}
+
+.event-details-dropdown-menu {
+    min-width: 0px;
+}

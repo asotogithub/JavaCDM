@@ -1,0 +1,48 @@
+ul[dnd-list],
+ul[dnd-list] > li {
+    position: relative;
+}
+
+ul[dnd-list] {
+    min-height: 34px;
+    padding-left: 0;
+}
+
+ul[dnd-list] .dndDraggingSource {
+    display: none;
+}
+
+ul[dnd-list] .dndPlaceholder {
+    display: block;
+    background-color: #ddd;
+    min-height: 34px;
+}
+
+.clickthrough-scrollBar {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.clickthrough-scrollBar .list-group-item .form-group {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.white-numeration {
+    background: white;
+    border-color: white;
+    width: 40px;
+}
+
+.help-message-color {
+    color: #f05050;
+}
+
+ul .list-group-item {
+    border: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}

@@ -1,0 +1,21 @@
+<div>
+    <h3 id="title-page-creative-group">{{vm.crtvGrpName}}</h3>
+    <a id="listOfCreativeGroupBtn" class="btn btn-default margin-bottom20" data-ng-click="vm.goToCreativeGroupsTab()" data-ui-sref-opts="{reload:true}">
+        <i class="fa fa-angle-left"></i> {{'creativeGroup.listOfCreativeGroup' | translate}}
+    </a>
+    <ul class="nav nav-tabs">
+        <li id="creativeGroupDetailsTab" data-ui-sref-active="active">
+            <a data-ui-sref="creative-group-details-tab">
+                {{'global.summary' | translate}}
+            </a>
+        </li>
+        <li id="creativeListTab" data-ui-sref-active="active">
+            <a data-ui-sref="creative-group-creative-tab">
+                {{'creative.creative' | translate}}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" role="tabpanel" data-ui-view></div>
+    </div>
+</div>

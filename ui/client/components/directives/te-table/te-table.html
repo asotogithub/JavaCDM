@@ -1,0 +1,66 @@
+<div class="te-table">
+  <div class="form-inline te-table-toolbar">
+    <div class="te-table-btns pull-left"></div>
+    <button id="toggleSearchCollapse"
+            data-ng-click="$table.toggleSearchCollapse()"
+            data-ng-if="$table.collapseSearch"
+            class="btn btn-default">
+      <span class="text-center">
+        <i class="fa fa-search"></i>
+      </span>
+    </button>
+    <div class="te-table-secondary-btns pull-right"></div>
+    <div class="form-group te-table-search pull-left"
+         uib-collapse="$table.isSearchCollapsed"
+         data-ng-class="{'has-feedback': !!$table.searchTerm}"
+         data-ng-if="$table.searchFields &amp;&amp; $table.searchFields.length">
+      <div class="input-group">
+        <div class="input-group-btn">
+          <button class="btn btn-default dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  data-ng-disabled="$table.model &amp;&amp; !$table.model.length">
+            <i class="fa fa-search"></i>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-header">{{'global.columns' | translate}}</li>
+            <li data-ng-repeat="searchField in $table.searchFields">
+              <a href data-ng-click="$table.toggleSearchField($event, searchField)">
+                <div class="checkbox c-checkbox">
+                  <label>
+                    <input type="checkbox" data-ng-model="searchField.enabled" data-no-dirty/>
+                    <span class="fa fa-check"></span>
+                    {{searchField.title}}
+                  </label>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <input class="form-control te-table-search"
+               type="text"
+               placeholder="{{'global.searchEllipsis' | translate}}"
+               data-ng-disabled="$table.model &amp;&amp; !$table.model.length"
+               data-ng-model="$table.searchTerm"
+               data-ng-keypress="$table.onKeyPress($event);"
+               data-ng-change="$table.applySearch();"
+               data-no-dirty />
+        <span class="fa fa-times form-control-feedback text-muted"
+              data-ng-click="$table.clearSearch()"
+              data-ng-if="!!$table.searchTerm"></span>
+      </div>
+    </div>
+      <button class="btn btn-default customTeGridSearchButton"
+              type="button"
+              data-ng-click="$table.customSearch()"
+              data-ng-if="$table.teTableCustomSearchEnabled"
+              data-ng-disabled="!$table.searchTerm">
+          {{'global.search' | translate}}
+      </button>
+    <span class="te-table-thirdly-btns"></span>
+    <div class="clear"></div>
+  </div>
+  <div class="te-table-body" data-ng-class="{'te-table-clear-paging': $table.clearPaging}" data-ng-show="$table.model &amp;&amp; $table.model.length"></div>
+  <div class="well" data-ng-if="$table.model &amp;&amp; !$table.model.length">{{$table.emptyMessage}}</div>
+</div>

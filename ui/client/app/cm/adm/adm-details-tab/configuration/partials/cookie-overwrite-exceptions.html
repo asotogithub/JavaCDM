@@ -1,0 +1,74 @@
+<div class="row-fluid">
+    <label id="enableCookieOverwriteExceptionsLabel" class="switch padding-top16 padding-bottom7 label-information">
+        <input id="enableCookieOverwriteExceptions"
+               name="enableCookieOverwriteExceptions"
+               type="checkbox"
+               data-ng-model="vmConfig.admConfig.durableCookies.enabled"
+               data-ng-change="vmConfig.removeEmptyCookies(vmConfig.admConfig.cookieOverwriteExceptionsArray, vmConfig.admConfig.durableCookies.enabled,  vmConfig.cookieOverwriteExceptionsForm)">
+        <span></span>
+        <strong>{{'adm.cookieOverwriteExceptions' | translate}}</strong>
+    </label>
+    <i class="fa fa-info-circle" data-toggle="tooltip" title="{{'adm.cookieOverwriteExceptionsTooltip' |  translate}}"></i>
+</div>
+<fieldset data-ng-form name="vmConfig.cookieOverwriteExceptionsForm"
+          data-ng-disabled="!vmConfig.admConfig.durableCookies.enabled"
+          class="form-horizontal adm-configuration-partial-bordered"
+          novalidate>
+    <ul id="cookieOverwriteExceptionsList"
+        dnd-disable-if="!vmConfig.admConfig.durableCookies.enabled"
+        dnd-list="vmConfig.admConfig.cookieOverwriteExceptionsArray"
+        dnd-allowed-types="vmConfig.admConfig.cookieOverwriteExceptionsArray"
+        class="adm-configuration-cookies-scrollbar cookie-overwrite-exceptions-scrollbar">
+        <li data-ng-repeat="item in vmConfig.admConfig.cookieOverwriteExceptionsArray"
+            dnd-disable-if="!vmConfig.admConfig.durableCookies.enabled"
+            data-ng-model-options="{allowInvalid: true}"
+            dnd-draggable="item"
+            dnd-moved="vmConfig.cookiesValidation(item.sequence, vmConfig.cookieOverwriteExceptionsForm, vmConfig.admConfig.cookieOverwriteExceptionsArray, $index)"
+            dnd-effect-allowed="move"
+            dnd-type="item"
+            class="list-group-item">
+            <div class="form-group input-group"
+                 data-ng-class="{'has-error': vmConfig.cookieOverwriteExceptionsForm[item.sequence].$dirty && vmConfig.cookieOverwriteExceptionsForm[item.sequence].$invalid}">
+                <span class="input-group-addon white-numeration">{{$index + 1}}</span>
+                <span class="input-group-addon white-background">{{'global.if' | translate}}</span>
+                <span class="input-group-addon"><em class="fa fa-reorder"></em></span>
+                <input class="form-control"
+                       id="{{item.sequence}}"
+                       name="{{item.sequence}}"
+                       type="text"
+                       data-ng-model="item.cookieName"
+                       data-ng-model-options="{allowInvalid: true}"
+                       placeholder="{{'adm.enterCookieName' | translate}}"
+                       validate-duplicate = "vmConfig.getArrayFromObjectByField(vmConfig.admConfig.cookieOverwriteExceptionsArray)"
+                       form-duplicates = "vmConfig.cookieOverwriteExceptionsForm"
+                       data-ng-required="vmConfig.admConfig.cookieOverwriteExceptionsArray.length > 0 && vmConfig.admConfig.durableCookies.enabled">
+                <span class="input-group-addon white-background">{{'adm.existsThenIgnore' | translate}}</span>
+                <span class="input-group-btn" data-ng-if="vmConfig.admConfig.cookieOverwriteExceptionsArray.length > 1">
+                    <button class="btn btn-default"
+                            type="button"
+                            data-ng-click="vmConfig.removeCookie(vmConfig.admConfig.cookieOverwriteExceptionsArray, $index, vmConfig.cookieOverwriteExceptionsForm);">
+                        <em class="fa fa-trash"></em>
+                    </button>
+                </span>
+            </div>
+            <p class="help-block help-message-color"
+               data-ng-if="vmConfig.cookieOverwriteExceptionsForm[item.sequence].$dirty && vmConfig.cookieOverwriteExceptionsForm[item.sequence].$error.required">
+                {{'validation.error.required' | translate}}
+            </p>
+            <p class="help-block help-message-color"
+               data-ng-if="vmConfig.cookieOverwriteExceptionsForm[item.sequence].$dirty && vmConfig.cookieOverwriteExceptionsForm[item.sequence].$error.duplicatedField && !vmConfig.cookieOverwriteExceptionsForm[item.sequence].$error.required">
+                {{'adm.error.duplicatedCookieNameFound' | translate}}
+            </p>
+        </li>
+    </ul>
+    <div class="form-group padding-right0 padding-bottom7">
+        <div class="pull-right">
+            <button data-ng-click="vmConfig.addCookie(vmConfig.admConfig.cookieOverwriteExceptionsArray, '#cookieOverwriteExceptionsList')"
+                    id="addOverwriteException"
+                    class="btn btn-info btn-right-bottom"
+                    data-ng-disabled="vmConfig.cookieOverwriteExceptionsForm.$invalid">
+                {{'global.add' | translate}}
+            </button>
+        </div>
+    </div>
+</fieldset>

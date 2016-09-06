@@ -1,0 +1,14 @@
+.cg-main-fieldset {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.cg-main-fieldset fieldset {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+fieldset.cg-col-fieldset {
+    margin-bottom: 5px;
+    padding-bottom: 0;
+}

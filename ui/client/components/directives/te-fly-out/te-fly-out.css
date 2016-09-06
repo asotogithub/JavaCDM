@@ -1,0 +1,45 @@
+.sidenav {
+    width: 0;
+    min-height: 500px;
+    position: absolute;
+    z-index: 400;
+    top: 0;
+    right: 0;
+    background-color: #edf1f2;
+    color: #515253;
+    overflow-x: hidden;
+    transition: 0.7s;
+}
+
+.sidenav .glyphicon {
+    font-family: 'Glyphicons Halflings';
+}
+
+.panel-info {
+    border-color: #ddd;
+}
+
+.panel-info > .panel-heading {
+    color: #656565;
+    background-color: #f9f9f9;
+}
+
+.panel-info > .panel-heading + .panel-collapse .panel-body {
+    border-top-color: #ddd;
+}
+
+.panel-info .btn-group-right {
+    float: right;
+    margin-right: 13px;
+    margin-top: 20px;
+}
+
+.sidenav-half {
+    width: 75% !important;
+    min-height: 500px;
+}
+
+.sidenav-full {
+    width: 100% !important;
+    min-height: 500px;
+}

@@ -1,0 +1,145 @@
+<div data-cg-busy="vm.promise">
+    <div data-ng-form name="vm.detailsForm" novalidate>
+        <te-table data-empty-message="'global.listEmpty' | translate"
+                  data-model="vm.model"
+                  data-selection-mode="NONE">
+            <te-table-btns>
+                <te-table-add-btn data-te-table-btn-click="vm.addNewPlacementDetailRow()"></te-table-add-btn>
+            </te-table-btns>
+            <table class="table table-bordered table-condensed" id="new-placements-grid">
+                <thead>
+                    <th data-ng-show="vm.options.showPackageName">{{'placement.mediaPackage' | translate}} <i data-toggle="tooltip" title="{{'global.thisIsOptional' | translate}}" class="fa fa-question-circle"></i></th>
+                    <th>{{'placement.name' | translate}} <i data-toggle="tooltip" title="{{vm.placementCharacters}}" class="fa fa-question-circle"></i></th>
+                    <th>{{'global.siteAssociation' | translate}}</th>
+                    <th>{{'global.section' | translate}}</th>
+                    <th>{{'placement.size' | translate}}</th>
+                    <th>{{'global.remove' | translate}}</th>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="currentPlacement in vm.model track by $index">
+                        <td data-title="'placement.mediaPackage' | translate"
+                            data-ng-show="vm.options.showPackageName">
+                            <div class="input-group"
+                                 data-ng-class="{'has-error': mediaPackageNameForm.mediaPackageName.$dirty && mediaPackageNameForm.mediaPackageName.$error.maxlength}">
+                                <data-ng-form name="mediaPackageNameForm">
+                                    <input id="mediaPackageName"
+                                           class="form-control"
+                                           name="mediaPackageName"
+                                           type="text"
+                                           data-ng-model="currentPlacement.packageName"
+                                           data-ng-maxlength="{{vm.mediaPackageMaxLength}}"
+                                           data-ng-keypress="vm.validateAllRows()"
+                                           data-ng-change="vm.validateAllRows()"/>
+                                    <span id="mediaPackageNameMaxLength" class="help-block"
+                                          data-ng-if="mediaPackageNameForm.mediaPackageName.$dirty && mediaPackageNameForm.mediaPackageName.$error.maxlength"
+                                          translate="validation.error.maxlength" translate-values="{length: vm.mediaPackageMaxLength}">
+                                    </span>
+                                </data-ng-form>
+                            </div>
+                        </td>
+                        <td data-title="'placement.name' | translate">
+                            <div class="input-group" data-ng-class="{'has-error': (placementNameForm.placementName.$dirty && placementNameForm.placementName.$error.maxlength) || (placementNameForm.placementName.$dirty && placementNameForm.placementName.$error.pattern)}">
+                                <data-ng-form name="placementNameForm">
+                                    <input id="placementName"
+                                           class="form-control"
+                                           name="placementName"
+                                           type="text"
+                                           data-ng-model="currentPlacement.name"
+                                           data-ng-disabled="(currentPlacement.site && currentPlacement.section && currentPlacement.section.length > 1 ) || (currentPlacement.size && currentPlacement.size.length > 1)"
+                                           data-ng-maxlength="{{vm.nameMaxLength}}"
+                                           data-ng-keypress="vm.validateAllRows()"
+                                           data-ng-pattern="vm.REGEX_PLACEMENT_NAME"
+                                           data-ng-change="vm.validateAllRows()"/>
+                                    <span id="placementNameMaxLength" class="help-block"
+                                          data-ng-if="placementNameForm.placementName.$dirty && placementNameForm.placementName.$error.maxlength"
+                                          translate="validation.error.maxlength" translate-values="{length: vm.nameMaxLength}">
+                                    </span>
+                                    <span id="invalidPlacementName" class="help-block" data-ng-if="placementNameForm.placementName.$error.pattern"
+                                          translate="validation.error.invalid"></span>
+                                </data-ng-form>
+                            </div>
+                        </td>
+                        <td data-title="'global.siteAssociation' | translate">
+                            <div class="input-group">
+                                <select chosen="{width: '100%'}"
+                                        id="site_{{$index}}"
+                                        data-ng-model="currentPlacement.site"
+                                        class="form-control"
+                                        data-ng-options="site as site.name for site in vm.siteList"
+                                        disable-search="false"
+                                        data-ng-change="vm.selectSite(currentPlacement.site, currentPlacement)">
+                                    <option value="">
+                                    </option>
+                                </select>
+                                <span class="input-group-btn input-group-btn-alignTop">
+                                    <button type="button"
+                                            class="btn btn-default"
+                                            id="siteOpenButton_{{$index}}"
+                                            data-ng-mouseup="vm.blurButton('siteOpenButton_' + $index)"
+                                            data-ng-click="vm.openAddNew(currentPlacement, $index)">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </td>
+                        <td data-title="'global.section' | translate">
+                            <div class="input-group" data-cg-busy="currentPlacement.promiseSection">
+                                <select chosen="{width: '100%'}"
+                                        data-ng-model="currentPlacement.section"
+                                        class="form-control"
+                                        data-ng-options="section as section.name for section in currentPlacement.sectionList"
+                                        disable-search="false"
+                                        multiple
+                                        data-ng-change="vm.selectSectionBySite(currentPlacement)">
+                                    <option value="">
+                                    </option>
+                                </select>
+                                <span class="input-group-btn vtop">
+                                     <button type="button"
+                                             class="btn btn-default"
+                                             id="sectionOpenButton_{{$index}}"
+                                             data-ng-mouseup="vm.blurButton('sectionOpenButton_' + $index)"
+                                             data-ng-click="vm.openAddNew(currentPlacement, $index)"
+                                             data-ng-disabled="!currentPlacement.sectionList">
+                                         <i class="fa fa-ellipsis-h"></i>
+                                     </button>
+                                </span>
+                            </div>
+                        </td>
+                        <td data-title="'placement.size' | translate">
+                            <div class="input-group">
+                                <select chosen="{width: '100%'}"
+                                        data-ng-model="currentPlacement.size"
+                                        class="form-control"
+                                        data-ng-options="size as size.label for size in vm.sizeList"
+                                        disable-search="false"
+                                        data-ng-change="vm.selectSizes(currentPlacement.size, currentPlacement)"
+                                        multiple>
+                                    <option value="">
+                                    </option>
+                                </select>
+                                <span class="input-group-btn vtop">
+                                     <button type="button"
+                                             class="btn btn-default"
+                                             id="sizeOpenButton_{{$index}}"
+                                             data-ng-mouseup="vm.blurButton('sizeOpenButton_' + $index)"
+                                             data-ng-click="vm.openAddNew(currentPlacement, $index)">
+                                         <i class="fa fa-ellipsis-h"></i>
+                                     </button>
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger"
+                                    type="button"
+                                    data-ng-if="$index > 0"
+                                    data-ng-click="vm.removePlacementRow($index)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </te-table>
+    </div>
+</div>

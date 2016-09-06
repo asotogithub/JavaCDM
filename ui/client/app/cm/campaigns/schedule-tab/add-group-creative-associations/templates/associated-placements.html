@@ -1,0 +1,64 @@
+<te-table data-empty-message="'global.listEmpty' | translate"
+          data-model="vm.model"
+          data-page-size="{{vm.pageSize}}"
+          data-selection-mode="SINGLE"
+          data-te-table-select="vm.selectRows($selection)">
+    <te-table-btns>
+        <te-table-add-btn data-ng-show="vm.options.showAdd"
+                          data-te-table-btn-click="vm.add()"></te-table-add-btn>
+        <te-table-edit-btn data-ng-show="vm.options.showEdit"
+                           data-te-table-btn-click="vm.edit($selection)"></te-table-edit-btn>
+    </te-table-btns>
+    <table>
+        <tr id="placement{{placement.id}}" data-ng-repeat="obj in $data">
+            <td id="schedule{{obj.creativeId}}Name"
+                data-title="'global.group' | translate"
+                data-sortable="'creativeGroupName'"
+                class="wrap-text-td">
+                {{obj.creativeGroupName}}
+            </td>
+            <td id="schedule{{obj.creativeId}}creativeName"
+                data-title="'creative.creativeName' | translate"
+                data-sortable="'creativeAlias'"
+                class="wrap-text-td">
+                {{obj.creativeAlias}}
+            </td>
+            <td id="schedule{{obj.creativeId}}Weight"
+                data-title="'creativeGroup.weight' | translate"
+                data-sortable="'creativeGroupWeight'">
+                {{obj.creativeGroupWeight}}
+            </td>
+            <td id="schedule{{obj.creativeId}}Clickthrough"
+                data-title="'schedule.clickThroughUrl' | translate"
+                data-sortable="'creativeClickthrough'"
+                class="text-center wrap-text-td">
+                <ul class="clickthrough-urls mb0">
+                    <li title="firstClick" class="clickthroughs-align">{{obj.clickthrough}}</li>
+                    <li data-ng-repeat="clickT in obj.clickthroughs" title="{{sequence}}Click" class="clickthroughs-align">{{clickT.url}}</li>
+                </ul>
+            </td>
+            <td id="schedule{{obj.creativeId}}StartDate"
+                data-title="'global.startDate' | translate"
+                data-sortable="'startDate'"
+                class="text-center">
+                {{ obj.startDate | date : vm.DATE_FORMAT}}
+            </td>
+            <td id="schedule{{obj.creativeId}}EndDate"
+                data-title="'global.endDate' | translate"
+                data-sortable="'endDate'"
+                class="text-center">
+                {{ obj.endDate | date : vm.DATE_FORMAT}}
+            </td>
+            <td id="schedule{{obj.creativeId}}Remove"
+                data-title="'global.remove' | translate"
+                data-sortable="'allowRemove'"
+                class="text-center">
+                <button data-ng-show="obj.allowRemove"
+                        class="btn btn-default"
+                        data-ng-click="vm.removeItems(obj)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </table>
+</te-table>

@@ -1,0 +1,187 @@
+<form class="form-horizontal form-placement-edit" name="vmEdit.editForm" data-cg-busy="vmEdit.promise || vm.promise" novalidate>
+    <div class="form-group creative-inner-tab">
+        <a id="listOfPlacementsBtn" class="btn btn-default margin-bottom10 back-button" data-ng-click="vmEdit.cancel()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i> {{vmEdit.backButton}}
+        </a>
+    </div>
+    <uib-tabset>
+        <uib-tab id="placementSummaryTab">
+            <uib-tab-heading>
+                <a class="nav-tabs-ui-boostrap" ui-sref-active="active">{{'placement.summaryTitle' | translate}}</a>
+            </uib-tab-heading>
+
+            <div class="col-md-12 container-title">
+                <div class="pull-left title">
+                    {{vmEdit.placementName}}
+                </div>
+                <div class="pull-right" data-ng-show="vmEdit.placement.isScheduled === 'Y'">
+                    <label  data-toggle="tooltip" class="margin-bottom10 information-button">
+                        {{'placement.scheduled' | translate}}&nbsp;&nbsp;<i class="fa fa-info-circle" aria-hidden="true" title="{{'placement.scheduledInfo' | translate}}" ></i>
+                    </label>
+                </div>
+            </div>
+
+            <legend class="long-text-wrapper"></legend>
+
+            <h4 class="title-details">{{'global.placementsDetails' | translate}}</h4>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group"
+							 data-ng-class="{'has-error': vmEdit.editForm.placementName.$dirty && vmEdit.editForm.placementName.$invalid}">
+							<label id="placementNameLabel" class="col-sm-4 control-label">{{'global.name' | translate}}:</label>
+							<div class="col-sm-6"
+								 data-ng-class="{'has-error': vmEdit.editForm.placementName.$dirty && vmEdit.editForm.placementName.$invalid}">
+								<input id="placementName"
+									   class="form-control"
+									   name="placementName"
+									   type="text"
+									   data-ng-model="vmEdit.placement.name"
+									   data-ng-maxlength="{{vmEdit.maxLength}}"
+                                       data-ng-pattern="vmEdit.REGEX_PLACEMENT_NAME"
+                                       data-ng-disabled="vmEdit.placement.isScheduled === 'Y'"
+									   required/>
+								<p class="help-block"
+								   data-ng-if="vmEdit.editForm.placementName.$dirty && vmEdit.editForm.placementName.$error.required">
+									{{'validation.error.required' | translate}}
+								</p>
+								<p id="ioNameMaxLength" class="help-block"
+								   data-ng-if="vmEdit.editForm.placementName.$dirty && vmEdit.editForm.placementName.$error.maxlength"
+                                   translate="validation.error.maxlength" translate-values="{length: vmEdit.maxLength}">
+								</p>
+                                <p id="invalidPlacementName" class="help-block"
+                                   data-ng-if="vmEdit.editForm.placementName.$dirty && vmEdit.editForm.placementName.$error.pattern"
+                                   translate="validation.error.invalid">
+                                </p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label id="sizeLabel" class="col-sm-4 control-label">{{'global.size' | translate}}:</label>
+							<div class="col-sm-6"
+								 data-ng-class="{'has-error': vmEdit.editForm.sizeSelect.$error.required}">
+								<select id="sizeSelect"
+										name="sizeSelect"
+										data-ng-disabled="vmEdit.placement.isTrafficked != 0 || vmEdit.placement.isScheduled === 'Y'"
+										class="form-control input-12-char"
+										data-ng-model="vmEdit.placement.sizeSelected"
+										data-ng-options="size.label for size in vmEdit.sizeList track by size.id">
+								</select>
+								<p class="help-block"
+								   data-ng-if=" vmEdit.editForm.sizeSelect.$error.required">
+									{{'validation.error.required' | translate}}
+								</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label id="placementStatusLabel" class="col-sm-4 control-label">{{'global.status' |
+								translate}}:</label>
+							<div class="col-sm-6">
+								<select id="placementStatusSelect"
+										class="form-control input-12-char"
+										data-ng-change="vmEdit.checkLastActive()"
+										data-ng-model="vmEdit.placement.statusSelected"
+										data-ng-options="status.name | translate for status in vmEdit.statusList track by status.key"
+                                        data-ng-disabled="vmEdit.placement.isScheduled === 'Y'">
+								</select>
+							</div>
+						</div>
+                        <div class="form-group">
+                            <label id="placementTraffickedLabel" class="col-sm-4 control-label">{{'global.trafficking' |
+                                translate}}:</label>
+                            <div class="col-sm-6">
+                                <p id="placementTraffickedPending" data-ng-show="vmEdit.placement.isTrafficked == 0"
+                                class="form-control-static">{{'global.pending' | translate}}</p>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label id="placementIdLabel" class="col-sm-4 control-label">{{'placement.id' | translate}}:</label>
+							<div class="col-sm-6">
+								<p id="placementId" class="form-control-static">{{vmEdit.placement.id}}</p>
+							</div>
+						</div>
+						<div class="form-group wrap-text-td">
+							<label id="siteLabel" class="col-sm-4 control-label">{{'global.siteAssociation' |
+								translate}}:</label>
+							<div class="col-sm-6">
+								<p id="siteSelect" class="form-control-static">{{vmEdit.placement.siteName}}</p>
+							</div>
+						</div>
+						<div class="form-group wrap-text-td">
+							<label id="sectionLabel" class="col-sm-4 control-label">{{'global.section' | translate}}:</label>
+							<div class="col-sm-6">
+								<p id="sectionSelect" class="form-control-static">{{vmEdit.placement.sectionName}}</p>
+							</div>
+						</div>
+                        <div class="form-group">
+                            <label id="packageLabel" class="col-sm-4 control-label">{{'global.package' |
+                                translate}}:</label>
+                            <div class="col-sm-6">
+                                <p class="form-control-static" data-ng-show="!vmEdit.placement.packageId">
+                                    -
+                                </p>
+                                <p id="packageName" class="form-control-static" data-ng-show="vmEdit.placement.packageId">
+                                    {{vmEdit.placement.packageName}}
+                                    <a href data-ng-click="vmEdit.removeAssociation()" class="btn btn-link remove-link">({{'global.remove' | translate}})</a>
+                                </p>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+            <fieldset data-ng-disabled="vmEdit.placement.isScheduled === 'Y'">
+                <h4 class="title-cost-details">{{'placement.costTitle' | translate}}</h4>
+                <div data-ng-show="!vmEdit.placement.packageId" data-ng-include="'app/cm/campaigns/io-tab/partial/cost-details/cost-details.html'"></div>
+                <p id="labelCostDetailsEmpty" data-ng-show="vmEdit.placement.packageId">
+                    {{'placement.costDetails.empty' | translate}}<a href data-ng-click="vmEdit.cancel()" class="btn btn-link package-link">{{vmEdit.placement.packageName}}</a>
+                </p>
+            </fieldset>
+        </uib-tab>
+		<uib-tab id="placementExtendedPropTab">
+            <uib-tab-heading>
+                <a class="nav-tabs-ui-boostrap" ui-sref-active="active">{{'global.extendedProperties' | translate}}</a>
+            </uib-tab-heading>
+            <div data-ng-form name="extendedPropertiesForm" class="form-horizontal container-fluid container-extended-properties" novalidate>
+                <div data-ng-repeat="item in vmEdit.extendedPropertiesArray">
+                    <div class="form-group"
+                         data-ng-class="{'has-error': extendedPropertiesForm[item.name].$dirty && extendedPropertiesForm[item.name].$invalid}">
+                        <label class="col-sm-3 control-label">{{'creative.extProp'| translate}} {{$index + 1}}:</label>
+
+                        <div class="col-sm-6">
+                            <input class="form-control"
+                                   id="{{item.name}}"
+                                   name="{{item.name}}"
+                                   type="text"
+                                   data-ng-model="item.value"
+                                   data-maxlength="{{vmEdit.maxLength}}"/>
+
+                            <p id="extProp1MaxLength" class="help-block"
+                               data-ng-if="extendedPropertiesForm[item.name].$dirty && extendedPropertiesForm[item.name].$error.maxlength"
+                               translate="validation.error.maxlength" translate-values="{length: vmEdit.extendedPropertiesmaxLength}">
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+    <br>
+    <div class="row">
+		<div class="col-md-12">
+			<div class="pull-right">
+                <button id="saveButton"
+                        type="submit"
+                        class="btn btn-primary"
+                        data-ng-disabled="vmEdit.editForm.$invalid || vmEdit.editForm.$pristine"
+                        data-ng-click="vmEdit.save()">
+                    {{'global.save' | translate}}
+                </button>
+				<a class="btn btn-default" data-ng-click="vmEdit.cancel()">
+					{{'global.close' | translate}}
+				</a>
+			</div>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,95 @@
+<div data-cg-busy="vmAddIO.promiseRequest">
+    <div data-ng-form name="vmAddIO.insertionOrderForm" class="form-horizontal container-fluid" novalidate>
+        <legend>{{'insertionOrder.createInsertionOrder'| translate}}</legend>
+        <div class="row">
+            <div class="form-group col-md-6"
+                 data-ng-class="{'has-error': vmAddIO.insertionOrderForm.ioName.$dirty && vmAddIO.insertionOrderForm.ioName.$invalid}">
+                <label class="col-sm-3 control-label">{{'insertionOrder.ioName'| translate}}:</label>
+
+                <div class="col-sm-8">
+                    <input class="form-control"
+                           id="ioName"
+                           name="ioName"
+                           type="text"
+                           data-ng-model="vmAddIO.insertionOrder.name"
+                           data-ng-maxlength="{{vmAddIO.maxLength}}"
+                           data-ng-pattern="vmAddIO.alphanumeric"
+                           required/>
+
+                    <p id="ioNameMaxLength" class="help-block"
+                       data-ng-if="vmAddIO.insertionOrderForm.ioName.$dirty && vmAddIO.insertionOrderForm.ioName.$error.maxlength"
+                       translate="validation.error.maxlength" translate-values="{length: vmAddIO.maxLength}">
+                    </p>
+
+                    <p id="ioNameRequired" class="help-block"
+                       data-ng-if="vmAddIO.insertionOrderForm.ioName.$dirty && vmAddIO.insertionOrderForm.ioName.$error.required">
+                        {{'validation.error.required'| translate}}
+                    </p>
+
+                    <p class="help-block"
+                       data-ng-if="vmAddIO.insertionOrderForm.ioName.$dirty && vmAddIO.insertionOrderForm.ioName.$error.pattern">
+                        {{'validation.error.alphanumeric' | translate}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6"
+                 data-ng-class="{'has-error': vmAddIO.insertionOrderForm.ioNumber.$dirty && vmAddIO.insertionOrderForm.ioNumber.$invalid}">
+                <label class="col-sm-3 control-label">{{'insertionOrder.ioNumber' | translate}}:</label>
+
+                <div class="col-sm-8">
+                    <input class="form-control input-max-int"
+                           id="ioNumber"
+                           name="ioNumber"
+                           type="number"
+                           data-ng-model="vmAddIO.insertionOrder.ioNumber"
+                           data-ng-max="{{vmAddIO.maxIONumber}}"
+                           data-ng-pattern="vmAddIO.numeric"/>
+
+                    <p id="ioNumberMax" class="help-block"
+                       data-ng-if="vmAddIO.insertionOrderForm.ioNumber.$dirty && vmAddIO.insertionOrderForm.ioNumber.$error.max">
+                        {{'validation.error.max'| translate}} {{vmAddIO.maxIONumber}}
+                    </p>
+
+                    <p id="ioNumberOnlyNumber" class="help-block"
+                       data-ng-if="vmAddIO.insertionOrderForm.ioNumber.$dirty && !vmAddIO.insertionOrderForm.ioNumber.$error.max
+                       && (vmAddIO.insertionOrderForm.ioNumber.$error.number || vmAddIO.insertionOrderForm.ioNumber.$error.pattern)">
+                        {{'validation.error.positiveNumber' | translate}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 mb0"
+                 data-ng-class="{'has-error': vmAddIO.insertionOrderForm.ioNotes.$dirty && vmAddIO.insertionOrderForm.ioNotes.$invalid}">
+                <label class="col-sm-3 control-label">{{'insertionOrder.ioNotes'| translate}}:</label>
+
+                <div class="col-sm-8">
+                    <textarea class="form-control"
+                              id="ioNotes"
+                              name="ioNotes"
+                              type="text"
+                              rows="5"
+                              data-ng-model="vmAddIO.insertionOrder.notes"
+                              data-ng-maxlength="{{vmAddIO.maxLengthNotes}}">
+                    </textarea>
+
+                    <p id="ioNotesMaxLength" class="help-block"
+                       data-ng-if="vmAddIO.insertionOrderForm.ioNotes.$dirty && vmAddIO.insertionOrderForm.ioNotes.$error.maxlength"
+                       translate="validation.error.maxlength" translate-values="{length: vmAddIO.maxLengthNotes}">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <legend class="btn-right-bottom"></legend>
+        <div class="form-group">
+            <div class="pull-right">
+                <a href="" class="btn btn-default" data-ng-click="vmAddIO.cancel()">{{'global.cancel'| translate}}</a>
+                <a href="" class="btn btn-primary"
+                   a-disabled="vmAddIO.insertionOrderForm.$invalid || vmAddIO.insertionOrderForm.$pristine"
+                   data-ng-click="vmAddIO.save()">{{'global.save'| translate}}</a>
+            </div>
+        </div>
+    </div>
+</div>

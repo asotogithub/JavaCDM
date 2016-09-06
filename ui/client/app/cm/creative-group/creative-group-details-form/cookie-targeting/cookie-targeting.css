@@ -1,0 +1,42 @@
+.cookie-targeting .nav-tabs {
+    border-bottom: 0;
+    border-right: 1px solid #ddd;
+    float: left;
+    margin-right: -1px;
+}
+
+.cookie-targeting .nav-tabs .active > a,
+.cookie-targeting .nav-tabs .active > a:focus,
+.cookie-targeting .nav-tabs .active > a:hover {
+    border-color: #ddd transparent #ddd #ddd;
+    *border-right-color: #ffffff;
+}
+
+.cookie-targeting .nav-tabs > li {
+    float: none;
+}
+
+.cookie-targeting .nav-tabs > li > a {
+    margin-right: -1px;
+    min-width: 74px;
+}
+
+.cookie-targeting .nav-tabs > li > a:focus,
+.cookie-targeting .nav-tabs > li > a:hover {
+    border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+}
+
+.cookie-targeting .tab-content {
+    border: none;
+    padding: 0;
+}
+
+.cookie-targeting .tab-pane {
+    border: 1px solid #dde6e9;
+    overflow-x: hidden;
+    padding: 12px 19px 19px;
+}
+
+.cookie-targeting .glyphicon {
+    font-family: 'Glyphicons Halflings';
+}

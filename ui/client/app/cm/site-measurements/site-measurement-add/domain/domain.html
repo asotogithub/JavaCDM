@@ -1,0 +1,49 @@
+<div data-ng-controller="SMCampaignDomainController as vmAddSMCampaignDomain">
+    <div data-ng-form name="vmAddSMCampaignDomain.formWizard" novalidate>
+        <fieldset>
+            <div>
+                <!-- COOKIE DOMAIN -->
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="cookieDomain" class="control-label">{{'global.cookieDomain' | translate}}:</label>
+                        <select id="cookieDomain"
+                                name="cookieDomain"
+                                class="form-control"
+                                data-ng-model="vmSMCampaign.campaign.cookieDomain"
+                                data-ng-options="cookieDomain.domain for cookieDomain in vmAddSMCampaignDomain.cookieDomainList track by cookieDomain.id"
+                                required>
+                            <option value="" disabled selected hidden>{{'global.selectDomain' | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- STATUS -->
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="status" class="control-label">{{'global.status' | translate}}:</label>
+                        <select id="status"
+                                name="status"
+                                class="form-control"
+                                data-ng-model="vmSMCampaign.campaign.status"
+                                data-ng-options="status.name | translate for status in vmAddSMCampaignDomain.statusList track by status.key"
+                                required>
+                            <option value="" disabled selected hidden>{{'global.selectStatus' | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- CAMPAIGN DESCRIPTION -->
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="campaignDescription" class="control-label">{{'global.description' | translate}}:</label>
+                        <input id="campaignDescription"
+                               class="form-control"
+                               name="campaignDescription"
+                               type="text"
+                               data-ng-model="vmSMCampaign.campaign.description"
+                               maxlength="{{vmAddSMCampaignDomain.maxLength}}"
+                               autocomplete="off"/>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

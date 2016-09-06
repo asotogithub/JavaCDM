@@ -1,0 +1,16 @@
+.sidebarSubElementMargin {
+    margin-left: 10px;
+}
+
+.sidebar > .nav > li > a > span {
+    margin-left: 1em;
+}
+
+.sidebar-subnav > li > a > span {
+    margin-left: 1em;
+}
+
+.sidebar .nav > li.active > a .collapsed-media:before{
+    content: "\f115";
+}
+

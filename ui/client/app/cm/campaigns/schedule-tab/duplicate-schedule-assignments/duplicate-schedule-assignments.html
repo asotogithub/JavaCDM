@@ -1,0 +1,53 @@
+<div class="modal-header dialog-header-confirm">
+  <button class="close" type="button" data-ng-click="vm.dismiss()">&times;</button>
+  <h4 class="modal-title">{{'schedule.duplicateScheduleAssignments' | translate}}</h4>
+</div>
+<div class="modal-body row duplicate-schedule-assignments">
+  <div class="col-xs-12">
+    <p>{{'schedule.duplicateScheduleAssignmentsDescription' | translate}}</p>
+    <te-table data-model="vm.duplicates" data-page-size="10">
+      <table class="table-condensed duplicates-table">
+        <tr data-ng-repeat="duplicate in $data">
+          <td data-header-class="'site-column'"
+              data-title="'global.site' | translate"
+              data-sortable="'siteName'">
+            <span title="{{duplicate.siteName}}">{{duplicate.siteName}}</span>
+          </td>
+          <td data-header-class="'placement-column'"
+              data-title="'global.placement' | translate"
+              data-sortable="'placementName'">
+            <span title="{{duplicate.placementName}}">{{duplicate.placementName}}</span>
+          </td>
+          <td data-header-class="'section-column'"
+              data-title="'global.section' | translate"
+              data-sortable="'siteSectionName'">
+            <span title="{{duplicate.siteSectionName}}">{{duplicate.siteSectionName}}</span>
+          </td>
+          <td data-header-class="'size-column'"
+              data-title="'global.size' | translate"
+              data-sortable="'sizeName'">
+            <span title="{{duplicate.sizeName}}">{{duplicate.sizeName}}</span>
+          </td>
+          <td data-header-class="'creative-group-column'"
+              data-title="'global.group' | translate"
+              data-sortable="'creativeGroupName'">
+            <span title="{{duplicate.creativeGroupName}}">{{duplicate.creativeGroupName}}</span>
+          </td>
+          <td data-header-class="'alias-column'"
+              data-title="'global.alias' | translate"
+              data-sortable="'creativeAlias'">
+            <span title="{{duplicate.creativeAlias}}">{{duplicate.creativeAlias}}</span>
+          </td>
+        </tr>
+      </table>
+    </te-table>
+  </div>
+</div>
+<div class="modal-footer">
+  <button id="dismissButton"
+          type="button"
+          class="btn btn-primary"
+          data-ng-click="vm.dismiss()">
+    {{'global.ok' | translate}}
+  </button>
+</div>

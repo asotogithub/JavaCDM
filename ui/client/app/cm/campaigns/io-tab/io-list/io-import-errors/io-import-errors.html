@@ -1,0 +1,11 @@
+<issues-container
+        data-model="vm.model"
+        data-config="vm.config"
+        data-has-export-permission="vm.hasExportPermission"
+        data-on-cancel="vm.closeModal(responseStatus)"
+        data-on-continue="vm.completeBulk()"
+        data-on-export-issues="vm.exportIssues()"
+        data-on-model-actions="vm.buildModelActions(issue)">
+</issues-container>
+<!--Hidden flag for succesful export for protractor test-->
+<span id="exportIssuesSuccessful" data-ng-show="false">{{vm.exportIssuesSuccessful}}</span>

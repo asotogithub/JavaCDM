@@ -1,0 +1,56 @@
+<div data-ng-controller="SMCampaignNameController as vmAddSMCampaignName">
+    <div data-ng-form name="vmAddSMCampaignName.formWizard" novalidate>
+        <fieldset>
+            <div>
+                <!-- CAMPAIGN NAME -->
+                <div class="col-xs-4">
+                    <label for="campaignName" class="control-label">{{'siteMeasurement.campaignName' | translate}}:</label>
+                    <div class="form-group" data-ng-class="{'has-error': vmAddSMCampaignName.formWizard.campaignName.$dirty && vmAddSMCampaignName.formWizard.campaignName.$invalid}">
+                        <input id="campaignName"
+                               class="form-control"
+                               name="campaignName"
+                               type="text"
+                               data-ng-model="vmSMCampaign.campaign.name"
+                               maxlength="{{vmAddSMCampaignName.maxLength}}"
+                               autocomplete="off"
+                               required/>
+                        <p class="help-block"
+                           data-ng-if="vmAddSMCampaignName.formWizard.campaignName.$dirty && vmAddSMCampaignName.formWizard.campaignName.$invalid">
+                            {{'validation.error.required' | translate}}
+                        </p>
+                    </div>
+                </div>
+                <!-- ADVERTISER -->
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="advertiserSelect" class="control-label">{{'global.advertiser' | translate}}:</label>
+                        <select id="advertiserSelect"
+                                name="advertiserSelect"
+                                class="form-control"
+                                data-ng-model="vmSMCampaign.campaign.advertiser"
+                                data-ng-options="advertiser.name for advertiser in vmAddSMCampaignName.advertiserList track by advertiser.id"
+                                data-ng-change="vmAddSMCampaignName.reloadBrand()"
+                                required>
+                            <option value="" disabled selected hidden>{{'advertiser.selectAdvertiser' | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- BRAND -->
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="brandSelect" class="control-label">{{'global.brand' | translate}}:</label>
+                        <select id="brandSelect"
+                                name="brandSelect"
+                                class="form-control"
+                                data-ng-model="vmSMCampaign.campaign.brand"
+                                data-ng-options="brand.name for brand in vmAddSMCampaignName.brandList track by brand.id"
+                                data-ng-disabled="vmSMCampaign.campaign.advertiser == null"
+                                required>
+                            <option value="" disabled selected hidden>{{'advertiser.selectBrand' | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<span>
+    <span>
+        {{node.name}}
+    </span>
+    <em>
+        <span ng-if="node.searchContext" class="pull-right text-muted" translate="global.nOfm"
+              translate-values="{n: node.searchContext.position, m: node.searchContext.total}">
+        </span>
+    </em>
+    <span class="clearfix"></span>
+</span>

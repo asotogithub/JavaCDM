@@ -1,0 +1,27 @@
+.disabled {
+    opacity: 0.3;
+}
+
+.tick-border {
+    border-style: solid;
+}
+
+.campaign-dates .cd-no-padding-left {
+    padding-left: 0;
+}
+
+.cd-help {
+    margin-top: 10px;
+}
+
+.col-md-6 .panel {
+    margin-bottom: 5px;
+}
+
+.col-md-6 .panel.selected {
+    border-color: #5d9cec;
+}
+
+.domain-options {
+    min-height: 159px;
+}

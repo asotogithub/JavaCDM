@@ -1,0 +1,43 @@
+<div class="row" data-ng-controller="ScheduleTrackingTagAssociationsController as vmTagAssociations" data-cg-busy="vmTagAssociations.promise">
+    <te-table class="col-xs-12"
+              data-empty-message="'global.noAssociations' | translate"
+              data-model="vmTagAssociations.associations"
+              data-page-size="{{vmTagAssociations.PAGE_SIZE}}"
+              data-on-counter-search="vmTagAssociations.onSearchCounter(counterSearch)"
+              data-selection-mode="MULTI">
+        <te-table-btns>
+            <te-table-remove-btn data-te-table-btn-click="vmTagAssociations.deleteAssociations($selection)"></te-table-remove-btn>
+        </te-table-btns>
+        <table>
+            <tr class="actionable-row" data-ng-repeat="trackingTag in $data">
+                <td data-title="'global.trackingTag' | translate"
+                    data-searchable="true"
+                    data-sortable="'name'">
+                    {{trackingTag.name}}
+                </td>
+                <td data-title="'global.content' | translate"
+                    class="text-center html-content-column">
+                    <button id="htmlContentBtn"
+                            class="btn btn-default"
+                            data-ng-click="vmTagAssociations.viewHTMLContent($event, vmTagAssociations.contentTypes.CONTENT)"
+                            uib-popover-template="'app/cm/campaigns/schedule-tab/schedule-insertions/schedule-tracking-tag-associations/template/popover-content-template.html'"
+                            popover-is-open="vmTagAssociations.contentPopoverIsOpen[$index]"
+                            data-ng-disabled="!trackingTag.htmlContent">
+                        {{'global.view' | translate}}
+                    </button>
+                </td>
+                <td data-title="'global.secureContent' | translate"
+                    class="text-center html-content-column html-secure-content">
+                    <button id="htmlSecureContentBtn"
+                            class="btn btn-default"
+                            data-ng-click="vmTagAssociations.viewHTMLContent($event, vmTagAssociations.contentTypes.SECURE_CONTENT)"
+                            uib-popover-template="'app/cm/campaigns/schedule-tab/schedule-insertions/schedule-tracking-tag-associations/template/popover-content-template.html'"
+                            popover-is-open="vmTagAssociations.secureContentPopoverIsOpen[$index]"
+                            data-ng-disabled="!trackingTag.secureHtmlContent">
+                        {{'global.view' | translate}}
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

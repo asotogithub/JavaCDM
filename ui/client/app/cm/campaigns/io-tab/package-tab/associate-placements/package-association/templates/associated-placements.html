@@ -1,0 +1,55 @@
+<te-table id="associated-placement-table"
+          data-empty-message="'global.listEmpty' | translate"
+          data-model="vm.model"
+          data-page-size="{{vm.pageSize}}"
+          data-selection-mode="SINGLE"
+          data-te-table-select="vm.selectRows($selection)">
+    <te-table-btns>
+        <te-table-add-btn data-ng-show="vm.options.showAdd"
+                          data-te-table-btn-click="vm.add()"></te-table-add-btn>
+        <te-table-edit-btn data-ng-show="vm.options.showEdit"
+                           data-te-table-btn-click="vm.edit($selection)"></te-table-edit-btn>
+    </te-table-btns>
+    <table>
+        <tr id="placement{{placement.id}}" data-ng-repeat="placement in $data">
+            <td id="placement{{placement.id}}Name"
+                data-title="'placement.name' | translate"
+                data-sortable="'name'"
+                class="placement-name-width wrap-text-td">
+                {{placement.name}}
+            </td>
+            <td id="placement{{placement.id}}Site"
+                data-title="'global.site' | translate"
+                data-sortable="'siteName'">
+                {{placement.siteName}}
+            </td>
+            <td id="placement{{placement.id}}Section"
+                data-title="'global.section' | translate"
+                data-sortable="'sectionName'">
+                {{placement.sectionName}}
+            </td>
+            <td id="placement{{placement.id}}Size"
+                data-title="'global.size' | translate"
+                data-sortable="'sizeName'"
+                class="text-center">
+                {{placement.sizeName}}
+            </td>
+            <td id="placement{{placement.id}}Status"
+                data-title="'global.status' | translate"
+                data-sortable="'status'"
+                class="text-center">
+                {{vm.getStatusName(placement.status) | translate}}
+            </td>
+            <td id="placement{{placement.id}}Remove"
+                data-title="'global.remove' | translate"
+                data-sortable="'allowRemove'"
+                class="text-center">
+                <button data-ng-show="placement.allowRemove"
+                        class="btn btn-default"
+                        data-ng-click="vm.removePlacement(placement, $event)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    </table>
+</te-table>

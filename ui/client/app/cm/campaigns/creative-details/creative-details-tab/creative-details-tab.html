@@ -1,0 +1,33 @@
+<div data-cg-busy="vmEdit.promise">
+    <div data-ng-form name="vmEdit.editCreativeForm" class="form-horizontal" novalidate>
+        <div class="form-group creative-inner-tab">
+            <div data-ng-include="'app/cm/campaigns/creative-details/creative-details-tab/partials/creative-details-form.html'"></div>
+        </div>
+        <div class="form-group creative-inner-tab">
+            <div data-ng-include="'app/cm/campaigns/creative-details/creative-details-tab/partials/creative-details-tabs.html'"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left">
+                    <a class="btn btn-danger" data-ng-click="vmEdit.deleteCreative()">
+                        {{'global.delete' | translate}}
+                    </a>
+                </div>
+                <div class="pull-right">
+                    <button id="saveButton"
+                            type="submit"
+                            class="btn btn-primary"
+                            data-ng-click="vmEdit.save()"
+                            data-ng-disabled="vmEdit.editCreativeForm.$invalid ||
+                                          vmEdit.editCreativeForm.$pristine ||
+                                          vmEdit.creative.creativeGroups[0].creativeGroups.length == 0">
+                        {{'global.save' | translate}}
+                    </button>
+                    <a class="btn btn-default" data-ng-click="vmEdit.close()">
+                        {{'global.close' | translate}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

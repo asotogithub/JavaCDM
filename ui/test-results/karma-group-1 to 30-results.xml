@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="PhantomJS 1.9.8 (Windows 8)" package="(Test Files 1 to 30)" timestamp="2016-08-22T17:03:45" id="0" hostname="ascbomvillarroe" tests="105" errors="0" failures="0" time="3.337">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34"/>
+    </properties>
+    <testcase name="should resolve metrics data" time="0.096" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmDetailsController"/>
+    <testcase name="should configure chart series data using metrics data" time="0.033" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmReporting"/>
+    <testcase name="should invoke AdmService.getADMDatasetConfigs()" time="0.035" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmDetailsTabController activate()"/>
+    <testcase name="should resolve dataset data" time="0.021" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmDetailsTabController activate()"/>
+    <testcase name="should invoke AdmService.getADMDatasetConfigs()" time="0.019" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmDetailsTabController Update()"/>
+    <testcase name="should invoke AdmService.updateAdmDetails()" time="0.039" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmDetailsTabController Update()"/>
+    <testcase name="should invoke activate()" time="0.026" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: ConfigurationController Configuration controller"/>
+    <testcase name="Should create an instance of the controller." time="0.031" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: ConfigurationController Configuration controller"/>
+    <testcase name="Should add a item to cookie array." time="0.026" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: ConfigurationController Configuration controller"/>
+    <testcase name="Should remove empty cookie from cookie array." time="0.02" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: ConfigurationController Configuration controller"/>
+    <testcase name="Should remove a item from cookie array." time="0.04" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: ConfigurationController Configuration controller"/>
+    <testcase name="Should create an instance of the controller." time="0.02" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: FormController"/>
+    <testcase name="should invoke activate()" time="0.019" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: FormController Activate()"/>
+    <testcase name="should invoke AdmService.getADMDatasetConfigs()" time="0.018" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmListController activate()"/>
+    <testcase name="should set promise" time="0.021" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmListController activate()"/>
+    <testcase name="should set model when service call is resolved" time="0.023" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmListController activate()"/>
+    <testcase name="should go to Details page" time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AdmListController"/>
+    <testcase name="Should create an instance of the controller." time="0.053" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignController"/>
+    <testcase name="Should resolve the promise to get the campaign to be saved" time="0.03" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignController"/>
+    <testcase name="should simulate a save operation successfully" time="0.02" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignController"/>
+    <testcase name="Should create an instance of the controller." time="0.019" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignDatesController"/>
+    <testcase name="Should create an instance of the controller." time="0.02" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignDomainController"/>
+    <testcase name="Should resolve the promise." time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignDomainController"/>
+    <testcase name="Should resolve the promise with all domains data." time="0.026" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignDomainController"/>
+    <testcase name="Should resolve the promise to get the list of advertisers" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignNameController"/>
+    <testcase name="Should resolve the promise to get the list of brands" time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignNameController"/>
+    <testcase name="Should obtain all the advertisers to create a new campaign" time="0.067" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignNameController"/>
+    <testcase name="Should obtain all the brands for the selected advertiser" time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AddCampaignNameController"/>
+    <testcase name="should invoke CampaignsService.getCampaignMetrics()" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignDetailsController"/>
+    <testcase name="should initialize campaigns as null" time="0.019" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignsListController"/>
+    <testcase name="should initialize metrics as null" time="0.018" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignsListController"/>
+    <testcase name="should invoke CampaignService.getList()" time="0.019" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignsListController"/>
+    <testcase name="should invoke CampaignService.getListMetrics()" time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignsListController"/>
+    <testcase name="should set promise for CampaignsListController" time="0.03" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignsListController"/>
+    <testcase name="should not resolve promise until all service calls have been resolved" time="0.03" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignsListController"/>
+    <testcase name="should correlate metric and campaign data when promises are resolved" time="0.026" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignsListController"/>
+    <testcase name="should configure chart series data using metrics data" time="0.028" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignsListController"/>
+    <testcase name="should add a new click-through element" time="0.035" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeEditClickThroughController Clickthrough list"/>
+    <testcase name="should NOT add a new click-through element, if some element is empty" time="0.031" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeEditClickThroughController Clickthrough list"/>
+    <testcase name="should remove element of the specified index" time="0.093" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeEditClickThroughController Clickthrough list"/>
+    <testcase name="should NOT remove the element if it is the last one" time="0.021" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeEditClickThroughController Clickthrough list"/>
+    <testcase name="should NOT remove the element if the index does not exists" time="0.024" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeEditClickThroughController Clickthrough list"/>
+    <testcase name="should test invalid urls" time="0.024" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeEditClickThroughController Clickthrough list"/>
+    <testcase name="should test valid urls" time="0.021" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeEditClickThroughController Clickthrough list"/>
+    <testcase name="should invoke CreativeService.getCreative()" time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeDetailsTabController"/>
+    <testcase name="should invoke CampaignsService.updateCampaignDetails()" time="0.031" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeDetailsTabController save()"/>
+    <testcase name="Replace blank space with &apos;_&apos;" time="0.051" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeDetailsTabController externalIdChange()"/>
+    <testcase name="should go back to creative-list $state" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeDetailsController"/>
+    <testcase name="should go back to creative-group-creative-list $state" time="0.026" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeDetailsController"/>
+    <testcase name="should be initialized as null" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupsTabController creativeGroups"/>
+    <testcase name="should invoke CampaignsService.getCreativeGroups()" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupsTabController activate()"/>
+    <testcase name="should set promise from CampaignsService.getCreativeGroups()" time="0.027" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupsTabController activate()"/>
+    <testcase name="should set creativeGroups when CampaignsService.getCreativeGroups() is resolved" time="0.029" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupsTabController activate()"/>
+    <testcase name="should have label counter to Creative Groups Grid" time="0.028" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupsTabController activate()"/>
+    <testcase name="should invoke $state.go()" time="0.038" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupsTabController getCreativeGroupDetails()"/>
+    <testcase name="should create an instance of the controller" time="0.034" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeAssignController"/>
+    <testcase name="should set creativeList when CampaignsService.getCreativeGroups() is resolved" time="0.032" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeAssignController"/>
+    <testcase name="should define steps for the wizard" time="0.112" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeAddController Steps"/>
+    <testcase name="should invoke CampaignService.getCreatives()" time="0.023" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeListController activate()"/>
+    <testcase name="should set promise from CreativeService.getList()" time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeListController activate()"/>
+    <testcase name="should set creativeList when CreativeService.getList() is resolved" time="0.033" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeListController activate()"/>
+    <testcase name="should update the Creative List counter when CreativeService.getList() is resolved" time="0.026" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignCreativeListController activate()"/>
+    <testcase name="Should create an instance of the controller." time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IoAddController"/>
+    <testcase name="Should resolve the promise to get the campaign to be saved" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IoAddController"/>
+    <testcase name="should simulate a save operation successfully" time="0.019" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IoAddController"/>
+    <testcase name="should validate max length from input IoName" time="0.027" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IoAddController"/>
+    <testcase name="should load an InsertionOrder" time="0.028" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignIoDetailsController"/>
+    <testcase name="should load, edit, format and save a IO" time="0.034" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignIoEditController"/>
+    <testcase name="should show the warnings according to the status changes" time="0.03" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignIoEditController"/>
+    <testcase name="should validate max length from input IoName" time="0.05" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CampaignIoEditController"/>
+    <testcase name="should set options configuration" time="0.038" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportController activate()"/>
+    <testcase name="should call close()" time="0.03" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportController close()"/>
+    <testcase name="should call dismiss()" time="0.031" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportController close()"/>
+    <testcase name="should invoke DialogFactory.showCustomDialog()" time="0.032" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportController importError()"/>
+    <testcase name="should invoke CampaignsService.importResource" time="0.032" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportController importMedia()"/>
+    <testcase name="should invoke DialogFactory.showCustomDialog()" time="0.032" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportController uploadError()"/>
+    <testcase name="should invoke CampaignsService.uploadResource" time="0.033" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportController uploadMedia()"/>
+    <testcase name="should invoke DialogFactory.showDismissableMessage()" time="0.042" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportController uploadSuccess()"/>
+    <testcase name="Should has summary errors and Media Resources" time="0.047" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportErrorsController Active() IOImportErrors"/>
+    <testcase name="Should select default action" time="0.032" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportErrorsController Active() IOImportErrors"/>
+    <testcase name="Should call close modal" time="0.032" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportErrorsController Close Modal"/>
+    <testcase name="Should call dismiss modal" time="0.162" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportErrorsController Close Modal"/>
+    <testcase name="Should  return message success." time="0.024" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: IOImportErrorsController Call Complete Bulk"/>
+    <testcase name="should invoke InsertionOrderService.getList()" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController activate()"/>
+    <testcase name="should invoke CampaignsService.getPackagePlacements()" time="0.023" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController activate()"/>
+    <testcase name="should set promise from InsertionOrderService.getList() and CampaignsService.getPackagePlacements()" time="0.024" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController activate()"/>
+    <testcase name="should set insertionOrderList when promise is resolved" time="0.027" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController activate()"/>
+    <testcase name="should go() to `io-add` state" time="0.021" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController addIo()"/>
+    <testcase name="should return undefined for insertion order rows" time="0.022" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController cellClassName()"/>
+    <testcase name="should return `placement-cell-*` for placement rows" time="0.021" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController cellClassName()"/>
+    <testcase name="should go() to `campaign-io-details` state" time="0.02" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController editIoPlacement()"/>
+    <testcase name="should go() to `edit-placement` state" time="0.021" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController editIoPlacement()"/>
+    <testcase name="should return cellText only if rowData.level is visibleLevel" time="0.03" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController filterByLevel()"/>
+    <testcase name="should $translate status name" time="0.024" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController getStatusName()"/>
+    <testcase name="should set legendMedia" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController onClearFiltering()"/>
+    <testcase name="should set legendMedia" time="0.025" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController onFilterApplied()"/>
+    <testcase name="should set selection and selectionLevel" time="0.026" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController onSelect()"/>
+    <testcase name="should have template url equal as defined in constants" time="0.032" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController Media template URL"/>
+    <testcase name="should not need to encode template url" time="0.031" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController Media template URL"/>
+    <testcase name="should invoke CampaignsService.exportResource()" time="0.033" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: InsertionOrderListTabController exportAll()"/>
+    <testcase name="should create an instance of PackageAddPlacementController" time="0.036" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: PackageAddPlacementController"/>
+    <testcase name="should create an instance of AssociatePlacementsController" time="0.047" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: AssociatePlacementsController"/>
+    <testcase name="Should create an instance of the controller." time="0.041" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CreatePlacementsController"/>
+    <testcase name="should add new placements to list of associated placements" time="0.036" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: CreatePlacementsController addToAssociatedPlacements()"/>
+    <testcase name="should create an instance of PackageAssociationController" time="0.035" classname="(Test Files 1 to 30) PhantomJS 1.9.8 (Windows 8).Controller: PackageAssociationController"/>
+    <system-out><![CDATA[
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

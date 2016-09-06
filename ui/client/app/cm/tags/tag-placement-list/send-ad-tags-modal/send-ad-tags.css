@@ -1,0 +1,89 @@
+.body-adTags {
+    overflow: hidden;
+}
+
+.clear-all-container {
+    margin-top: 12px;
+    text-align: right;
+}
+
+.email-container-adTags {
+    height: 359px;
+    margin-top: 3px;
+}
+
+.email-container-adTags .host {
+    margin-top: 0px;
+}
+
+#tableRecipients .checkbox {
+    padding-top: 4px;
+}
+
+#tableRecipients td {
+    padding: 2px 5px;
+}
+
+#tableRecipients th {
+    padding: 5px 5px;
+    vertical-align: middle;
+}
+
+.email-container-adTags .tags {
+    overflow: auto;
+    white-space: nowrap;
+    cursor: default;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 0 0 #ccc;
+}
+
+.header-padding-adTags {
+    padding: 10px 20px;
+}
+
+.header-padding-adTags div {
+    font-size: 18px;
+}
+
+/*Site*/
+#adTagsSiteGrid table thead tr th:nth-child(1) {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+}
+
+/*Placement*/
+#adTagsSiteGrid table thead tr th:nth-child(2) {
+    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
+}
+
+/*Format*/
+#adTagsSiteGrid table thead tr th:nth-child(3) {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+#adTagsSiteGrid table tr td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.send-ad-tags-format-container {
+    margin: 0;
+}
+
+.send-ad-tags-individual-recipients-container {
+    width: 388px;
+}
+
+.send-ad-tags-individual-recipients-container .tags{
+    border: 1px solid #ccc;
+    box-shadow: 0 0 0 0 #ccc;
+    cursor: default;
+    max-height: 100px;
+    overflow: auto;
+    white-space: nowrap;
+}

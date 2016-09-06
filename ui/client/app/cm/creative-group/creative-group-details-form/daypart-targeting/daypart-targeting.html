@@ -1,0 +1,116 @@
+<div class="daypart-targeting">
+  <div class="col-md-2"></div>
+  <div class="col-md-4 pb pl pr">
+    <div class="panel panel-default" data-ng-class="{'selected': !vm.custom, 'not-selected': vm.custom}">
+      <div class="panel-heading text-center">
+        <label class="radio-inline">
+          <input id="iabStandard"
+                 name="custom"
+                 type="radio"
+                 data-ng-change="vm.update()"
+                 data-ng-model="vm.custom"
+                 data-ng-value="false" />
+          {{'daypartTargeting.iabStandards.label' | translate}}
+        </label>
+      </div>
+      <fieldset class="panel-body pt0 pr pl pb" data-ng-disabled="vm.custom" data-ng-class="{'disabled': vm.custom}">
+        <div class="daypart-targeting-standard-options">
+          <div class="checkbox c-checkbox" data-ng-repeat="option in vm.iabStandardOptions">
+            <label>
+              <input id="{{option}}"
+                     type="checkbox"
+                     data-ng-change="vm.update()"
+                     data-ng-model="vm.iabStandard[option]" />
+              <span class="fa fa-check"></span>
+              {{'daypartTargeting.iabStandards.' + option | translate}}
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="daypart-targeting-custom col-md-4 pb pl pr">
+    <div class="panel panel-default" data-ng-class="{'selected': vm.custom}">
+      <div class="panel-heading text-center">
+        <label class="radio-inline">
+          <input id="custom"
+                 name="custom"
+                 type="radio"
+                 data-ng-change="vm.update()"
+                 data-ng-model="vm.custom"
+                 data-ng-value="true" />
+          {{'global.custom' | translate}}
+        </label>
+      </div>
+      <fieldset class="panel-body pt0 pr pl" data-ng-disabled="!vm.custom" data-ng-class="{'disabled': !vm.custom}">
+        <div class="form-group mr0">
+          <div class="daypart-targeting-custom-timepickers">
+            <div class="daypart-targeting-custom-timepicker" id="daypartCustomStart">
+              <div class="text-right"><strong>{{'daypartTargeting.custom.startTime' | translate}}:</strong></div>
+              <div>
+                <timepicker id="startTime"
+                            data-minute-step="15"
+                            data-ng-change="vm.ensureValidTimes()"
+                            data-ng-model="vm.customOption.startTime"
+                            data-readonly-input="false"
+                            data-no-dirty></timepicker>
+              </div>
+            </div>
+            <div class="daypart-targeting-custom-timepicker" id="daypartCustomEnd">
+              <div class="text-right"><strong>{{'daypartTargeting.custom.endTime' | translate}}:</strong></div>
+              <div>
+                <timepicker id="endTime"
+                            data-minute-step="15"
+                            data-ng-change="vm.ensureValidTimes()"
+                            data-ng-model="vm.customOption.endTime"
+                            data-readonly-input="false"
+                            data-no-dirty></timepicker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group mr0">
+          <div class="col-xs-12 text-center text-nowrap">
+            <label class="checkbox-inline" data-ng-repeat="day in vm.days">
+              <input id="{{day}}" type="checkbox" data-ng-model="vm.customOption[day]"  data-no-dirty>
+              {{'daypartTargeting.day.abbreviation.' + day | translate}}
+            </label>
+          </div>
+        </div>
+        <div class="form-group mr0">
+          <div class="col-xs-12 text-center">
+            <button id="addCustomOption" class="btn btn-primary" data-ng-click="vm.addCustomOption()" data-ng-disabled="vm.addDisabled()">
+              {{'global.add' | translate}}
+            </button>
+          </div>
+        </div>
+        <div class="form-group mr0">
+          <div class="col-xs-12">
+            <select id="customOptions"
+                    class="form-control"
+                    data-ng-model="vm.customOption.selected"
+                    multiple
+                    data-no-dirty>
+              <option data-ng-repeat="option in vm.customOptions" data-ng-value="option">
+                {{option | daypartOption}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group mr0">
+          <div class="pull-right pb">
+            <button id="clearAllCustomOptions" class="btn btn-default" data-ng-click="vm.clearCustomOptions()">
+              {{'global.clearAll' | translate}}
+            </button>
+            <button id="clearSelectedCustomOptions"
+                    class="btn btn-default"
+                    data-ng-click="vm.clearSelectedCustomOptions()"
+                    data-ng-disabled="!vm.customOption.selected.length">
+              {{'global.clearSelected' | translate}}
+            </button>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

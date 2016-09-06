@@ -1,0 +1,33 @@
+<div data-cg-busy="vmAdd.promise">
+    <div class="panel panel-default">
+        <div class="panel-heading">{{'creative.addCreativeLegend' | translate}}</div>
+        <div class="panel-body">
+            <div class="upload-creative">
+                <upload-creative creatives-model="vmAdd.creatives"
+                                 creative-list="vmAdd.creativeList"
+                                 creative-versioned-list="vmAdd.creativeVersionedList"
+                                 options="vmAdd.uploadOptions"
+                                 is-valid-model="vmAdd.isAddFormValid"
+                                 add-existing="vmAdd.addExisting()">
+                </upload-creative>
+            </div>
+            <div>
+                <div class="pull-right">
+                    <a class="btn btn-default"
+                       data-ng-click="vmAdd.cancel()"
+                       data-ui-sref="creative-group-creative-list">
+                        {{'global.cancel' | translate}}
+                    </a>
+                    <button id="saveButton"
+                            type="submit"
+                            class="btn btn-primary"
+                            data-ng-click="vmAdd.save()"
+                            data-ng-disabled="!vmAdd.isAddFormValid">
+                        {{'global.save' | translate}}
+                    </button>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>

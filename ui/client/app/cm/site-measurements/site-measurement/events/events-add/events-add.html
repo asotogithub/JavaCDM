@@ -1,0 +1,66 @@
+<div>
+    <!-- START panel-->
+    <div class="panel panel-default">
+        <div class="panel-heading">{{'siteMeasurement.eventsPings.followQuickSteps' | translate}}</div>
+        <div class="panel-body">
+            <form name="vmAddEvent.formWizard" form-wizard="" steps="2" novalidate="" data-cg-busy="vmAddEvent.promise">
+                <div class="form-wizard wizard-horizontal">
+                    <!-- START wizard steps indicator-->
+                    <ol class="row">
+                        <li data-ng-class="{'active':wizard.active(1)}" class="col-md-3">
+                            <h4>{{'global.nameType' | translate}}</h4>
+                            <small class="text-muted">{{'siteMeasurement.eventsPings.createEventNameType' | translate}}</small>
+                        </li>
+                        <li data-ng-class="{'active':wizard.active(2)}" class="col-md-3">
+                            <h4>{{'global.group' | translate}}</h4>
+                            <small class="text-muted">{{'siteMeasurement.eventsPings.createSelectGroup' | translate}}</small>
+                        </li>
+                    </ol>
+                    <!-- END wizard steps indicator-->
+                    <!-- START Wizard Step inputs -->
+                    <div id="wizardStep1" data-ng-show="wizard.active(1)">
+                        <div data-ng-include="'app/cm/site-measurements/site-measurement/events/events-add/name-type/name-type.html'"></div>
+                        <div class="btn-right-bottom">
+                            <div class="pull-right">
+                                <a class="btn btn-default" data-ng-click="vmAddEvent.cancel()">
+                                    {{'global.cancel' | translate}}
+                                </a>
+                                <a id="nextBtn" class="btn btn-primary" a-disabled="!vmAddEvent.STEP.NAME.isValid" href=""
+                                   data-ng-click="vmAddEvent.activateStep(vmAddEvent.STEP.GROUP); wizard.go(2)">
+                                    {{'global.next' | translate}} <span>&rarr;</span></a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <!-- END Wizard Step inputs -->
+                    <!-- START Wizard Step inputs -->
+                    <div id="wizardStep2" data-ng-show="wizard.active(2)">
+                        <fieldset>
+                            <legend>{{'global.group' | translate}}</legend>
+                            <div data-ng-include="'app/cm/site-measurements/site-measurement/events/events-add/group/group.html'"></div>
+                        </fieldset>
+                        <div class="btn-right-bottom">
+                            <div class="pull-left">
+                                <a class="btn btn-default" href="" data-ng-click="wizard.go(1)">
+                                    <span>&larr;</span> {{'global.previous' | translate}}
+                                </a>
+                            </div>
+                            <div class="pull-right">
+                                <a id="cancelBtn" class="btn btn-default" data-ng-click="vmAddEvent.cancel()">
+                                    {{'global.cancel' | translate}}
+                                </a>
+                                <a id="saveBtn" class="btn btn-primary" a-disabled="!vmAddEvent.STEP.GROUP.isValid" href=""
+                                   data-ng-click="vmAddEvent.save()">
+                                    {{'global.save' | translate}}
+                                </a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <!-- END Wizard Step inputs -->
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END panel -->
+</div>

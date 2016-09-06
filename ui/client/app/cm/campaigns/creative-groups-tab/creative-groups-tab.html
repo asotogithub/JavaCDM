@@ -1,0 +1,68 @@
+<div data-cg-busy="vmCrtvGrpsTab.promise">
+  <te-table id="creativeGroupsGrid"
+            data-empty-message="'global.listEmpty' | translate"
+            data-model="vmCrtvGrpsTab.creativeGroups"
+            data-pinned-rows="{name: vmCrtvGrpsTab.DEFAULT_NAME}"
+            data-on-counter-search="vmCrtvGrpsTab.onCounterSearch(counterSearch)"
+            data-selection-mode="SINGLE_CHECKBOX">
+    <te-table-btns>
+      <te-table-add-btn data-ui-sref="new-creative-group({campaignId: vmCrtvGrpsTab.campaignId})"></te-table-add-btn>
+      <te-table-edit-btn data-te-table-btn-click="vmCrtvGrpsTab.getCreativeGroupDetails($selection.id)"></te-table-edit-btn>
+    </te-table-btns>
+      <te-table-thirdly-btns class="thirdly-btns-position">
+        <legend-table class="btn-group" data-legend="vmCrtvGrpsTab.legendCreativeGroups"></legend-table>
+      </te-table-thirdly-btns>
+    <table class="creative-groups-grid">
+      <tr id="creativeGroup{{creativeGroup.id}}" data-ng-repeat="creativeGroup in $data">
+        <td id="creativeGroup{{creativeGroup.id}}Name"
+            data-title="'global.name' | translate"
+            data-searchable="true"
+            data-sortable="'name'">
+          {{creativeGroup.name}}
+        </td>
+        <td id="creativeGroup{{creativeGroup.id}}Priority"
+            class="text-center"
+            data-title="'creativeGroup.priority' | translate"
+            data-sortable="'priority'">
+          {{creativeGroup.priority}}
+        </td>
+        <td id="creativeGroup{{creativeGroup.id}}CookieTargeting" class="text-center"
+            data-title="'creativeGroup.cookieTargeting.label' | translate"
+            data-sortable="'doCookieTargeting'">
+          <i class="fa fa-times" data-ng-if="creativeGroup.doCookieTargeting !== 1"></i>
+          <i class="fa fa-check" data-ng-if="creativeGroup.doCookieTargeting === 1"></i>
+        </td>
+        <td id="creativeGroup{{creativeGroup.id}}GeoTargeting"
+            class="text-center"
+            data-title="'creativeGroup.geoTargeting' | translate"
+            data-sortable="'doGeoTargeting'">
+          <i class="fa fa-times" data-ng-if="creativeGroup.doGeoTargeting !== 1"></i>
+          <i class="fa fa-check" data-ng-if="creativeGroup.doGeoTargeting === 1"></i>
+        </td>
+        <td id="creativeGroup{{creativeGroup.id}}DayPartTargeting" class="text-center"
+            data-title="'creativeGroup.dayPartTargeting' | translate"
+            data-sortable="'doDaypartTargeting'">
+          <i class="fa fa-times" data-ng-if="creativeGroup.doDaypartTargeting !== 1"></i>
+          <i class="fa fa-check" data-ng-if="creativeGroup.doDaypartTargeting === 1"></i>
+        </td>
+        <td id="creativeGroup{{creativeGroup.id}}GroupWeight" class="text-center"
+            data-title="'creativeGroup.groupWeight' | translate"
+            data-sortable="'enableGroupWeight'">
+            <i class="fa fa-times" data-ng-if="creativeGroup.enableGroupWeight !== 1"></i>
+            <i class="fa fa-check" data-ng-if="creativeGroup.enableGroupWeight === 1"></i>
+        </td>
+        <td id="creativeGroup{{creativeGroup.id}}IsDefault" class="text-center"
+            data-title="'global.default' | translate"
+            data-sortable="'isDefault'">
+          <i class="fa fa-check" data-ng-if="creativeGroup.isDefault === 1"></i>
+        </td>
+        <td id="creativeGroup{{creativeGroup.id}}Creative"
+            class="text-center"
+            data-title="'creative.creative' | translate"
+            data-sortable="'numberOfCreativesInGroup'">
+            {{creativeGroup.numberOfCreativesInGroup | number }}
+        </td>
+      </tr>
+    </table>
+  </te-table>
+</div>

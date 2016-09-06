@@ -1,0 +1,83 @@
+<div>
+    <h3>{{'tagInjection.newTagInjection' | translate}}</h3>
+    <!-- START panel-->
+    <div class="panel panel-default">
+        <div class="panel-heading">{{'tagInjection.followStepsCreate' | translate}}</div>
+        <div class="panel-body">
+            <form name="vmAddTrackingTag.formWizard" form-wizard="" steps="2" novalidate="" data-cg-busy="vmAddTrackingTag.promise">
+                <div class="form-wizard wizard-horizontal">
+                    <!-- START wizard steps indicator-->
+                    <ol class="row">
+                        <li data-ng-class="{'active':wizard.active(1)}" class="col-md-3">
+                            <h4>{{'tagInjection.htmlTagType' | translate}}</h4>
+                            <small class="text-muted">{{'tagInjection.selectTagType' | translate}}</small>
+                        </li>
+                        <li data-ng-class="{'active':wizard.active(2)}" class="col-md-3">
+                            <h4>{{'global.name' | translate}}</h4>
+                            <small class="text-muted">{{'tagInjection.enterName' | translate}}</small>
+                        </li>
+                    </ol>
+                    <!-- END wizard steps indicator-->
+                    <!-- START Wizard Step inputs -->
+                    <div data-ng-show="wizard.active(1)">
+                        <fieldset>
+                            <legend>{{'tagInjection.htmlTagType' | translate}}</legend>
+                            <!-- START row -->
+                            <div class="row">
+                                <div data-ng-include="'app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/html-tag-type/html-tag-type.html'"></div>
+                            </div>
+                            <!-- END row -->
+                        </fieldset>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <a class="btn btn-default" data-ng-click="vmAddTrackingTag.cancel()">
+                                        {{'global.cancel' | translate}}
+                                    </a>
+                                    <a class="btn btn-primary" a-disabled="!vmAddTrackingTag.STEP.TAG_TYPE.isValid" href=""
+                                       data-ng-click="vmAddTrackingTag.activateStep(vmAddTrackingTag.STEP.NAME); wizard.go(2)">
+                                        {{'global.next' | translate}} <span>&rarr;</span></a>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Wizard Step inputs -->
+                    <!-- START Wizard Step inputs -->
+                    <div data-ng-show="wizard.active(2)">
+                        <fieldset>
+                            <legend>{{'global.name' | translate}}</legend>
+                            <!-- START row -->
+                            <div class="row">
+                                <div data-ng-include="'app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/name/name.html'"></div>
+                            </div>
+                            <!-- END row -->
+                        </fieldset>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-left">
+                                    <a class="btn btn-default" href="" data-ng-click="wizard.go(1)">
+                                        <span>&larr;</span> {{'global.previous' | translate}}
+                                    </a>
+                                </div>
+                                <div class="pull-right">
+                                    <a class="btn btn-default" data-ng-click="vmAddTrackingTag.cancel()">
+                                        {{'global.cancel' | translate}}
+                                    </a>
+                                    <a class="btn btn-primary" a-disabled="!vmAddTrackingTag.STEP.NAME.isValid"
+                                       href=""
+                                       data-ng-click="vmAddTrackingTag.save()">
+                                        {{'global.save' | translate}}
+                                    </a>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Wizard Step inputs -->
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END panel -->
+</div>

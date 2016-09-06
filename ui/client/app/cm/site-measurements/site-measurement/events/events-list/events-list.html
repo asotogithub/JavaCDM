@@ -1,0 +1,65 @@
+<div data-cg-busy="vmEvents.promiseEventList" id="smEventsPanel">
+    <te-table data-empty-message="'global.listEmpty' | translate"
+              data-filter-values="vmEvents.filterValues"
+              data-model="vmEvents.eventsList"
+              data-on-counter-search="vmEvents.onSearchCounter(counterSearch)"
+              data-selection-mode="MULTI">
+        <te-table-btns>
+            <te-table-add-btn id="eventAddBtn"
+                              data-te-table-btn-click="vmEvents.addEvent()"
+                              data-ng-if="vmEvents.hasAddEventPermission">
+            </te-table-add-btn>
+            <te-table-edit-btn id="eventEditBtn"
+                               data-ng-if="vmEvents.hasDetailsPermission"
+                               data-te-table-btn-click="vmEvents.getEventDetails($selection)">
+            </te-table-edit-btn>
+        </te-table-btns>
+        <te-table-secondary-btns>
+            <dropdown-multicheckbox data-ng-repeat="option in vmEvents.filterOption"
+                                    data-input-model="option.value"
+                                    data-output-model="vmEvents.filterValues[$index].values"
+                                    data-events="vmEvents.actionFilter[$index]"
+                                    data-title="option.text">
+            </dropdown-multicheckbox>
+        </te-table-secondary-btns>
+        <te-table-thirdly-btns>
+            <legend-table id="eventPingCounter" data-legend="vmEvents.eventPingLegend"></legend-table>
+        </te-table-thirdly-btns>
+        <table>
+            <tr data-ng-repeat="event in $data">
+                <td data-title="'global.event' | translate"
+                    data-searchable="true"
+                    data-sortable="'eventName'"
+                    class="event-column">
+                    {{event.eventName}}
+                </td>
+                <td data-title="'global.eventType' | translate"
+                    data-searchable="true"
+                    data-sortable="'eventTypeName'"
+                    class="event-column">
+                    {{event.eventTypeName}}
+                </td>
+                <td data-title="'global.group' | translate"
+                    data-searchable="true"
+                    data-sortable="'groupName'"
+                    class="group-column">
+                    {{event.groupName}}
+                </td>
+                <td data-title="'global.tagType' | translate"
+                    data-searchable="true"
+                    data-sortable="'tagTypeName'"
+                    class="tag-column">
+                    {{event.tagTypeName}}
+                </td>
+            </tr>
+        </table>
+    </te-table>
+    <!--fly-out panel directive mange events-->
+    <te-fly-out is-open="vmEvents.isOpenflyout"
+                fly-out-model="vmEvents.flyOutModel"
+                fly-out-default-state="vmEvents.flyOutDefaultState"
+                template-content="'app/cm/site-measurements/site-measurement/events/event-details-fly-out/event-details-fly-out.html'"
+                on-close-fly-out="vmEvents.onCloseFlyout(params)"
+                class="event-details-fly-out">
+    </te-fly-out>
+</div>

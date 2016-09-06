@@ -1,0 +1,56 @@
+<div class="warning-creative-groups">
+    <p>
+        {{'creativeGroup.confirm.unableToDeleteCreative.groups' | translate}}
+    </p>
+    <ul>
+        <li data-ng-repeat="group in data.partialHTMLParams.groupName">
+            {{ group }}
+        </li>
+    </ul>
+    <p>
+        {{'creativeGroup.confirm.unableToDeleteCreative.placement' | translate}}
+    </p>
+</div>
+<div>
+    <te-table data-empty-message="'global.listEmpty' | translate"
+              data-model="data.partialHTMLParams.placements">
+        <table>
+            <tr class="actionable-row" data-ng-repeat="placement in $data">
+                <td data-title="'global.site' | translate"
+                    data-sortable="'siteName'"
+                    class="wrap-text-td">
+                    {{placement.siteName}}
+                </td>
+                <td data-title="'global.placement' | translate"
+                    data-sortable="'placementName'"
+                    class="wrap-text-td custom-column">
+                    {{placement.placementName}}
+                </td>
+                <td data-title="'placement.plcmtId' | translate"
+                    data-sortable="'id'"
+                    class="stack-text-header">
+                    {{placement.id}}
+                </td>
+                <td data-title="'global.section' | translate"
+                    data-sortable="'siteSectionName'"
+                    class="wrap-text-td">
+                    {{placement.siteSectionName}}
+                </td>
+                <td data-title="'global.size' | translate"
+                    data-sortable="'sizeName'">
+                    {{placement.sizeName}}
+                </td>
+                <td data-title="'global.group' | translate"
+                    data-sortable="'creativeGroupName'"
+                    class="wrap-text-td">
+                    {{placement.creativeGroupName}}
+                </td>
+                <td data-title="'global.alias' | translate"
+                    data-sortable="'creativeAlias'"
+                    class="wrap-text-td custom-column">
+                    {{placement.creativeAlias}}
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

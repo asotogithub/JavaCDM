@@ -1,0 +1,49 @@
+<form class="form-horizontal" name="vmSendAdTags.adTagsForm" novalidate>
+    <div id="sendAdTagsModal" data-cg-busy="vmSendAdTags.promise">
+        <div class="modal-header">
+            <button class="close"
+                    type="button"
+                    data-ng-click="vmSendAdTags.dismiss()">&times;
+            </button>
+            <h4>{{'tags.sendAdTags.title' | translate}}</h4>
+        </div>
+        <div class="modal-body body-adTags">
+            <div class="col-md-12 panel panel-default">
+                <div class="header-padding-adTags row">
+                    <div class="col-md-6 tooltip-width-adTags">
+                        <span>{{'tags.sendAdTags.recipients' | translate}}</span>
+                        <i class="fa fa-question-circle" aria-hidden="true"
+                           title="{{'tags.sendAdTags.recipientsTooltip' | translate}}"></i>
+                    </div>
+                </div>
+                <div class="panel-body row"
+                     data-ng-include="'app/cm/tags/tag-placement-list/send-ad-tags-modal/templates/recipients.html'">
+                </div>
+                <div class="header-padding-adTags row">
+                    <div class="col-md-6 tooltip-width-adTags">
+                        <span>Tags:</span>
+                    </div>
+                </div>
+                <div class="panel-body row"
+                     data-ng-include="'app/cm/tags/tag-placement-list/send-ad-tags-modal/templates/tags.html'">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="cancelButton"
+                    class="btn btn-default"
+                    type="button"
+                    data-ng-click="vmSendAdTags.dismiss()">
+                {{'global.cancel' | translate}}
+            </button>
+            <button id="sendButton"
+                    class="btn"
+                    type="button"
+                    data-ng-class="vmSendAdTags.unselectedSiteCount > 0 || !((vmSendAdTags.adTagsForm.$valid && vmSendAdTags.emailList.length > 0) || (vmSendAdTags.adTagsForm.$valid && !vmSendAdTags.isIndividualRecipientEmpty())) ? 'btn-default' : 'btn-success'"
+                    data-ng-click="vmSendAdTags.sendAndClose()"
+                    data-ng-disabled="vmSendAdTags.unselectedSiteCount > 0 || !((vmSendAdTags.adTagsForm.$valid && vmSendAdTags.emailList.length > 0) || (vmSendAdTags.adTagsForm.$valid && !vmSendAdTags.isIndividualRecipientEmpty()))">
+                {{'global.send' | translate}}
+            </button>
+        </div>
+    </div>
+</form>

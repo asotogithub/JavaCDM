@@ -1,0 +1,34 @@
+<te-table data-model="inputModel"
+          data-te-table-select="makeSelectionInputModel($selection)"
+          data-te-table-filter="filteredDataInputModel($filtered)"
+          data-selection-mode="MULTI"
+          data-page-size="{{defaultPagerSize}}">
+    <table>
+        <tr class="actionable-row" data-ng-repeat="object in $data">
+            <td data-title="'global.name' | translate"
+                data-searchable="true"
+                data-sortable="'name'"
+                class="wrap-text-td">
+                {{object.name}}
+            </td>
+            <td data-title="'global.site' | translate"
+                data-searchable="true"
+                data-sortable="'siteName'"
+                class="wrap-text-td">
+                {{object.siteName}}
+            </td>
+            <td data-title="'global.section' | translate"
+                data-searchable="true"
+                data-sortable="'sectionName'"
+                class="wrap-text-td">
+                {{object.sectionName}}
+            </td>
+            <td data-title="'global.size' | translate"
+                data-searchable="true"
+                data-sortable="'sizeName'"
+                class="wrap-text-td">
+                {{object.sizeName}}
+            </td>
+        </tr>
+    </table>
+</te-table>

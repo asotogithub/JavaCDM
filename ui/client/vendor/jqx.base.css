@@ -1,0 +1,50 @@
+/* Fix to allow display icon-calendar in distribution mode */
+.jqx-icon-calendar, .jqx-icon-calendar-hover, .jqx-icon-calendar-pressed
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/icon-calendar.png');
+}
+/* Fix to allow display icon-time in distribution mode */
+.jqx-icon-time
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/icon-time.png');
+}
+/* Fix to allow display icon-up in distribution mode */
+.jqx-icon-arrow-up, .jqx-icon-arrow-up-hover, .jqx-icon-arrow-up-selected
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/icon-up.png');
+}
+/* Fix to allow display icon-down in distribution mode */
+.jqx-icon-arrow-down, .jqx-icon-arrow-down-hover, .jqx-icon-arrow-down-selected
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/icon-down.png');
+}
+/* Fix to allow display icon-left in distribution mode */
+.jqx-icon-arrow-left, .jqx-icon-arrow-left-hover, .jqx-icon-arrow-left-selected
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/icon-left.png');
+}
+/* Fix to allow display icon-right in distribution mode */
+.jqx-icon-arrow-right, .jqx-icon-arrow-right-hover, .jqx-icon-arrow-right-selected
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/icon-right.png');
+}
+
+.jqx-grid-validation-arrow-up
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/red_arrow_up.png');
+}
+
+.jqx-grid-validation-arrow-down
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/red_arrow_down.png');
+}
+
+.jqx-icon-arrow-first, .jqx-icon-arrow-first-hover, .jqx-icon-arrow-first-selected
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/icon-first.png');
+}
+
+.jqx-icon-arrow-last, .jqx-icon-arrow-last-hover, .jqx-icon-arrow-last-selected
+{
+    background-image: url('../bower_components/jqwidgets/jqwidgets/styles/images/icon-last.png');
+}

@@ -1,0 +1,39 @@
+<div id="trafficSiteContact" data-ng-controller="SiteTraffickingContactsController as vmSiteTrafficContacts" data-cg-busy="vmSiteTrafficContacts.promiseRequest">
+    <te-table id="contactTable"
+              data-empty-message="'global.listEmpty' | translate"
+              data-model="vmSiteTrafficContacts.contacts"
+              data-pinned-rows="{readonly: true}"
+              data-selection-mode="NONE">
+        <table>
+            <tr class="actionable-row" data-ng-repeat="contact in $data">
+                <td data-title="'global.contact' | translate"
+                    data-searchable="true"
+                    data-sortable="'contactEmail'">
+                    {{contact.contactEmail}}
+                </td>
+                <td data-title="'global.publisher' | translate"
+                    data-searchable="true"
+                    data-sortable="'publisherName'">
+                    {{contact.publisherName}}
+                </td>
+                <td data-title="'global.site' | translate"
+                    data-searchable="true"
+                    data-sortable="'siteName'">
+                    {{contact.siteName}}
+                </td>
+                <td data-header="'app/cm/campaigns/schedule-tab/trafficking-modal/site-trafficking-contacts-tab/site-trafficking-checkbox-all.html'">
+                    <div class="checkbox c-checkbox" data-ng-click="$event.stopPropagation()">
+                        <label>
+                            <input id="trafficContact{{global.contact}}"
+                                   type="checkbox"
+                                   data-ng-change="vmSiteTrafficContacts.checkAllChecked($data)"
+                                   data-ng-disabled="contact.readonly"
+                                   data-ng-model="contact.checked"/>
+                            <span class="fa fa-check"></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

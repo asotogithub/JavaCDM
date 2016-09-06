@@ -1,0 +1,162 @@
+<div data-ng-controller="FormController as form">
+    <form class="form-horizontal"
+          name="admDetails.admDetailsForm"
+          novalidate>
+        <div class="panel-body row">
+            <div class="col-sm-6">
+                <div class="form-group" data-ng-class="{'has-error': admDetails.admDetailsForm.alias.$dirty && admDetails.admDetailsForm.alias.$invalid}">
+                    <label id="aliasLabel" class="col-sm-4 control-label">{{'global.alias' |  translate}}:</label>
+                    <div class="col-sm-6">
+                        <input class="form-control"
+                               type="text"
+                               id="alias"
+                               name="alias"
+                               data-ng-model="admDetails.model.alias"
+                               maxlength="{{form.maxLength}}"
+                               required/>
+                        <p class="help-block"
+                           id="aliasRequired"
+                           data-ng-if="admDetails.admDetailsForm.alias.$dirty && admDetails.admDetailsForm.alias.$invalid">
+                            {{'validation.error.required' | translate}}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group form-campaign">
+                    <label id="advertiserLabel" class="col-sm-4 control-label">{{'global.advertiser' |  translate}}:</label>
+                    <div class="col-sm-6">
+                        <div id="advertiser" class="form-control-static">
+                            {{admDetails.model.advertiserName}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-campaign">
+                    <label id="domainLabel" class="col-sm-4 control-label">{{'global.domain' |  translate}}:</label>
+                    <div class="col-sm-5">
+                        <div id="domain" class="form-control-static adm-form-domain">
+                            {{admDetails.model.domain}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-campaign"
+                     data-ng-class="{'has-error': form.isValidContentChannel()}">
+                    <label id="channels" class="col-sm-4 control-label">{{'global.contentChannels' |  translate}}:</label>
+                    <div class="col-sm-7">
+                        <div class="checkbox c-checkbox col-sm-4 content-channel">
+                            <label>
+                                <input type="checkbox"
+                                       id="emailCChannel"
+                                       data-ng-model="admDetails.model.checkContentChannels.email"
+                                       data-ng-required="form.isValidContentChannel()"/>
+                                <span class="fa fa-check"></span>{{'global.email' |  translate}}</label>
+                        </div>
+                        <div class="checkbox c-checkbox col-sm-4 content-channel">
+                            <label>
+                                <input type="checkbox"
+                                       id="displayCChannel"
+                                       data-ng-model="admDetails.model.checkContentChannels.display"
+                                       data-ng-required="form.isValidContentChannel()"/>
+                                <span class="fa fa-check"></span>{{'global.display' |  translate}}</label>
+                        </div>
+                        <div class="checkbox c-checkbox col-sm-4 content-channel">
+                            <label>
+                                <input type="checkbox"
+                                       id="siteCChannel"
+                                       data-ng-model="admDetails.model.checkContentChannels.site"
+                                       data-ng-required="form.isValidContentChannel()"/>
+                                <span class="fa fa-check"></span>{{'global.site' |  translate}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-campaign">
+                    <label id="configurationLabel" class="col-sm-4 control-label">{{'global.configuration' | translate}}:</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group form-campaign">
+                    <label id="fileNameLabel" class="col-sm-4 control-label">{{'global.fileName' |  translate}}:</label>
+                    <div class="col-sm-6">
+                        <div id="fileName" class="form-control-static">
+                            {{admDetails.model.fileNamePrefix}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-campaign"
+                     data-ng-class="{'has-error': admDetails.admDetailsForm.fileFrequency.$dirty && admDetails.admDetailsForm.fileFrequency.$invalid}">
+                    <label id="fileFrequencyLabel" class="col-sm-4 control-label">{{'global.updateFrequency' |  translate}}:</label>
+                    <div class="col-sm-3 adm-input-form">
+                        <input class="form-control"
+                               id="fileFrequency"
+                               name="fileFrequency"
+                               masked
+                               data-inputmask="'alias': 'integer', 'groupSeparator': ',', 'autoGroup': true, 'allowPlus': false, 'allowMinus': false,'rightAlign': false"
+                               data-ng-model="admDetails.model.updateFrequencyObject"
+                               data-ng-change="form.validateNumeric('fileFrequency');"
+                               required/>
+                    </div>
+                    <div class="col-sm-2 label-icon">
+                        <label class="control-label label-information">{{'global.hours' |  translate}}</label>
+                        <i class="fa fa-info-circle" data-toggle="tooltip" title="{{'adm.details.form.fileFrequency' |  translate}}"></i>
+                    </div>
+                    <p class="help-block"
+                       id="fileFrequencyRequired"
+                       data-ng-if="admDetails.admDetailsForm.fileFrequency.$dirty && admDetails.admDetailsForm.fileFrequency.$invalid && !admDetails.admDetailsForm.fileFrequency.$error.minValue">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="admDetails.admDetailsForm.fileFrequency.$error.minValue">
+                        {{'validation.error.min' | translate}} {{form.ADM_CONSTANTS.MIN}}
+                    </p>
+                </div>
+                <div class="form-group form-campaign"
+                     data-ng-class="{'has-error': admDetails.admDetailsForm.matchCookie.$dirty && admDetails.admDetailsForm.matchCookie.$invalid}">
+                    <label id="matchCookieLabel" class="col-sm-4 control-label">{{'global.cookieExpiration' |  translate}}:</label>
+                    <div class="col-sm-3 adm-input-form">
+                        <input class="form-control"
+                               data-ng-disabled="!vm.permission.update"
+                               id="cookieExpiration"
+                               name="matchCookie"
+                               masked
+                               data-inputmask="'alias': 'integer', 'groupSeparator': ',', 'autoGroup': true, 'allowPlus': false, 'allowMinus': false, 'rightAlign': false"
+                               data-ng-model="admDetails.model.cookieExpirationDays"
+                               data-ng-change="form.validateNumeric('matchCookie');"
+                               required/>
+                    </div>
+                    <div class="col-sm-2 label-icon">
+                        <label class="control-label label-information">{{'global.days' |  translate}}</label>
+                        <i class="fa fa-info-circle" data-toggle="tooltip" title="{{'adm.details.form.cookieExpiration' |  translate}}"></i>
+                    </div>
+                    <p class="help-block"
+                       id="cookieExpirationRequired"
+                       data-ng-if="admDetails.admDetailsForm.matchCookie.$dirty &&
+                            admDetails.admDetailsForm.matchCookie.$invalid &&
+                            !admDetails.admDetailsForm.matchCookie.$error.minValue &&
+                            !admDetails.admDetailsForm.matchCookie.$error.maxValue">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p class="help-block"
+                       id="cookieExpirationMin"
+                       data-ng-if="admDetails.admDetailsForm.matchCookie.$error.minValue">
+                        {{'validation.error.min' | translate}} {{form.ADM_CONSTANTS.MIN}}
+                    </p>
+                    <p class="help-block"
+                       id="cookieExpirationMax"
+                       data-ng-if="admDetails.admDetailsForm.matchCookie.$error.maxValue">
+                        {{'validation.error.max' | translate}} {{form.ADM_CONSTANTS.MAX}}
+                    </p>
+                </div>
+                <div class="form-group form-campaign">
+                    <label id="ioStatusLabel" class="col-sm-4 control-label">{{'global.status' | translate}}:</label>
+                    <div class="col-sm-2 adm-input-form-status">
+                        <select id="campaignStatus"
+                                name="ioStatusSelect"
+                                class="form-control"
+                                data-ng-model="admDetails.model.activeObject"
+                                data-ng-options="status.name | translate for status in form.statusList track by status.key">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

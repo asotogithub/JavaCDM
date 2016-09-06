@@ -1,0 +1,23 @@
+<h4 data-ng-if="legend">{{legend}}</h4>
+<div class="panel widget metrics-panel">
+    <div class="row metrics-table metrics-flush">
+        <div class="metrics-row">
+            <div class="col-md-2 bl-m bt-m bb-m br-m" data-ng-repeat="kpi in model">
+                <div class="metrics-table metrics-flush metric-cnt">
+                    <div class="row metrics-row">
+                        <div data-ng-if="kpi.icon" class="col-md-2 col-md-offset-3 icon-right">
+                            <em class="fa {{kpi.icon}} fa-2x"></em>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <h4 class="mt0" data-ng-if="kpi.type"> {{(kpi.value | useFilter : kpi.type) || "0"}}</h4>
+                                <h4 class="mt0" data-ng-if="!kpi.type"> {{kpi.value || "0"}}</h4>
+                                <p class="mb0 text-muted">{{kpi.key}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

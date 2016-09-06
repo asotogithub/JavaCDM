@@ -1,0 +1,29 @@
+<div data-ng-controller="PackageAssociationController as vmPkgAssoc">
+    <fieldset>
+        <legend>{{'package.packageAssociation' | translate}}</legend>
+        <div>
+            <h5>{{'placement.step2.chooseFromExisting' | translate}}</h5>
+            <br/>
+            <association-maker input-model="vmPkgAssoc.standAlonePlacements"
+                               output-model="vmPkgAssoc.outputPlacements"
+                               filter-options="vmPkgAssoc.filterOptions"
+                               empty-input-msg="'placement.emptyListMsg' | translate"
+                               empty-output-msg="'placement.emptyListAssocMsg' | translate"
+                               place-holder-msg="'placement.assocPlaceholderMsg' | translate"
+                               template-left-table="'app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/templates/left-table.html'"
+                               template-right-table="'app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/templates/right-table.html'">
+            </association-maker>
+            <div class="text-center">
+                <button class="btn btn-default"
+                        data-ng-click="vmPkgAssoc.addToAssociatedPlacements()"
+                        data-ng-disabled="vmPkgAssoc.outputPlacements == 0">
+                    {{'global.addToAssociatedList' | translate}}
+                </button>
+            </div>
+        </div>
+    </fieldset>
+    <associated-placements data-model="vmPkgAssoc.currentPackage.placements" data-column-options="vmAssoc.STEP.PACKAGE_ASSOCIATION.options.column"
+        table-template="'app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/templates/associated-placements.html'"
+        table-title="'package.currentAssociatedPlacements' | translate">
+    </associated-placements>
+</div>

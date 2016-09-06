@@ -1,0 +1,60 @@
+<div class="te-table">
+    <div class="form-inline te-table-toolbar">
+        <div class="te-table-btns pull-left"></div>
+        <div class="te-table-secondary-btns pull-right"></div>
+        <div class="form-group te-table-search pull-left"
+             uib-collapse="$tablePing.isSearchCollapsed"
+             data-ng-class="{'has-feedback': !!$tablePing.searchTerm}"
+             data-ng-if="$tablePing.searchFields &amp;&amp; $tablePing.searchFields.length">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button class="btn btn-default dropdown-toggle"
+                            type="button"
+                            data-toggle="dropdown"
+                            data-ng-disabled="$tablePing.isSearchDisabled()">
+                        <i class="fa fa-search"></i>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">{{'global.columns' | translate}}</li>
+                        <li data-ng-repeat="searchField in $tablePing.searchFields">
+                            <a href data-ng-click="$tablePing.toggleSearchField($event, searchField)">
+                                <div class="checkbox c-checkbox">
+                                    <label>
+                                        <input type="checkbox" data-ng-model="searchField.enabled" data-no-dirty/>
+                                        <span class="fa fa-check"></span>
+                                        {{searchField.title}}
+                                    </label>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <input class="form-control te-table-search"
+                       type="text"
+                       placeholder="{{'global.searchEllipsis' | translate}}"
+                       data-ng-disabled="$tablePing.isSearchDisabled()"
+                       data-ng-model="$tablePing.searchTerm"
+                       data-ng-keypress="$tablePing.onKeyPress($event);"
+                       data-ng-change="$tablePing.applySearch();"
+                       data-no-dirty />
+        <span class="fa fa-times form-control-feedback text-muted te-table-ping-input-search"
+              data-ng-click="$tablePing.clearSearch()"
+              data-ng-if="!!$tablePing.searchTerm"></span>
+            </div>
+        </div>
+        <span class="te-table-thirdly-btns"></span>
+        <div class="clear"></div>
+    </div>
+    <div class="row" data-ng-if="$tablePing.hasPings">
+        <ping-box data-ng-repeat="ping in $tablePing.getData()"
+                  data-model="ping"
+                  data-edit-mode-enabled="$tablePing.editModeEnabled"
+                  data-on-delete-ping="$tablePing.deletePing(pingId)"
+                  data-on-save-ping="$tablePing.savePing(pingId)"
+                  data-ng-class="$tablePing.teTableContainerState == $tablePing.CONTAINER_STATE.FULL_VIEW ? 'col-md-4' : 'col-md-6'"
+                  class="col-sm-3"></ping-box>
+    </div>
+    <!--<div class="te-table-body" data-ng-class="{'te-table-clear-paging': $tablePing.clearPaging}" data-ng-show="$tablePing.model &amp;&amp; $tablePing.model.length"></div>-->
+    <div class="well" data-ng-if="$tablePing.model &amp;&amp; !$tablePing.model.length">{{$tablePing.emptyMessage}}</div>
+</div>

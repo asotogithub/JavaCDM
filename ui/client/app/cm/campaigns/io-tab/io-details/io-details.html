@@ -1,0 +1,29 @@
+<h3 id="creativeDetailsHeader">{{vm.io.name}}</h3>
+<a id="listOfIOsBtn" class="btn btn-default margin-bottom10" data-ng-click="vm.backToList()">
+    <i class="fa fa-angle-left"></i> {{'insertionOrder.listOfIOs' | translate}}
+</a>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <te-metrics data-model="vm.metrics"></te-metrics>
+    </div>
+</div>
+<ul class="nav nav-tabs">
+    <li id="campaign-io-details-tab" data-ui-sref-active="active">
+        <a data-ui-sref="campaign-io-edit">
+            {{'global.summary' | translate}}
+        </a>
+    </li>
+    <li id="campaign-io-placements-tab" data-ui-sref-active="active">
+        <a data-ui-sref="placement-tab">
+            {{'global.placements' | translate}}
+        </a>
+    </li>
+    <li id="campaign-io-package-tab" data-ui-sref-active="active">
+        <a data-ui-sref="package-tab">
+            {{'global.packages' | translate}}
+        </a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" role="tabpanel" data-ui-view></div>
+</div>

@@ -1,0 +1,48 @@
+<div data-cg-busy="vm.promise">
+    <div class="modal-header dialog-header-confirm" id="dialog-mp">
+        <a class="modal-close-btn-header modal-close-btn" data-ng-click="vm.closeModal()">
+            <span class="fa fa-close"></span>
+        </a>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-danger" role="alert" data-ng-if="vm.errorMessage">
+            {{'schedule.errors' | translate}}
+            <ul data-ng-repeat="error in vm.errorMessage">
+                <li>{{error.message}}</li>
+            </ul>
+        </div>
+        <ul class="nav nav-tabs nav-justified">
+            <li id="campaignReview" data-ng-class="{active:vm.tab.campaignReview.active}">
+                <a href data-ng-click="vm.setTab(vm.TRAFFIC.CAMPAIGN)">
+                    {{'schedule.campaignReview' | translate}}
+                </a>
+            </li>
+            <li id="traffickingContactsSite" data-ng-class="{active:vm.tab.siteTraffickingContacts.active}">
+                <a href data-ng-click="vm.setTab(vm.TRAFFIC.SITE)">
+                    {{'schedule.siteTraffickingContacts' | translate}}
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" data-ng-show="vm.tab.campaignReview.active">
+            <div data-ng-include="'app/cm/campaigns/schedule-tab/trafficking-modal/campaign-review-tab/campaign-review-tab.html'"></div>
+        </div>
+        <div class="tab-content" data-ng-show="vm.tab.siteTraffickingContacts.active">
+            <div data-ng-include="'app/cm/campaigns/schedule-tab/trafficking-modal/site-trafficking-contacts-tab/site-trafficking-contacts-tab.html'"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="dialog-traffic"
+                type="button"
+                class="btn btn-primary"
+                data-ng-disabled="vm.trafficDisabled"
+                data-ng-click="vm.traffic()">
+            {{'global.traffic' | translate}}
+        </button>
+        <button id="dialog-cancel"
+                type="button"
+                class="btn btn-default"
+                data-ng-click="vm.closeModal()">
+            {{'global.cancel' | translate}}
+        </button>
+    </div>
+</div>

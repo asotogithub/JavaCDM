@@ -1,0 +1,56 @@
+<div>
+    <p>
+        {{'schedule.sharedCreativeGroupWarning' | translate}}
+    </p>
+    <p>
+        {{'schedule.sharedCreativeGroupWarningPlease' | translate}}
+    </p>
+    <div id="sharedCreativeGroup" data-ng-controller="SharedCreativeGroupsWarningController as vmCreativeGroups">
+        <te-table id="sharedCreativeGroupTable"
+                  data-empty-message="'global.listEmpty' | translate"
+                  data-model="vmCreativeGroups.sharedCreativeGroups"
+                  data-page-size="10"
+                  data-selection-mode="NONE">
+            <table class="shared-groups-grid">
+                <tr class="actionable-row" data-ng-repeat="creativeGroup in $data">
+                    <td data-title="'global.groups' | translate"
+                        data-searchable="false"
+                        data-sortable="'creativeGroupLabel'"
+                        class="ellipsis-content">
+                        {{creativeGroup.creativeGroupLabel}}
+                    </td>
+                    <td data-title="'global.placements' | translate"
+                        data-searchable="false"
+                        class="text-center">
+                        {{creativeGroup.placementAssociations}}
+                    </td>
+                    <td data-title="'global.currentWeight' | translate"
+                        data-searchable="false"
+                        class="text-center">
+                        {{creativeGroup.weight}}
+                    </td>
+                    <td data-title="'global.newWeight' | translate"
+                        data-searchable="false"
+                        class="text-center">
+                        {{data.partialHTMLParams.vm.visible}}
+                        <div data-ng-dblclick="creativeGroup.visible = vmCreativeGroups.isValidInput; vmCreativeGroups.setInputFocus(creativeGroup.creativeGroupId)"
+                             data-ng-if="!creativeGroup.visible">
+                            {{creativeGroup.newWeight}}
+                        </div>
+                        <div class="input-group"
+                             data-ng-class="{'has-error': !vmCreativeGroups.isValidInput}">
+                            <input id="{{creativeGroup.creativeGroupId}}"
+                                   type="number"
+                                   class="text-right new-weight-width form-control"
+                                   data-ng-model="creativeGroup.newWeight"
+                                   data-ng-if="creativeGroup.visible"
+                                   data-ng-blur="creativeGroup.visible = !vmCreativeGroups.isValidInput"
+                                   data-ng-change="vmCreativeGroups.validate(creativeGroup.creativeGroupId)"
+                                   data-integer-input/>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </te-table>
+    </div>
+</div>

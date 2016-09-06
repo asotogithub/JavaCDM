@@ -1,0 +1,28 @@
+.duplicate-schedule-assignments .duplicates-table .alias-column,
+.duplicate-schedule-assignments .duplicates-table .placement-column {
+    width: 23%;
+}
+
+.duplicate-schedule-assignments .duplicates-table .creative-group-column {
+    width: 16%;
+}
+
+.duplicate-schedule-assignments .duplicates-table .section-column {
+    width: 14%;
+}
+
+.duplicate-schedule-assignments .duplicates-table .site-column,
+.duplicate-schedule-assignments .duplicates-table .size-column {
+    width: 12%;
+}
+
+.duplicate-schedule-assignments .table {
+    margin-bottom: 20px;
+    table-layout: fixed;
+}
+
+.duplicate-schedule-assignments .table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

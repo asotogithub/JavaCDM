@@ -1,0 +1,114 @@
+.te-tree .te-tree-toolbar {
+    margin-bottom: 3px;
+}
+
+.te-tree .te-tree-toolbar .te-tree-btns button {
+    margin-right: 3px;
+}
+
+.te-tree .te-tree-toolbar .te-tree-btns select {
+    margin-right: 3px;
+    height: 32px;
+    padding: 5px 12px;
+}
+
+.te-tree .form-group.te-tree-search, .te-tree .te-tree-toolbar .te-tree-search .input-group .te-tree-search {
+    width: 210px;
+}
+
+.te-tree .form-group.te-tree-search .form-control-feedback {
+    z-index: 2;
+}
+
+.te-tree .input-group .form-control.te-tree-search {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.te-tree .te-tree-search {
+    margin-left: 0;
+}
+
+.te-tree .te-tree-search .input-group {
+    margin-left: 0;
+}
+
+.te-tree .te-tree-search .input-group .input-group-btn {
+    margin-left: 0;
+}
+
+.te-tree .te-tree-search .input-group .input-group-btn button {
+    height: 32px;
+    padding: 5px 12px;
+}
+
+.te-tree .te-tree-search .input-group input.te-tree-search {
+    height: 32px;
+    padding: 5px 26px 5px 12px;
+}
+
+.customTreeGridSearchButton {
+    position: relative;
+    left: 46px;
+    margin-left: 5px;
+}
+
+.te-tree .te-tree-header {
+    border: 1px solid #ddd;
+    padding: 14px 8px;
+    color: #888;
+    text-align: center;
+    font-weight: bold;
+}
+
+.te-tree-body li > div.te-tree-row {
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    color: #656565;
+    line-height: 20px;
+    padding: 8px;
+    margin: 1px 0px;
+    min-height: 23px;
+    font-weight: normal;
+    word-wrap: break-word;
+}
+
+.te-tree-body li > div.te-tree-row:hover {
+    background-color: #f2f2f2 !important;
+}
+
+.te-tree-body li > div.te-tree-row.selected:hover {
+    background-color: #C4E3F3 !important;
+}
+
+.te-tree-collapse {
+    background-image: url('/bower_components/jqwidgets/jqwidgets/styles/images/icon-right.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.te-tree-expand {
+    background-image: url('/bower_components/jqwidgets/jqwidgets/styles/images/icon-down.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.te-tree-collapse-button {
+    display: inline-block;
+    margin-top: 2px;
+    margin-right: 0px;
+    position: relative;
+    width: 14px;
+    height: 13px;
+    vertical-align: top;
+    line-height: 20px;
+}
+
+.te-tree-hide-collapse-button {
+    background-image: none !important;
+}
+
+.te-tree .te-tree-scroll {
+    max-height: 1159px;
+    overflow: auto;
+}

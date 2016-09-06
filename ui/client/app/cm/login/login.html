@@ -1,0 +1,96 @@
+
+<div class="login-background">
+    <div class="container" data-cg-busy="promiseRequest">
+        <div class="row">
+            <div class="login-logo col-xs-12">
+                <img src="/assets/images/login/login-logo.png" alt="Trueffect">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <div data-ng-if="adBlockerEnabled" class="panel panel-danger">
+                    <div class="panel-heading-danger">{{'login.adBlockTitle' | translate}}</div>
+                    <div class="panel-body">
+                        <p>
+                            {{'login.adBlockBody' | translate}}
+                        </p>
+                    </div>
+                    <div class="panel-footer">
+                        <a href="http://www.trueffect.com/contact/"><span>{{'global.contactUs' | translate}}</span></a>
+                    </div>
+                </div>
+
+                <div data-ng-if="!adBlockerEnabled" class="panel login-panel">
+                    <div class="panel-heading bg-gray-dark text-center">
+                        <img src="/assets/images/trueadvertisers.png" alt="{{'global.truadvertiser' | translate}}" />
+                    </div>
+                    <div class="panel-body">
+                        <form name="loginForm" class="form-horizontal login-form" data-ng-submit="submit()" novalidate>
+                            <div class="form-group has-feedback"
+                                 data-ng-class="{'has-error': loginForm.username.$touched && loginForm.username.$invalid}">
+                                <div class="col-xs-12">
+                                    <input type="email" name="username" class="form-control"
+                                           placeholder="{{'global.username' | translate}}" data-ng-model="credentials.username" required />
+                                    <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                                    <span data-ng-show="loginForm.username.$touched &amp;&amp; loginForm.username.$error.required"
+                                          class="text-danger">{{'validation.error.required' | translate}}</span>
+                                    <span data-ng-show="loginForm.username.$touched &amp;&amp; loginForm.username.$error.email"
+                                          class="text-danger">{{'validation.error.email' | translate}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback"
+                                 data-ng-class="{'has-error': loginForm.password.$touched && loginForm.password.$invalid}">
+                                <div class="col-xs-12">
+                                    <input type="password" name="password" class="form-control"
+                                           placeholder="{{'global.password' | translate}}" data-ng-model="credentials.password" required />
+                                    <span class="fa fa-lock form-control-feedback text-muted"></span>
+                                    <span data-ng-show="loginForm.password.$touched &amp;&amp; loginForm.password.$error.required"
+                                          class="text-danger">{{'validation.error.required' | translate}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <div class="checkbox c-checkbox">
+                                        <label>
+                                            <input type="checkbox" name="remember" data-ng-model="credentials.remember">
+                                            <span class="fa fa-check"></span>
+                                            {{'global.rememberMe' | translate}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <button type="submit" data-ng-disabled="loginForm.$invalid || loginForm.$pristine"
+                                            class="btn btn-lg btn-primary btn-block" id="btn-login">
+                                        {{'global.login' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <div class="col-xs-12">
+                                    <a href="#" id="forgotPasswordTxt">{{'global.forgotPassword' | translate}}</a>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="form-error">
+                            <alert data-ng-repeat="alert in alerts" type="{{alert.type}}" >
+                                {{alert.msg | translate}}
+                            </alert>
+                       </div>
+                        <div class="col-xs-12 login-footer text-center">
+                            <ul class="footer-nav list-inline">
+                                <li><a href="http://www.trueffect.com/help/" class="scrollto">{{'global.help' | translate}}</a></li>
+                                <li><a href="http://www.trueffect.com/privacy-policy/" class="scrollto">{{'global.privacyPolicy' | translate}}</a></li>
+                                <li><a href="http://www.trueffect.com/contact/" class="scrollto">{{'global.contactUs' | translate}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="login-copyright text-center">
+        &copy;2015 {{'global.copyrightLegend' | translate}}
+    </div>
+</div>

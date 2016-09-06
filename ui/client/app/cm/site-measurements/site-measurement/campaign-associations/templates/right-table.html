@@ -1,0 +1,44 @@
+<h5>{{'siteMeasurement.campaignAssociation.associatedDisplayCampaigns' | translate}}:</h5>
+<te-table data-model="outputModel"
+          data-empty-message="'global.listEmpty' | translate"
+          data-filter-values="externalController.associatedFilterValues"
+          data-te-table-select="makeSelectionOutputModel($selection)"
+          data-te-table-filter="filteredDataOutputModel($filtered)"
+          data-selection-mode="MULTI"
+          data-page-size="{{externalController.pageSize}}">
+    <te-table-secondary-btns>
+        <dropdown-multicheckbox data-ng-repeat="option in externalController.associatedFilterOption"
+                                data-input-model="option.value"
+                                data-output-model="externalController.associatedFilterValues[$index].values"
+                                data-events="externalController.associatedActionFilter[$index]"
+                                data-title="option.text">
+        </dropdown-multicheckbox>
+    </te-table-secondary-btns>
+    <table>
+        <tr class="actionable-row" data-ng-repeat="object in $data">
+            <td data-title="'global.name' | translate"
+                data-searchable="true"
+                data-sortable="'campaignName'"
+                class="sm-association-name-column">
+                {{object.campaignName}}
+            </td>
+            <td data-title="'global.advertiser' | translate"
+                data-searchable="true"
+                data-sortable="'advertiserName'"
+                class="sm-association-advertiser-column">
+                {{object.advertiserName}}
+            </td>
+            <td data-title="'global.brand' | translate"
+                data-searchable="true"
+                data-sortable="'brandName'"
+                class="sm-association-advertiser-column">
+                {{object.brandName}}
+            </td>
+            <td data-title="'global.status' | translate"
+                data-searchable="true"
+                data-sortable="'status'">
+                {{object.status}}
+            </td>
+        </tr>
+    </table>
+</te-table>

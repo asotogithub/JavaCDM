@@ -1,0 +1,59 @@
+<div id="bulkEditTable" data-ng-controller="BulkEditController as vmEdit">
+    <div class="bulk-edit-container">
+        <span role="columnheader" class="apply-columnHeader">
+            <div class="apply-container">
+                <i class="creative fa fa-camera camera-opt" data-ng-show="!vmEdit.isCreativeGroupVisible"></i>
+                <i class="creative-group fa fa-users creativeGroupAlign"
+                   data-ng-show="vmEdit.isCreativeGroupVisible"></i>
+                <span class="creativeAlign"
+                      data-ng-show="!vmEdit.isCreativeGroupVisible">{{'creative.editCreative' | translate}}</span>
+                <span class="creativeAlign"
+                      data-ng-show="vmEdit.isCreativeGroupVisible">{{'creative.editCreativeGroup' | translate}}</span>
+                <button id="ApplyTo"
+                        class="btn btn-primary pull-right"
+                        data-ng-click="vmEdit.applyTo()"
+                        data-ng-disabled="!vmEdit.applyEnabled || vmEdit.settings.weight.disabled">
+                    {{'global.applyTo' | translate}}
+                </button>
+            </div>
+        </span>
+        <span id="weightTooltip" role="columnheader" class="weight-columnHeader"
+              data-ng-class="{ 'weight-columnHeader-top': vm.isCreativeGroupVisible }">
+            <input id="weight"
+                   type="number"
+                   data-ng-model="vmEdit.bulkEditData.weight"
+                   class="weightInput"
+                   data-integer-input
+                   data-ng-disabled="vmEdit.settings.weight.disabled"
+                   data-ng-class="{'weightInputDisabled': vmEdit.settings.weight.disabled }"/>
+        </span>
+        <span id="startDateTooltip" role="columnheader" class="date-columHeader startDate-columHeader"
+              data-ng-if="!vm.isCreativeGroupVisible">
+            <jqx-date-time-input id="startDate"
+                                 class="dateContainer"
+                                 data-ng-model="vmEdit.bulkEditData.startDate"
+                                 data-jqx-watch-settings
+                                 data-jqx-settings="vmEdit.settings.date"
+                                 data-ng-keypress="vmEdit.isValidDateInput($event)">
+            </jqx-date-time-input>
+        </span>
+        <span id="endDateTooltip" role="columnheader" class="date-columHeader endDate-columHeader"
+              data-ng-if="!vm.isCreativeGroupVisible">
+            <jqx-date-time-input id="endDate"
+                                 class="dateContainer"
+                                 data-ng-model="vmEdit.bulkEditData.endDate"
+                                 data-jqx-watch-settings
+                                 data-jqx-settings="vmEdit.settings.date"
+                                 data-ng-keypress="vmEdit.isValidDateInput($event)">
+            </jqx-date-time-input>
+        </span>
+        <span id="ctUrlTooltip" role="columnheader" class="ctrl-columnHeader"
+              data-ng-if="!vm.isCreativeGroupVisible">
+            <jqx-input id="ctUrl"
+                       data-ng-model="vmEdit.bulkEditData.ctUrl"
+                       data-jqx-watch-settings
+                       data-jqx-settings="vmEdit.settings.clickThrough">
+            </jqx-input>
+        </span>
+    </div>
+</div>

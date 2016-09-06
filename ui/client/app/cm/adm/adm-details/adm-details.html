@@ -1,0 +1,40 @@
+<script type="text/ng-template" id="tool-tip-chart.html">
+    <small>{{vm.dateToolTip}}</small>
+    <table class="tool-tip-chart">
+        <tbody>
+        <tr>
+            <td class="toot-tip-engagements">{{'adm.summary.engagements' | translate}}:</td>
+            <td class="toot-tip-align"><b>{{vm.engagements}}</b></td>
+        </tr>
+        <tr>
+            <td class="toot-tip-matchRate">{{'global.matchRate' | translate}}:</td>
+            <td class="toot-tip-align"><b>{{vm.matchRate}}%</b></td>
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+<div>
+    <h3 id="admHeader">{{vm.adm.fileNamePrefix}}</h3>
+    <div>
+        <a id="listOfAdmBtn" class="btn btn-default margin-bottom10" data-ui-sref="adm" data-ui-sref-opts="{reload:true}">
+            &#60; {{'adm.listOfAdm' | translate}}
+        </a>
+    </div>
+
+    <div data-ng-include="'app/cm/adm/adm-details/reporting/reporting.html'"></div>
+    <ul class="nav nav-tabs"
+        data-ng-if="vm.permission.config">
+        <li id="admDetailsTab"
+            data-ng-if="vm.permission.config"
+            data-ui-sref-active="active">
+            <a data-ui-sref="adm-details-tab">
+                {{'global.summary' | translate}}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content"
+         data-ng-if="vm.permission.config">
+        <div class="tab-pane active" role="tabpanel" data-ui-view></div>
+    </div>
+</div>

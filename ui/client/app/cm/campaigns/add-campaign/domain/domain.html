@@ -1,0 +1,68 @@
+<div data-ng-controller="AddCampaignDomainController as vm">
+    <data-ng-form name="vm.domainForm" class="form-horizontal" novalidate>
+        <fieldset>
+            <div>
+                <div class="col-md-6">
+                    <div class="panel panel-default domain-options"  data-ng-class="{ 'disabled': !vm.firstPartyDomains, 'selected': vm.option && vm.option != vm.OPTION.THIRD }">
+                        <div class="panel-heading text-center">
+                            <label for="firstPartyDomain" class="radio-inline">
+                                <input type="radio"
+                                       name="radio"
+                                       id="firstPartyDomain"
+                                       data-ng-value="{{vm.OPTION.FIRST}}"
+                                       data-ng-click="vm.selectOption(vm.OPTION.FIRST)"
+                                       data-ng-checked="vm.option == vm.OPTION.FIRST"
+                                       data-ng-disabled="!vm.firstPartyDomains">
+                                {{'domain.firstPartyDomain' | translate}}
+                            </label>
+                        </div>
+                        <fieldset class="panel-body text-center" data-ng-disabled="!vm.firstPartyDomains">
+                            <div data-ng-class="{ 'disabled': !vm.option || vm.option != vm.OPTION.FIRST}">
+                                <div>
+                                    <div class="btn-group" dropdown="dropdown">
+                                        <select data-ng-model="vm.campaign.domain"
+                                                data-ng-options="item as item.domain for item in vm.firstPartyDomains"
+                                                data-ng-disabled="!vm.option || vm.option != vm.OPTION.FIRST || !vm.firstPartyDomains"
+                                                name="firstPartyDropdown"
+                                                id="firstPartyDropdown">
+                                            <option value="" disabled selected required>{{'domain.selectDomain' | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="cd-help">
+                                    <p class="help-block">{{'domain.firstPartyHelp' | translate}}</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default domain-options" data-ng-class="{ 'disabled': !vm.thirdPartyDomain, 'selected': vm.option && vm.option != vm.OPTION.FIRST }">
+                        <div class="panel-heading text-center">
+                            <label for="thirdPartyDomain" class="radio-inline">
+                                <input type="radio"
+                                       name="radio"
+                                       id="thirdPartyDomain"
+                                       data-ng-value="{{vm.OPTION.THIRD}}"
+                                       data-ng-click="vm.selectOption(vm.OPTION.THIRD)"
+                                       data-ng-checked="vm.option == vm.OPTION.THIRD"
+                                       data-ng-disabled="!vm.thirdPartyDomain">
+                                {{'domain.thirdPartyDomain' | translate}}
+                            </label>
+                        </div>
+                        <fieldset class="panel-body text-center" data-ng-disabled="!vm.thirdPartyDomain">
+                            <div data-ng-class="{ 'disabled': !vm.option || vm.option != vm.OPTION.THIRD}">
+                                <div>
+                                    {{'domain.adlegend' | translate}}
+                                </div>
+                                <div class="cd-help">
+                                    <p class="help-block">{{'domain.thirdPartyHelp' | translate}}</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </data-ng-form>
+</div>

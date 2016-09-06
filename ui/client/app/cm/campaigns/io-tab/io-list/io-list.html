@@ -1,0 +1,147 @@
+<!--This is to allow load media-checkbox as a template from cache-->
+<script type="text/ng-template" id="media-checkbox-renderer.html">
+    <div class="checkbox c-checkbox checkbox-media">
+        <label>
+            <input data-row-key="{{vm.rowId}}"
+                   data-check-value="{{vm.checked}}"
+                   type="checkbox"
+                   class="customTreeGridCheckbox"
+                   {{vm.checked === true ? 'checked="checked"' : ''}}/>
+            <span class="fa fa-check"></span>
+        </label>
+    </div>
+</script>
+
+<div data-cg-busy="vm.promise">
+    <te-tree-grid id="mediaGrid"
+                  data-columns-resize="true"
+                  data-model="vm.insertionOrderList"
+                  data-te-tree-grid-select="vm.onSelect($selection, $level)"
+                  data-te-tree-grid-on-clear-filtering="vm.onClearFiltering()"
+                  data-te-tree-grid-on-filter-applied="vm.onFilterApplied(rows)"
+                  data-uuid="vm.uuid">
+        <te-btns>
+            <te-table-add-btn data-ng-click="vm.addIo()"></te-table-add-btn>
+            <button class="btn btn-default"
+                    data-ng-click="vm.editIoPlacement(vm.selection)"
+                    data-ng-disabled="!vm.selection">
+                <i class="fa fa-pencil"></i>
+            </button>
+        </te-btns>
+        <te-thirdly-btns class="thirdly-btns-position">
+            <legend-table class="btn-group legend-media" id="legend" data-legend="vm.legendMedia"></legend-table>
+        </te-thirdly-btns>
+        <te-secondary-btns>
+            <div class="dropdown">
+                <button id="bulk-dropdown"
+                        class="dropdown-toggle btn btn-warning"
+                        data-ng-if="vm.hasImportMediaPermission || vm.hasExportMediaPermission"
+                        data-toggle="dropdown">
+                    {{'global.bulk'| translate}}
+                </button>
+                <ul id="bulk-dropdown-list" class="dropdown-menu dropdown-menu-right">
+                    <li data-ng-if="vm.hasImportMediaPermission" data-ng-click="vm.openImport()">
+                        <a id="importAll">
+                            {{'global.importAll' | translate}}
+                        </a>
+                    </li>
+                    <li data-ng-if="vm.hasExportMediaPermission">
+                        <a id="exportAll" data-ng-click="vm.exportAll()">
+                            {{'global.exportAll' | translate}}
+                            <span id="downloadSuccessful" data-ng-show="false">{{vm.downloadSuccessful}}</span>
+                        </a>
+                    </li>
+                    <li data-ng-if="vm.hasImportMediaPermission">
+                        <a id="downloadTemplate" data-ng-href="{{vm.TEMPLATE_PATH}}">
+                            {{'global.downloadTemplate' | translate}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </te-secondary-btns>
+        <te-columns>
+          <te-column data-field="status"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-sortable="true"
+                     data-title="'global.status' | translate"
+                     data-width="8%">
+          </te-column>
+          <te-column data-field="checked"
+                     data-cells-align="center"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-cells-renderer="vm.getCheckboxRenderer($rowData, $cellValue)"
+                     data-resizable="false"
+                     data-title="'&nbsp;'"
+                     data-width="4%">
+          </te-column>
+          <te-column data-field="ioName"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-cells-renderer="vm.filterByLevel(0, $rowData, $cellText)"
+                     data-filterable="true"
+                     data-sortable="true"
+                     data-title="'insertionOrder.ioName' | translate"
+                     data-width="10%">
+          </te-column>
+          <te-column data-field="ioNumber"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-cells-renderer="vm.filterByLevel(0, $rowData, $cellText)"
+                     data-sortable="true"
+                     data-title="'insertionOrder.ioNumber' | translate"
+                     data-width="7%">
+          </te-column>
+          <te-column data-field="packageName"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-filterable="true"
+                     data-sortable="true"
+                     data-title="'global.package' | translate"
+                     data-width="10%">
+          </te-column>
+          <te-column data-field="placementName"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-filterable="true"
+                     data-sortable="true"
+                     data-title="'global.placements' | translate"
+                     data-width="19.5%">
+          </te-column>
+          <te-column data-field="siteName"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-sortable="true"
+                     data-title="'global.site' | translate"
+                     data-width="10%">
+          </te-column>
+          <te-column data-field="sizeName"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-sortable="true"
+                     data-title="'global.size' | translate"
+                     data-width="7.5%">
+          </te-column>
+          <te-column data-field="adSpend"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-cells-align="right"
+                     data-cells-format="'c2'"
+                     data-sortable="true"
+                     data-title="'insertionOrder.ioTotalAdSpend' | translate"
+                     data-type="number"
+                     data-width="10%">
+          </te-column>
+          <te-column data-field="startDate"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-cells-align="right"
+                     data-cells-format="vm.DATE_FORMAT"
+                     data-sortable="true"
+                     data-title="'global.startDate' | translate"
+                     data-type="date"
+                     data-width="7%">
+          </te-column>
+          <te-column data-field="endDate"
+                     data-cell-class-name="vm.cellClassName($row, $rowData)"
+                     data-cells-align="right"
+                     data-cells-format="vm.DATE_FORMAT"
+                     data-resizable="false"
+                     data-sortable="true"
+                     data-title="'global.endDate' | translate"
+                     data-type="date">
+          </te-column>
+        </te-columns>
+    </te-tree-grid>
+</div>

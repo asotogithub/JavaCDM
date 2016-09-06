@@ -1,0 +1,58 @@
+.form-placement-edit .back-button {
+    margin-bottom: 0;
+}
+
+.form-placement-edit .title {
+    display: block;
+    padding: 0;
+    font-size: 21px;
+    line-height: inherit;
+    color: #333;
+    border: 0;
+}
+
+.form-placement-edit .title-details {
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+.form-placement-edit .title-cost-details {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.form-placement-edit .information-button {
+    font-style: italic;
+    margin-bottom: 5px;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-shadow: 0 1px 0 #fff;
+    background-color: #fff;
+    border-color: #ccc;
+    cursor: default;
+}
+
+.form-placement-edit .container-title {
+    padding-left: 0;
+    padding-right: 0
+}
+
+.form-placement-edit .remove-link {
+    padding-top: 2px;
+}
+
+.form-placement-edit .package-link {
+    padding-top: 4px;
+}

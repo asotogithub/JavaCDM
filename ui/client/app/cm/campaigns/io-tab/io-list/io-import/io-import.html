@@ -1,0 +1,13 @@
+<div class="modal-header dialog-header-confirm" id="dialog-mp">
+    <h4 class="modal-title">{{'media.import.title' | translate}}</h4>
+    <a class="modal-close-btn disabled-fa-close" data-ng-disabled="vm.isActionInProgress()" data-ng-click="vm.cancel()"><span class="fa fa-close"></span></a>
+</div>
+<import-data
+        on-close="vm.close(importData)"
+        on-import-error="vm.importError(message)"
+        on-import-resource="vm.importMedia(uuid)"
+        options="vm.options"
+        on-upload-error="vm.uploadError(message)"
+        on-upload-resource="vm.uploadMedia(file)"
+        on-upload-success="vm.uploadSuccess()">
+</import-data>

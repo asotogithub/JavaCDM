@@ -1,0 +1,24 @@
+<div ui-tree-handle data-drop="true"
+     class="te-tree-row"
+     data-ng-class="{ selected : node.uuidRow === vm.rowSelectedUuid, elementOver :  node.uuidRow === vm.itemOverRowUuid}"
+     data-ng-click="vm.onSelect(node);vm.selectedNode(node)"
+     jqyoui-droppable="{onDrop:'vm.onDrop(node, vm.selectedNode)',onOver:'vm.onOver(node)',onOut:'vm.onOut()'}">
+    <span data-ng-if="!node.lastLevel &amp;&amp; node.children &amp;&amp; node.children.length > 0" data-nodrag=""
+          data-ng-click="toggle(this); vm.onExpandCollapse(!collapsed, this, $event, node);"
+          class="te-tree-collapse-button" data-ng-class="{
+          'te-tree-collapse': !node.expanded,
+          'te-tree-expand': node.expanded
+        }">
+        </span>
+    <span ng-if="!vm.customNodeTemplate">{{node.name}}</span>
+    <ng-include ng-if="vm.customNodeTemplate" src="vm.customNodeTemplate"></ng-include>
+</div>
+<ol ui-tree-nodes="" data-ng-model="node.children" class="ng-pristine ng-untouched ng-valid" data-ng-class="{hidden: collapsed}">
+    <li data-ng-if="node.children && node.children.length > 0"
+        data-ng-include="'components/directives/te-tree/tree-node-template/tree-node-template.html'"
+        data-ng-repeat="node in node.children"
+        data-collapsed="!node.expanded"
+        data-ng-show="node.isFilterVisible"
+        ui-tree-node>
+    </li>
+</ol>

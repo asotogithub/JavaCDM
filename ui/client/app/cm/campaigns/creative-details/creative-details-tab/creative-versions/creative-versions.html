@@ -1,0 +1,57 @@
+<div data-ng-form name="vmEdit.creativeVersionsForm" class="form-horizontal container-fluid" novalidate>
+    <div class="col-md-12">
+        <div class="row padding-top16">
+            <div class="col-md-2">
+                <label class="control-label">{{'global.version' | translate}}</label>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">{{'global.uploaded' | translate}}</label>
+            </div>
+            <div class="col-md-7">
+                <label class="control-label">{{'global.alias' | translate}}</label>
+            </div>
+        </div>
+        <div data-ng-repeat="item in vmEdit.creative.versions | orderBy:'-versionNumber'">
+            <div class="row padding-top16">
+                <div class="col-md-2">
+                    <p class="form-control-static">{{item.versionNumber}}
+                        <span data-ng-if="$first">{{'global.current' | translate}}</span>
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <p class="form-control-static">{{item.startDate | date: vmEdit.dateFormat}}</p>
+                </div>
+                <div class="col-md-7" data-ng-if="$first">
+                    <p class="form-control-static"
+                       data-ng-class="{'help-message-color': vmEdit.creativeDetailsForm.$error.duplicatedField}">
+                        {{item.alias}}
+                    </p>
+                </div>
+                <div class="col-md-4" data-ng-if="!$first"
+                     data-ng-class="{'has-error': vmEdit.creativeVersionsForm[item.versionNumber].$dirty && vmEdit.creativeVersionsForm[item.versionNumber].$invalid}">
+                    <input class="form-control"
+                           id="{{item.versionNumber}}"
+                           name="{{item.versionNumber}}"
+                           type="text"
+                           data-ng-model="item.alias"
+                           data-ng-maxlength="{{vmEdit.maxLength}}"
+                           validate-duplicate="vmEdit.validateDuplicatedAlias(vmEdit.creative.versions)"
+                           form-duplicates="vmEdit.creativeVersionsForm"
+                           required/>
+                    <p id="aliasRequired" class="help-block"
+                       data-ng-if="vmEdit.creativeVersionsForm[item.versionNumber].$dirty && vmEdit.creativeVersionsForm[item.versionNumber].$error.required">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p id="aliasMaxLength" class="help-block"
+                       data-ng-if="vmEdit.creativeVersionsForm[item.versionNumber].$dirty && vmEdit.creativeVersionsForm[item.versionNumber].$error.maxlength"
+                       translate="validation.error.maxlength" translate-values="{length: vmEdit.maxLength}">
+                    </p>
+                    <p id="aliasRepeated" class="help-block"
+                       data-ng-if="vmEdit.creativeVersionsForm[item.versionNumber].$dirty && vmEdit.creativeVersionsForm[item.versionNumber].$error.duplicatedField && !vmEdit.creativeVersionsForm[item.versionNumber].$error.required">
+                        {{'creative.error.duplicatedAliasFound' | translate}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

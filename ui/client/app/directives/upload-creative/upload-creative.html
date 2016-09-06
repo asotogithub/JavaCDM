@@ -1,0 +1,236 @@
+<form class="form-horizontal" name="uploadForm" novalidate>
+    <fieldset>
+        <legend>{{vm.options.title || 'global.uploadNew' | translate}}</legend>
+        <div>
+            <div class="text-center">
+                <div data-ng-app="fileUpload">
+                    <div class="well-dashed">
+                        <div class="vertical-box"
+                             data-ngf-drop
+                             data-ng-model="vm.files"
+                             data-ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
+                             data-ngf-drop-available="true"
+                             data-ngf-change="vm.upload($files)"
+                             data-ngf-multiple="true">
+                            <div class="vertical-center file-upload">
+                                <div class="center-block">
+                                    <p>{{'creative.dragAndDrop' | translate}}</p>
+                                </div>
+                                <div class="center-block">
+                                    <i class="fa fa-upload fa-2x"></i>
+                                </div>
+                                <a class="btn btn-primary btn-lg"
+                                   data-ngf-select="vm.upload($files)"
+                                   data-ng-model="vm.files"
+                                   multiple="multiple"
+                                   data-ngf-multiple="true"
+                                   data-ngf-keep="distinct">
+                                    {{'creative.newUpload' | translate}}
+                                </a>
+                                <div data-ng-show="vm.options.addExisting">
+                                    <div class="center-block upload-or">
+                                        <span>{{'global.fileUploadOR' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-ng-show="vm.options.addExisting">
+                            <div class="center-block">
+                                <div class="btn btn-primary btn-lg" data-ng-click="vm.addExistingAction()">
+                                    <span>{{'global.addExisting' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{{'creative.newCreative' | translate}}</legend>
+        <te-table class="upload"
+                  id="newCreativeTable"
+                  data-empty-message="'creative.noNewCreative' | translate"
+                  data-model="vm.creativeList"
+                  data-page-size="{{vm.pageSize}}">
+            <te-table-secondary-btns>
+                <button class="btn" data-ng-show="vm.creativeList.length > 0 "
+                        data-ng-click="vm.deleteCreative(vm.creativeList)">{{'global.removeAll' | translate}}
+                </button>
+            </te-table-secondary-btns>
+            <table>
+                <tr id="creative{{creative.alias}}" data-ng-repeat="creative in $data track by $index">
+                    <td id="creative{{creative.alias}}Alias"
+                        data-title="'global.alias' | translate"
+                        class="wide-column"
+                        data-ng-class="{'has-error': !creative.isValid}">
+                        <input id="creative{{creative.alias}}AliasInput"
+                               class="form-control"
+                               name="creative{{creative.alias}}AliasInput"
+                               type="text"
+                               data-ng-disabled="creative.alias === null"
+                               data-ng-model="creative.alias"
+                               data-ng-maxlength="{{vm.maxLength}}"
+                               data-ng-change="vm.aliasValidate(creative)"
+                               required/>
+                        <p class="help-block mb0"
+                           id="creative{{creative.alias}}Required"
+                           data-ng-if="!creative.isValid">
+                            {{'validation.error.required' | translate}}
+                        </p>
+                    </td>
+                    <td id="creative{{creative.alias}}Filename"
+                        data-title="'global.filename' | translate"
+                        data-sortable="'filename'"
+                        class="wrap-text-td wide-column">
+                        <span>{{creative.filename}}</span>
+                    </td>
+                    <td id="creative{{creative.alias}}Width"
+                        data-title="'global.width' | translate"
+                        data-sortable="'width'"
+                        class="text-center">
+                        <span data-ng-if="creative.alias != null">{{creative.width | number}}</span>
+                        <span data-ng-if="creative.alias == null">...</span>
+                    </td>
+                    <td id="creative{{creative.alias}}Height"
+                        data-title="'global.height' | translate"
+                        data-sortable="'height'"
+                        class="text-center narrow-column">
+                        <span data-ng-if="creative.alias != null">{{creative.height | number}}</span>
+                        <span data-ng-if="creative.alias == null">...</span>
+                    </td>
+                    <td id="creative{{creative.alias}}Type"
+                        data-title="'global.type' | translate"
+                        data-sortable="'creativeType'"
+                        class="text-center narrow-column">
+                        <span data-ng-if="creative.alias != null">{{creative.creativeType}}</span>
+                        <span data-ng-if="creative.alias == null">...</span>
+                    </td>
+                    <td id="creative{{creative.alias}}Status"
+                        data-title="'global.status' | translate"
+                        data-sortable="'status'"
+                        class="text-center narrow-column">
+                        <div data-ng-if="creative.file.status == null" class="progress progress-xs">
+                            <div role="progressbar" data-ng-style="{ 'width': creative.file.progress + '%' }"
+                                 class="progress-bar"></div>
+                        </div>
+                        <span data-ng-if="creative.file.status != null">
+                            <i data-ng-if="creative.file.status ===  vm.statusUpload.SUCCESS"
+                               class="fa fa-check"
+                               data-toggle="tooltip"
+                               title="{{creative.file.statusTooltip}}"></i>
+                            <i data-ng-if="creative.file.status !==  vm.statusUpload.SUCCESS"
+                               class="fa fa-times"
+                               data-toggle="tooltip"
+                               title="{{creative.file.statusTooltip}}"></i>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <button class="fa fa-trash" data-ng-click="vm.deleteCreative(vm.creativeList, creative, $index);"></button>
+                    </td>
+                </tr>
+            </table>
+        </te-table>
+    </fieldset>
+    <fieldset>
+        <legend id='versionedLegend'>{{'creative.upload.creativeVersioned.title' | translate}}
+            <label>
+                {{'creative.upload.creativeVersioned.detail' | translate}}
+            </label>
+        </legend>
+        <te-table class="upload"
+                  id="versionedCreativeTable"
+                  data-empty-message="'creative.noNewCreativeVersion' | translate"
+                  data-model="vm.creativeVersionedList"
+                  data-page-size="{{vm.pageSize}}">
+            <te-table-secondary-btns>
+                <button class="btn" data-ng-show="vm.creativeVersionedList.length > 0"
+                        data-ng-click="vm.deleteCreative(vm.creativeVersionedList)">{{'global.removeAll' | translate}}
+                </button>
+            </te-table-secondary-btns>
+            <table>
+                <tr id="creativeVersioned{{creative.alias}}" data-ng-repeat="creative in $data track by $index">
+                    <td id="creativeVersioned{{creative.alias}}Alias"
+                        data-title="'global.alias' | translate"
+                        class="wide-column"
+                        data-ng-class="{'has-error': !creative.isValid || creative.isDuplicate}">
+                        <input id="creativeVersioned{{creative.alias}}AliasInput"
+                               class="form-control"
+                               name="creative{{creative.alias}}AliasInput"
+                               type="text"
+                               data-ng-model="creative.alias"
+                               data-ng-maxlength="{{vm.maxLength}}"
+                               data-ng-change="vm.aliasValidate(creative)"
+                               required/>
+                        <p class="help-block mb0"
+                           id="creativeVersioned{{creative.alias}}Required"
+                           data-ng-if="!creative.isValid">
+                            {{'validation.error.required' | translate}}
+                        </p>
+                        <p class="help-block mb0"
+                           id="creativeVersioned{{creative.alias}}Duplicate"
+                           data-ng-if="creative.isDuplicate">
+                            {{'validation.error.duplicateAlias' | translate}}
+                        </p>
+                    </td>
+                    <td id="creativeVersioned{{creative.alias}}Filename"
+                        data-title="'global.filename' | translate"
+                        data-sortable="'filename'"
+                        class="wrap-text-td wide-column">
+                        <span>{{creative.filename}}</span>
+                    </td>
+                    <td id="creativeVersioned{{creative.alias}}Version"
+                        data-title="'global.version' | translate"
+                        data-sortable="'version'"
+                        class="text-center">
+                        <span data-ng-if="creative.creativeVersion != null">{{creative.creativeVersion | number}}</span>
+                        <span data-ng-if="creative.creativeVersion == null">...</span>
+                    </td>
+                    <td id="creativeVersioned{{creative.alias}}Width"
+                        data-title="'global.width' | translate"
+                        data-sortable="'width'"
+                        class="text-center">
+                        <span data-ng-if="creative.alias != null">{{creative.width | number}}</span>
+                        <span data-ng-if="creative.alias == null">...</span>
+                    </td>
+                    <td id="creativeVersioned{{creative.alias}}Height"
+                        data-title="'global.height' | translate"
+                        data-sortable="'height'"
+                        class="text-center narrow-column">
+                        <span data-ng-if="creative.alias != null">{{creative.height | number}}</span>
+                        <span data-ng-if="creative.alias == null">...</span>
+                    </td>
+                    <td id="creativeVersioned{{creative.alias}}Type"
+                        data-title="'global.type' | translate"
+                        data-sortable="'creativeType'"
+                        class="text-center narrow-column">
+                        <span data-ng-if="creative.alias != null">{{creative.creativeType}}</span>
+                        <span data-ng-if="creative.alias == null">...</span>
+                    </td>
+                    <td id="creativeVersioned{{creative.alias}}Status"
+                        data-title="'global.status' | translate"
+                        class="text-center narrow-column">
+                        <div data-ng-if="creative.file.status == null" class="progress progress-xs">
+                            <div role="progressbar" data-ng-style="{ 'width': creative.file.progress + '%' }"
+                                 class="progress-bar"></div>
+                        </div>
+                        <span data-ng-if="creative.file.status != null">
+                            <i data-ng-if="creative.file.status ===  vm.statusUpload.SUCCESS"
+                               class="fa fa-check"
+                               data-toggle="tooltip"
+                               title="{{creative.file.statusTooltip}}"></i>
+                            <i data-ng-if="creative.file.status !==  vm.statusUpload.SUCCESS"
+                               class="fa fa-times"
+                               data-toggle="tooltip"
+                               title="{{creative.file.statusTooltip}}"></i>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <button class="fa fa-trash" data-ng-click="vm.deleteCreative(vm.creativeVersionedList, creative, $index);"></button>
+                    </td>
+                </tr>
+            </table>
+        </te-table>
+    </fieldset>
+    <ng-transclude></ng-transclude>
+</form>

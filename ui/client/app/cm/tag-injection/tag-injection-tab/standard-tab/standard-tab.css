@@ -1,0 +1,41 @@
+.content-standard-tab .content-grid {
+    padding-top: 15px;
+    padding-right: 5px;
+}
+
+@media screen and (min-width: 992px) and (max-width: 1350px) {
+    .te-table-search-tracking-tags .te-table .form-group.te-table-search,
+    .te-table-search-tracking-tags .te-table .te-table-toolbar .te-table-search .input-group .te-table-search {
+        width: 174px !important;
+    }
+}
+
+@media screen and (min-width: 1350px) and (max-width: 1480px) {
+    .te-table-search-tracking-tags .te-table .form-group.te-table-search,
+    .te-table-search-tracking-tags .te-table .te-table-toolbar .te-table-search .input-group .te-table-search {
+        width: 190px !important;
+    }
+}
+
+@media screen and (min-width: 1480px) {
+    .te-table-search-tracking-tags .te-table .form-group.te-table-search,
+    .te-table-search-tracking-tags .te-table .te-table-toolbar .te-table-search .input-group .te-table-search {
+        width: 220px !important;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .te-table-search-tracking-tags .te-table .form-group.te-table-search {
+        margin-top: 3px;
+    }
+}
+
+.content-standard-tab .content-grid-placements {
+    padding-left: 0;
+    padding-right: 6px;
+}
+
+.content-standard-tab .content-grid-associations {
+    padding-left: 0;
+    padding-right: 0;
+}

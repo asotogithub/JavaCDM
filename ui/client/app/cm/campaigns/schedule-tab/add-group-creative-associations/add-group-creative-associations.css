@@ -1,0 +1,46 @@
+#addGroupCreativeAssociations .association-panel .panel-assoc {
+    width: 46.4%;
+}
+
+#addGroupCreativeAssociations .col-md-12 associated-placements fieldset legend {
+    color: inherit;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#addGroupCreativeAssociations .col-md-12 associated-placements fieldset .container-fluid {
+    margin-top: -3px;
+}
+
+#addGroupCreativeAssociations .col-md-12 .association-panel .panel-assoc > span {
+    font-size: 14px;
+}
+
+#addGroupCreativeAssociations .col-md-12 .association-panel .panel-assoc .te-table > .well {
+    font-size: 14px;
+    height: 286px;
+    line-height: 246px;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.clickthroughs-align {
+    text-align: left;
+}
+
+.header-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.header-title-width {
+    padding-right: 10px;
+    width: 90%;
+}
+
+.tooltip-width-group {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: auto;
+}

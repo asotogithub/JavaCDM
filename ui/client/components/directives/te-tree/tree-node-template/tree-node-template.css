@@ -1,0 +1,31 @@
+.tree-node-content {
+    margin: 10px;
+    padding: 15px 0px 15px 0px;
+}
+
+.tree-node {
+    border: 1px solid #dae2ea;
+    background: #f8faff;
+    color: #7c9eb2;
+}
+
+.angular-ui-tree-empty-custom .angular-ui-tree-empty {
+    background: #f9f9f9 none;
+    border: 1px solid #dae2ea;
+    border-top: none;
+    line-height: 90px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.angular-ui-tree-empty:before {
+    content: "No data to display"
+}
+
+.te-tree-body li > .selected {
+    background-color: #d9edf7; !important;
+}
+
+.te-tree-body li > .elementOver {
+    background-color: #f2f2f2 !important;
+}

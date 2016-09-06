@@ -1,0 +1,15 @@
+.content-wrapper .chart-panel {
+    margin-bottom: 15px;
+}
+
+.tool-tip-chart .toot-tip-engagements {
+    color: #434348;
+}
+
+.tool-tip-chart .toot-tip-align {
+    text-align: right
+}
+
+.tool-tip-chart .toot-tip-matchRate {
+    color: #7cb5ec;
+}

@@ -1,0 +1,55 @@
+<div data-ng-form name="vmCT.clickthroughsForm"
+     data-ng-if="vmEdit.hasClickThrough(vmEdit.creative.creativeType)"
+     class="form-horizontal container-fluid"
+     novalidate>
+    <ul dnd-list="vmCT.clickthroughs"
+        dnd-disable-if="!vmCT.dragAndDropEnabled()"
+        class="clickthrough-scrollBar">
+        <li data-ng-repeat="item in vmCT.clickthroughs"
+            dnd-draggable="item"
+            dnd-moved="vmCT.clickthroughs.splice($index, 1); vmCT.validationClickThroughs(item);"
+            dnd-effect-allowed="move"
+            dnd-disable-if="!vmCT.dragAndDropEnabled()"
+            data-ng-model-options="{allowInvalid: true}"
+            class="list-group-item">
+            <div class="form-group" data-ng-class="{'has-error': vmCT.clickthroughsForm[item.sequence].$dirty && vmCT.clickthroughsForm[item.sequence].$invalid,
+                   'input-group':vmEdit.creative.creativeType==='zip' || vmEdit.creative.creativeType==='html5'}">
+                <span data-ng-if="vmEdit.creative.creativeType==='zip' || vmEdit.creative.creativeType==='html5'" class="input-group-addon white-numeration">{{$index + 1}}</span>
+                <span data-ng-if="vmEdit.creative.creativeType==='zip' || vmEdit.creative.creativeType==='html5'" class="input-group-addon"><em class="fa fa-reorder"></em></span>
+                <input class="form-control"
+                       id="{{item.sequence}}"
+                       name="{{item.sequence}}"
+                       type="url"
+                       data-ng-model="item.url"
+                       data-ng-model-options="{allowInvalid: true}"
+                       data-ng-pattern="vmCT.urlPattern"
+                       placeholder="{{'creative.httpYourWebSite' | translate}}"
+                       required>
+                <span class="input-group-btn" data-ng-if="vmEdit.clickThroughArray.length > 1">
+                    <button class="btn btn-default"
+                            type="button"
+                            data-ng-click="vmCT.remove($index)">
+                        <em class="fa fa-trash"></em>
+                    </button>
+                </span>
+            </div>
+            <p class="help-block help-message-color"
+               data-ng-if="vmCT.clickthroughsForm[item.sequence].$dirty && vmCT.clickthroughsForm[item.sequence].$error.required">
+                {{'validation.error.required' | translate}}
+            </p>
+            <p class="help-block help-message-color"
+               data-ng-if="vmCT.clickthroughsForm[item.sequence].$dirty && vmCT.clickthroughsForm[item.sequence].$error.url">
+                {{'validation.error.invalidURL' | translate}}
+            </p>
+        </li>
+    </ul>
+    <div class="form-group" data-ng-if="vmEdit.creative.creativeType==='zip' || vmEdit.creative.creativeType==='html5'">
+       <div class="pull-right">
+        <button data-ng-click="vmCT.add()"
+                class="btn btn-info btn-right-bottom"
+                data-ng-disabled="vmCT.clickthroughsForm.$invalid">
+            {{'global.add' | translate}}
+        </button>
+        </div>
+    </div>
+</div>

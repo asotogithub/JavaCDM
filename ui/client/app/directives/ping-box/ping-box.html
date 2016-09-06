@@ -1,0 +1,86 @@
+<div data-ng-form name="vmPingbox.pingBoxForm" class="ping-box-container margin-top14"
+     data-ng-mouseenter="vmPingbox.enterContainer()"
+     data-ng-mouseleave="vmPingbox.exitContainer()"
+     novalidate>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>{{vmPingbox.pingTitle}}</h4>
+        </div>
+        <div class="col-md-6 ping-box-action-buttons">
+            <span class="fa fa-pencil margin-right5"
+                  data-ng-click="vmPingbox.editPing()"
+                  data-ng-if="vmPingbox.disableEditMode"></span>
+            <span class="fa fa-floppy-o margin-right5"
+                  data-ng-click="vmPingbox.savePing()"
+                  data-ng-if="!vmPingbox.disableEditMode"></span>
+            <span class="fa fa-trash"
+                  data-ng-click="vmPingbox.deletePing()"></span>
+        </div>
+    </div>
+    <hr ng-class="vmPingbox.model.pingType === vmPingbox.PING_CARD_TYPES[0].KEY ?
+                                               'ping-box-broadcast-color' :
+                                               'ping-box-selective-color'">
+    <div class="row">
+        <label class="col-sm-4 control-label">{{'global.tagType' | translate}}:</label>
+
+        <div class="col-sm-8" data-ng-class="{'has-error': vmPingbox.pingBoxForm.tagTypeSelectionName.$dirty &&
+                                                            vmPingbox.pingBoxForm.tagTypeSelectionName.$invalid}">
+            <select class="form-control"
+                    name="tagTypeSelectionName"
+                    data-ng-change="vmPingbox.onTagTypeChange()"
+                    data-ng-disabled="vmPingbox.disableEditMode"
+                    data-ng-model="vmPingbox.selectedTagType"
+                    data-ng-options="tagType.name for tagType in vmPingbox.tagTypeList track by tagType.key"
+                    ng-blur="vmPingbox.onBlur()"
+                    focus-element
+                    required>
+                <option value="" disabled>{{'global.select' | translate}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-4 control-label">{{'global.site' | translate}}:</label>
+
+        <div class="col-sm-8" data-ng-class="{'has-error': vmPingbox.pingBoxForm.siteSelectionName.$dirty &&
+                                                            vmPingbox.pingBoxForm.siteSelectionName.$invalid}">
+            <select class="form-control"
+                    name="siteSelectionName"
+                    data-ng-change="vmPingbox.onSiteChange()"
+                    data-ng-disabled="vmPingbox.shouldDisableSiteDropdown()"
+                    data-ng-model="vmPingbox.selectedSite"
+                    data-ng-options="site.name | limitTo:vmPingbox.LENGTH.SITE_NAME for site in vmPingbox.siteList track by site.id"
+                    data-ng-blur="vmPingbox.onBlur()"
+                    required>
+                <option value="" disabled>{{'global.select' | translate}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" data-ng-class="{'has-error': vmPingbox.pingBoxForm.descriptionName.$dirty &&
+                                                            vmPingbox.pingBoxForm.descriptionName.$invalid}">
+            <input class="form-control"
+                   data-ng-disabled="vmPingbox.disableEditMode"
+                   data-ng-pattern="vmPingbox.publisherPattern"
+                   name="descriptionName"
+                   type="text"
+                   placeholder="{{'global.description' | translate}}"
+                   data-ng-model="vmPingbox.model.description"
+                   maxlength="{{vmPingbox.LENGTH.DESCRIPTION}}"
+                   data-ng-blur="vmPingbox.onBlur()"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" data-ng-class="{'has-error': vmPingbox.pingBoxForm.pingContent.$dirty &&
+                                                            vmPingbox.pingBoxForm.pingContent.$invalid}">
+            <textarea class="form-control"
+                      data-ng-disabled="vmPingbox.disableEditMode"
+                      data-ng-pattern="vmPingbox.pingContentPattern"
+                      data-ng-model="vmPingbox.model.pingContent"
+                      maxlength="{{vmPingbox.LENGTH.CONTENT}}"
+                      name="pingContent"
+                      required
+                      placeholder="{{'global.ping' | translate}}{{'&hellip;'}}"
+                      data-ng-blur="vmPingbox.onBlur()"></textarea>
+        </div>
+    </div>
+</div>

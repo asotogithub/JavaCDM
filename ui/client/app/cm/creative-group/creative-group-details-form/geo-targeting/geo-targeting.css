@@ -1,0 +1,115 @@
+.geo-targeting .bootstrap-tagsinput {
+    cursor: default;
+    height: 80px;
+    overflow-y: auto;
+}
+
+.geo-targeting .dma-table,
+.geo-targeting .state-table,
+.geo-targeting .zip-table {
+    table-layout: fixed;
+}
+
+.geo-targeting .dma-table td,
+.geo-targeting .state-table td,
+.geo-targeting .zip-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.geo-targeting .dma-table .country-column,
+.geo-targeting .dma-table .state-column,
+.geo-targeting .zip-table .country-column,
+.geo-targeting .zip-table .dma-column,
+.geo-targeting .zip-table .state-column {
+    width: 20%;
+}
+
+.geo-targeting .dma-table .dma-column {
+    width: 60%;
+}
+
+.geo-targeting .form-group.te-table-search {
+    margin: 0;
+    width: 100% !important;
+}
+
+.geo-targeting .form-group.te-table-search .form-control-feedback {
+    right: 0;
+}
+
+.geo-targeting .nav-tabs {
+    border-bottom: 0;
+    border-right: 1px solid #ddd;
+    float: left;
+    margin-right: -1px;
+}
+
+.geo-targeting .nav-tabs .active > a,
+.geo-targeting .nav-tabs .active > a:focus,
+.geo-targeting .nav-tabs .active > a:hover {
+    border-color: #ddd transparent #ddd #ddd;
+    *border-right-color: #ffffff;
+}
+
+.geo-targeting .nav-tabs > li {
+    float: none;
+}
+
+.geo-targeting .nav-tabs > li > a {
+    margin-right: -1px;
+    min-width: 74px;
+}
+
+.geo-targeting .nav-tabs > li > a:focus,
+.geo-targeting .nav-tabs > li > a:hover {
+    border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+}
+
+.geo-targeting .state-table .country-column {
+    width: 30%;
+}
+
+.geo-targeting .state-table .state-column {
+    width: 70%;
+}
+
+.geo-targeting .tab-content {
+    border: none;
+    padding: 0;
+}
+
+.geo-targeting .tab-pane {
+    border: 1px solid #dde6e9;
+    overflow-x: hidden;
+    padding: 12px 19px 19px;
+}
+
+.geo-targeting .zip-table .zip-column {
+    width: 40%;
+}
+
+.geo-targeting .zip-table .header.te-table-select-column {
+    cursor: default !important;
+}
+
+.geo-targeting .zip-table .header.te-table-select-column .checkbox {
+    display: none;
+}
+
+fieldset[disabled] .geo-targeting .tag {
+    opacity: 0.3;
+}
+
+fieldset[disabled] .geo-targeting .tag [data-role="remove"] {
+    cursor: not-allowed;
+}
+
+geo-targeting .geo-targeting div .tab-content .tab-pane .te-table {
+    height: 530px;
+}
+
+geo-targeting .geo-targeting div .bootstrap-tagsinput {
+    height: 106px;
+}

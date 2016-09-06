@@ -1,0 +1,99 @@
+<div id="addScheduleAssignments" data-cg-busy="vm.promise">
+    <div class="modal-header">
+        <button class="close"
+                type="button"
+                data-ng-click="vm.dismiss()">&times;
+        </button>
+        <h4 class="modal-title header-ellipsis">{{vm.modalTitle}}</h4>
+    </div>
+    <div class="modal-body add-schedule-assignments">
+        <div class="col-md-12 panel panel-default">
+            <div class="header-padding row">
+                <div data-ng-if="vm.modalToolTip" class="col-md-1 tooltip-width-schedule">
+                    <span class="fa fa-info-circle" title="{{vm.modalToolTip}}"></span>
+                </div>
+                <div class="header-title-width">
+                    <h4 class="mt0 mb0 padding-bottom12 header-ellipsis">{{vm.entityName}}</h4>
+                </div>
+            </div>
+            <div class="panel-body row">
+                <div class="col-md-6">
+                    <div data-ng-include="'app/cm/campaigns/schedule-tab/add-schedule-assignments/templates/creative-list.html'"></div>
+                </div>
+                <div class="col-md-6">
+                    <div data-ng-include="'app/cm/campaigns/schedule-tab/add-schedule-assignments/templates/placement-list.html'"></div>
+                </div>
+            </div>
+        </div>
+        <div id="pendingScheduleAssignments" class="panel panel-default">
+            <div class="panel-heading">{{'schedule.pendingScheduleAssignments' | translate}}</div>
+            <div class="panel-body row">
+                <div class="col-xs-12">
+                    <te-table data-model="vm.pending"
+                              data-empty-message="'schedule.pendingListEmpty' | translate"
+                              data-page-size="10"
+                              data-selection-mode="MULTI">
+                        <te-table-btns>
+                            <te-table-remove-btn id="deleteButton"
+                                                 data-te-table-btn-click="vm.removePending($selection)"></te-table-remove-btn>
+                        </te-table-btns>
+                        <table class="table-condensed pending-table">
+                            <tr data-ng-repeat="pending in $data">
+                                <td data-header-class="'site-column'"
+                                    data-title="'global.site' | translate"
+                                    data-sortable="'siteName'">
+                                    <span title="{{pending.siteName}}">{{pending.siteName}}</span>
+                                </td>
+                                <td data-header-class="'placement-column'"
+                                    data-title="'global.placement' | translate"
+                                    data-sortable="'placementName'">
+                                    <span title="{{pending.placementName}}">{{pending.placementName}}</span>
+                                </td>
+                                <td data-header-class="'placement-id-column'"
+                                    data-title="'placement.plcmtId' | translate"
+                                    data-sortable="'placementId'">
+                                    <span title="{{pending.placementId}}">{{pending.placementId}}</span>
+                                </td>
+                                <td data-header-class="'section-column'"
+                                    data-title="'global.section' | translate"
+                                    data-sortable="'siteSectionName'">
+                                    <span title="{{pending.siteSectionName}}">{{pending.siteSectionName}}</span>
+                                </td>
+                                <td data-header-class="'size-column'"
+                                    data-title="'global.size' | translate"
+                                    data-sortable="'sizeName'">
+                                    <span title="{{pending.sizeName}}">{{pending.sizeName}}</span>
+                                </td>
+                                <td data-header-class="'creative-group-column'"
+                                    data-title="'global.group' | translate"
+                                    data-sortable="'creativeGroupName'">
+                                    <span title="{{pending.creativeGroupName}}">{{pending.creativeGroupName}}</span>
+                                </td>
+                                <td data-header-class="'alias-column'"
+                                    data-title="'global.alias' | translate"
+                                    data-sortable="'creativeAlias'">
+                                    <span title="{{pending.creativeAlias}}">{{pending.creativeAlias}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </te-table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="cancelButton"
+                class="btn btn-default"
+                type="button"
+                data-ng-click="vm.dismiss()">
+            {{'global.cancel' | translate}}
+        </button>
+        <button id="saveButton"
+                class="btn btn-primary"
+                type="button"
+                data-ng-click="vm.saveAndClose()"
+                data-ng-disabled="!vm.pending.length">
+            {{'global.save' | translate}}
+        </button>
+    </div>
+</div>

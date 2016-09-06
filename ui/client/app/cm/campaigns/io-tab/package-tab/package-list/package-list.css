@@ -1,0 +1,9 @@
+.edit-package-button {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+}
+
+.ico-placement {
+    color: #2f80e7;
+}

@@ -1,0 +1,93 @@
+{
+  "name": "ui",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "1.3.15",
+    "angular-base64": "2.0.4",
+    "angular-bootstrap": "0.14.3",
+    "angular-breadcrumb": "0.4.1",
+    "angular-busy": "4.1.3",
+    "angular-chosen-localytics": "1.0.7",
+    "angular-cookies": "1.3.15",
+    "angular-dialog-service": "5.2.6",
+    "angular-dragdrop": "1.0.13",
+    "angular-growl-v2": "0.7.4",
+    "angular-loggly-logger": "0.1.1",
+    "angular-momentjs": "0.2.2",
+    "angular-percentage-filter": "1.0.2",
+    "angular-resource": "1.3.15",
+    "angular-sanitize": "1.3.15",
+    "angular-svg-round-progressbar": "0.3.10",
+    "angular-translate": "2.7.0",
+    "angular-ui-router": "0.2.15",
+    "angular-ui-tree": "2.16.0",
+    "angular-uuid": "munkychop/angular-uuid#871c781bfa5c39317d8022b8064d86725e3f1d1a",
+    "bootstrap": "3.1.1",
+    "bootstrap-growl-injectable": "1.1.0",
+    "chosen": "harvesthq/bower-chosen#2cd5a37710e204584793db6928b72c08e22caebf",
+    "dndLists": "1.3.0",
+    "es5-shim": "3.0.2",
+    "font-awesome": "4.4.0",
+    "highcharts-ng": "0.0.8",
+    "highcharts-release": "4.1.7",
+    "jQuery-QueryBuilder": "2.2.0",
+    "jquery": "1.11.3",
+    "jquery-ui": "1.11.4",
+    "jquery.inputmask": "3.1.63",
+    "jqwidgets": "c4f9ad5c60e03dd4acf72e327f49ba7e7c9d56cc",
+    "json3": "3.3.2",
+    "moment-timezone": "0.4.0",
+    "ng-file-upload": "9.0.8",
+    "ng-lodash": "0.2.3",
+    "ng-table": "0.5.4",
+    "ng-tags-input": "3.0.0",
+    "ngStorage": "0.3.0",
+    "sql-parser": "1.0.0",
+    "SHA-1": "0.1.1"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.3.15",
+    "angular-scenario": "1.3.15",
+    "jasmine-promise-matchers": "1.1.1",
+    "lodash": "3.9.3"
+  },
+  "resolutions": {
+    "angular": "1.3.15",
+    "angular-bootstrap": "0.14.3",
+    "angular-translate": "2.7.0",
+    "chosen": "2cd5a37710e204584793db6928b72c08e22caebf"
+  },
+  "overrides": {
+    "angular-uuid": {
+      "main": [
+        "angular-uuid.js"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css"
+      ]
+    },
+    "jquery.inputmask": {
+      "main": [
+        "./dist/inputmask/jquery.inputmask.js",
+        "./dist/inputmask/jquery.inputmask.extensions.js",
+        "./dist/inputmask/jquery.inputmask.numeric.extensions.js",
+        "./dist/inputmask/jquery.inputmask.phone.extensions.js",
+        "./dist/inputmask/jquery.inputmask.regex.extensions.js"
+      ]
+    },
+    "jqwidgets": {
+      "main": [
+        "jqwidgets/styles/jqx.base.css",
+        "jqwidgets/styles/jqx.bootstrap.css",
+        "jqwidgets/jqxcore.js",
+        "jqwidgets/jqx-all.js",
+        "jqwidgets/globalization/globalize.js"
+      ],
+      "dependencies": {
+        "jquery": "*"
+      }
+    }
+  }
+}

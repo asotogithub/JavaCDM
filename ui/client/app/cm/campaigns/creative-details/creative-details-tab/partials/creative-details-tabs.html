@@ -1,0 +1,24 @@
+<ul class="nav nav-tabs">
+    <li id="clickThroughURLs"
+        data-ng-if="vmEdit.hasClickThrough(vmEdit.creative.creativeType)"
+        data-ui-sref-active="active">
+        <a data-ui-sref="campaign-creative-details-click-through">
+            {{'creative.clickThroughURLs' | translate}}
+        </a>
+    </li>
+    <li id="creativeVersions"
+        data-ng-if="vmEdit.creative.versions.length > 1"
+        data-ui-sref-active="active">
+        <a data-ui-sref="campaign-creative-versions">
+            {{'creative.creativeVersions' | translate}}
+        </a>
+    </li>
+    <li id="extendedProperties" data-ui-sref-active="active">
+        <a data-ui-sref="campaign-creative-details-extended-properties">
+            {{'creative.extendedProperties' | translate}}
+        </a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" role="tabpanel" data-ui-view></div>
+</div>
