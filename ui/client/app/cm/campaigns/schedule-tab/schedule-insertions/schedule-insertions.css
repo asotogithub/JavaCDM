@@ -1,0 +1,82 @@
+#scheduleInsertionsContainer {
+    background-color: #edf1f2;
+    color: #515253;
+}
+
+.schedule-insertions-container {
+    position: absolute;
+    overflow-y: visible;
+    overflow-x: hidden;
+    z-index: 1000;
+}
+
+.schedule-insertions-animations {
+    /*-webkit-transition:all ease-in-out 2s;*/
+    transition: all ease-in-out 0.7s;
+}
+
+.schedule-insertions-container-initial {
+    display: none;
+    opacity: 0;
+    height: 0%;
+    width: 0%;
+}
+
+.schedule-insertions-container-moving {
+    display: block;
+    overflow-y: hidden;
+}
+
+.schedule-insertions-container-done {
+    width: 75%;
+    height: 100%;
+    min-height: 100%;
+    overflow-y: visible;
+}
+
+#scheduleInsertionsContainerGhost {
+    position: absolute;
+    right: 0;
+    width: 75%;
+    height: 100%;
+    min-height: 100%;
+    background-color: transparent;
+    z-index: -1;
+    overflow: visible;
+}
+
+#scheduleInsertionsContainer .glyphicon {
+    font-family: 'Glyphicons Halflings';
+}
+
+.panel-info {
+    border-color: #ddd;
+}
+
+.panel-info > .panel-heading {
+    color: #656565;
+    background-color: #f9f9f9;
+}
+
+.panel-info > .panel-heading + .panel-collapse .panel-body {
+    border-top-color: #ddd;
+}
+
+.panel-info .btn-group-right {
+    float: right;
+    margin-right: 13px;
+    margin-top: 20px;
+}
+
+.properties-value {
+    padding-left: 5px;
+}
+
+.properties-row {
+    padding-top: 7px;
+}
+
+.empty-backdrop {
+    background-color: white;
+    opacity: .05;
+}

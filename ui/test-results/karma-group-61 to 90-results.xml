@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="PhantomJS 1.9.8 (Windows 8)" package="(Test Files 61 to 90)" timestamp="2016-08-22T17:04:02" id="0" hostname="ascbomvillarroe" tests="151" errors="0" failures="0" time="5.431">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34"/>
+    </properties>
+    <testcase name="should set $form with FormController" time="0.143" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Directive: daypartTargeting link()"/>
+    <testcase name="should reconcileCountries() when new model is set" time="0.037" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController model"/>
+    <testcase name="should reconcileStates() when new model is set" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController model"/>
+    <testcase name="should reconcileDMAs() when new model is set" time="0.023" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController model"/>
+    <testcase name="should reconcileZips() when new model is set" time="0.037" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController model"/>
+    <testcase name="should invoke GeoTargetingService.getCountries() when visible" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getCountries()"/>
+    <testcase name="should set promise" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getCountries()"/>
+    <testcase name="should set countries when GeoTargetingService.getCountries() is resolved" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getCountries()"/>
+    <testcase name="should reconcileCountries() when GeoTargetingService.getCountries() is resolved" time="0.04" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getCountries()"/>
+    <testcase name="should invoke GeoTargetingService.getStates()" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getStates()"/>
+    <testcase name="should set promise" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getStates()"/>
+    <testcase name="should set states when GeoTargetingService.getStates() is resolved" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getStates()"/>
+    <testcase name="should reconcileStates() when GeoTargetingService.getStates() is resolved" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getStates()"/>
+    <testcase name="should do nothing if states is already set" time="0.045" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getStates()"/>
+    <testcase name="should invoke GeoTargetingService.getDMAs()" time="0.023" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getDMAs()"/>
+    <testcase name="should set promise" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getDMAs()"/>
+    <testcase name="should set dmas when GeoTargetingService.getDMAs() is resolved" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getDMAs()"/>
+    <testcase name="should reconcileDMAs() when GeoTargetingService.getDMAs() is resolved" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getDMAs()"/>
+    <testcase name="should do nothing if dmas is already set" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getDMAs()"/>
+    <testcase name="should invoke GeoTargetingService.getZips()" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getZips()"/>
+    <testcase name="should set promise" time="0.019" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getZips()"/>
+    <testcase name="should set zips when GeoTargetingService.getZips() is resolved" time="0.061" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getZips()"/>
+    <testcase name="should reconcileZips() when GeoTargetingService.getZips() is resolved" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getZips()"/>
+    <testcase name="should do nothing if zips is already set" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController getZips()"/>
+    <testcase name="should remove the specified geo from the list of values" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController removeGeo()"/>
+    <testcase name="should set $form as dirty" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController removeGeo()"/>
+    <testcase name="should do nothing if the parent fieldset is disabled" time="0.023" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController removeGeo()"/>
+    <testcase name="should set $form as dirty" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: GeoTargetingController setDirty()"/>
+    <testcase name="should set $form with FormController" time="0.272" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Directive: geoTargeting link()"/>
+    <testcase name="should be initialized with CONSTANTS.CREATIVE_GROUP.DEFAULT_NAME" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController CREATIVE_GROUP_DEFAULT_NAME"/>
+    <testcase name="should invoke CreativeGroupService.getCreativeGroup()" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController activate()"/>
+    <testcase name="should set creativeGroup, $emit(`creative-group-updated`), and clearPromise() when promise is resolved" time="0.019" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController activate()"/>
+    <testcase name="should clearPromise() when promise is rejected" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController activate()"/>
+    <testcase name="should do nothing if pristine" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController close()"/>
+    <testcase name="should preventDefault() on event and invoke DialogFactory.showDialog() if not pristine" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController close()"/>
+    <testcase name="should leave() when DialogFactory.showDialog() is resolved" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController close()"/>
+    <testcase name="should invoke DialogFactory.showCustomDialog()" time="0.023" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController remove()"/>
+    <testcase name="should do nothing if DialogFactory.showCustomDialog() is rejected" time="0.029" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController remove()"/>
+    <testcase name="should be invoked if DialogFactory.showCustomDialog() is resolved" time="0.028" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController remove() CreativeGroupService_removeCreativeGroup()"/>
+    <testcase name="should leave()" time="0.038" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController remove() CreativeGroupService_removeCreativeGroup() on success"/>
+    <testcase name="should clearPromise()" time="0.035" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController remove() CreativeGroupService_removeCreativeGroup() on success"/>
+    <testcase name="should invoke DialogFactory.showCustomDialog()" time="0.1" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController forceRemove()"/>
+    <testcase name="should do nothing if DialogFactory.showCustomDialog() is rejected" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController forceRemove()"/>
+    <testcase name="should be invoked if DialogFactory.showCustomDialog() is resolved" time="0.023" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController forceRemove() CreativeGroupService_forceRemoveCreativeGroup()"/>
+    <testcase name="should leave()" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController forceRemove() CreativeGroupService_forceRemoveCreativeGroup() on success"/>
+    <testcase name="should clearPromise()" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController forceRemove() CreativeGroupService_forceRemoveCreativeGroup() on success"/>
+    <testcase name="should invoke CreativeGroupService.updateCreativeGroup()" time="0.033" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save()"/>
+    <testcase name="should set errorMessage" time="0.026" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on success"/>
+    <testcase name="should set pristine" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on success"/>
+    <testcase name="should update creativeGroup" time="0.03" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on success"/>
+    <testcase name="should $emit(`creative-group-updated`) on $scope" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on success"/>
+    <testcase name="should invoke DialogFactory.showDismissableMessage()" time="0.028" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on success"/>
+    <testcase name="should clearPromise()" time="0.028" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on success"/>
+    <testcase name="should set errorMessage" time="0.032" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on failure"/>
+    <testcase name="should invoke DialogFactory.showDialog() if errorMessage is not available" time="0.031" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on failure"/>
+    <testcase name="should clearPromise()" time="0.043" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupDetailsTabController save() on failure"/>
+    <testcase name="should invoke CreativeGroupService.getCreativeGroup()" time="0.031" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupController activate()"/>
+    <testcase name="should set name when CreativeGroupService.getCreativeList() is resolved" time="0.034" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupController activate()"/>
+    <testcase name="should set name" time="0.03" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupController $scope_on(`creative-group-updated`)"/>
+    <testcase name="should get all creatives selected when existingCreativesController.add() is resolved" time="0.121" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: ExistingCreativesController Add() Get Creatives selected"/>
+    <testcase name="should invoke CreativeGroupService.getCreativeList()" time="0.032" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupCreativeListController activate()"/>
+    <testcase name="should set creatives when CreativeGroupService.getCreativeList() is resolved" time="0.028" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupCreativeListController activate()"/>
+    <testcase name="should update the Creative List counter when CreativeService.getList() is resolved" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupCreativeListController activate()"/>
+    <testcase name="should redirect to edit creative details when call editCreative()" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: CreativeGroupCreativeListController activate()"/>
+    <testcase name="should be initialized with $stateParams.campaignId" time="0.018" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController campaignId"/>
+    <testcase name="should initialize creativeGroup" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController activate()"/>
+    <testcase name="should do nothing if pristine" time="0.018" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController close()"/>
+    <testcase name="should preventDefault() on event and invoke DialogFactory.showDialog() if not pristine" time="0.019" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController close()"/>
+    <testcase name="should leave() when DialogFactory.showDialog() is resolved" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController close()"/>
+    <testcase name="should invoke CreativeGroupService.saveCreativeGroup()" time="0.018" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController save()"/>
+    <testcase name="should invoke DialogFactory.showDismissableMessage()" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController save() on success"/>
+    <testcase name="should go() to the `creative-group` state" time="0.023" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController save() on success"/>
+    <testcase name="should set errorMessage" time="0.043" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController save() on failure"/>
+    <testcase name="should invoke DialogFactory.showDialog() if errorMessage is not available" time="0.038" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: NewCreativeGroupController save() on failure"/>
+    <testcase name="should initialize controller correctly" time="0.031" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: Page403Ctrl"/>
+    <testcase name="should initialize controller correctly" time="0.032" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: Page404Ctrl"/>
+    <testcase name="should clear $scope.alerts" time="0.033" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: LoginController $scope_submit()"/>
+    <testcase name="should invoke AuthenticationService.setAuthorization()" time="0.032" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: LoginController $scope_submit()"/>
+    <testcase name="should invoke $scope.getToken()" time="0.034" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: LoginController $scope_submit()"/>
+    <testcase name="should set the scope from the window" time="0.033" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: LoginController adblock warning"/>
+    <testcase name="should submit credentials to the AuthenticationService" time="0.065" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: LoginController $scope_getToken() on success"/>
+    <testcase name="should invoke UserService.getUser()" time="0.042" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: LoginController $scope_getToken() on success"/>
+    <testcase name="should broadcast `authorized` on $rootscope" time="0.045" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: LoginController $scope_getToken() on success"/>
+    <testcase name="should redirect to campaigns.html when get token" time="0.042" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: LoginController $scope_getToken() on success"/>
+    <testcase name="Should initialize the controller" time="0.17" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementAttributionSettingsController"/>
+    <testcase name="Should initialize the model for the attribution settings" time="0.027" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementAttributionSettingsController"/>
+    <testcase name="Should handle the assocMethod as a data for UI" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementAttributionSettingsController"/>
+    <testcase name="Should update and save the attribution settings" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementAttributionSettingsController"/>
+    <testcase name="should create and instance of the controller and initialize variables " time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementCampaignAssocController activate()"/>
+    <testcase name="should load unassociated/associated campaigns &amp; filter data" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementCampaignAssocController activate()"/>
+    <testcase name="should call a modal dialog" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementCampaignAssocController save()"/>
+    <testcase name="should set savedChanges flag" time="0.021" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementCampaignAssocController setChanges()"/>
+    <testcase name="Should create an instance of the controller." time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementDetailsController"/>
+    <testcase name="Should save site measurement" time="0.026" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementDetailsController"/>
+    <testcase name="should load details value in model" time="0.049" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventDetailsFlyOutController activate()"/>
+    <testcase name="should update value in model" time="0.034" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventDetailsFlyOutController activate()"/>
+    <testcase name="should add a new ping in the first position" time="0.029" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventDetailsFlyOutController activate()"/>
+    <testcase name="should show Dialog when delete a ping" time="0.029" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventDetailsFlyOutController activate()"/>
+    <testcase name="should create and instance of the controller and initialize variables " time="0.023" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: AddEventController Initialize controller"/>
+    <testcase name="should call a modal dialog" time="0.027" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: AddEventController cancel()"/>
+    <testcase name="should call a modal dialog" time="0.031" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: AddEventController save()"/>
+    <testcase name="should create and instance of the controller and initialize variables " time="0.033" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController activate()"/>
+    <testcase name="should load group list data" time="0.052" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController activate()"/>
+    <testcase name="should validate as invalid" time="0.039" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController checkValidGroupName()"/>
+    <testcase name="should validate as duplicated" time="0.039" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController checkValidGroupName()"/>
+    <testcase name="should validate as valid" time="0.039" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController checkValidGroupName()"/>
+    <testcase name="should set CREATE option" time="0.037" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController selectOption()"/>
+    <testcase name="should set EXISTING option" time="0.038" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController selectOption()"/>
+    <testcase name="should set step as invalid" time="0.038" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController setExistingGroup()"/>
+    <testcase name="should set step as valid" time="0.048" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventGroupController setExistingGroup()"/>
+    <testcase name="should create and instance of the controller and initialize variables " time="0.047" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventNameController Initilize controller"/>
+    <testcase name="should validate as invalid" time="0.043" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventNameController checkValidEventName()"/>
+    <testcase name="should validate as duplicated" time="0.042" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventNameController checkValidEventName()"/>
+    <testcase name="should validate as valid" time="0.042" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventNameController checkValidEventName()"/>
+    <testcase name="should set as valid step" time="0.043" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventNameController checkValidInputType()"/>
+    <testcase name="should set an invalid step" time="0.049" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventNameController checkValidInputType()"/>
+    <testcase name="should set event description" time="0.046" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: EventNameController setDescription()"/>
+    <testcase name="should set default values" time="0.046" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementEventsController activate()"/>
+    <testcase name="should set row counter message" time="0.225" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementEventsController onSearchCounter()"/>
+    <testcase name="Should create an instance of the controller." time="0.028" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementEventsController"/>
+    <testcase name="Should resolve the promise to get the events object for Site Measurement with id 9046516" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementEventsController"/>
+    <testcase name="Should obtain all the events for Site Measurement with id 9046516" time="0.023" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementEventsController"/>
+    <testcase name="should extract options and values from the model" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: SMEventsFilterService loadFilters()"/>
+    <testcase name="should update the group filter options" time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: SMEventsFilterService updateGroupFilter()"/>
+    <testcase name="should update the tag type filter options" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: SMEventsFilterService updateTagTypeFilter()"/>
+    <testcase name="Should create an instance of the controller." time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementController"/>
+    <testcase name="should create and instance of the controller and initialize variables " time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SMCampaignDomainController activate()"/>
+    <testcase name="should load advertiser list data" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SMCampaignDomainController activate()"/>
+    <testcase name="should create and instance of the controller and initialize variables " time="0.032" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SMCampaignNameController activate()"/>
+    <testcase name="should load advertiser list data" time="0.027" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SMCampaignNameController activate()"/>
+    <testcase name="should load brand list data" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SMCampaignNameController reloadBrand()"/>
+    <testcase name="should create and instance of the controller and initialize variables " time="0.022" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: AddSMCampaignController Initialize controller"/>
+    <testcase name="should call a modal dialog" time="0.02" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: AddSMCampaignController cancel()"/>
+    <testcase name="should call a modal dialog" time="0.024" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: AddSMCampaignController save()"/>
+    <testcase name="Should create an instance of the controller." time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementsListController"/>
+    <testcase name="Should obtain all the site measurements and set to a model" time="0.027" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementsListController"/>
+    <testcase name="Should load model to Site Measurement grid" time="0.028" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: SiteMeasurementsListController"/>
+    <testcase name="should load the status when the api is available" time="0.025" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: StatusController"/>
+    <testcase name="should load the error when the api is unavailable" time="0.042" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Controller: StatusController"/>
+    <testcase name="should extract options and values from the model" time="0.038" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: PlacementsTableFilterService loadFilterOptions()"/>
+    <testcase name="should map the options from a row of the model" time="0.039" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: PlacementsTableFilterService mappingFilters()"/>
+    <testcase name="should return the site id that matches with a given site name" time="0.035" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: PlacementsTableFilterService siteIdByName()"/>
+    <testcase name="should return the placement id that matches with a given placement name" time="0.036" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: PlacementsTableFilterService placementIdByName()"/>
+    <testcase name="should update the site filter options, removing a hidden campaign&apos;s children" time="0.039" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: PlacementsTableFilterService updateSite()"/>
+    <testcase name="should update the placement filter options, removing a hidden site&apos;s children" time="0.041" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: PlacementsTableFilterService updatePlacement()"/>
+    <testcase name="should build a placement action to create associations" time="0.055" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: TagInjectionAssociation"/>
+    <testcase name="should build a placement action to remove associations" time="0.047" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: TagInjectionAssociation"/>
+    <testcase name="should verify if an association already exists" time="0.042" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: TagInjectionAssociation"/>
+    <testcase name="should get formatted model" time="0.048" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: tagInjectionTree getModel()"/>
+    <testcase name="should get children level" time="0.041" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: tagInjectionTree getNextLevel()"/>
+    <testcase name="should get search model" time="0.046" classname="(Test Files 61 to 90) PhantomJS 1.9.8 (Windows 8).Service: tagInjectionTree getModelSearch()"/>
+    <system-out><![CDATA[
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

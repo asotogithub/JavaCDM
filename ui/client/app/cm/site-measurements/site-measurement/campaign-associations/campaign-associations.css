@@ -1,0 +1,31 @@
+.search-container .te-table .form-group.te-table-search, .te-table .te-table-toolbar .te-table-search .input-group .te-table-search {
+    width: 270px !important;
+}
+
+.search-container .association-panel .panel-assoc {
+    width: 46% !important;
+}
+
+.search-container .association-panel .center-btns {
+    margin: 0;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 145px;
+    width: 8% !important;
+}
+
+.sm-association-name-column {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 40%;
+}
+
+.sm-association-advertiser-column {
+    max-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 25%;
+}

@@ -1,0 +1,29 @@
+<div data-ng-controller="PlacementsController as vmPlacements">
+    <te-tree id="placementsTree"
+             class="col-xs-12"
+             data-custom-node-template="'app/cm/tag-injection/tag-injection-tab/standard-tab/placements/node-template.html'"
+             data-model="vmPlacements.model"
+             data-on-drop="vmPlacements.onDrop"
+             data-header="vmPlacements.header"
+             data-on-expand-collapse="vmPlacements.onExpandCollapse"
+             data-on-select="vmPlacements.onSelect"
+             data-custom-search-enabled="true"
+             data-on-custom-search="vmPlacements.searchTree"
+             data-search-fields="vmPlacements.searchFields"
+             data-on-clear-search-field="vmPlacements.searchClear"
+             data-custom-search-term="vmPlacements.searchTerm"
+             data-row-selected-uuid="vmPlacements.rowSelectedUuid">
+        <te-tree-secondary-btns>
+            <dropdown-multicheckbox data-ng-repeat="option in vmPlacements.filterOptions"
+                                    data-input-model="option.value"
+                                    data-name-element="option.fieldName"
+                                    data-output-model="vmPlacements.filterValues[option.index].values"
+                                    data-title="option.text"
+                                    data-display-field="'label'"
+                                    data-events="vmPlacements.actionFilter[option.index]"
+                                    data-id-field="'id'">
+            </dropdown-multicheckbox>
+        </te-tree-secondary-btns>
+    </te-tree>
+
+</div>

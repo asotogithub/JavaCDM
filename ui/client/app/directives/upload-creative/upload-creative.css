@@ -1,0 +1,42 @@
+.file-upload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+
+.dragover {
+    background-color: #23b7e5;
+    color: #fff !important;
+}
+
+.upload .te-table-body {
+    padding-top: 18px;
+}
+
+.upload .well {
+    text-align: center;
+}
+
+.upload-or {
+    padding: 10px 0;
+}
+
+legend#versionedLegend {
+    padding-top: 25px;
+}
+
+legend#versionedLegend label {
+    color: #909fa7;
+    font-weight: 100;
+    font-size: 14px;
+    font-style: italic;
+    margin-left: 10px;
+}
+
+div.te-table.upload td span i.fa.fa-check {
+    color: #37bc9b;
+}
+
+div.te-table.upload td span i.fa.fa-times {
+    color: #f05050;
+}

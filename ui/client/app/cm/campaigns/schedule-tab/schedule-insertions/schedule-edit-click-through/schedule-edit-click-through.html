@@ -1,0 +1,71 @@
+<div id="editCTUrlPopup">
+    <div class="modal-header dialog-header-confirm default-cursor long-text-wrapper padding-left20" id="dialog-mp">
+        <h4 class="modal-title">{{'schedule.editMultipleClickThrough' | translate}} - {{vm.mainTitle}}</h4>
+        <a class="modal-close-btn" data-ng-click="vm.cancel()"><span class="fa fa-close"></span></a>
+    </div>
+    <div class="modal-body default-cursor padding-top16" data-cg-busy="vm.promise">
+        <div class="padding-bottom18">{{'schedule.editClickThrough' | translate}}</div>
+        <div data-ng-form name="vm.clickthroughsForm" class="form-horizontal" novalidate>
+            <ul dnd-list="vm.clickthroughs" class="clickthrough-scrollBar">
+                <li data-ng-repeat="item in vm.clickthroughs"
+                    data-ng-model-options="{allowInvalid: true}"
+                    dnd-draggable="item"
+                    dnd-moved="vm.clickthroughs.splice($index, 1); vm.validationClickThroughs(item);"
+                    dnd-effect-allowed="move"
+                    class="list-group-item">
+                    <div class="form-group input-group"
+                         data-ng-class="{'has-error': vm.clickthroughsForm[item.sequence].$dirty && vm.clickthroughsForm[item.sequence].$invalid}">
+                        <span class="input-group-addon white-numeration">{{$index + 1}}</span>
+                        <span class="input-group-addon"><em class="fa fa-reorder"></em></span>
+                        <input class="form-control"
+                               id="{{item.sequence}}"
+                               name="{{item.sequence}}"
+                               type="url"
+                               data-ng-model="item.url"
+                               data-ng-model-options="{allowInvalid: true}"
+                               data-ng-pattern="vm.urlPattern"
+                               placeholder="{{'creative.httpYourWebSite' | translate}}"
+                               required>
+                        <span class="input-group-btn" data-ng-if="vm.clickthroughs.length > 1">
+                            <button class="btn btn-default"
+                                    type="button"
+                                    data-ng-click="vm.removeCTUrl($index)">
+                                <em class="fa fa-trash"></em>
+                            </button>
+                        </span>
+                    </div>
+                    <p class="help-block help-message-color"
+                       data-ng-if="vm.clickthroughsForm[item.sequence].$dirty && vm.clickthroughsForm[item.sequence].$error.required">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p class="help-block help-message-color"
+                       data-ng-if="vm.clickthroughsForm[item.sequence].$dirty && vm.clickthroughsForm[item.sequence].$error.url">
+                        {{'validation.error.invalidURL' | translate}}
+                    </p>
+                </li>
+            </ul>
+            <div class="form-group margin-right0">
+                <div class="pull-right">
+                    <button data-ng-click="vm.addCTUrl()"
+                            class="btn btn-info btn-right-bottom"
+                            data-ng-disabled="vm.clickthroughsForm.$invalid">
+                        {{'global.add' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer default-cursor mt0 padding-top20">
+        <button type="button"
+                class="btn btn-default"
+                data-ng-click="vm.cancel()">
+            {{'global.cancel' | translate}}
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                data-ng-click="vm.save()"
+                data-ng-disabled="vm.clickthroughsForm.$invalid || vm.clickthroughsForm.$pristine">
+            {{'global.save' | translate}}
+        </button>
+    </div>
+</div>

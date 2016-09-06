@@ -1,0 +1,17 @@
+.properties-add-dialog .chosen-container .chosen-drop {
+    width: 289px;
+}
+
+.properties-add-dialog .site-section-dropdown-width .chosen-container .chosen-drop {
+    width: 415px;
+}
+
+.properties-add-dialog .chosen-container .chosen-results li.active-result {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.properties-add-dialog .chosen-container .chosen-results {
+    max-height: 270px;
+}

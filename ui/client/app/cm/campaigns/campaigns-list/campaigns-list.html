@@ -1,0 +1,75 @@
+<div data-cg-busy="vm.promise">
+    <h3>{{'nav.campaigns' | translate}}</h3>
+    <te-metrics data-ng-if="vm.metrics" data-model="vm.metrics" data-legend="'global.last30Days' | translate"></te-metrics>
+
+    <div id="campaignsChart" data-ng-if="vm.metrics" class="panel panel-default chart-panel">
+        <div class="panel-heading">
+            <paneltool tool-collapse="tool-collapse"></paneltool>
+            <div class="panel-title">{{"campaigns.chart.panel.title" | translate}}</div>
+        </div>
+        <div collapse="campaignsChart" class="panel-wrapper">
+            <div class="panel-body">
+                <highchart config="vm.chartConfig" class="span10"></highchart>
+            </div>
+        </div>
+    </div>
+
+    <te-table data-empty-message="'global.listEmpty' | translate"
+              data-model="vm.campaigns"
+              data-te-table-select="vm.go($selection)"
+              data-filter-values="vm.filterValues">
+        <te-table-btns>
+            <te-table-add-btn data-te-table-btn-click="vm.addCampaign()"
+                              data-ng-if="vm.hasAddPermission"></te-table-add-btn>
+        </te-table-btns>
+        <te-table-secondary-btns>
+            <dropdown-multicheckbox data-ng-repeat="option in vm.filterOption"
+                                    data-input-model="option.value"
+                                    data-output-model="vm.filterValues[$index].values"
+                                    data-events="vm.actionFilter[$index]"
+                                    data-title="option.text"
+                                    data-reset-search-on-expand="true">
+            </dropdown-multicheckbox>
+        </te-table-secondary-btns>
+        <table>
+            <tr class="actionable-row" data-ng-repeat="campaign in $data">
+                <td data-title="'global.name' | translate"
+                    data-searchable="true"
+                    data-sortable="'name'"
+                    class="wrap-text-td">
+                    {{campaign.name}}
+                </td>
+                <td data-title="'global.advertiser' | translate"
+                    data-searchable="true"
+                    data-sortable="'advertiserName'">
+                    {{campaign.advertiserName}}
+                </td>
+                <td data-title="'global.brand' | translate"
+                    data-searchable="true"
+                    data-sortable="'brandName'">
+                    {{campaign.brandName}}
+                </td>
+                <td data-title="'global.domain' | translate"
+                    data-sortable="'domain'">
+                    {{campaign.domain}}
+                </td>
+                <td data-title="'global.status' | translate"
+                    data-sortable="'isActiveDisplay'">
+                    {{campaign.isActiveDisplay}}
+                </td>
+                <td data-title="'global.cost' | translate"
+                    data-sortable="'cost'">
+                    {{(campaign.cost | currency) || vm.NUMERIC_DEFAULT}}
+                </td>
+                <td data-title="'global.conversions' | translate"
+                    data-sortable="'conversions'">
+                    {{(campaign.conversions | number : 0) || vm.NUMERIC_DEFAULT}}
+                </td>
+                <td data-title="'global.eCpa' | translate"
+                    data-sortable="'eCpa'">
+                    {{(campaign.eCpa | currency) || vm.CURRENCY_DEFAULT}}
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

@@ -1,0 +1,549 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <base href="/">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(client) app/vendor.css -->
+      <!-- bower:css -->
+      <link rel="stylesheet" href="bower_components/angular-busy/dist/angular-busy.css" />
+      <link rel="stylesheet" href="bower_components/chosen/chosen.css" />
+      <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+      <link rel="stylesheet" href="bower_components/angular-dialog-service/dist/dialogs.min.css" />
+      <link rel="stylesheet" href="bower_components/angular-growl-v2/build/angular-growl.css" />
+      <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css" />
+      <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+      <link rel="stylesheet" href="bower_components/jQuery-QueryBuilder/dist/css/query-builder.default.css" />
+      <link rel="stylesheet" href="bower_components/jqwidgets/jqwidgets/styles/jqx.base.css" />
+      <link rel="stylesheet" href="bower_components/jqwidgets/jqwidgets/styles/jqx.bootstrap.css" />
+      <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
+      <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css" />
+      <!-- endbower -->
+    <!-- endbuild -->
+    <!-- For details aobut this section, see notes in 'vendor-css' task in Gruntfile.js -->
+    <!-- build:css(client) app/_vendor.css -->
+      <!-- vendor:css -->
+      <link rel="stylesheet" href="vendor/angle-bootstrap-theme/f1-bootstrap-theme.css">
+      <link rel="stylesheet" href="vendor/angle-bootstrap-theme/f2-app.css">
+      <link rel="stylesheet" href="vendor/angle-bootstrap-theme/f3-angle-theme.css">
+      <link rel="stylesheet" href="vendor/bootstrap-tagsinput/bootstrap-tagsinput.css">
+      <link rel="stylesheet" href="vendor/chosen-bootstrap/chosen-bootstrap.css">
+      <link rel="stylesheet" href="vendor/chosen.css">
+      <link rel="stylesheet" href="vendor/jqx.base.css">
+      <!-- endvendor -->
+    <!-- endbuild -->
+
+    <!-- build:css({.tmp,client}) app/app.css -->
+      <!-- injector:css -->
+      <link rel="stylesheet" href="app/app.css">
+      <link rel="stylesheet" href="app/cm/adm/adm-details-tab/adm-details-tab.css">
+      <link rel="stylesheet" href="app/cm/adm/adm-details/adm-details.css">
+      <link rel="stylesheet" href="app/cm/adm/adm-details/reporting/reporting.css">
+      <link rel="stylesheet" href="app/cm/adm/adm-list/adm-list.css">
+      <link rel="stylesheet" href="app/cm/campaigns/add-campaign/add-campaign.css">
+      <link rel="stylesheet" href="app/cm/campaigns/add-campaign/dates/dates.css">
+      <link rel="stylesheet" href="app/cm/campaigns/add-campaign/domain/domain.css">
+      <link rel="stylesheet" href="app/cm/campaigns/add-campaign/name/name.css">
+      <link rel="stylesheet" href="app/cm/campaigns/campaign-details-tab/campaign-details-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/campaign-details/campaign-details.css">
+      <link rel="stylesheet" href="app/cm/campaigns/campaigns-list/campaigns-list.css">
+      <link rel="stylesheet" href="app/cm/campaigns/campaigns.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-details/creative-details-tab/creative-click-through/creative-click-through.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-details/creative-details-tab/creative-details-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-details/creative-details-tab/creative-extended-properties/creative-extended-properties.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-details/creative-details-tab/creative-versions/creative-versions.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-details/creative-details.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-groups-tab/creative-groups-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-tab/creative-add/assign/assign.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-tab/creative-add/creative-add.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-tab/creative-list/creative-list.css">
+      <link rel="stylesheet" href="app/cm/campaigns/creative-tab/creative-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/io-add/io-add.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/io-details/io-details.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/io-edit/io-edit.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/io-list/io-import/global-validation-warning-dialog.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/io-list/io-list.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/io-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/package-tab/associate-placements/add-placement/add-placement.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/package-tab/associate-placements/associate-placements.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/package-tab/associate-placements/create-placements/create-placements.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/package-association.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/warning-dialog.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/package-tab/package-edit/package-edit.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/package-tab/package-list/package-list.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/package-tab/package-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/partial/cost-details/cost-details.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/placement-tab/new-placements-input/new-placements-input.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/placement-tab/placement-add/details/details.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/placement-tab/placement-add/placement-add.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/placement-tab/placement-add/properties-add/properties-add.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/placement-tab/placement-add/properties/properties.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/placement-tab/placement-edit/placement-edit.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/placement-tab/placement-list/placement-list.css">
+      <link rel="stylesheet" href="app/cm/campaigns/io-tab/placement-tab/placement-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/add-group-creative-associations/add-group-creative-associations.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/add-schedule-assignments/add-schedule-assignments.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/duplicate-schedule-assignments/duplicate-schedule-assignments.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-import-errors/schedule-import-errors.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-import/schedule-import.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-insertions/bulk-edit.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-edit-click-through/schedule-edit-click-through.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-filter/flyout-filters.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-insertions.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-tracking-tag-associations/schedule-tracking-tag-associations.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-insertions/shared-creative-groups-warning-dialog.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/schedule-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/trafficking-modal/campaign-review-tab/campaign-review-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/trafficking-modal/site-trafficking-contacts-tab/site-trafficking-contacts-tab.css">
+      <link rel="stylesheet" href="app/cm/campaigns/schedule-tab/trafficking-modal/trafficking-modal.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-group-details-form/cookie-targeting/cookie-targeting.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-group-details-form/creative-group-details-form.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-group-details-form/daypart-targeting/daypart-targeting.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-group-details-form/geo-targeting/geo-targeting.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-group-details-tab/creative-group-details-tab.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-group.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-tab/creative-add/creative-add.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-tab/creative-list/creative-list.css">
+      <link rel="stylesheet" href="app/cm/creative-group/creative-tab/creative-tab.css">
+      <link rel="stylesheet" href="app/cm/creative-group/new-creative-group/new-creative-group.css">
+      <link rel="stylesheet" href="app/cm/error-pages/page-404/page-404.css">
+      <link rel="stylesheet" href="app/cm/login/login.css">
+      <link rel="stylesheet" href="app/cm/main/main.css">
+      <link rel="stylesheet" href="app/cm/main/sidebar/sidebar.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement-add/domain/domain.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement-add/name/name.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement-add/site-measurement-add.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/attribution-settings/attribution-settings.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/campaign-associations/campaign-associations.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/details/details.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/events/event-details-fly-out/event-details-fly-out.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/events/events-add/events-add.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/events/events-add/group/group.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/events/events-add/name-type/name-type.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/events/events-list/events-list.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/events/events.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurement/site-measurement.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurements-list/site-measurements-list.css">
+      <link rel="stylesheet" href="app/cm/site-measurements/site-measurements.css">
+      <link rel="stylesheet" href="app/cm/status/status.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/add-tracking-tag.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/html-tag-type/html-tag-type.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/name/name.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/standard-tab/associations/associations.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/standard-tab/placements/placements.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/standard-tab/standard-tab.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/standard-tab/tag-injection-fly-out/tag-injection-fly-out.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/standard-tab/tracking-tags/tracking-tags.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection-tab/tag-injection-tab.css">
+      <link rel="stylesheet" href="app/cm/tag-injection/tag-injection.css">
+      <link rel="stylesheet" href="app/cm/tags/tag-placement-list/send-ad-tags-modal/send-ad-tags.css">
+      <link rel="stylesheet" href="app/cm/tags/tag-placement-list/tag-details-fly-out/tag-details-fly-out.css">
+      <link rel="stylesheet" href="app/cm/tags/tag-placement-list/tag-placement-list.css">
+      <link rel="stylesheet" href="app/cm/tags/tags.css">
+      <link rel="stylesheet" href="app/directives/associated-placements/associated-placements.css">
+      <link rel="stylesheet" href="app/directives/association-maker/association-maker.css">
+      <link rel="stylesheet" href="app/directives/dropdown-multicheckbox/dropdown-multicheckbox.css">
+      <link rel="stylesheet" href="app/directives/import-data/import-data.css">
+      <link rel="stylesheet" href="app/directives/issues-container/issues-container.css">
+      <link rel="stylesheet" href="app/directives/legend-table/legend-table.css">
+      <link rel="stylesheet" href="app/directives/ping-box/ping-box.css">
+      <link rel="stylesheet" href="app/directives/te-table-ping/te-table-ping.css">
+      <link rel="stylesheet" href="app/directives/upload-creative/upload-creative.css">
+      <link rel="stylesheet" href="app/services/creative/template/warning-dialog.css">
+      <link rel="stylesheet" href="components/directives/te-fly-out/te-fly-out.css">
+      <link rel="stylesheet" href="components/directives/te-metrics/te-metrics.css">
+      <link rel="stylesheet" href="components/directives/te-table/te-table-add-btn/te-table-add-btn.css">
+      <link rel="stylesheet" href="components/directives/te-table/te-table-edit-btn/te-table-edit-btn.css">
+      <link rel="stylesheet" href="components/directives/te-table/te-table-remove-btn/te-table-remove-btn.css">
+      <link rel="stylesheet" href="components/directives/te-table/te-table.css">
+      <link rel="stylesheet" href="components/directives/te-tree-grid/te-tree-grid.css">
+      <link rel="stylesheet" href="components/directives/te-tree/te-tree.css">
+      <link rel="stylesheet" href="components/directives/te-tree/tree-node-template/tree-node-template.css">
+      <link rel="stylesheet" href="components/modal/modal.css">
+      <!-- endinjector -->
+    <!-- endbuild -->
+      <script type="text/javascript" src="assets/js/ads.js"></script>
+  </head>
+  <body ng-app="uiApp" data-ng-class="{ 'aside-collapsed' : app.layout.isCollapsed }">
+     <div data-growl></div>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div class="main-content" ui-view></div>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+    <!-- build:js({client,node_modules}) app/vendor.js -->
+      <!-- bower:js -->
+      <script src="bower_components/jquery/dist/jquery.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/angular-base64/angular-base64.js"></script>
+      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/angular-breadcrumb/release/angular-breadcrumb.js"></script>
+      <script src="bower_components/angular-animate/angular-animate.js"></script>
+      <script src="bower_components/angular-busy/dist/angular-busy.js"></script>
+      <script src="bower_components/chosen/chosen.jquery.js"></script>
+      <script src="bower_components/angular-chosen-localytics/chosen.js"></script>
+      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="bower_components/angular-translate/angular-translate.js"></script>
+      <script src="bower_components/angular-dialog-service/dist/dialogs.min.js"></script>
+      <script src="bower_components/angular-dialog-service/dist/dialogs-default-translations.min.js"></script>
+      <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+      <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
+      <script src="bower_components/angular-growl-v2/build/angular-growl.js"></script>
+      <script src="bower_components/angular-loggly-logger/angular-loggly-logger.js"></script>
+      <script src="bower_components/moment/moment.js"></script>
+      <script src="bower_components/angular-momentjs/angular-momentjs.js"></script>
+      <script src="bower_components/angular-percentage-filter/percentage.js"></script>
+      <script src="bower_components/angular-resource/angular-resource.js"></script>
+      <script src="bower_components/angular-svg-round-progressbar/build/roundProgress.min.js"></script>
+      <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
+      <script src="bower_components/angular-uuid/angular-uuid.js"></script>
+      <script src="bower_components/bootstrap-growl-injectable/jquery.bootstrap-growl.js"></script>
+      <script src="bower_components/dndLists/angular-drag-and-drop-lists.js"></script>
+      <script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
+      <script src="bower_components/highcharts-release/highcharts.js"></script>
+      <script src="bower_components/highcharts-release/highcharts-more.js"></script>
+      <script src="bower_components/highcharts-release/modules/exporting.js"></script>
+      <script src="bower_components/jquery-extendext/jQuery.extendext.js"></script>
+      <script src="bower_components/jQuery-QueryBuilder/dist/js/query-builder.js"></script>
+      <script src="bower_components/jquery.inputmask/dist/inputmask/jquery.inputmask.js"></script>
+      <script src="bower_components/jquery.inputmask/dist/inputmask/jquery.inputmask.extensions.js"></script>
+      <script src="bower_components/jquery.inputmask/dist/inputmask/jquery.inputmask.numeric.extensions.js"></script>
+      <script src="bower_components/jquery.inputmask/dist/inputmask/jquery.inputmask.phone.extensions.js"></script>
+      <script src="bower_components/jquery.inputmask/dist/inputmask/jquery.inputmask.regex.extensions.js"></script>
+      <script src="bower_components/jqwidgets/jqwidgets/jqxcore.js"></script>
+      <script src="bower_components/jqwidgets/jqwidgets/jqx-all.js"></script>
+      <script src="bower_components/jqwidgets/jqwidgets/globalization/globalize.js"></script>
+      <script src="bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.js"></script>
+      <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+      <script src="bower_components/ng-lodash/build/ng-lodash.js"></script>
+      <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
+      <script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+      <script src="bower_components/ngStorage/src/angularLocalStorage.js"></script>
+      <script src="bower_components/sql-parser/browser/sql-parser.js"></script>
+      <script src="bower_components/SHA-1/sha1.js"></script>
+      <!-- endbower -->
+      <!-- vendor:js -->
+      <script src="vendor/angle/js/angle.module.js"></script>
+      <script src="vendor/angle/js/constants/constants.js"></script>
+      <script src="vendor/angle/js/directives/form-wizard.js"></script>
+      <script src="vendor/angle/js/directives/masked.js"></script>
+      <script src="vendor/angle/js/directives/panel-tools.js"></script>
+      <script src="vendor/angle/js/directives/sidebar.js"></script>
+      <script src="vendor/angle/js/services/utils.js"></script>
+      <script src="vendor/angular-http-auth/http-auth-interceptor.js"></script>
+      <script src="vendor/jquery.inputmask/jquery.inputmask.date.extensions.js"></script>
+      <script src="vendor/te-angular-money-directive/te-angular-money-directive.js"></script>
+      <!-- endvendor -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,client}) app/app.js -->
+        <script src="app/app.js"></script>
+          <!-- injector:js -->
+          <script src="app/cm/adm/adm-details-tab/adm-details-tab.controller.js"></script>
+          <script src="app/cm/adm/adm-details-tab/adm-details-tab.js"></script>
+          <script src="app/cm/adm/adm-details-tab/configuration/configuration.controller.js"></script>
+          <script src="app/cm/adm/adm-details-tab/form/form.controller.js"></script>
+          <script src="app/cm/adm/adm-details/adm-details.controller.js"></script>
+          <script src="app/cm/adm/adm-details/adm-details.js"></script>
+          <script src="app/cm/adm/adm-details/reporting/reporting.controller.js"></script>
+          <script src="app/cm/adm/adm-list/adm-list.controller.js"></script>
+          <script src="app/cm/adm/adm-list/adm-list.js"></script>
+          <script src="app/cm/adm/adm.controller.js"></script>
+          <script src="app/cm/adm/adm.js"></script>
+          <script src="app/cm/campaigns/add-campaign/add-campaign.controller.js"></script>
+          <script src="app/cm/campaigns/add-campaign/add-campaign.js"></script>
+          <script src="app/cm/campaigns/add-campaign/dates/dates.controller.js"></script>
+          <script src="app/cm/campaigns/add-campaign/domain/domain.controller.js"></script>
+          <script src="app/cm/campaigns/add-campaign/name/name.controller.js"></script>
+          <script src="app/cm/campaigns/campaign-details-tab/campaign-details-tab.controller.js"></script>
+          <script src="app/cm/campaigns/campaign-details-tab/campaign-details-tab.js"></script>
+          <script src="app/cm/campaigns/campaign-details/campaign-details.controller.js"></script>
+          <script src="app/cm/campaigns/campaign-details/campaign-details.js"></script>
+          <script src="app/cm/campaigns/campaigns-list/campaigns-list.controller.js"></script>
+          <script src="app/cm/campaigns/campaigns-list/campaigns-list.js"></script>
+          <script src="app/cm/campaigns/campaigns.controller.js"></script>
+          <script src="app/cm/campaigns/campaigns.js"></script>
+          <script src="app/cm/campaigns/creative-details/creative-details-tab/creative-click-through/creative-click-through.controller.js"></script>
+          <script src="app/cm/campaigns/creative-details/creative-details-tab/creative-click-through/creative-click-through.js"></script>
+          <script src="app/cm/campaigns/creative-details/creative-details-tab/creative-details-tab.controller.js"></script>
+          <script src="app/cm/campaigns/creative-details/creative-details-tab/creative-details-tab.js"></script>
+          <script src="app/cm/campaigns/creative-details/creative-details-tab/creative-extended-properties/creative-extended-properties.js"></script>
+          <script src="app/cm/campaigns/creative-details/creative-details-tab/creative-versions/creative-versions.js"></script>
+          <script src="app/cm/campaigns/creative-details/creative-details.controller.js"></script>
+          <script src="app/cm/campaigns/creative-details/creative-details.js"></script>
+          <script src="app/cm/campaigns/creative-groups-tab/creative-groups-tab.controller.js"></script>
+          <script src="app/cm/campaigns/creative-groups-tab/creative-groups-tab.js"></script>
+          <script src="app/cm/campaigns/creative-tab/creative-add/assign/assign.controller.js"></script>
+          <script src="app/cm/campaigns/creative-tab/creative-add/creative-add.controller.js"></script>
+          <script src="app/cm/campaigns/creative-tab/creative-add/creative-add.js"></script>
+          <script src="app/cm/campaigns/creative-tab/creative-list/creative-list.controller.js"></script>
+          <script src="app/cm/campaigns/creative-tab/creative-list/creative-list.js"></script>
+          <script src="app/cm/campaigns/creative-tab/creative-tab.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-add/io-add.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-add/io-add.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-details/io-details.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-details/io-details.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-edit/io-edit.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-edit/io-edit.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-list/io-import-errors/io-import-errors.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-list/io-import/global-validation-warning-dialog.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-list/io-import/io-import.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-list/io-list.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-list/io-list.js"></script>
+          <script src="app/cm/campaigns/io-tab/io-tab.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/associate-placements/add-placement/add-placement.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/associate-placements/associate-placements.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/associate-placements/associate-placements.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/associate-placements/create-placements/create-placements.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/package-association.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/package-edit/package-edit.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/package-edit/package-edit.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/package-list/package-list.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/package-list/package-list.js"></script>
+          <script src="app/cm/campaigns/io-tab/package-tab/package-tab.js"></script>
+          <script src="app/cm/campaigns/io-tab/partial/cost-details/cost-details.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/new-placements-input/new-placements-input.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/new-placements-input/new-placements-input.directive.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-add/details/details.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-add/placement-add.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-add/placement-add.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-add/properties-add/properties-add.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-add/properties/properties.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-edit/placement-edit.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-edit/placement-edit.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-list/placement-list.controller.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-list/placement-list.js"></script>
+          <script src="app/cm/campaigns/io-tab/placement-tab/placement-tab.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/add-group-creative-associations/add-group-creative-associations.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/add-schedule-assignments/add-schedule-assignments.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/duplicate-schedule-assignments/duplicate-schedule-assignments.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-config/schedule-config.service.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-import-errors/schedule-import-errors.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-import/schedule-import.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-insertions/bulk-edit.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-edit-click-through/schedule-edit-click-through.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-filter/flyout-filters.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-insertions.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-insertions.directive.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-insertions/schedule-tracking-tag-associations/schedule-tracking-tag-associations.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-insertions/shared-creative-groups-warning-dialog.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-tab.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/schedule-tab.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/trafficking-modal/campaign-review-tab/campaign-review-tab.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/trafficking-modal/site-trafficking-contacts-tab/site-trafficking-contacts-tab.controller.js"></script>
+          <script src="app/cm/campaigns/schedule-tab/trafficking-modal/trafficking-modal.controller.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/cookie-targeting/cookie-targeting.controller.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/cookie-targeting/cookie-targeting.directive.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/cookie-targeting/query-builder/cookie-builder-plugin/cookie-builder-plugin-defaults.constant.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/cookie-targeting/query-builder/cookie-builder-plugin/cookie-builder-plugin.config.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/cookie-targeting/query-builder/query-builder.constant.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/cookie-targeting/query-builder/sql-parser.constant.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/creative-group-details-form.controller.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/creative-group-details-form.directive.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/daypart-targeting/daypart-targeting.controller.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/daypart-targeting/daypart-targeting.directive.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/geo-targeting/geo-targeting.controller.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-form/geo-targeting/geo-targeting.directive.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-tab/creative-group-details-tab.controller.js"></script>
+          <script src="app/cm/creative-group/creative-group-details-tab/creative-group-details-tab.js"></script>
+          <script src="app/cm/creative-group/creative-group.controller.js"></script>
+          <script src="app/cm/creative-group/creative-group.js"></script>
+          <script src="app/cm/creative-group/creative-tab/creative-add/creative-add.controller.js"></script>
+          <script src="app/cm/creative-group/creative-tab/creative-add/creative-add.js"></script>
+          <script src="app/cm/creative-group/creative-tab/creative-add/existing-creatives/existing-creatives.controller.js"></script>
+          <script src="app/cm/creative-group/creative-tab/creative-list/creative-list.controller.js"></script>
+          <script src="app/cm/creative-group/creative-tab/creative-list/creative-list.js"></script>
+          <script src="app/cm/creative-group/creative-tab/creative-tab.js"></script>
+          <script src="app/cm/creative-group/new-creative-group/new-creative-group.controller.js"></script>
+          <script src="app/cm/creative-group/new-creative-group/new-creative-group.js"></script>
+          <script src="app/cm/error-pages/page-403/page-403.controller.js"></script>
+          <script src="app/cm/error-pages/page-403/page-403.js"></script>
+          <script src="app/cm/error-pages/page-404/page-404.controller.js"></script>
+          <script src="app/cm/error-pages/page-404/page-404.js"></script>
+          <script src="app/cm/locale/translate/messages_en.js"></script>
+          <script src="app/cm/login/login.controller.js"></script>
+          <script src="app/cm/login/login.js"></script>
+          <script src="app/cm/main/main.controller.js"></script>
+          <script src="app/cm/main/main.js"></script>
+          <script src="app/cm/main/sidebar/sidebar.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement-add/domain/domain.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement-add/name/name.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement-add/site-measurement-add.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement-add/site-measurement-add.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/attribution-settings/attribution-settings.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/attribution-settings/attribution-settings.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/campaign-associations/campaign-associations.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/campaign-associations/campaign-associations.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/details/details.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/details/details.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/events/event-details-fly-out/event-details-fly-out.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/events/events-add/events-add.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/events/events-add/events-add.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/events/events-add/group/group.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/events/events-add/name-type/name-type.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/events/events-list/events-list.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/events/events-list/events-list.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/events/events.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/services/events-table-filter/events-table-filter.service.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/site-measurement.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurement/site-measurement.js"></script>
+          <script src="app/cm/site-measurements/site-measurements-list/site-measurements-list.controller.js"></script>
+          <script src="app/cm/site-measurements/site-measurements-list/site-measurements-list.js"></script>
+          <script src="app/cm/site-measurements/site-measurements.js"></script>
+          <script src="app/cm/status/status.controller.js"></script>
+          <script src="app/cm/status/status.js"></script>
+          <script src="app/cm/tag-injection/services/placements-table-filter/placements-table-filter.service.js"></script>
+          <script src="app/cm/tag-injection/services/tag-injection-association/tag-injection-association.service.js"></script>
+          <script src="app/cm/tag-injection/services/tag-injection-tree/tag-injection-tree.service.js"></script>
+          <script src="app/cm/tag-injection/services/tag-injection-util/tag-injection-util.service.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/add-tracking-tag.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/add-tracking-tag.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/html-tag-type/html-tag-type.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/add-tracking-tag/name/name.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/placements/placements.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/standard-tab.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/standard-tab.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/tag-injection-fly-out/tag-injection-fly-out.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/standard-tab/tracking-tags/tracking-tags.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/tag-injection-tab.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection-tab/tag-injection-tab.js"></script>
+          <script src="app/cm/tag-injection/tag-injection.controller.js"></script>
+          <script src="app/cm/tag-injection/tag-injection.js"></script>
+          <script src="app/cm/tags/tag-placement-list/send-ad-tags-modal/send-ad-tags.controller.js"></script>
+          <script src="app/cm/tags/tag-placement-list/tag-details-fly-out/tag-details-fly-out.controller.js"></script>
+          <script src="app/cm/tags/tag-placement-list/tag-placement-list.controller.js"></script>
+          <script src="app/cm/tags/tag-placement-list/tag-placement-list.js"></script>
+          <script src="app/cm/tags/tags.controller.js"></script>
+          <script src="app/cm/tags/tags.js"></script>
+          <script src="app/config/constants.js"></script>
+          <script src="app/directives/a-disabled/a-disabled.directive.js"></script>
+          <script src="app/directives/associated-placements/associated-placements.controller.js"></script>
+          <script src="app/directives/associated-placements/associated-placements.directive.js"></script>
+          <script src="app/directives/association-maker/association-maker.directive.js"></script>
+          <script src="app/directives/dropdown-multicheckbox/dropdown-multicheckbox.directive.js"></script>
+          <script src="app/directives/enter-as-tab/enter-as-tab.directive.js"></script>
+          <script src="app/directives/focus-element/focus-element.directive.js"></script>
+          <script src="app/directives/import-data/import-data.controller.js"></script>
+          <script src="app/directives/import-data/import-data.directive.js"></script>
+          <script src="app/directives/integer-input/integer-input.directive.js"></script>
+          <script src="app/directives/issues-container/issues-container.controller.js"></script>
+          <script src="app/directives/issues-container/issues-container.directive.js"></script>
+          <script src="app/directives/legend-table/legend-table.directive.js"></script>
+          <script src="app/directives/lower-than/lower-than.directive.js"></script>
+          <script src="app/directives/next-to/next-to.directive.js"></script>
+          <script src="app/directives/on-error/on-error.directive.js"></script>
+          <script src="app/directives/ping-box/ping-box.controller.js"></script>
+          <script src="app/directives/ping-box/ping-box.directive.js"></script>
+          <script src="app/directives/te-table-ping/te-table-ping.controller.js"></script>
+          <script src="app/directives/te-table-ping/te-table-ping.directive.js"></script>
+          <script src="app/directives/upload-creative/upload-creative.controller.js"></script>
+          <script src="app/directives/upload-creative/upload-creative.directive.js"></script>
+          <script src="app/directives/validate-duplicate/validate-duplicate.directive.js"></script>
+          <script src="app/filters/daypartOption/daypartOption.filter.js"></script>
+          <script src="app/services/adm/adm.service.js"></script>
+          <script src="app/services/advertisers/advertiser.service.js"></script>
+          <script src="app/services/agency/agency.service.js"></script>
+          <script src="app/services/authentication/authentication.service.js"></script>
+          <script src="app/services/brand/brand.service.js"></script>
+          <script src="app/services/campaigns/campaigns-util.service.js"></script>
+          <script src="app/services/campaigns/campaigns.service.js"></script>
+          <script src="app/services/cookie-domains/cookie-domains.service.js"></script>
+          <script src="app/services/cost-util/cost-util.service.js"></script>
+          <script src="app/services/creative-group/creative-group.service.js"></script>
+          <script src="app/services/creative-insertion/creative-insertion.service.js"></script>
+          <script src="app/services/creative/creative-util.service.js"></script>
+          <script src="app/services/creative/creative.service.js"></script>
+          <script src="app/services/dataset/dataset.service.js"></script>
+          <script src="app/services/date-time/date-time.service.js"></script>
+          <script src="app/services/error-handling/error-handling.service.js"></script>
+          <script src="app/services/error-request-handler/error-request-handler.service.js"></script>
+          <script src="app/services/events/events.service.js"></script>
+          <script src="app/services/geo-targeting/geo-targeting.service.js"></script>
+          <script src="app/services/insertion-order/insertion-order-util.service.js"></script>
+          <script src="app/services/insertion-order/insertion-order.service.js"></script>
+          <script src="app/services/interceptors/auth-interceptor/auth-interceptor.service.js"></script>
+          <script src="app/services/mediaBuy/mediaBuy.service.js"></script>
+          <script src="app/services/oauth/oauth.service.js"></script>
+          <script src="app/services/package/package-util.service.js"></script>
+          <script src="app/services/package/package.service.js"></script>
+          <script src="app/services/ping/ping.service.js"></script>
+          <script src="app/services/placement/placement-util.service.js"></script>
+          <script src="app/services/placement/placement.service.js"></script>
+          <script src="app/services/publisher/publisher.service.js"></script>
+          <script src="app/services/schedule-flyout-util/flyout-edition-stash.service.js"></script>
+          <script src="app/services/schedule-flyout-util/schedule-flyout-util.service.js"></script>
+          <script src="app/services/schedule/schedule-util.service.js"></script>
+          <script src="app/services/section/section.service.js"></script>
+          <script src="app/services/site-measurement-groups/site-measurement-groups.service.js"></script>
+          <script src="app/services/site-measurement-model/site-measurement-model.service.js"></script>
+          <script src="app/services/site-measurements/site-measurements-util.service.js"></script>
+          <script src="app/services/site-measurements/site-measurements.service.js"></script>
+          <script src="app/services/site-section/site-section.service.js"></script>
+          <script src="app/services/site/site.service.js"></script>
+          <script src="app/services/size/size.service.js"></script>
+          <script src="app/services/state-change-manager/state-change-manager.service.js"></script>
+          <script src="app/services/status/status.service.js"></script>
+          <script src="app/services/tag-injection/tag-injection.service.js"></script>
+          <script src="app/services/trafficking/trafficking.service.js"></script>
+          <script src="app/services/user/user.service.js"></script>
+          <script src="app/services/username-memory/username.memory.service.js"></script>
+          <script src="app/services/utils-cdm.service.js"></script>
+          <script src="app/services/utils-number/utils-number.service.js"></script>
+          <script src="app/util/logDecorator.js"></script>
+          <script src="components/_te.components.module.js"></script>
+          <script src="components/dialog/dialog.controller.js"></script>
+          <script src="components/dialog/dialog.factory.js"></script>
+          <script src="components/directives/no-dirty/no-dirty.directive.js"></script>
+          <script src="components/directives/te-fly-out/te-fly-out.controller.js"></script>
+          <script src="components/directives/te-fly-out/te-fly-out.directive.js"></script>
+          <script src="components/directives/te-metrics/te-metrics.directive.js"></script>
+          <script src="components/directives/te-table/te-table-add-btn/te-table-add-btn.directive.js"></script>
+          <script src="components/directives/te-table/te-table-body/te-table-body.directive.js"></script>
+          <script src="components/directives/te-table/te-table-btn-click/te-table-btn-click.directive.js"></script>
+          <script src="components/directives/te-table/te-table-btn-selected/te-table-btn-selected.directive.js"></script>
+          <script src="components/directives/te-table/te-table-btn-single-selected/te-table-btn-single-selected.directive.js"></script>
+          <script src="components/directives/te-table/te-table-edit-btn/te-table-edit-btn.directive.js"></script>
+          <script src="components/directives/te-table/te-table-filter/te-table-filter.directive.js"></script>
+          <script src="components/directives/te-table/te-table-remove-btn/te-table-remove-btn.directive.js"></script>
+          <script src="components/directives/te-table/te-table-select/te-table-select.directive.js"></script>
+          <script src="components/directives/te-table/te-table.controller.js"></script>
+          <script src="components/directives/te-table/te-table.directive.js"></script>
+          <script src="components/directives/te-tree-grid/te-tree-grid-checked/te-tree-grid-checked.directive.js"></script>
+          <script src="components/directives/te-tree-grid/te-tree-grid-row-collapse/te-tree-grid-row-collapse.directive.js"></script>
+          <script src="components/directives/te-tree-grid/te-tree-grid-row-expand/te-tree-grid-row-expand.directive.js"></script>
+          <script src="components/directives/te-tree-grid/te-tree-grid-select/te-tree-grid-select.directive.js"></script>
+          <script src="components/directives/te-tree-grid/te-tree-grid.controller.js"></script>
+          <script src="components/directives/te-tree-grid/te-tree-grid.directive.js"></script>
+          <script src="components/directives/te-tree/te-tree.controller.js"></script>
+          <script src="components/directives/te-tree/te-tree.directive.js"></script>
+          <script src="components/filters/gridFilter/gridFilter.filter.js"></script>
+          <script src="components/filters/html-safe/html-safe.filter.js"></script>
+          <script src="components/filters/useFilter/useFilter.filter.js"></script>
+          <script src="components/filters/valuesFilter/values-filter.filter.js"></script>
+          <script src="components/modal/modal.service.js"></script>
+          <script src="components/services/sha1/sha1.service.js"></script>
+          <script src="components/services/utils/utils.service.js"></script>
+          <!-- endinjector -->
+        <!-- endbuild -->
+
+    <!--Provides info about the API environment where to point to-->
+    <script src="app/environment.js"></script>
+
+</body>
+</html>

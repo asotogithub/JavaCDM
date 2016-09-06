@@ -1,0 +1,58 @@
+<div data-ng-controller="EventGroupController as vmAddEventGroup"
+     data-ng-form name="vmAddEventGroup.groupForm">
+    <fieldset>
+        <div class="col-md-12 event-group-field-container">
+            <div class="col-md-3 event-group-field-container">
+                <label for="existingGroup" class="radio-inline">
+                    <input type="radio"
+                           name="radio"
+                           id="existingGroup"
+                           data-ng-click="vmAddEventGroup.selectOption(vmAddEventGroup.OPTION.EXISTING)"
+                           data-ng-checked="true && vmAddEventGroup.groupList.length > 0">
+                    {{'global.existing' | translate}}
+                </label>
+                <fieldset class="panel-body text-center event-group-input-container" data-ng-disabled="!vmAddEventGroup.existingGroup">
+                    <select id="eventGroupExisting"
+                            class="form-control"
+                            data-ng-change="vmAddEventGroup.setExistingGroup()"
+                            data-ng-model="vmAddEventGroup.group.existing"
+                            data-ng-options="group.groupName | translate for group in vmAddEventGroup.groupList track by group.id"
+                            data-ng-required="vmAddEventGroup.existingGroup">
+                        <option value="" disabled selected hidden>{{'global.select' | translate}}</option>
+                    </select>
+                </fieldset>
+            </div>
+            <div class="col-md-3">
+                <label for="createGroup" class="radio-inline">
+                    <input type="radio"
+                           name="radio"
+                           id="createGroup"
+                           data-ng-click="vmAddEventGroup.selectOption(vmAddEventGroup.OPTION.CREATE)"
+                           data-ng-checked="true && vmAddEventGroup.groupList.length === 0">
+                    {{'global.createNew' | translate}}
+                </label>
+                <fieldset class="panel-body text-center event-group-input-container"
+                          data-ng-class="{'has-error': vmAddEventGroup.groupForm.eventGroupCreate.$invalid || vmAddEventGroup.groupNameState === vmAddEventGroup.GROUP_NAME_STATE.DUPLICATED}"
+                          data-ng-disabled="!vmAddEventGroup.createGroup">
+                    <input id="eventGroupCreate"
+                           name="eventGroupCreate"
+                           class="form-control"
+                           type="text"
+                           data-ng-blur="vmAddEventGroup.checkValidGroupName($event, vmAddEventGroup.groupForm.eventGroupCreate.$error.pattern)"
+                           data-ng-model="vmAddEventGroup.group.new"
+                           data-ng-pattern="vmAddEventGroup.groupPattern"
+                           maxlength="{{vmAddEventGroup.maxLengthGroup}}"
+                           autocomplete="off"/>
+                    <p id="eventGroupNameError" class="help-block error-container"
+                       data-ng-if="vmAddEventGroup.groupNameState === vmAddEventGroup.GROUP_NAME_STATE.DUPLICATED">
+                        {{'siteMeasurement.eventsPings.duplicatedGroupNameFound' | translate}}
+                    </p>
+                    <p id="eventGroupNamePattern" class="help-block error-container"
+                       data-ng-if="vmAddEventGroup.groupForm.eventGroupCreate.$error.pattern">
+                        {{'validation.error.invalid' | translate}}
+                    </p>
+                </fieldset>
+            </div>
+        </div>
+    </fieldset>
+</div>

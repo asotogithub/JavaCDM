@@ -1,0 +1,233 @@
+<div class="geo-targeting">
+    <tabset class="col-md-7" data-cg-busy="vm.promise">
+        <tab id="geoTargetCountryTab" heading="{{'global.country' | translate}}">
+            <div data-ng-if="false">
+                <label class="radio-inline">
+                    <input id="geoCountryAntiTargetInclude"
+                           name="geoCountryAntiTarget"
+                           type="radio"
+                           data-ng-model="vm.model.geoCountry.antiTarget"
+                           data-ng-value="0" />
+                    {{'creativeGroup.geoAntiTargetInclude' | translate}}
+                </label>
+                <label class="radio-inline">
+                    <input id="geoCountryAntiTargetExclude"
+                           name="geoCountryAntiTarget"
+                           type="radio"
+                           data-ng-model="vm.model.geoCountry.antiTarget"
+                           data-ng-value="1" />
+                    {{'creativeGroup.geoAntiTargetExclude' | translate}}
+                </label>
+            </div>
+            <te-table data-empty-message=""
+                      data-model="vm.countries"
+                      data-page-size="{{vm.GEO_TARGETING_PAGE_SIZE}}"
+                      data-selection-mode="MULTI"
+                      data-selection="vm.model.geoCountry.values"
+                      data-te-table-select="vm.setDirty()">
+                <table id="geoTargetCountryGrid" class="table-condensed">
+                    <tr data-ng-repeat="geo in $data">
+                        <td data-title="'global.country' | translate"
+                            data-searchable="true"
+                            data-sortable="'label'">
+                            {{geo.label}}
+                        </td>
+                    </tr>
+                </table>
+            </te-table>
+        </tab>
+        <tab id="geoTargetStateTab" heading="{{'global.state' | translate}}" data-ng-click="vm.getStates()">
+            <div data-ng-if="false">
+                <label class="radio-inline">
+                    <input id="geoStateAntiTargetInclude"
+                           name="geoStateAntiTarget"
+                           type="radio"
+                           data-ng-model="vm.model.geoState.antiTarget"
+                           data-ng-value="0" />
+                    {{'creativeGroup.geoAntiTargetInclude' | translate}}
+                </label>
+                <label class="radio-inline">
+                    <input id="geoStateAntiTargetExclude"
+                           name="geoStateAntiTarget"
+                           type="radio"
+                           data-ng-model="vm.model.geoState.antiTarget"
+                           data-ng-value="1" />
+                    {{'creativeGroup.geoAntiTargetExclude' | translate}}
+                </label>
+            </div>
+            <te-table data-empty-message=""
+                      data-model="vm.states"
+                      data-page-size="{{vm.GEO_TARGETING_PAGE_SIZE}}"
+                      data-selection-mode="MULTI"
+                      data-selection="vm.model.geoState.values"
+                      data-te-table-select="vm.setDirty()">
+                <table id="geoTargetStateGrid" class="state-table table-condensed">
+                    <tr data-ng-repeat="geo in $data">
+                        <td data-header-class="'state-column'"
+                            data-title="'global.state' | translate"
+                            data-searchable="true"
+                            data-sortable="'label'">
+                            <span title="{{geo.label}}">{{geo.label}}</span>
+                        </td>
+                        <td data-header-class="'country-column'"
+                            data-title="'global.country' | translate"
+                            data-searchable="true"
+                            data-sortable="'countryLabel'">
+                            <span title="{{geo.countryLabel}}">{{geo.countryLabel}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </te-table>
+        </tab>
+        <tab id="geoTargetDmaTab" heading="{{'global.dma' | translate}}" data-ng-click="vm.getDMAs()">
+            <div data-ng-if="false">
+                <label class="radio-inline">
+                    <input id="geoDmaAntiTargetInclude"
+                           name="geoDmaAntiTarget"
+                           type="radio"
+                           ng-model="vm.model.geoDma.antiTarget"
+                           data-ng-value="0" />
+                    {{'creativeGroup.geoAntiTargetInclude' | translate}}
+                </label>
+                <label class="radio-inline">
+                    <input id="geoDmaAntiTargetExclude"
+                           name="geoDmaAntiTarget"
+                           type="radio"
+                           ng-model="vm.model.geoDma.antiTarget"
+                           data-ng-value="1" />
+                    {{'creativeGroup.geoAntiTargetExclude' | translate}}
+                </label>
+            </div>
+            <te-table data-empty-message=""
+                      data-model="vm.dmas"
+                      data-page-size="{{vm.GEO_TARGETING_PAGE_SIZE}}"
+                      data-selection-mode="MULTI"
+                      data-selection="vm.model.geoDma.values"
+                      data-te-table-select="vm.setDirty()">
+                <table id="geoTargetDmaGrid" class="dma-table table-condensed">
+                    <tr data-ng-repeat="geo in $data">
+                        <td data-header-class="'dma-column'"
+                            data-title="'global.dma' | translate"
+                            data-searchable="true"
+                            data-sortable="'label'">
+                            <span title="{{geo.label}}">{{geo.label}}</span>
+                        </td>
+                        <td data-header-class="'state-column'"
+                            data-title="'global.state' | translate"
+                            data-searchable="true"
+                            data-sortable="'stateLabel'">
+                            <span title="{{geo.stateLabel}}">{{geo.stateLabel}}</span>
+                        </td>
+                        <td data-header-class="'country-column'"
+                            data-title="'global.country' | translate"
+                            data-searchable="true"
+                            data-sortable="'countryLabel'">
+                            <span title="{{geo.countryLabel}}">{{geo.countryLabel}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </te-table>
+        </tab>
+        <tab id="geoTargetZipTab" heading="{{'global.zipCode' | translate}}" data-ng-click="vm.getZips()">
+            <div data-ng-if="false">
+                <label class="radio-inline">
+                    <input id="geoZipAntiTargetInclude"
+                           name="geoZipAntiTarget"
+                           type="radio"
+                           data-ng-model="vm.model.geoZip.antiTarget"
+                           data-ng-value="0" />
+                    {{'creativeGroup.geoAntiTargetInclude' | translate}}
+                </label>
+                <label class="radio-inline">
+                    <input id="geoZipAntiTargetExclude"
+                           name="geoZipAntiTarget"
+                           type="radio"
+                           data-ng-model="vm.model.geoZip.antiTarget"
+                           data-ng-value="1" />
+                    {{'creativeGroup.geoAntiTargetExclude' | translate}}
+                </label>
+            </div>
+            <te-table data-empty-message=""
+                      data-model="vm.zips"
+                      data-page-size="{{vm.GEO_TARGETING_PAGE_SIZE}}"
+                      data-selection-mode="MULTI"
+                      data-selection="vm.model.geoZip.values"
+                      data-te-table-select="vm.setDirty()">
+                <table id="geoTargetZipGrid" class="zip-table table-condensed">
+                    <tr data-ng-repeat="geo in $data">
+                        <td data-header-class="'zip-column'"
+                            data-title="'global.zipCode' | translate"
+                            data-searchable="true"
+                            data-sortable="'label'">
+                            <span title="{{geo.label}}">{{geo.label}}</span>
+                        </td>
+                        <td data-header-class="'dma-column'"
+                            data-title="'DMA'"
+                            data-searchable="true"
+                            data-sortable="'dmaLabel'">
+                            <span title="{{geo.dmaLabel}}">{{geo.dmaLabel}}</span>
+                        </td>
+                        <td data-header-class="'state-column'"
+                            data-title="'global.state' | translate"
+                            data-searchable="true"
+                            data-sortable="'stateLabel'">
+                            <span title="{{geo.stateLabel}}">{{geo.stateLabel}}</span>
+                        </td>
+                        <td data-header-class="'country-column'"
+                            data-title="'global.country' | translate"
+                            data-searchable="true"
+                            data-sortable="'countryLabel'">
+                            <span title="{{geo.countryLabel}}">{{geo.countryLabel}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </te-table>
+        </tab>
+    </tabset>
+    <div class="col-md-5">
+        <h5>{{'global.countries' | translate}}</h5>
+        <div id="countriesSummary" class="bootstrap-tagsinput">
+            <span class="hide" data-ng-repeat-start="country in vm.model.geoCountry.values"></span>
+            <span class="tag label"
+                  data-ng-class="{ 'label-success': vm.model.geoCountry.antiTarget === 0, 'label-danger': vm.model.geoCountry.antiTarget === 1 }">
+                {{country.label}}
+                <span data-role="remove"
+                      data-ng-click="vm.removeGeo($event, vm.model.geoCountry.values, country)"></span>
+            </span>
+            <span class="hide" data-ng-repeat-end=""></span>
+        </div>
+        <h5>{{'global.states' | translate}}</h5>
+        <div id="statesSummary" class="bootstrap-tagsinput">
+            <span class="hide" data-ng-repeat-start="state in vm.model.geoState.values"></span>
+            <span class="tag label"
+                  data-ng-class="{ 'label-success': vm.model.geoState.antiTarget === 0, 'label-danger': vm.model.geoState.antiTarget === 1 }">
+                {{state.label}}
+                <span data-role="remove"
+                      data-ng-click="vm.removeGeo($event, vm.model.geoState.values, state)"></span>
+            </span>
+            <span class="hide" data-ng-repeat-end=""></span>
+        </div>
+        <h5>{{'global.dmas' | translate}}</h5>
+        <div id="dmasSummary" class="bootstrap-tagsinput">
+            <span class="hide" data-ng-repeat-start="dma in vm.model.geoDma.values"></span>
+            <span class="tag label"
+                  data-ng-class="{ 'label-success': vm.model.geoDma.antiTarget === 0, 'label-danger': vm.model.geoDma.antiTarget === 1 }">
+                {{dma.label}}
+                <span data-role="remove"
+                      data-ng-click="vm.removeGeo($event, vm.model.geoDma.values, dma)"></span>
+            </span>
+            <span class="hide" data-ng-repeat-end=""></span>
+        </div>
+        <h5>{{'global.zipCodes' | translate}}</h5>
+        <div id="zipCodesSummary" class="bootstrap-tagsinput">
+            <span class="hide" data-ng-repeat-start="zip in vm.model.geoZip.values"></span>
+            <span class="tag label"
+                  data-ng-class="{ 'label-success': vm.model.geoZip.antiTarget === 0, 'label-danger': vm.model.geoZip.antiTarget === 1 }">
+                {{zip.label}}
+                <span data-role="remove"
+                      data-ng-click="vm.removeGeo($event, vm.model.geoZip.values, zip)"></span>
+            </span>
+            <span class="hide" data-ng-repeat-end=""></span>
+        </div>
+    </div>
+</div>

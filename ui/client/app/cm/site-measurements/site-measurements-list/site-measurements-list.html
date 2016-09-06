@@ -1,0 +1,67 @@
+<div data-cg-busy="mainSiteMeasurements.promiseSiteMeasurements">
+    <h3 id="title-page-site-measurements">
+        {{'global.siteMeasurementCampaigns' | translate}}
+    </h3>
+    <te-table data-empty-message="'global.listEmpty' | translate"
+              data-model="mainSiteMeasurements.siteMeasurementList"
+              data-on-counter-search="mainSiteMeasurements.onSearchCounter(counterSearch)"
+              data-page-size="{{mainSiteMeasurements.pageSize}}"
+              data-te-table-select="mainSiteMeasurements.getSiteMeasurementDetail($selection.id)">
+        <te-table-btns>
+            <te-table-add-btn id="addSiteMeasurementBtn"
+                              data-te-table-btn-click="mainSiteMeasurements.addSiteMeasurement()"
+                              data-ng-if="mainSiteMeasurements.hasAddPermission">
+            </te-table-add-btn>
+        </te-table-btns>
+        <te-table-thirdly-btns class="thirdly-btns-position">
+            <legend-table class="btn-group" id="measurementCounter" data-legend="mainSiteMeasurements.measurementLegend"></legend-table>
+        </te-table-thirdly-btns>
+        <table class="table-condensed">
+            <tr data-ng-repeat="siteMeasurement in $data">
+                <td data-title="'global.name' | translate"
+                    data-searchable="true"
+                    data-sortable="'name'"
+                    class="wrapped-text measurement-truncate-text-name">
+                    {{siteMeasurement.name}}
+                </td>
+                <td data-title="'global.id' | translate"
+                    data-sortable="'id'"
+                    class="wrapped-text measurement-truncate-text-id">
+                    {{siteMeasurement.id}}
+                </td>
+                <td data-title="'global.advertiser' | translate"
+                    data-searchable="true"
+                    data-sortable="'advertiserName'"
+                    class="wrapped-text measurement-truncate-text-name">
+                    {{siteMeasurement.advertiserName}}
+                </td>
+                <td data-title="'global.brand' | translate"
+                    data-searchable="true"
+                    data-sortable="'brandName'"
+                    class="wrapped-text measurement-truncate-text-brand">
+                    {{siteMeasurement.brandName}}
+                </td>
+                <td data-title="'global.domain' | translate"
+                    data-sortable="'domain'"
+                    class="wrapped-text measurement-truncate-text-id">
+                    {{siteMeasurement.domain}}
+                </td>
+                <td data-title="'global.events' | translate"
+                    data-sortable="'events'"
+                    class="text-center wrapped-text measurement-truncate-text-id column-width-2">
+                    {{siteMeasurement.events}}
+                </td>
+                <td data-title="'global.status' | translate"
+                    data-sortable="'status'"
+                    class="text-center column-width-2">
+                    {{siteMeasurement.status | translate}}
+                </td>
+                <td data-title="'global.trafficked' | translate"
+                    data-sortable="'trafficked'"
+                    class="text-center column-width-2">
+                    <i data-ng-class="siteMeasurement.trafficked ? 'fa fa-check':'fa fa-times'"></i>
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

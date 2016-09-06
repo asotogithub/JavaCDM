@@ -1,0 +1,66 @@
+<div class="te-tree-grid">
+  <div class="legend-padding" data-ng-if="vm.legend">{{vm.legend}}</div>
+  <div class="te-tree-grid-toolbar form-inline">
+    <span class="te-tree-grid-secondary-btns pull-right"></span>
+    <span class="te-tree-grid-btns"></span>
+    <div class="te-tree-grid-search form-group"
+         data-ng-class="{'has-feedback': !!vm.searchTerm}"
+         data-ng-if="vm.searchFields &amp;&amp; vm.searchFields.length">
+      <div class="input-group">
+        <div class="input-group-btn">
+          <button class="btn btn-default dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  data-ng-disabled="vm.disableSearch()">
+            <i class="fa fa-search"></i>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-header">{{'global.columns' | translate}}</li>
+            <li data-ng-repeat="searchField in vm.searchFields | orderBy:'position' track by $index">
+              <a href data-ng-click="vm.toggleSearchField($event, searchField)">
+                <div class="checkbox c-checkbox">
+                  <label>
+                    <input type="checkbox" data-ng-model="searchField.enabled" data-no-dirty />
+                    <span class="fa fa-check"></span>
+                    {{searchField.title}}
+                  </label>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <input class="te-tree-grid-search form-control"
+                                         id="{{vm.uuid}}"
+                                         type="text"
+                                         maxlength="{{vm.searchInputMaxLength}}"
+                                         placeholder="{{'global.searchEllipsis' | translate}}"
+                                         data-ng-change="vm.applySearch();"
+                                         data-ng-disabled="vm.disableSearch()"
+                                         data-ng-model="vm.searchTerm"
+                                         data-ng-keypress="vm.onKeyPress($event);"
+                                         data-no-dirty />
+        <span class="fa fa-times form-control-feedback text-muted"
+              data-ng-click="vm.clearSearch();"
+              data-ng-if="!!vm.searchTerm"></span>
+      </div>
+    </div>
+      <button class="btn btn-default customTreeGridSearchButton"
+              type="button"
+              data-ng-click="vm.customSearch()"
+              data-ng-if="vm.customSearchEnabled && !vm.teTreeGridHideCustomSearchButton"
+              data-ng-disabled="!vm.searchTerm">
+          {{'global.search' | translate}}
+      </button>
+    <span class="te-tree-grid-thirdly-btns"></span>
+  </div>
+  <div data-ng-if="vm.settings">
+    <jqx-tree-grid class="te-tree-grid-delegate"
+                   jqx-on-cell-begin-edit="vm.cellBeginEdit()"
+                   jqx-on-cell-end-edit="vm.cellEndEdit()"
+                   jqx-instance="vm.grid"
+                   data-jqx-settings="vm.settings"
+                   data-jqx-source="vm.source">
+    </jqx-tree-grid>
+  </div>
+</div>

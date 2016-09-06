@@ -1,0 +1,294 @@
+<div data-ng-controller="AddPlacementPropertiesController as vm" data-cg-busy="vm.promise">
+    <div data-ng-form name="vm.propertiesForm">
+        <table class="table borderless placement-properties-grid">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th class="text-right">
+                        <button class="btn btn-primary"
+                                data-ng-click="vm.applyToAll()"
+                                data-ng-disabled="vm.headerRow.adSpend == null &&
+                                                  vm.headerRow.rate == null &&
+                                                  vm.headerRow.rateType == null  &&
+                                                  vm.headerRow.startDate == null &&
+                                                  vm.headerRow.endDate == null ||
+                                                  vm.propertiesForm.placementStartDateInput.$invalid ||
+                                                  vm.propertiesForm.placementEndDateInput.$invalid">
+                            {{'global.applyTo' | translate}}
+                        </button>
+                    </th>
+                    <th>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon">$</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="{{'placement.defaultCurrencyPlaceholder' | translate}}"
+                                   data-ng-model="vm.headerRow.adSpend"
+                                   data-te-money
+                                   data-max-precision-focus="{{vm.placementConstants.AD_SPEND.DECIMAL_DIGITS.MAX}}"
+                                   data-max-precision-blur="{{vm.placementConstants.AD_SPEND.DECIMAL_DIGITS.MIN}}"
+                                   max="{{vm.max_input_number}}"
+                                   autocomplete="off"/>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon">$</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="{{'placement.defaultCurrencyPlaceholder' | translate}}"
+                                   data-ng-model="vm.headerRow.rate"
+                                   data-te-money
+                                   data-max-precision-focus="{{vm.placementConstants.RATE.DECIMAL_DIGITS.MAX}}"
+                                   data-max-precision-blur="{{vm.placementConstants.RATE.DECIMAL_DIGITS.MIN}}"
+                                   max="{{vm.max_input_number}}"
+                                   autocomplete="off"/>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group-sm select">
+                            <select class="form-control"
+                                    data-ng-model="vm.headerRow.rateType"
+                                    data-ng-options="rType.NAME | translate for rType in vm.rateTypeList track by rType.KEY">
+                                <option value="" disabled selected hidden>{{'global.select' | translate}}</option>
+                            </select>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group input-group-sm"
+                             data-ng-class="{'has-error': vm.propertiesForm.placementStartDateInput.$invalid}">
+                            <input type="text"
+                                   class="form-control"
+                                   name="placementStartDateInput"
+                                   placeholder="{{'placement.defaultDatePlaceholder' | translate}}"
+                                   data-uib-datepicker-popup="{{vm.DATE_FORMAT}}"
+                                   data-ng-model="vm.headerRow.startDate"
+                                   data-is-open="vm.headerRow.startDateOpened"
+                                   data-min-date="vm.minDate"
+                                   data-datepicker-append-to-body="true"
+                                   data-datepicker-options="vm.dateOptions"
+                                   data-close-text="{{'global.close' | translate}}"
+                                   data-masked
+                                   data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                                   data-lower-than="{{vm.minDate}}"
+                                   data-ng-blur="vm.updateDates(vm.headerRow)"/>
+                            <span class="input-group-btn">
+                                <button type="button"
+                                        data-ng-click="vm.openStartDate($event, vm.headerRow)"
+                                        class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group input-group-sm end-date-picker-container"
+                             data-ng-class="{'has-error': vm.propertiesForm.placementEndDateInput.$invalid}">
+                            <input type="text"
+                                   class="form-control"
+                                   name="placementEndDateInput"
+                                   placeholder="{{'placement.defaultDatePlaceholder' | translate}}"
+                                   data-uib-datepicker-popup="{{vm.DATE_FORMAT}}"
+                                   data-ng-model="vm.headerRow.endDate"
+                                   data-is-open="vm.headerRow.endDateOpened"
+                                   data-min-date="vm.headerRow.startDate"
+                                   data-datepicker-options="vm.dateOptions"
+                                   data-close-text="{{'global.close' | translate}}"
+                                   data-masked
+                                   data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                                   data-ng-blur="vm.updateDates(vm.headerRow)"
+                                   data-lower-than="{{vm.headerRow.startDate}}"/>
+                            <span class="input-group-btn">
+                                <button type="button"
+                                        data-ng-click="vm.openEndDate($event, vm.headerRow)"
+                                        class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <te-table data-model="vm.propertiesParsedList"
+                  data-selection-mode="NONE">
+            <table class="table-condensed placement-properties-grid">
+                <tr id="placement{{placement.customKey}}" data-ng-repeat="placement in $data">
+                    <td id="placement{{placement.customKey}}MediaPackage"
+                        data-title="'global.package' | translate"
+                        data-sortable="'packageName'"
+                        class="wrap-text-td column-max-width">
+                        {{placement.packageName}}
+                    </td>
+                    <td data-title="'global.placement' | translate"
+                        data-sortable="'name'"
+                        class="wrap-text-td column-max-width">
+                        <div class="input-group"
+                             data-ng-class="{'has-error': vm.propertiesForm.placement{{placement.customKey}}Name.$error.pattern}">
+                            <input id="placement{{placement.customKey}}Name" type="text"
+                                   data-toggle="tooltip" title="{{vm.placementCharacters}}"
+                                   value="{{placement.name}}"
+                                   name="placement{{placement.customKey}}Name"
+                                   class="form-control"
+                                   data-ng-model="placement.name"
+                                   data-ng-pattern="vm.REGEX_PLACEMENT_NAME"
+                                   data-ng-change="vm.onChangePlacementName(placement)"
+                                   data-ng-blur="vm.onVerifyPlacementName(placement)"/>
+                            <div id="invalidPlacement{{placement.customKey}}Name"
+                                 data-ng-if="placement.showErrorName"
+                                 class="help-block"
+                                 translate="validation.error.invalid"></div>
+                        </div>
+                    </td>
+                    <td id="placement{{placement.customKey}}Site"
+                        data-title="'global.site' | translate"
+                        data-sortable="'siteName'">
+                        {{placement.siteName}}
+                    </td>
+                    <td id="placement{{placement.customKey}}Section"
+                        data-title="'global.section' | translate"
+                        data-sortable="'sectionName'">
+                        {{placement.sectionName}}
+                    </td>
+                    <td id="placement{{placement.customKey}}Size"
+                        data-title="'global.size' | translate"
+                        data-sortable="'sizeName'"
+                        class="text-center">
+                        {{placement.sizeName}}
+                    </td>
+                    <td id="placement{{placement.customKey}}Inventory"
+                        data-title="'placement.inventory' | translate"
+                        data-sortable="'inventory'"
+                        class="text-right">
+                        <div data-ng-if="!placement.isChild">
+                            {{placement.inventory &lt; vm.maxCostInventoryValue ? (placement.inventory | number) : placement.inventory}}
+                        </div>
+                        <input type="text"
+                               id="inventoryInput{{placement.customKey}}"
+                               name="inventoryInput{{placement.customKey}}"
+                               class="form-control"
+                               data-ng-model="placement.inventory"
+                               data-ng-show="false"/>
+                    </td>
+                    <td id="placement{{placement.customKey}}AdSpend"
+                        data-title="'placement.adSpend' | translate"
+                        data-sortable="'adSpend'">
+                        <div class="input-group input-group-sm"
+                             data-ng-class="{'has-error': vm.propertiesForm.adSpendInput{{placement.customKey}}.$dirty && vm.propertiesForm.adSpendInput{{placement.customKey}}.$invalid}"
+                             data-ng-if="!placement.isChild">
+                            <span class="input-group-addon">$</span>
+                            <input type="text"
+                                   id="adSpendInput{{placement.customKey}}"
+                                   name="adSpendInput{{placement.customKey}}"
+                                   size="10"
+                                   class="form-control"
+                                   data-ng-model="placement.adSpend"
+                                   data-ng-change="vm.calculateInventory(placement)"
+                                   data-te-money
+                                   data-default-value="{{vm.placementConstants.AD_SPEND.DEFAULT}}"
+                                   data-max-precision-focus="{{vm.placementConstants.AD_SPEND.DECIMAL_DIGITS.MAX}}"
+                                   data-max-precision-blur="{{vm.placementConstants.AD_SPEND.DECIMAL_DIGITS.MIN}}"
+                                   max="{{vm.maxInputNumber}}"
+                                   autocomplete="off"/>
+                        </div>
+                    </td>
+                    <td id="placement{{placement.customKey}}Rate"
+                        data-title="'placement.rate' | translate"
+                        data-sortable="'rate'">
+                        <div class="input-group input-group-sm"
+                             data-ng-class="{'has-error': vm.propertiesForm.rateInput{{placement.customKey}}.$dirty && vm.propertiesForm.rateInput{{placement.customKey}}.$invalid}"
+                             data-ng-if="!placement.isChild">
+                            <span class="input-group-addon">$</span>
+                            <input type="text"
+                                   id="rateInput{{placement.customKey}}"
+                                   name="rateInput{{placement.customKey}}"
+                                   class="form-control"
+                                   data-ng-model="placement.rate"
+                                   data-ng-change="vm.calculateInventory(placement)"
+                                   data-te-money
+                                   data-default-value="{{vm.placementConstants.RATE.DEFAULT}}"
+                                   data-max-precision-focus="{{vm.placementConstants.RATE.DECIMAL_DIGITS.MAX}}"
+                                   data-max-precision-blur="{{vm.placementConstants.RATE.DECIMAL_DIGITS.MIN}}"
+                                   max="{{vm.maxInputNumber}}"
+                                   autocomplete="off"/>
+                        </div>
+                    </td>
+                    <td id="placement{{placement.customKey}}RateType"
+                        data-title="'placement.rateType' | translate"
+                        data-sortable="'rateType.KEY'">
+                        <div class="input-group input-group-sm"
+                             data-ng-if="!placement.isChild">
+                            <select id="rateTypeSelect"
+                                    class="form-control"
+                                    data-ng-model="placement.rateType"
+                                    data-ng-options="rType.NAME | translate for rType in vm.rateTypeList track by rType.KEY"
+                                    data-ng-change="vm.calculateInventory(placement)">
+                            </select>
+                        </div>
+                    </td>
+                    <td id="placement{{placement.customKey}}StartDate"
+                        data-title="'global.startDate' | translate"
+                        data-sortable="'startDate'">
+                        <div class="input-group input-group-sm"
+                           data-ng-class="{'has-error': vm.propertiesForm.placement{{placement.customKey}}StartDateInput.$invalid}"
+                           data-ng-if="!placement.isChild">
+                            <input type="text"
+                                   id="placement{{placement.customKey}}StartDateInput"
+                                   name="placement{{placement.customKey}}StartDateInput"
+                                   data-uib-datepicker-popup="{{vm.DATE_FORMAT}}"
+                                   data-ng-model="placement.startDate"
+                                   data-is-open="placement.startDateOpened"
+                                   data-min-date="vm.minDate"
+                                   data-datepicker-append-to-body="true"
+                                   data-datepicker-options="vm.dateOptions"
+                                   data-close-text="{{'global.close' | translate}}"
+                                   data-masked
+                                   data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                                   data-lower-than="{{vm.minDate}}"
+                                   data-ng-blur="vm.updateDates(placement)"
+                                   class="form-control"
+                                   required/>
+                            <span class="input-group-btn">
+                                <button type="button" data-ng-click="vm.openStartDate($event, placement)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </div>
+                    </td>
+                    <td id="placement{{placement.customKey}}EndDate"
+                        data-title="'global.endDate' | translate"
+                        data-sortable="'endDate'">
+                        <div class="input-group input-group-sm end-date-picker-container"
+                           data-ng-class="{'has-error': vm.propertiesForm.placement{{placement.customKey}}EndDateInput.$invalid}"
+                           data-ng-if="!placement.isChild">
+                            <input type="text"
+                                   id="placement{{placement.customKey}}EndDateInput"
+                                   name="placement{{placement.customKey}}EndDateInput"
+                                   data-uib-datepicker-popup="{{vm.DATE_FORMAT}}"
+                                   data-ng-model="placement.endDate"
+                                   data-is-open="placement.endDateOpened"
+                                   data-min-date="placement.startDate"
+                                   data-datepicker-options="vm.dateOptions"
+                                   data-close-text="{{'global.close' | translate}}"
+                                   data-masked
+                                   data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                                   data-ng-blur="vm.updateDates(placement)"
+                                   data-lower-than="{{placement.startDate}}"
+                                   class="form-control"
+                                   required/>
+                            <span class="input-group-btn">
+                                <button type="button" data-ng-click="vm.openEndDate($event, placement)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </te-table>
+    </div>
+</div>

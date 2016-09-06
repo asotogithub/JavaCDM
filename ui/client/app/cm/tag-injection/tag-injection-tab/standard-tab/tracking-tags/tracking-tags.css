@@ -1,0 +1,24 @@
+#trackingTagList td.ui-draggable-dragging {
+    width: 44%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (min-width: 992px) and (max-width: 1350px) {
+    #trackingTagList .form-group.te-table-search.pull-left {
+        margin-right: 0;
+        width: 230px !important;
+    }
+}
+
+@media screen and (min-width: 1350px) {
+    #trackingTagList .form-group.te-table-search.pull-left {
+        margin-right: 0;
+        width: 275px !important;
+    }
+}
+
+
+
+

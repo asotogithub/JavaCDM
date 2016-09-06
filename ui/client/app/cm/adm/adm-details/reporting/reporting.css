@@ -1,0 +1,52 @@
+.summary-details{
+    padding-left: 0px;
+}
+
+.summary-details .details-content {
+    margin-top: 50px;
+    background-color: transparent;
+    box-shadow: 0 0;
+}
+
+.summary-details .summary-attempts {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.summary-details .summary-matches {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.summary-details .summary-updates {
+    padding-left: 0px;
+}
+
+.summary-details .details-background {
+    background-color: white;
+}
+
+.summary-dates .start-date {
+    text-align: -webkit-right;
+    padding-right: 0px;
+    padding-top: 50px;
+}
+
+.summary-dates .end-date {
+    text-align: -webkit-left;
+    padding-left: 0px;
+    padding-top: 50px;
+}
+
+.progress-wrapper{
+    position: relative;
+    margin:20px auto;
+    font-size: 40px;
+}
+
+.progress-wrapper .progress{
+    position: absolute;
+    color: #bbb;
+    font-weight: 100;
+    line-height: 1;
+}

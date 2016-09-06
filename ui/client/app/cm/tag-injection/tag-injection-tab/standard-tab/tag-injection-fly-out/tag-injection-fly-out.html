@@ -1,0 +1,254 @@
+<div id="fly-out-tag-injection" data-ng-controller="TagInjectionFlyOutController as vmTIFlyOut"
+     class="panel-fly-out-accordion"
+     data-cg-busy="vmTIFlyOut.promiseTIFlyOut">
+    <div class="panel panel-info summary">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                    {{'global.summary'| translate}}
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel">
+            <div class="panel-body">
+                <div class="row">
+                    <div data-ng-form
+                         name="vmTIFlyOut.flyOutForm"
+                         class="form-horizontal">
+                        <div data-ng-class="vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-6' : 'col-md-12'">
+                            <div class="form-group"
+                                 data-ng-class="{'has-error': vmTIFlyOut.flyOutForm.tagName.$dirty && vmTIFlyOut.flyOutForm.tagName.$invalid}">
+                                <label class="col-md-3 control-label">{{'global.tagName' | translate}}:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control"
+                                           id="tagName"
+                                           name="tagName"
+                                           type="text"
+                                           data-ng-model="vmTIFlyOut.model.name"
+                                           data-ng-maxlength="{{vmTIFlyOut.tagNameMaxLength}}"
+                                           data-ng-pattern="vmTIFlyOut.namePattern"
+                                           required/>
+                                    <p id="tagNameMaxLength" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagName.$dirty && vmTIFlyOut.flyOutForm.tagName.$error.maxlength"
+                                       translate="validation.error.maxlength" translate-values="{length: vmTIFlyOut.tagNameMaxLength}">
+                                    </p>
+                                    <p id="tagNameRequired" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagName.$dirty && vmTIFlyOut.flyOutForm.tagName.$error.required">
+                                        {{'validation.error.required' | translate}}
+                                    </p>
+                                    <p id="tagNamePattern" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagName.$dirty && vmTIFlyOut.flyOutForm.tagName.$error.pattern">
+                                        {{'validation.error.alphanumeric' | translate}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 data-ng-class="{'has-error': vmTIFlyOut.flyOutForm.tagContent.$dirty && vmTIFlyOut.flyOutForm.tagContent.$invalid}">
+                                <label class="col-md-3 control-label">{{'global.content' | translate}}:</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control"
+                                              id="tagContent"
+                                              name="tagContent"
+                                              type="text"
+                                              rows="4"
+                                              data-ng-model="vmTIFlyOut.model.htmlContent"
+                                              data-ng-maxlength="{{vmTIFlyOut.contentMaxLength}}"
+                                              data-ng-change="vmTIFlyOut.validateContentHtml(vmTIFlyOut.model.htmlContent,'tagContent')">
+                                    </textarea>
+                                    <p id="tagContentMaxLength" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagContent.$dirty && vmTIFlyOut.flyOutForm.tagContent.$error.maxlength"
+                                       translate="validation.error.maxlength"
+                                       translate-values="{length: vmTIFlyOut.contentMaxLength}">
+                                    </p>
+                                    <p id="tagContentHtmlContent" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagContent.$dirty && vmTIFlyOut.flyOutForm.tagContent.$error.contentHtmlValid">
+                                        {{'tagInjection.error.html'|translate}}
+                                    </p>
+                                    <p id="tagContentHtmlRequired" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagContent.$dirty && vmTIFlyOut.flyOutForm.tagContent.$error.contentHtmlRequired">
+                                        {{'tagInjection.error.htmlEmpty'|translate}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 data-ng-class="{'has-error': vmTIFlyOut.flyOutForm.tagSecureContent.$dirty && vmTIFlyOut.flyOutForm.tagSecureContent.$invalid}">
+                                <label class="col-md-3 control-label">{{'global.secureContent' | translate}}:</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control"
+                                              id="tagSecureContent"
+                                              name="tagSecureContent"
+                                              type="text"
+                                              rows="4"
+                                              data-ng-model="vmTIFlyOut.model.secureHtmlContent"
+                                              data-ng-maxlength="{{vmTIFlyOut.contentMaxLength}}"
+                                              data-ng-change="vmTIFlyOut.validateContentHtml(vmTIFlyOut.model.secureHtmlContent,'tagSecureContent')">
+                                    </textarea>
+                                    <p id="tagSecureContentMaxLength" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagSecureContent.$dirty && vmTIFlyOut.flyOutForm.tagSecureContent.$error.maxlength"
+                                       translate="validation.error.maxlength"
+                                       translate-values="{length: vmTIFlyOut.contentMaxLength}">
+                                    </p>
+                                    <p id="tagSecureContentHtmlContent" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagSecureContent.$dirty && vmTIFlyOut.flyOutForm.tagSecureContent.$error.contentHtmlValid">
+                                        {{'tagInjection.error.html'|translate}}
+                                    </p>
+                                    <p id="tagSecureContentHtmlRequired" class="help-block"
+                                       data-ng-if="vmTIFlyOut.flyOutForm.tagSecureContent.$dirty && vmTIFlyOut.flyOutForm.tagSecureContent.$error.contentHtmlRequired">
+                                        {{'tagInjection.error.htmlEmpty'|translate}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label"
+                                       data-ng-class="vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-3' : 'col-md-6'">
+                                    {{'global.associations'| translate}}:
+                                </label>
+                                <div data-ng-class="vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-8' : 'col-md-6'">
+                                    <div class="form-control-static">
+                                        {{vmTIFlyOut.associationsCounter}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"
+                                       data-ng-class="vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-3' : 'col-md-6'">
+                                    {{'global.visibility'| translate}}:
+                                </label>
+                                <div data-ng-class="vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-8' : 'col-md-6'">
+                                    <div class="checkbox c-checkbox" class="text-left">
+                                        <label id="isActiveSwitch" class="switch">
+                                            <input id="isActiveInput" type="checkbox"
+                                                   data-ng-model="vmTIFlyOut.model.isVisible"
+                                                   data-ng-true-value="1"
+                                                   data-ng-false-value="0">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group macros-container-min-width"
+                             data-ng-class="vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-6' : 'col-md-6 margin-left-50'">
+                            <label class="control-label"
+                                   data-ng-class="vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-3' : 'col-md-2 margin-left-50'">
+                                {{'global.macros' | translate}}:</label>
+                            <div data-ng-class="vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-9' : 'col-md-11'">
+                                <div data-ng-repeat="item in vmTIFlyOut.tagInjectionMacrosList">
+                                    <div class="padding0 col-md-6" data-ng-if="$even">
+                                        <span>{{item.KEY}}</span>
+                                        <i class="fa fa-info-circle" data-toggle="tooltip" title="{{item.DESCRIPTION}}"></i>
+                                    </div>
+                                    <div class="padding0 col-md-6" data-ng-if="$odd">
+                                        <span>{{item.KEY}}</span>
+                                        <i class="fa fa-info-circle" data-toggle="tooltip" title="{{item.DESCRIPTION}}"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info"
+         data-ng-class="{'associations-panel' : vmTIFlyOut.associations && vmTIFlyOut.associations.length > 2,
+                         'associations-panel-large' : vmTIFlyOut.associations && vmTIFlyOut.associations.length > 3}">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                    {{'global.associations'| translate}}
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel">
+            <div class="panel-body">
+                <div class="row">
+                    <te-table id="fly-out-associations"
+                              data-empty-message="'global.noAssociations' | translate"
+                              data-model="vmTIFlyOut.associations"
+                              data-page-size="{{vmTIFlyOut.PAGE_SIZE}}"
+                              data-filter-values="vmTIFlyOut.filterValues"
+                              data-on-counter-search="vmTIFlyOut.onSearchCounter(counterSearch)"
+                              data-selection-mode="MULTI"
+                              data-search-fields="vmTIFlyOut.searchFields"
+                              data-te-table-custom-search-enabled="true"
+                              data-te-table-on-custom-search="vmTIFlyOut.searchPlacements"
+                              data-te-table-on-clear-search-field="vmTIFlyOut.clearSearch">
+                        <te-table-secondary-btns>
+                            <dropdown-multicheckbox
+                                    data-ng-class="{'hide': !vmTIFlyOut.showFilter || vmTIFlyOut.flyoutState == vmTIFlyOut.FLYOUT_STATE.HALF_VIEW}"
+                                    data-ng-repeat="option in vmTIFlyOut.filterOptions"
+                                    data-input-model="option.value"
+                                    data-name-element="option.fieldName"
+                                    data-output-model="vmTIFlyOut.filterValues[option.index].values"
+                                    data-title="option.text"
+                                    data-display-field="'label'"
+                                    data-events="vmTIFlyOut.actionFilter[option.index]"
+                                    data-id-field="'label'">
+                            </dropdown-multicheckbox>
+                            <button id="filterOptions"
+                                    data-ng-click="vmTIFlyOut.toggleFilter()"
+                                    data-ng-mouseup="vmTIFlyOut.blurButton('filterOptions')"
+                                    class="btn btn-warning">
+                                <span class="text-center">
+                                    <i class="fa fa-filter"></i>
+                                </span>
+                            </button>
+                        </te-table-secondary-btns>
+                        <te-table-thirdly-btns class="thirdly-btns-position">
+                            {{vmTIFlyOut.associationCounterLegend}}
+                        </te-table-thirdly-btns>
+                        <table>
+                            <tr class="actionable-row" data-ng-repeat="placement in $data">
+                                <td data-title="'global.placement' | translate"
+                                    data-sortable="'name'"
+                                    class="wrapped-text ti-flyuot-placement-name-width">
+                                    {{placement.name}}
+                                </td>
+                                <td data-title="'global.site' | translate"
+                                    data-sortable="'siteName'"
+                                    class="wrapped-text ti-flyout-site-width">
+                                    {{placement.siteName}}
+                                </td>
+                                <td data-title="'nav.campaigns' | translate"
+                                    data-sortable="'campaignName'"
+                                    class="wrapped-text ti-flyout-campaigns-width">
+                                    {{placement.campaignName}}
+                                </td>
+                                <td data-title="'global.startDate' | translate"
+                                    data-sortable="'startDate'"
+                                    class="text-center ti-flyout-date">
+                                    {{placement.startDate | date: vmTIFlyOut.DATE_FORMAT}}
+                                </td>
+                                <td data-title="'global.endDate' | translate"
+                                    data-sortable="'endDate'"
+                                    class="text-center ti-flyout-date">
+                                    {{placement.endDate | date: vmTIFlyOut.DATE_FORMAT}}
+                                </td>
+                            </tr>
+                        </table>
+                    </te-table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="col-md-12 group-button">
+            <div class="pull-right">
+                <button class="btn btn-default"
+                        data-ng-click="vmTIFlyOut.close()">
+                    {{'global.cancel' | translate}}
+                </button>
+                <button id="saveButton"
+                        type="submit"
+                        class="btn btn-primary"
+                        data-ng-disabled="vmTIFlyOut.flyOutForm.$invalid || vmTIFlyOut.flyOutForm.$pristine"
+                        data-ng-click="vmTIFlyOut.updateTagInjection()">
+                    {{'global.save' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,138 @@
+<div class="modal-header dialog-header-confirm" id="dialog-mp">
+    <h4 class="modal-title">{{'global.headsUp' | translate}}</h4>
+    <a class="modal-close-btn disabled-fa-close"  data-ng-disabled="vm.isActionInProgress()" data-ng-click="vm.cancel()"><span class="fa fa-close"></span></a>
+</div>
+<div class="modal-body" data-cg-busy="vm.promise">
+    <div>
+        <p class="pb" data-ng-bind-html="vm.resource.mainDescription | translate | htmlSafe">
+        </p>
+        <div class="modal-body padding-bottom8">
+            <div class="pull-right padding-top4">
+                <button id="export-issues"
+                        type="button"
+                        class="btn btn-warning pull-right"
+                        data-ng-click="vm.exportIssues()"
+                        data-ng-if="vm.hasExportPermission">
+                    {{'global.exportIssues' | translate}}
+                </button>
+            </div>
+            <ul class="nav nav-tabs nav-justified">
+                <li id="errorsTab" class="tab-width-20 pull-left" data-ng-class="{active:vm.tab.errors.active}"
+                    data-ng-if="vm.rowsErrors">
+                    <a href data-ng-click="vm.setTab(vm.ISSUES.ERRORS)">
+                        {{vm.resource.errorTabTitle}}
+                    </a>
+                </li>
+                <li id="warningsTab" class="tab-width-25 pull-left" data-ng-class="{active:vm.tab.warnings.active}"
+                    data-ng-if="vm.rowsWarnings">
+                    <a href data-ng-click="vm.setTab(vm.ISSUES.WARNINGS)">
+                        {{vm.resource.warningTabTitle}}
+                    </a>
+                </li>
+                <li id="actionsTab" class="tab-width-20 pull-left" data-ng-class="{active:vm.tab.actions.active}"
+                    data-ng-if="vm.rowsActions">
+                    <a href data-ng-click="vm.setTab(vm.ISSUES.ACTIONS)">
+                        {{vm.resource.actionTabTitle}}
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content padding-bottom17 border-top-popup-1"
+                 data-ng-show="vm.tab.errors.active">
+                <!-- ERRORS GRID -->
+                <te-table id="errorsGrid"
+                          data-model="vm.model.errors"
+                          data-page-size="{{vm.pageSize}}">
+                    <table>
+                        <tr data-ng-repeat="issue in $data">
+                            <td data-title="'global.rowNumber' | translate"
+                                data-sortable="'row'"
+                                class="text-center">
+                                {{issue.row}}
+                            </td>
+                            <td data-title="'global.description' | translate"
+                                data-sortable="'description'"
+                                width="87%"
+                                class="wrapped-text issues-container-truncate-text">
+                                {{issue.description}}
+                            </td>
+                        </tr>
+                    </table>
+                </te-table>
+            </div>
+            <div class="tab-content padding-bottom17 border-top-popup-1"
+                 data-ng-show="vm.tab.warnings.active">
+                <!-- WARNINGS GRID -->
+                <te-table id="warningsGrid"
+                          data-model="vm.model.warnings"
+                          data-page-size="{{vm.pageSize}}">
+                    <table>
+                        <tr data-ng-repeat="issue in $data">
+                            <td data-title="'global.rowNumber' | translate"
+                                data-sortable="'row'"
+                                class="text-center">
+                                {{issue.row}}
+                            </td>
+                            <td data-title="'global.description' | translate"
+                                data-sortable="'description'"
+                                width="87%">
+                                {{issue.description}}
+                            </td>
+                        </tr>
+                    </table>
+                </te-table>
+            </div>
+            <div class="tab-content padding-bottom17 border-top-popup-1"
+                 data-ng-show="vm.tab.actions.active">
+                <!-- ACTIONS GRID -->
+                <te-table id="actionsGrid"
+                          data-model="vm.model.actions"
+                          data-page-size="{{vm.pageSize}}">
+                    <table>
+                        <tr data-ng-repeat="issue in $data">
+                            <td data-title="'global.rowNumber' | translate"
+                                data-sortable="'row'"
+                                class="text-center">
+                                {{issue.row}}
+                            </td>
+                            <td data-title="'global.description' | translate"
+                                data-sortable="'description'"
+                                width="62%"
+                                class="wrapped-text issues-container-truncate-text">
+                                {{issue.description}}
+                            </td>
+                            <td data-title="'global.actions' | translate"
+                                width="25%"
+                                class="wrapped-text issues-container-truncate-text padding3">
+                                <select id="actionOptions"
+                                        class="form-control"
+                                        data-ng-model="issue.actionSelected"
+                                        data-ng-change="vm.buildModelActions(issue)"
+                                        data-ng-options="action.label for action in issue.options track by action.id">
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </te-table>
+            </div>
+        </div>
+        <p class="text-center mb0 mt">
+            {{vm.resource.completeImport}}
+        </p>
+    </div>
+</div>
+<div class="modal-footer mt0">
+    <button id="cancel-import-errors"
+            type="button"
+            class="btn btn-default"
+            data-ng-disabled="vm.isActionInProgress()"
+            data-ng-click="vm.cancel()">
+        {{'global.cancel' | translate}}
+    </button>
+    <button id="complete-import"
+            type="button"
+            class="btn btn-primary"
+            data-ng-disabled="!vm.validateImportBtn()"
+            data-ng-click="vm.completeBulk()">
+        {{'global.import' | translate}}
+    </button>
+</div>

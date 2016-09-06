@@ -1,0 +1,29 @@
+<div data-cg-busy="vm.promise">
+    <h3>{{'status.page.title' | translate}}</h3>
+    <div id="statusFields" class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-4">{{'status.connection.cm' | translate}}</div>
+            <div class="col-sm-4" id="cmDbConnectionValid">{{vm.status.cmDbConnectionValid || vm.error}}</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">{{'status.message.cm' | translate}}</div>
+            <div class="col-sm-4" id="cmDbStatusMessage">{{vm.status.cmDbStatusMessage || vm.error}}</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">{{'status.connection.metrics' | translate}}</div>
+            <div class="col-sm-4" id="metricsDbConnectionValid">{{vm.status.metricsDbConnectionValid || vm.error}}</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">{{'status.message.metrics' | translate}}</div>
+            <div class="col-sm-4" id="metricsDbStatusMessage">{{vm.status.metricsDbStatusMessage || vm.error}}</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">{{'status.version.api' | translate}}</div>
+            <div class="col-sm-4" id="apiVersion">{{vm.status.version || vm.error}}</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">{{'status.version.ui' | translate}}</div>
+            <div class="col-sm-4" data-ng-include="'views/partials/version.html'" id="uiVersion"></div>
+        </div>
+    </div>
+</div>

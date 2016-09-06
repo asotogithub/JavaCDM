@@ -1,0 +1,22 @@
+.img-thumbnail {
+    max-height: 229px;
+}
+
+.error-message {
+    height: 229px;
+    text-align: center;
+    margin-top: 20px;
+    margin-left: 5px;
+    line-height: 90px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-horizontal .form-group.creative-inner-tab {
+    margin-bottom: 20px;
+    margin-right: 0px;
+}
+
+.app-modal-window .modal-dialog {
+    width: 1200px;
+}

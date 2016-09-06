@@ -1,0 +1,81 @@
+.adm-input-group {
+    width: 100%;
+}
+
+.adm-textarea {
+    margin-top: 10px;
+}
+
+.adm-short-label {
+    width: 4em;
+    height: 4em;
+    display: inline-block;
+}
+
+.adm-details .adm-configuration-partial-bordered {
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    margin-bottom: 5px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.adm-configuration-cookies-scrollbar {
+    height: 133px;
+    max-height: 133px;
+    overflow-y: auto;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.adm-configuration-cookies-scrollbar .list-group-item .form-group {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.fail-through-defaults-scrollbar {
+    height: 67px;
+    max-height: 67px;
+}
+
+.cookie-overwrite-exceptions-scrollbar {
+    height: 166px;
+    max-height: 166px;
+}
+
+.fail-through-defaults-cookie-name-width {
+    width: 75% !important;
+}
+
+.fail-through-defaults-cookie-value-width {
+    width: 25% !important;
+}
+
+.adm-details .adm-form-domain {
+    text-decoration: underline;
+}
+
+.adm-details .label-information {
+    padding-right: 5px;
+}
+
+.adm-details .content-channel {
+    font-size: 12px;
+    padding-right: 5px;
+    margin-right: 0px;
+}
+
+.adm-details .label-icon {
+    padding-left: 0px;
+}
+
+.adm-details .adm-input-form {
+    max-width: 117px;
+}
+
+.adm-details .adm-input-form-status {
+    min-width: 128px;
+}

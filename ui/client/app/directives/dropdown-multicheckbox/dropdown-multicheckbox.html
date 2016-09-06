@@ -1,0 +1,58 @@
+<div class="multiselect-parent btn-group dropdown-multiselect">
+    <div class="btn dropdown-toggle text-bold"
+         data-ng-disabled="inputModel.length < 1"
+         data-ng-click="toggleDropdown()">
+        {{getButtonText()}}&nbsp;&nbsp;<span class="caret"></span>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-form dropdown-menu-right"
+        data-ng-class="open ? 'show' : 'hide'">
+        <li>
+            <div class="dropdown-header pr pl pt-sm pb-sm">
+                <input type="text"
+                       class="form-control"
+                       data-ng-model="searchFilter"
+                       placeholder="{{texts.searchPlaceholder}}"/>
+                <span class="fa fa-times" data-ng-click="clearSearch($event)" data-ng-if="searchFilter"></span>
+            </div>
+        </li>
+        <li>
+            <div>
+                <a data-ng-click="selectAll()"
+                   id="multicheckbox-select-all"
+                   class="pull-left pl">
+                    {{texts.checkAll}}
+                </a>
+                <a data-ng-click="deselectAll()"
+                   id="multicheckbox-clear-selected"
+                   class="pull-right pr">
+                    {{texts.uncheckAll}}
+                </a>
+            </div>
+        </li>
+        <li class="multicheckbox-option"
+            role="presentation"
+            data-ng-repeat="row in inputModel | filter: searchFilter">
+            <a role="menuitem"
+               tabindex="-1"
+               data-ng-click="setSelectedItem(row)"
+               class="pl pr">
+                <div class="checkbox c-checkbox content-option">
+                    <label data-ng-if="!inputIsObject" class="wrapped-text content-label">
+                        <input type="checkbox"
+                               data-ng-click="checkboxClick($event, row)"
+                               data-ng-checked="isChecked(getPropertyForObject(row, id))"/>
+                        <span class="fa fa-check"></span>
+                        {{getPropertyForObject(row, display)}}
+                    </label>
+                    <label data-ng-if="inputIsObject" class="content-label">
+                        <input type="checkbox"
+                               data-ng-click="checkboxClick($event, row)"
+                               data-ng-checked="row.enabled === undefined ? true : row.enabled"/>
+                        <span class="fa fa-check"></span>
+                        {{row.label}}
+                    </label>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>

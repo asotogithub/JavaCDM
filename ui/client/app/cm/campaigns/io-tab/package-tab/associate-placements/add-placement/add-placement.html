@@ -1,0 +1,61 @@
+<div data-ng-controller="PackageAddPlacementController as vmAddPlacement">
+    <fieldset>
+        <legend>{{'placement.addPlacements' | translate}}</legend>
+        <data-ng-form name="addPlacements" class="form-horizontal" novalidate>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default" data-ng-class="{'selected': vmAssoc.option == vmAssoc.OPTION.CREATE_NEW}">
+                        <div class="panel-heading text-center">
+                            <label for="addPlacements">
+                                <input type="radio"
+                                       name="radio"
+                                       id="addPlacements"
+                                       data-ng-value="{{vmAssoc.OPTION.CREATE_NEW}}"
+                                       data-ng-click="vmAssoc.option = vmAssoc.OPTION.CREATE_NEW"
+                                       data-ng-checked="vmAssoc.option == vmAssoc.OPTION.CREATE_NEW">
+                                {{'package.createNewPlacements' | translate}}
+                            </label>
+                        </div>
+                        <fieldset class="panel-body text-center" data-ng-disabled="!vmAssoc.OPTION.CREATE_NEW">
+                            <div data-ng-class="{'disabled': !vmAssoc.option || vmAssoc.option != vmAssoc.OPTION.CREATE_NEW}">
+                                <div>
+                                    <div class="cd-help">
+                                        <p class="help-block">{{'placement.newHelpText' | translate}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default" data-ng-class="{'selected': vmAssoc.option == vmAssoc.OPTION.SELECT_EXISTING}">
+                        <div class="panel-heading text-center">
+                            <label for="fromExistingPlacements">
+                                <input type="radio"
+                                       name="radio"
+                                       id="fromExistingPlacements"
+                                       data-ng-value="{{vmAssoc.OPTION.SELECT_EXISTING}}"
+                                       data-ng-click="vmAssoc.option = vmAssoc.OPTION.SELECT_EXISTING"
+                                       data-ng-checked="vmAssoc.option == vmAssoc.OPTION.SELECT_EXISTING">
+                                {{'package.selectFromExisting' | translate}}
+                            </label>
+                        </div>
+                        <fieldset class="panel-body text-center" data-ng-disabled="!vmAssoc.OPTION.SELECT_EXISTING">
+                            <div data-ng-class="{'disabled': !vmAssoc.option || vmAssoc.option != vmAssoc.OPTION.SELECT_EXISTING}">
+                                <div>
+                                    <div class="cd-help">
+                                        <p class="help-block">{{'placement.existingHelpText' | translate}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </data-ng-form>
+    </fieldset>
+    <associated-placements data-model="vmAssoc.package.placements"
+                           table-template="'app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/templates/associated-placements.html'"
+                           table-title="">
+    </associated-placements>
+</div>

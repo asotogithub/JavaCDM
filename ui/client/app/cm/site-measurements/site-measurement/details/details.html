@@ -1,0 +1,86 @@
+<form id="smDetailsPanel" name="vmDetails.editForm" class="form-horizontal" data-cg-busy="vmDetails.model.promiseRequest">
+    <div class="panel-body row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-md-4 control-label">{{'global.advertiser' | translate}}:</label>
+
+                <div class="col-md-6">
+                    <p id="smAdvertiserName" class="form-control-static">
+                        {{vmDetails.model.siteMeasurement.advertiserName}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">{{'global.brand' | translate}}:</label>
+
+                <div class="col-md-6">
+                    <p id="smBrandName" class="form-control-static">{{vmDetails.model.siteMeasurement.brandName}}</p>
+                </div>
+            </div>
+
+            <div class="form-group" data-ng-class="{'has-error':vmDetails.editForm.name.$invalid}">
+                <label class="col-md-4 control-label">{{'global.name' | translate}}:</label>
+
+                <div class="col-md-6">
+                    <p name="smName" id="name" class="form-control-static wrap-text-td">
+                        {{vmDetails.model.siteMeasurement.name}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">{{'global.description' | translate}}:</label>
+
+                <div class="col-md-6">
+                    <textarea id="smDescription" class="form-control"
+                              data-ng-change="vmDetails.hasChanged()"
+                              data-ng-model="vmDetails.model.siteMeasurement.notes"
+                              maxlength="{{vmDetails.siteMeasurementConstants.MAX_LENGTH}}"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label id="smStatusLabel" class="col-sm-4 control-label">{{'global.status' | translate}}:</label>
+
+                <div class="col-sm-6">
+                    <select id="smStatusSelect"
+                            class="form-control input-12-char"
+                            data-ng-change="vmDetails.hasChanged()"
+                            data-ng-model="vmDetails.selectedStatus"
+                            data-ng-options="status.name |
+                            translate for status in vmDetails.statusList track by status.key">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="domainLabel" class="col-sm-4 control-label">{{'global.domain' | translate}}:</label>
+
+                <div class="col-md-6">
+                    <p id="smDomainName" class="form-control-static">{{vmDetails.model.siteMeasurement.domain}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <button id="smDetailsSaveButton"
+                        type="submit"
+                        class="btn btn-primary"
+                        data-ng-click="vmDetails.save(vmDetails.model.siteMeasurement)"
+                        data-ng-disabled="vmDetails.editForm.$pristine ||
+                        (vmDetails.editForm.$dirty && vmDetails.editForm.$invalid)">
+                    {{'global.save' | translate}}
+                </button>
+                <a id="smDetailsCloseButton"
+                   class="btn btn-default"
+                   data-ng-click="vmDetails.close()">
+                    {{'global.close' | translate}}
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

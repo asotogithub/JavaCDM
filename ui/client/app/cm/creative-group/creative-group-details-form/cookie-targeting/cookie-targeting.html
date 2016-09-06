@@ -1,0 +1,34 @@
+<div class="cookie-targeting">
+    <tabset class="col-md-12" data-cg-busy="vm.promise">
+        <tab id="cookieTargetBuilderTab"
+             active="vm.builderTabActive"
+             data-disable="vm.builderTabDisabled"
+             heading="{{'global.cookieTargetBuilder' | translate}}"
+             data-ng-click="vm.switchToBuilderTab()">
+            <div id="cookieBuilder" data-ng-show="vm.cookieTargets &amp;&amp; vm.cookieTargets.length"></div>
+            <div class="well mt mb0" data-ng-if="vm.cookieTargets &amp;&amp; !vm.cookieTargets.length">{{'creativeGroup.cookieTargeting.error.noCookieTargetsDefined' | translate}}</div>
+        </tab>
+        <tab id="cookieTargetEditorTab"
+             active="vm.editorTabActive"
+             heading="{{'global.cookieTargetEditor' | translate}}"
+             data-ng-click="vm.switchToEditorTab()">
+            <div id="cookieTargetingInvalid"
+                 class="alert alert-warning"
+                 role="alert"
+                 data-ng-if="vm.builderValidationError">
+                <ul>
+                    <li data-ng-repeat="error in vm.builderValidationError">
+                        {{error | translate}}
+                    </li>
+                </ul>
+            </div>
+            <textarea id="cookieTarget"
+                      name="cookieTarget"
+                      class="form-control mt"
+                      rows="3"
+                      data-ng-model="vm.model.cookieTarget"
+                      data-ng-change="vm.setDirty()"
+                      data-ng-required="vm.builderTabDisabled"></textarea>
+        </tab>
+    </tabset>
+</div>

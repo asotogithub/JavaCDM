@@ -1,0 +1,54 @@
+.daypart-targeting .daypart-targeting-custom .form-group {
+    margin-bottom: 15px;
+}
+
+.daypart-targeting .daypart-targeting-custom-timepickers {
+    display: table;
+    margin: 0 auto;
+}
+
+.daypart-targeting .daypart-targeting-custom-timepickers > .daypart-targeting-custom-timepicker {
+    display: table-row;
+}
+
+.daypart-targeting .daypart-targeting-custom-timepickers > .daypart-targeting-custom-timepicker > div {
+    display: table-cell;
+    padding: 0 15px;
+    vertical-align: middle;
+}
+
+.daypart-targeting .daypart-targeting-custom-timepickers > .daypart-targeting-custom-timepicker > div:first-child {
+    padding-left: 0;
+}
+
+.daypart-targeting .daypart-targeting-custom-timepickers > .daypart-targeting-custom-timepicker > div:last-child {
+    padding-right: 0;
+}
+
+.daypart-targeting .daypart-targeting-standard-options {
+    display: table;
+    margin: 0 auto;
+}
+
+.daypart-targeting .panel .panel-body, .daypart-targeting-custom {
+    padding-left: 0;
+}
+
+.daypart-targeting-custom td {
+    padding: 1px;
+}
+
+.daypart-targeting-custom .form-control[readonly] {
+    background-color: #fff;
+}
+
+@media (min-width: 992px) {
+    .daypart-targeting .panel {
+        min-height: 518px;
+        margin-bottom: 0;
+    }
+}
+
+fieldset[disabled] .daypart-targeting .panel.selected {
+    border-color: #ddd;
+}

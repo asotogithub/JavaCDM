@@ -1,0 +1,141 @@
+<div data-cg-busy="vm.promise">
+    <div data-ng-form name="vm.ioPlacementsListForm" class="container-fluid list-placements" novalidate>
+        <div data-ng-if="vm.metrics" class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                <te-metrics data-model="vm.metrics"></te-metrics>
+            </div>
+        </div>
+        <div class="btn-group row col-md-offset-4 col-md-12 padding-bottom20">
+            <label class="btn width-100"
+                   data-ng-class="vm.selectedFilterOption === vm.FILTER_OPTION.ALL ? 'btn-primary active' : 'btn-default'"
+                   data-ng-model="vm.selectedFilterOption"
+                   uib-btn-radio="vm.FILTER_OPTION.ALL">
+                {{'global.all' | translate}}
+            </label>
+            <label class="btn width-100"
+                   data-ng-class="vm.selectedFilterOption === vm.FILTER_OPTION.PACKAGES ? 'btn-primary active' : 'btn-default'"
+                   data-ng-model="vm.selectedFilterOption"
+                   uib-btn-radio="vm.FILTER_OPTION.PACKAGES">
+                {{'global.packages' | translate}}
+            </label>
+            <label class="btn width-100"
+                   data-ng-class="vm.selectedFilterOption === vm.FILTER_OPTION.NO_PACKAGES ? 'btn-primary active' : 'btn-default'"
+                   data-ng-model="vm.selectedFilterOption"
+                   uib-btn-radio="vm.FILTER_OPTION.NO_PACKAGES">
+                {{'global.noPackages' | translate}}
+            </label>
+        </div>
+        <te-table data-empty-message="'global.listEmpty' | translate"
+                  data-model="vm.placementList"
+                  data-page-size="{{vm.pageSize}}"
+                  data-selection-mode="MULTI"
+                  data-te-table-select="vm.selectRows($selection)">
+            <te-table-btns>
+                <te-table-add-btn data-te-table-btn-click="vm.addPlacement()"></te-table-add-btn>
+                <te-table-edit-btn data-te-table-btn-click="vm.editPlacement($selection[0])"></te-table-edit-btn>
+            </te-table-btns>
+            <te-table-secondary-btns>
+                <button id="activateSelected"
+                        class="btn btn-success"
+                        data-ng-disabled="vm.selectedRows.length == 0 || !vm.enableActivate"
+                        data-ng-click="vm.changePlacementsStatus(vm.STATUS.ACCEPTED)">
+                    {{'placement.activate' | translate}}
+                </button>
+                <button id="deactivateSelected"
+                        class="btn btn-danger"
+                        data-ng-disabled="vm.selectedRows.length == 0 || !vm.enableDeactivate"
+                        data-ng-click="vm.changePlacementsStatus(vm.STATUS.REJECTED)">
+                    {{'placement.deactivate' | translate}}
+                </button>
+            </te-table-secondary-btns>
+            <table>
+                <tr id="placement{{placement.id}}" data-ng-repeat="placement in $data">
+                    <td id="placement{{placement.id}}Status"
+                        data-title="'global.status' | translate"
+                        data-sortable="'status'"
+                        class="placement-status-width text-center">
+                        {{vm.getStatusName(placement.status) | translate}}
+                    </td>
+                    <td id="placement{{placement.id}}Name"
+                        data-title="'placement.name' | translate"
+                        data-searchable="true"
+                        data-sortable="'placementName'"
+                        data-sortable-default="true"
+                        class="placement-name-width wrap-text-td">
+                        {{placement.placementName}}
+                    </td>
+                    <td id="placement{{placement.id}}MediaPackage"
+                        data-title="'placement.mediaPackage' | translate"
+                        data-searchable="true"
+                        data-sortable="'packageName'"
+                        class="placement-media-package-width wrap-text-td">
+                        {{placement.packageName}}
+                    </td>
+                    <td id="placement{{placement.id}}Site"
+                        data-title="'global.site' | translate"
+                        data-sortable="'siteName'"
+                        class="wrap-text-td">
+                        {{placement.siteName}}
+                    </td>
+                    <td id="placement{{placement.id}}Size"
+                        data-title="'global.size' | translate"
+                        data-sortable="'sizeName'"
+                        class="placement-size-width text-center wrap-text-td">
+                        {{placement.sizeName}}
+                    </td>
+                    <td id="placement{{placement.id}}AdSpend"
+                        data-title="'placement.adSpend' | translate"
+                        data-sortable="'adSpend'"
+                        class="text-center">
+                        {{placement.adSpend | currency:"$"}}
+                    </td>
+                    <td id="placement{{placement.id}}Inventory"
+                        data-title="'placement.inventory' | translate"
+                        data-sortable="'inventory'"
+                        class="text-center">
+                        {{placement.inventory| number}}
+                    </td>
+                    <td id="placement{{placement.id}}Rate"
+                        data-title="'placement.rate' | translate"
+                        data-sortable="'rate'"
+                        class="text-center">
+                        {{placement.rate | currency:"$"}}
+                    </td>
+                    <td id="placement{{placement.id}}RateType"
+                        data-title="'placement.rateType' | translate"
+                        data-sortable="'rateType'"
+                        class="placement-rate-type text-center">
+                        {{placement.rateType}}
+                    </td>
+                    <td id="placement{{placement.id}}Flight"
+                        data-title="'placement.flight' | translate"
+                        data-sortable="'startDate'"
+                        class="text-center">
+                        {{placement.formattedStartDate}} - {{placement.formattedEndDate}}
+                    </td>
+                    <td id="placement{{placement.id}}Scheduled"
+                        data-title="'placement.scheduled' | translate"
+                        data-sortable="'isScheduled'"
+                        class="placement-scheduled-width text-center">
+                        <i data-ng-class="placement.scheduledIcon? 'fa fa-check':'fa fa-times'"></i>
+                    </td>
+                </tr>
+            </table>
+        </te-table>
+        <div class="form-group placement-list-buttons">
+            <div class="pull-right pt0">
+                <button id="saveButton"
+                        type="submit"
+                        class="btn btn-primary"
+                        data-ng-disabled="vm.updatedList.length == 0"
+                        data-ng-click="vm.save()">
+                    {{'global.save' | translate}}
+                </button>
+                <a class="btn btn-default" data-ng-click="vm.close()">
+                    {{'global.close' | translate}}
+                </a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

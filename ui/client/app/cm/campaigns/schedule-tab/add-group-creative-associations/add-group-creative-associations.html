@@ -1,0 +1,61 @@
+<div id="addGroupCreativeAssociations" class="default-cursor" data-cg-busy="vm.promise">
+    <div class="modal-header">
+        <button class="close" type="button" data-ng-click="vm.close()">&times;</button>
+        <h4 class="modal-title header-ellipsis">{{vm.modalTitle}}</h4>
+    </div>
+    <div class="modal-body row ml0 mr0 padding-top16" data-ng-class="{'pb0': vm.pendingCreativeInsertionList.length==0}">
+        <div class="col-md-12 pl0 pr0">
+            <div>
+                <div class="col-md-12 pl0 pr0">
+                    <div class="row">
+                        <div class="col-md-1 tooltip-width-group">
+                            <span class="fa fa-info-circle" title="{{vm.modalToolTip}}"></span>
+                        </div>
+                        <div class="header-title-width">
+                            <h4 class="mt0 mb0 padding-bottom12 header-ellipsis">{{vm.entityName}}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 pl0 pr0">
+                    <association-maker input-model="vm.creativeInputList"
+                                       output-model="vm.creativeOutputList"
+                                       filter-options="vm.filterOptions"
+                                       empty-input-msg="'creative.emptyListMsg' | translate"
+                                       empty-output-msg="'creative.emptyListAssocMsg' | translate"
+                                       template-left-table="vm.templateLeft"
+                                       template-right-table="vm.templateRight">
+                    </association-maker>
+                </div>
+                <div class="col-md-12 pl0 pr0 pb text-center">
+                    <button class="btn"
+                            data-ng-class="vm.creativeOutputList == 0 ? 'btn-default' : 'btn-primary'"
+                            data-ng-click="vm.addToCreativeInsertionList()"
+                            data-ng-disabled="vm.creativeOutputList == 0">
+                        {{'global.add' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 pl0 pr0 pt-sm">
+            <associated-placements data-model="vm.pendingCreativeInsertionList"
+                                   table-template="'app/cm/campaigns/schedule-tab/add-group-creative-associations/templates/associated-placements.html'"
+                                   table-title="'creative.willBeAssociated' | translate">
+            </associated-placements>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="cancelButton"
+                class="btn btn-default"
+                type="button"
+                data-ng-click="vm.close()">
+            {{'global.cancel' | translate}}
+        </button>
+        <button id="saveButton"
+                class="btn btn-primary"
+                type="button"
+                data-ng-click="vm.saveAndClose()"
+                data-ng-disabled="!vm.pendingCreativeInsertionList.length">
+            {{'global.saveAndAssociate' | translate}}
+        </button>
+    </div>
+</div>

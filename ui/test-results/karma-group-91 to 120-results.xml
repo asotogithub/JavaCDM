@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="PhantomJS 1.9.8 (Windows 8)" package="(Test Files 91 to 120)" timestamp="2016-08-22T17:04:10" id="0" hostname="ascbomvillarroe" tests="104" errors="0" failures="0" time="4.082">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34"/>
+    </properties>
+    <testcase name="Should resolve the promise to get the tracking-tag to be saved" time="0.07" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: AddTrackingTagController"/>
+    <testcase name="Should create an instance of the controller." time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: AddTrackingTagHtmlTagTypeController"/>
+    <testcase name="Should create an instance of the controller." time="0.031" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: AddTrackingTagNameController"/>
+    <testcase name="Should resolve the promise." time="0.018" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: AddTrackingTagNameController"/>
+    <testcase name="Should resolve the promise with all domains data." time="0.019" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: AddTrackingTagNameController"/>
+    <testcase name="should assign initial model after activate()" time="0.037" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PlacementsController"/>
+    <testcase name="should allow clear placements tree model" time="0.022" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PlacementsController"/>
+    <testcase name="should change expanded value to false" time="0.017" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PlacementsController onCollapseRow()"/>
+    <testcase name="should load SITE level after expand a CAMPAIGN" time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PlacementsController onExpandRow()"/>
+    <testcase name="should load tags association from row selected" time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PlacementsController selectRow()"/>
+    <testcase name="should load data from search" time="0.046" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PlacementsController searchTree()"/>
+    <testcase name="Should create an instance of the controller." time="0.019" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: StandardTabController activate()"/>
+    <testcase name="should resolve tracking-tags data" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: StandardTabController activate()"/>
+    <testcase name="should create an instance of the controller." time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionFlyOutController activate()"/>
+    <testcase name="should load the filters and their list of options." time="0.033" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionFlyOutController activate()"/>
+    <testcase name="should invoke TagInjectionService" time="0.052" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionFlyOutController Update()"/>
+    <testcase name="should invoke TagInjectionFlyOutController.updateTagInjection()" time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionFlyOutController Update()"/>
+    <testcase name="should show a popup before close fly-out" time="0.022" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionFlyOutController Close()"/>
+    <testcase name="should load data from search" time="0.028" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionFlyOutController searchPlacements()"/>
+    <testcase name="should define a default value for pageSize attribute)" time="0.022" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TrackingTagsController"/>
+    <testcase name="should select row for edit)" time="0.022" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TrackingTagsController"/>
+    <testcase name="should load list of Advertisers" time="0.026" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionTabController activate()"/>
+    <testcase name="should load list of Brands" time="0.022" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionTabController activate()"/>
+    <testcase name="should auto-select first Advertiser and first Brand" time="0.059" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionTabController activate()"/>
+    <testcase name="should allow select Advertiser" time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionTabController"/>
+    <testcase name="should load Brands after select Advertiser" time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionTabController"/>
+    <testcase name="should allow select Brand" time="0.019" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagInjectionTabController"/>
+    <testcase name="should set default values" time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController activate()"/>
+    <testcase name="should load list of Recipients and Sites" time="0.031" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController activate()"/>
+    <testcase name="should remove all email recipients" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController clearAll()"/>
+    <testcase name="should check if individual recipients are empty or not" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController isIndividualRecipientEmpty()"/>
+    <testcase name="should check if selected formats updates counter" time="0.022" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController onSelectFormat()"/>
+    <testcase name="should add email tag from selected recipients" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController"/>
+    <testcase name="should remove email tag when it is not in selected recipients list" time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController"/>
+    <testcase name="should update selected recipients list when manually add an email" time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController"/>
+    <testcase name="should update selected recipients list when remove an email tag" time="0.077" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: SendAdTagsController"/>
+    <testcase name="should load details value in model" time="0.038" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagDetailsFlyOutController activate()"/>
+    <testcase name="should load list of Advertisers sorted by name" time="0.028" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController activate()"/>
+    <testcase name="should load list of Brand sorted by name" time="0.025" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController activate()"/>
+    <testcase name="should auto-select first Advertiser and first Brand" time="0.02" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController activate()"/>
+    <testcase name="should load placements model" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController activate()"/>
+    <testcase name="should load filters" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController activate()"/>
+    <testcase name="should allow select Advertiser" time="0.026" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController"/>
+    <testcase name="should load Brands after select Advertiser" time="0.026" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController"/>
+    <testcase name="should allow select Brand" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController"/>
+    <testcase name="should enable send button" time="0.027" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController"/>
+    <testcase name="should disable send button" time="0.038" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TagPlacementListController"/>
+    <testcase name="should make element disabled" time="0.043" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: aDisabled"/>
+    <testcase name="should make element enabled" time="0.033" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: aDisabled"/>
+    <testcase name="should remove given placement" time="0.029" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: AssociatedPlacementsController removePlacement"/>
+    <testcase name="should keep the model" time="0.197" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: associatedPlacements controllerAs"/>
+    <testcase name="should have two rows" time="0.072" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: associatedPlacements directive rendering"/>
+    <testcase name="should have six columns" time="0.062" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: associatedPlacements directive rendering"/>
+    <testcase name="should have two rows in input panel" time="0.134" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: associationMaker"/>
+    <testcase name="should render the button and the dropdown and have 3 options" time="0.048" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: dropdownMulticheckbox Directive rendering"/>
+    <testcase name="should apply the message strings on the messages array" time="0.043" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: dropdownMulticheckbox Message strings applied"/>
+    <testcase name="should select single option" time="0.043" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: dropdownMulticheckbox setSelectedItem()"/>
+    <testcase name="should deselect single option" time="0.045" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: dropdownMulticheckbox setSelectedItem()"/>
+    <testcase name="should set all options as selected" time="0.045" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: dropdownMulticheckbox selectAll()"/>
+    <testcase name="should select all options that match search key" time="0.057" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: dropdownMulticheckbox selectAll()"/>
+    <testcase name="should set all options as not selected" time="0.053" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: dropdownMulticheckbox deselectAll()"/>
+    <testcase name="should deselect all options that match search key" time="0.046" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: dropdownMulticheckbox deselectAll()"/>
+    <testcase name="should lost focus when enter key is pressed" time="0.139" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: enterAsTab"/>
+    <testcase name="should set focus in the second input" time="0.039" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: focusElement"/>
+    <testcase name="should set focus in the last input" time="0.026" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: focusElement"/>
+    <testcase name="Should create an instance of the controller Import Data." time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: ImportDataController"/>
+    <testcase name="Should set popUp texts." time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: ImportDataController"/>
+    <testcase name="should define isValidFile" time="0.019" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: ImportDataController"/>
+    <testcase name="Should be call upload function." time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: ImportDataController"/>
+    <testcase name="Should return false to invalid file." time="0.02" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: ImportDataController"/>
+    <testcase name="Should return true to valid file." time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: ImportDataController"/>
+    <testcase name="Should be call cancel function." time="0.021" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: ImportDataController"/>
+    <testcase name="Should be call importProcess function." time="0.019" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: ImportDataController"/>
+    <testcase name="should render directive content" time="0.054" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: importData importData"/>
+    <testcase name="should input number without" time="0.036" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: integerInput integerInput"/>
+    <testcase name="Should load issues model and rows validates" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: IssuesContainerController Issues Model"/>
+    <testcase name="Should Call Complete Bulk and return message success." time="0.025" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: IssuesContainerController Issues Model"/>
+    <testcase name="Should Call Export Issues and return a file." time="0.028" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: IssuesContainerController Issues Model"/>
+    <testcase name="should render cancel, continue, export buttons and label" time="0.16" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: issuesContainer Directive Issues Container rendering"/>
+    <testcase name="should show rows in table" time="0.162" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: issuesContainer Directive Issues Container rendering"/>
+    <testcase name="should render label counter " time="0.039" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: legendTable table"/>
+    <testcase name="should input date validated as the next day of &quot;01/01/2015&quot;" time="0.058" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: nextTo nextTo"/>
+    <testcase name="should input dates validated as invalid, the date is not the next day of &quot;01/01/2015&quot;" time="0.053" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: nextTo nextTo"/>
+    <testcase name="should input dates validated as invalid, the date is before &quot;01/01/2015&quot;" time="0.178" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: nextTo nextTo"/>
+    <testcase name="should test on-error directive&quot;" time="0.037" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: onError onError"/>
+    <testcase name="should set properties" time="0.03" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should execute onDeletePing callback" time="0.027" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should edit ping" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should enter container" time="0.025" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should exit container" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should execute save ping" time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should change site" time="0.022" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should change Tag Type" time="0.024" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should disable Site Dropdown if edit a Ping" time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: PingBoxController Initialize controller"/>
+    <testcase name="should render title of ping" time="0.066" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: ping-box Directive Ping Box rendering"/>
+    <testcase name="should render buttons delete - edit" time="0.042" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: ping-box Directive Ping Box rendering"/>
+    <testcase name="should render input publisher - description  ping" time="0.036" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Directive: ping-box Directive Ping Box rendering"/>
+    <testcase name="search fields " time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TeTablePingController load properties of table"/>
+    <testcase name="should change status filter search" time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TeTablePingController load properties of table"/>
+    <testcase name="should disable search when edit mode is enabled" time="0.023" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TeTablePingController load properties of table"/>
+    <testcase name="should clear search term" time="0.03" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TeTablePingController load properties of table"/>
+    <testcase name="should execute delete callback" time="0.046" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TeTablePingController load properties of table"/>
+    <testcase name="should execute save callback" time="0.036" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TeTablePingController load properties of table"/>
+    <testcase name="should get values Ping" time="0.031" classname="(Test Files 91 to 120) PhantomJS 1.9.8 (Windows 8).Controller: TeTablePingController load properties of table"/>
+    <system-out><![CDATA[
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

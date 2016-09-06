@@ -1,0 +1,76 @@
+<div data-cg-busy="vm.promise">
+    <h3>{{'global.adm' | translate}}</h3>
+    <te-metrics data-legend="'global.last30Days' | translate"></te-metrics>
+    <te-table data-empty-message="'global.listEmpty' | translate"
+              data-model="vm.model"
+              data-te-table-select="vm.goToDetails($selection)">
+        <te-table-btns>
+            <te-table-add-btn data-te-table-btn-click="vm.addAdmRecord()" data-ng-disabled="true"></te-table-add-btn>
+        </te-table-btns>
+        <table>
+            <tr class="actionable-row" data-ng-repeat="adm in $data">
+                <td data-title="'global.advertiser' | translate"
+                    data-searchable="true"
+                    data-sortable="'advertiserName'"
+                    data-min-width="230"
+                    class="wrap-text-td">
+                    {{adm.advertiserName}}
+                </td>
+                <td data-title="'global.fileName' | translate"
+                    data-searchable="true"
+                    data-sortable="'fileNamePrefix'"
+                    data-min-width="200"
+                    class="wrap-text-td">
+                    {{adm.fileNamePrefix}}
+                </td>
+                <td data-title="'global.alias' | translate"
+                    data-searchable="true"
+                    data-sortable="'fileNamePrefix'"
+                    data-min-width="200"
+                    class="wrap-text-td">
+                    {{vm.Utils.isUndefinedOrNull(adm.alias) ? adm.fileNamePrefix : adm.alias}}
+                </td>
+                <td data-title="'global.campaignStatus' | translate"
+                    data-sortable="'isActive'"
+                    data-min-width="140"
+                    class="text-center">
+                    {{adm.active === true ? vm.STATUS.ACTIVE : vm.STATUS.INACTIVE}}
+                </td>
+                <td data-title="'global.domain' | translate"
+                    data-searchable="true"
+                    data-sortable="'domain'"
+                    data-min-width="175"
+                    class="wrap-text-td">
+                    {{adm.domain}}
+                </td>
+                <td data-title="'global.attempts' | translate"
+                    data-sortable="'attempts'"
+                    class="text-center">
+                    <span data-ng-show="adm.attempts === undefined && adm.error == undefined" class="text-center">
+                        <i class="fa fa-spinner fa-pulse"></i>
+                    </span>
+                    <span data-ng-show="adm.attempts != undefined && adm.error == undefined" class="text-center">
+                        {{adm.attempts | number}}
+                    </span>
+                </td>
+                <td data-title="'global.matchRate' | translate"
+                    data-sortable="'matchRate'"
+                    data-min-width="105"
+                    class="text-center">
+                    <span data-ng-show="adm.matchRate === undefined && adm.error !== true" class="text-center">
+                        <i class="fa fa-spinner fa-pulse"></i>
+                    </span>
+                    <span data-ng-show="adm.matchRate != undefined && adm.error !== true" class="text-center">
+                        {{adm.matchRate * 100 | number:2}}%
+                    </span>
+                </td>
+                <td data-title="'global.lastFileUpdate' | translate"
+                    data-sortable="'latestUpdate'"
+                    data-min-width="160"
+                    class="text-center">
+                    {{adm.latestUpdate | date: vm.formatDateView}}
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

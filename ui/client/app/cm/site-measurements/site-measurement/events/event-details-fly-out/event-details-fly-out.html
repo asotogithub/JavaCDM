@@ -1,0 +1,223 @@
+<div id="fly-out-event-manage" data-ng-controller="EventDetailsFlyOutController as vmEDFlyOut"
+     class="panel-fly-out-accordion"
+     data-cg-busy="vmEDFlyOut.promiseEDFlyOut">
+    <!--SUMMARY-->
+    <div class="panel panel-info summary">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                    {{'global.summary'| translate}}
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel">
+            <div class="panel-body">
+                <div class="row">
+                    <div data-ng-form
+                         name="vmEDFlyOut.flyOutForm"
+                         class="form-horizontal">
+                        <div data-ng-class="vmEDFlyOut.flyoutState == vmEDFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-6' : 'col-md-12'">
+                            <div class="form-group"
+                                 data-ng-class="{'has-error': vmEDFlyOut.flyOutForm.eventName.$dirty && vmEDFlyOut.flyOutForm.eventName.$invalid}">
+                                <label class="col-md-4 control-label">{{'global.name' | translate}}:</label>
+                                <div class="col-md-7">
+                                    <div data-ng-if="!vmEDFlyOut.model.isReadOnly">
+                                        <div class="form-control-static">
+                                            {{vmEDFlyOut.model.eventName}}
+                                        </div>
+                                    </div>
+                                    <div data-ng-if="vmEDFlyOut.model.isReadOnly">
+                                        <input class="form-control"
+                                               id="eventName"
+                                               name="eventName"
+                                               type="text"
+                                               data-ng-model="vmEDFlyOut.model.eventName"
+                                               data-ng-maxlength="{{vmEDFlyOut.eventNameMaxLength}}"
+                                               data-ng-pattern="vmEDFlyOut.REGEX_EVENT_NAME"
+                                               data-ng-disabled="vmEDFlyOut.model.isReadOnly"
+                                               required/>
+                                        <p id="eventNameMaxLength" class="help-block"
+                                           data-ng-if="vmEDFlyOut.flyOutForm.eventName.$dirty && vmEDFlyOut.flyOutForm.eventName.$error.maxlength"
+                                           translate="validation.error.maxlength" translate-values="{length: vmEDFlyOut.eventNameMaxLength}">
+                                        </p>
+                                        <p id="tagNameRequired" class="help-block"
+                                           data-ng-if="vmEDFlyOut.flyOutForm.eventName.$dirty && vmEDFlyOut.flyOutForm.eventName.$error.required">
+                                            {{'validation.error.required' | translate}}
+                                        </p>
+                                        <p id="tagNamePattern" class="help-block"
+                                           data-ng-if="vmEDFlyOut.flyOutForm.eventName.$dirty && vmEDFlyOut.flyOutForm.eventName.$error.pattern">
+                                            {{'validation.error.invalid' | translate}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 data-ng-class="{'has-error': vmEDFlyOut.flyOutForm.location.$dirty && vmEDFlyOut.flyOutForm.location.$error.maxlength}">
+                                <label class="col-md-4 control-label">
+                                    {{'global.description' | translate}}:
+                                </label>
+                                <div class="col-md-7">
+                                    <div data-ng-if="!vmEDFlyOut.model.isReadOnly">
+                                        <div class="form-control-static long-text-wrapper">
+                                            {{vmEDFlyOut.model.location}}
+                                        </div>
+                                    </div>
+                                    <div  data-ng-if="vmEDFlyOut.model.isReadOnly">
+                                        <textarea id="location" class="form-control"
+                                                  name="location"
+                                                  data-ng-model="vmEDFlyOut.model.location"
+                                                  maxlength="{{vmEDFlyOut.eventDescriptionMaxLength}}"
+                                                  data-ng-if="vmEDFlyOut.model.isReadOnly"></textarea>
+                                        <p id="eventDescriptionMaxLength" class="help-block"
+                                           data-ng-if="vmEDFlyOut.flyOutForm.location.$dirty && vmEDFlyOut.flyOutForm.location.$error.maxlength"
+                                           translate="validation.error.maxlength"
+                                           translate-values="{length: vmEDFlyOut.location}">
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--GROUP-RIGHT-->
+                        <div data-ng-class="vmEDFlyOut.flyoutState == vmEDFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-6' : 'col-md-12'">
+                            <div class="form-group">
+                                <label class="control-label" data-ng-class="vmEDFlyOut.flyoutState == vmEDFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-4' : 'col-md-4'">
+                                    {{'global.eventType' | translate}}:
+                                </label>
+                                <div data-ng-class="vmEDFlyOut.flyoutState == vmEDFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-5' : 'col-md-4'">
+                                    <select class="form-control width-200"
+                                            id="smFlyOutEventTypeDropdown"
+                                            data-ng-model="vmEDFlyOut.model.eventTypeSelected"
+                                            data-ng-change="vmEDFlyOut.updateEventModel(vmEDFlyOut.model)"
+                                            data-ng-options="eventType.name for eventType in vmEDFlyOut.eventTypeList track by eventType.id">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">
+                                    {{'global.tagType' | translate}}:
+                                </label>
+                                <div class="col-md-4">
+                                    <div data-ng-if="!vmEDFlyOut.model.isReadOnly">
+                                        <div class="form-control-static">
+                                            {{vmEDFlyOut.model.tagTypeSelected.name}}
+                                        </div>
+                                    </div>
+                                    <div data-ng-if="vmEDFlyOut.model.isReadOnly">
+                                        <select class="form-control"
+                                                data-ng-model="vmEDFlyOut.model.tagTypeSelected"
+                                                data-ng-change="vmEDFlyOut.updateEventModel(vmEDFlyOut.model)"
+                                                data-ng-options="tagType.name for tagType in vmEDFlyOut.tagTypeList track by tagType.id"
+                                                data-ng-disabled="vmEDFlyOut.model.isReadOnly">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--GROUP-->
+                        <div class="padding0" data-ng-class="vmEDFlyOut.flyoutState == vmEDFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-12' : ''">
+                            <div data-ng-class="vmEDFlyOut.flyoutState == vmEDFlyOut.FLYOUT_STATE.FULL_VIEW ? 'col-md-6' : 'col-md-12'">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">
+                                        {{'global.group' | translate}}:
+                                    </label>
+                                    <div >
+                                        <div class="col-md-7">
+                                            <div class="form-control-static">
+                                                {{vmEDFlyOut.model.groupName}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content row">
+                    <div class="col-md-12 group-button">
+                        <div class="pull-right">
+                            <button class="btn btn-primary"
+                                    id="smFlyOutSaveButton"
+                                    data-ng-disabled="vmEDFlyOut.flyOutForm.$invalid || vmEDFlyOut.flyOutForm.$pristine"
+                                    data-ng-click="vmEDFlyOut.save()">
+                                {{'global.save' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <!--PING's-->
+    <div class="panel panel-info" data-ng-if="vmEDFlyOut.model.loadPings">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                    {{'global.pings'| translate}}
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal">
+                        <te-table-ping id="smFlyOutPingTable"
+                                       data-empty-message="'global.listEmpty' | translate"
+                                       data-model="vmEDFlyOut.model.pingEvents"
+                                       data-edit-mode-enabled="vmEDFlyOut.model.pingEditMode"
+                                       data-search-fields="vmEDFlyOut.searchFields"
+                                       data-te-table-custom-search-enabled="true"
+                                       data-te-table-container-state="vmEDFlyOut.flyoutState"
+                                       data-site-values="vmEDFlyOut.siteList"
+                                       data-on-delete-ping="vmEDFlyOut.onDeletePing(pingId)"
+                                       data-on-save-ping="vmEDFlyOut.onSavePing(pingId)">
+                            <te-table-btns>
+                                <div class="dropdown">
+                                    <button id="add-dropdown"
+                                            class="dropdown-toggle btn btn-primary"
+                                            data-toggle="dropdown"
+                                            data-ng-disabled="vmEDFlyOut.model.pingEditMode">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <ul id="add-dropdown-list" class="dropdown-menu event-details-dropdown-menu">
+                                        <li>
+                                            <a id="addBroadcast"
+                                               data-ng-click="vmEDFlyOut.addPingCard(vmEDFlyOut.PING_CARD.TYPE_BROADCAST)">
+                                                {{'global.broadcast' | translate}}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a id="addSelective"
+                                               data-ng-click="vmEDFlyOut.addPingCard(vmEDFlyOut.PING_CARD.TYPE_SELECTIVE)">
+                                                {{'global.selective' | translate}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </te-table-btns>
+                            <te-table-secondary-btns>
+                                <dropdown-multicheckbox
+                                        data-ng-class="{'hide': !vmEDFlyOut.showFilter || vmEDFlyOut.flyoutState == vmEDFlyOut.FLYOUT_STATE.HALF_VIEW}"
+                                        data-ng-repeat="option in vmEDFlyOut.filterOption"
+                                        data-input-model="option.value"
+                                        data-output-model="vmEDFlyOut.filterValues[$index].values"
+                                        data-events="vmEDFlyOut.actionFilter[$index]"
+                                        data-title="option.text">
+                                </dropdown-multicheckbox>
+                                <button id="filterOptions"
+                                        data-ng-click="vmEDFlyOut.toggleFilter()"
+                                        data-ng-mouseup="vmEDFlyOut.blurButton('filterOptions')"
+                                        data-ng-disabled="vmEDFlyOut.model.pingEditMode"
+                                        class="btn btn-warning">
+                                <span class="text-center">
+                                    <i class="fa fa-filter"></i>
+                                </span>
+                                </button>
+                            </te-table-secondary-btns>
+                        </te-table-ping>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

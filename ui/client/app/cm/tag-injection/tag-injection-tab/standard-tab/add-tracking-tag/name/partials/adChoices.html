@@ -1,0 +1,50 @@
+<div class="col-md-12">
+    <fieldset class="panel panel-default">
+        <div class="panel-body col-md-4">
+            <div class="form-group"
+                 data-ng-class="{'has-error': vm.nameForm.trackingTagName.$dirty && vm.nameForm.trackingTagName.$invalid}">
+                <label for="trackingTagName" class="control-label">{{'global.name' | translate}}:</label>
+                <input id="trackingTagName"
+                       name="trackingTagName"
+                       class="form-control"
+                       type="text"
+                       data-ng-model="vmAddTrackingTag.trackingTagName"
+                       data-ng-pattern="vm.namePattern"
+                       maxlength="{{vm.maxLength}}"
+                       autocomplete="off"
+                       required/>
+                <p class="help-block"
+                   data-ng-if="vm.nameForm.trackingTagName.$dirty && vm.nameForm.trackingTagName.$error.required">
+                    {{'validation.error.required' | translate}}
+                </p>
+                <p class="help-block"
+                   data-ng-if="vm.nameForm.trackingTagName.$dirty && vm.nameForm.trackingTagName.$error.pattern">
+                    {{'validation.error.alphanumeric' | translate}}
+                </p>
+            </div>
+        </div>
+        <div class="panel-body col-md-6">
+            <div class="form-group"
+                 data-ng-class="{'has-error': vm.nameForm.optOutURL.$dirty && vm.nameForm.optOutURL.$invalid}">
+                <label for="optOutURL" class="control-label">{{'tagInjection.optOutURL' | translate}}:</label>
+                <input id="optOutURL"
+                       name="optOutURL"
+                       class="form-control"
+                       data-ng-model="vmAddTrackingTag.optOutURL"
+                       data-ng-model-options="{allowInvalid: true}"
+                       data-ng-pattern="vm.urlPattern"
+                       maxlength="{{vm.urlMaxLength}}"
+                       autocomplete="off"
+                       required/>
+                <p class="help-block"
+                   data-ng-if="vm.nameForm.optOutURL.$dirty && vm.nameForm.optOutURL.$error.required">
+                    {{'validation.error.required' | translate}}
+                </p>
+                <p class="help-block"
+                   data-ng-if="vm.nameForm.optOutURL.$dirty && vm.nameForm.optOutURL.$error.pattern">
+                    {{'validation.error.invalidURL' | translate}}
+                </p>
+            </div>
+        </div>
+    </fieldset>
+</div>

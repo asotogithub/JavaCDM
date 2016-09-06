@@ -1,0 +1,22 @@
+.checkbox-media {
+    margin: 0 auto;
+    width: 5%;
+}
+
+.legend-media {
+    font-size: 12px;
+    position: relative;
+    margin-left: 50px;
+}
+
+.placement-cell-even {
+    background-color: #f2f7f9 !important;
+}
+
+.placement-cell-odd {
+    background-color: #eff4f7 !important;
+}
+
+#mediaGrid tbody > tr > td:nth-child(6) {
+    word-wrap: break-word;
+}

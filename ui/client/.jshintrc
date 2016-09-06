@@ -1,0 +1,33 @@
+{
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "es3": false,
+  "forin": true,
+  "freeze": true,
+  "funcscope": false,
+  "futurehostile": true,
+  "globalstrict": false,
+  "iterator": false,
+  "latedef": false,
+  "maxdepth": 2,
+  "noarg": true,
+  "nocomma": true,
+  "nonbsp": true,
+  "nonew": true,
+  "notypeof": false,
+  "shadow": "outer",
+  "singleGroups": true,
+  "strict": true,
+  "sub": true,
+  "undef": true,
+  "unused": true,
+  "globals": {
+    "$": true,
+    "Blob": true,
+    "FormData":true,
+    "Uint8Array": true,
+    "angular": true,
+    "saveAs": true
+  }
+}

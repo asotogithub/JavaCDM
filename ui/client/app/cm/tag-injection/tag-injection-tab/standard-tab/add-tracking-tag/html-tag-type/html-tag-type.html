@@ -1,0 +1,21 @@
+<div data-ng-controller="AddTrackingTagHtmlTagTypeController as vm">
+    <data-ng-form name="vm.htmlTagTypeForm" novalidate>
+        <div class="col-md-12">
+            <fieldset class="panel panel-default">
+                <div class="panel-body col-md-offset-4 col-md-4">
+                    <div class="form-group">
+                        <label for="htmlTagTypeSelect" class="control-label">{{'tagInjection.htmlTagType' | translate}}:</label>
+                        <select id="htmlTagTypeSelect"
+                                name="htmlTagTypeSelect"
+                                class="form-control"
+                                data-ng-model="vm.htmlTagType"
+                                data-ng-options="item.name | translate for item in vm.htmlTagTypeList track by item.key"
+                                required>
+                            <option value="" hidden selected required>{{'global.selectType' | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </data-ng-form>
+</div>

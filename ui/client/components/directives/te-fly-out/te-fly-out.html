@@ -1,0 +1,24 @@
+<div id="mySidenav" class="sidenav"
+     data-ng-class="{
+     'sidenav-half' : vmTeFlyOutController.flyoutState == vmTeFlyOutController.FLYOUT_STATE.HALF_VIEW,
+     'sidenav-full' : vmTeFlyOutController.flyoutState == vmTeFlyOutController.FLYOUT_STATE.FULL_VIEW
+     }">
+    <div class="panel-heading">
+        <span id="expandoClose"
+              class="glyphicon glyphicon-remove-circle flyout-ctrl-btns pull-right"
+              data-ng-click="vmTeFlyOutController.closeAction()"></span>
+        <span id="expandoRight"
+              class="glyphicon glyphicon-fast-forward flyout-ctrl-btns pull-right"
+              data-ng-show="vmTeFlyOutController.flyoutState === vmTeFlyOutController.FLYOUT_STATE.FULL_VIEW"
+              data-ng-click="vmTeFlyOutController.half()"></span>
+        <span id="expandoLeft"
+              class="glyphicon glyphicon-fast-backward flyout-ctrl-btns pull-right"
+              data-ng-show="vmTeFlyOutController.flyoutState === vmTeFlyOutController.FLYOUT_STATE.HALF_VIEW"
+              data-ng-click="vmTeFlyOutController.full()"></span>
+        <h4 class="modal-title">{{vmTeFlyOutController.flyOutModel.title}}</h4>
+    </div>
+    <div data-ng-if="vmTeFlyOutController.isOpen" data-ng-include="vmTeFlyOutController.templateContent">
+    </div>
+</div>
+
+

@@ -1,0 +1,56 @@
+<div class="col-md-8">
+    <te-table data-model="vmSendAdTags.recipientsList"
+              data-empty-message="'global.listEmpty' | translate"
+              data-page-size="{{vmSendAdTags.SEND_AD_TAGS_PAGE_SIZE}}"
+              data-selection-mode="MULTI"
+              data-te-table-select="vmSendAdTags.selectedRecipientsCallback($selection)"
+              data-uuid="vmSendAdTags.recipientsTableUUID">
+        <te-table-thirdly-btns class="thirdly-btns-position">
+            <legend-table class="btn-group" id="recipientsCounter" data-legend="vmSendAdTags.recipientsLegendMessage"></legend-table>
+        </te-table-thirdly-btns>
+        <table class="table-condensed" id="tableRecipients">
+            <tr data-ng-repeat="recipient in $data">
+                <td data-header-class="'alias-column'"
+                    data-title="'global.firstName' | translate"
+                    data-searchable="true"
+                    data-sortable="'firstName'">
+                    <span title="{{recipient.firstName}}">{{recipient.firstName}}</span>
+                </td>
+                <td data-header-class="'creative-group-column'"
+                    data-title="'global.lastName' | translate"
+                    data-searchable="true"
+                    data-sortable="'lastName'">
+                    <span title="{{recipient.lastName}}">{{recipient.lastName}}</span>
+                </td>
+                <td data-header-class="'size-column'"
+                    data-title="'global.email' | translate"
+                    data-searchable="true"
+                    data-sortable="'userName'">
+                    <span title="{{recipient.userName}}">{{recipient.userName}}</span>
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>
+<div class="col-md-4 form-group">
+    <div class="clear-all-container">
+        <a id="clearAll"
+           data-ng-click="vmSendAdTags.clearAll()">
+            {{'global.clearAll' | translate}}
+        </a>
+    </div>
+    <tags-input class="bootstrap email-container-adTags"
+                data-add-on-comma="true"
+                data-add-on-blur="true"
+                data-add-on-space="true"
+                data-allowed-tags-pattern="{{vmSendAdTags.EMAIL_PATTERN}}"
+                data-enable-editing-last-tag="true"
+                data-on-tag-added="vmSendAdTags.onEmailTagAdded($tag)"
+                data-on-tag-removed="vmSendAdTags.onEmailTagRemoved($tag)"
+                data-ng-model="vmSendAdTags.emailList"
+                data-placeholder="{{'tags.sendAdTags.email' | translate}}"
+                data-replace-spaces-with-dashes="false"
+                data-spellcheck="true"
+                data-type="email">
+    </tags-input>
+</div>

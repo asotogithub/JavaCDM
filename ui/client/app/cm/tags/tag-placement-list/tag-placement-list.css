@@ -1,0 +1,70 @@
+/*Site*/
+.tags-placement-grid > thead > tr > th:nth-child(3) {
+    width: 100px;
+    min-width: 100px;
+}
+
+/*Section*/
+.tags-placement-grid > thead > tr > th:nth-child(4) {
+    width: 200px;
+    min-width: 200px;
+}
+
+/*Size*/
+.tags-placement-grid > thead > tr > th:nth-child(5) {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+}
+
+/*Campaign*/
+.tags-placement-grid > thead > tr > th:nth-child(6) {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+/*Status*/
+.tags-placement-grid > thead > tr > th:nth-child(7) {
+    width: 90px;
+    min-width: 90px;
+    max-width: 110px;
+}
+
+/*Trafficking*/
+.tags-placement-grid > thead > tr > th:nth-child(8) {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+}
+
+.tag-placement-truncate-text-placement {
+    white-space: normal !important;
+    max-width: 250px !important;
+}
+
+.tag-placement-truncate-text-site {
+    white-space: normal !important;
+    max-width: 150px !important;
+}
+
+.tag-placement-truncate-text-section {
+    white-space: normal !important;
+    max-width: 100px !important;
+}
+
+#tagPlacementCounter label {
+    margin-top: 7px;
+    font-size: 13px;
+    margin-bottom: 1px;
+}
+
+.position-details .panel-primary {
+    top: 125px !important;
+}
+
+.position-details .modal-title {
+    word-wrap: break-word;
+    word-break: break-all;
+    width: 95%;
+}

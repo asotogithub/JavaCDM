@@ -1,0 +1,844 @@
+{
+    "appName": "Tru Advertiser",
+    "ADM_CONSTANTS": {
+        "NUMBER": {
+            "MAX": 292,
+            "MIN": 1
+        },
+        "CONTENT_CHANNELS": {
+            "DISPLAY": "Display",
+            "EMAIL": "Email",
+            "SITE": "Site"
+        },
+        "FAIL_THROUGH_DEFAULT_OPTION": {
+            "KEY_DEFAULT": "KeyDefault",
+            "COOKIE_DEFAULT": "CookieDefault"
+        },
+        "KEY_TYPE_OPTION": {
+            "URL_PATH": "urlPath",
+            "COOKIE": "cookie"
+        },
+        "METRICS": {
+            "DEFAULT": {
+                "START_DATE": "2001-01-01"
+            },
+            "START_INTERVAL": 0,
+            "INTERVAL": 5
+        }
+    },
+    "ACTIONS_IMPORT": {
+        "DUPLICATE": "DUPLICATE",
+        "DO_NOT_IMPORT": "DO_NOT_IMPORT"
+    },
+    "ATTRIBUTION_SETTINGS": {
+        "CLICK": {
+            "MIN": 1,
+            "MAX": 30,
+            "DEFAULT": 30
+        },
+        "VIEW": {
+            "MIN": 1,
+            "MAX": 30,
+            "DEFAULT": 7
+        }
+    },
+    "BOOTS_TRAP_GROWL": {
+        "DELAY": 4000
+    },
+    "CAMPAIGN": {
+        "BUDGET": {
+            "MAX": 2147483647,
+            "MIN": 0
+        },
+        "DATES": {
+            "DAYS": 90
+        },
+        "NAME": {
+            "MAX_LENGTH": 128
+        },
+        "STORAGE": {
+            "LIST_FILTER": "CAMPAIGN_LIST_FILTER"
+        }
+    },
+    "CHARTING": {
+        "DEFAULT_OPTIONS": {
+            "dateFormat": "{value:%Y-%m-%d}",
+            "navigation": {
+                "buttonOptions": {
+                    "align": "right",
+                    "x": -37
+                }
+            },
+            "tooltip": {
+                "shared": true,
+                "crosshairs": true,
+                "xDateFormat": "{value:%m-%d}",
+                "useHTML": true,
+                "formatter": ""
+            }
+        },
+        "STYLE": {
+            "PRIMARY_Y_STYLE": {
+                "color": "#0F5880"
+            },
+            "SECONDARY_Y_STYLE": {
+                "color": "#1C9AD6"
+            },
+            "DEFAULT_X_DATE_STYLE": {
+                "type": "datetime",
+                "labels": {
+                    "format": "{value:%m-%d}",
+                    "rotation": -45,
+                    "align": "left",
+                    "y": 35,
+                    "x": -20
+                }
+            }
+        },
+        "DEFAULT_ZOOM_TYPE": "xy",
+        "DATE_FORMAT": "{value:%m-%d}"
+    },
+    "COOKIE_CONTENT_TYPE": {
+        "STRING": 1,
+        "STRING_LIST": 2,
+        "NUMBER": 3,
+        "NUMBER_LIST": 4,
+        "NUMBER_RANGE": 5
+    },
+    "COOKIE_DOMAIN": {
+        "THIRD_PARTY_DOMAIN": "ad.adlegend.com"
+    },
+    "COST_DETAIL": {
+        "AD_SPEND": {
+            "DEFAULT": 0,
+            "DECIMAL_DIGITS": {
+                "MIN": 2,
+                "MAX": 12
+            }
+        },
+        "CURRENCY_ID": 1,
+        "INVENTORY": {
+            "DEFAULT": 1,
+            "MAX_LENGTH": 17,
+            "MAX_VALUE": 9007199254740992
+        },
+        "MARGIN": {
+            "MAX_VALUE": 100
+        },
+        "MAX_ROW_DISPLAY": 10,
+        "RATE": {
+            "DEFAULT": 0,
+            "DECIMAL_DIGITS": {
+                "MIN": 2,
+                "MAX": 14
+            }
+        },
+        "RATE_TYPE": {
+            "DEFAULT": "CPM",
+            "LIST": {
+                "CPM": {
+                    "KEY": "CPM",
+                    "NAME": "placement.rateTypeList.cpm",
+                    "VALUE": 4
+                },
+                "CPC": {
+                    "KEY": "CPC",
+                    "NAME": "placement.rateTypeList.cpc",
+                    "VALUE": 2
+                },
+                "CPA": {
+                    "KEY": "CPA",
+                    "NAME": "placement.rateTypeList.cpa",
+                    "VALUE": 1
+                },
+                "FLT": {
+                    "KEY": "FLT",
+                    "NAME": "placement.rateTypeList.flt",
+                    "VALUE": 5
+                },
+                "CPL": {
+                    "KEY": "CPL",
+                    "NAME": "placement.rateTypeList.cpl",
+                    "VALUE": 3
+                }
+            }
+        }
+    },
+    "CREATIVE": {
+        "FILE_TYPE": {
+            "GIF": "gif",
+            "HTML5": "html5",
+            "JPEG": "jpeg",
+            "JPG": "jpg",
+            "THIRD_PARTY": "3rd",
+            "TXT": "txt",
+            "VAST": "vast",
+            "VMAP": "vmap",
+            "XML": "xml",
+            "ZIP": "zip"
+        },
+        "STATUS_UPLOAD": {
+            "BAD_REQUEST": 400,
+            "DUPLICATE": 402,
+            "INTERNAL_ERROR": 500,
+            "SUCCESS": 201,
+            "UNKNOWN": 404,
+            "UNSUPPORTED_FORMAT": 1,
+            "EMPTY_FILE": 412
+        },
+        "VERSIONING_SUFFIX": "_v"
+    },
+    "CREATIVE_GROUP": {
+        "PRIORITY": {
+            "DISABLED": 0,
+            "MIN": 1,
+            "MAX": 15
+        },
+        "WEIGHT": {
+            "MIN": 0,
+            "MAX": 100
+        },
+        "FREQUENCY_CAP": {
+            "MIN": 1,
+            "MAX": 9999
+        },
+        "FREQUENCY_CAP_WINDOW": {
+            "MIN": 1,
+            "MAX": 999
+        },
+        "DAYPART_TARGETING": {
+            "CUSTOM": {
+                "DAYPART_OPTION_FILTER_TEMPLATE": "${day}, ${startTime} — ${endTime}",
+                "DAYPART_OPTION_REGEXP": "\\(\\[browserlocalday\\] = '(\\S+)' And \\[browserlocaltime\\] >= '(\\d+)' And \\[browserlocaltime\\] < '(\\d+)'\\)",
+                "DAYPART_OPTION_TEMPLATE": "([browserlocalday] = '${key}' And [browserlocaltime] >= '${startTime}' And [browserlocaltime] < '${endTime}')",
+                "DAYPART_OPTION_TIME_INPUT_FORMAT": "HHmm",
+                "DAYPART_OPTION_TIME_OUTPUT_FORMAT": "hh:mma"
+            },
+            "IAB_STANDARDS": {
+                "EARLY_MORNING": "browserlocalday in ('mon','tue','wed','thu','fri') AND (browserlocaltime >= 0600 AND browserlocaltime < 0800)",
+                "DAYTIME": "browserlocalday in ('mon','tue','wed','thu','fri') AND (browserlocaltime >= 0800 AND browserlocaltime < 1700)",
+                "EVENING": "browserlocalday in ('mon','tue','wed','thu','fri') AND (browserlocaltime >= 1700 AND browserlocaltime < 2300)",
+                "LATE_NIGHT": "browserlocalday in ('mon','tue','wed','thu','fri') AND (browserlocaltime >= 2300 AND browserlocaltime < 0600)",
+                "WEEKENDS": "browserlocalday in ('sat','sun')"
+            }
+        },
+        "DEFAULT_NAME": "Default",
+        "GEO_TARGETING_PAGE_SIZE": 10,
+        "GET_BY_NAME_AND_CAMPAIGN_ID": "name contains \"_name\" and campaignId = _campaignId sorting name asc",
+        "MAX_SEARCH_ELEMENTS": 1000
+    },
+    "CREATIVE_LIST": {
+        "PAGE_SIZE": 50
+    },
+    "CURRENCY_DEFAULT": "$0.00",
+    "DATE": {
+        "JQX": {
+            "DATE_TIME_US": "MM/dd/yyyy hh:mm:ss tt"
+        },
+        "MOMENT": {
+            "DATE_TIME": "MM/DD/YYYY HH:mm:ss",
+            "DATE_TIME_US": "MM/DD/YYYY hh:mm:ss A",
+            "DATE": "MM/DD/YYYY",
+            "DATE_FULL": "YYYY-MM-DDTHH:mm:ssZ",
+            "DATE_DAY_TIME_FULL": "llll Z z"
+        },
+        "DATE_FORMAT": "MM/dd/yyyy h:mma",
+        "ISO_8601_SIMPLE": "YYYY-MM-DD"
+    },
+    "DATE_FORMAT": "MM/dd/yyyy",
+    "DATE_PICKER": {
+        "DATE_OPTIONS": {
+            "FORMAT_YEAR": "yy"
+        }
+    },
+    "DB_DATA_TYPE_LIMITS": {
+        "INT": {
+            "MAX": 2147483647,
+            "MIN": -2147483648
+        }
+    },
+    "DIALOG": {
+        "BUTTON_SET": {
+            "OK": 1,
+            "OK_CANCEL": 2,
+            "YES_NO": 3,
+            "DISCARD_CANCEL": 4,
+            "CANCEL_DELETE": 5,
+            "REMOVE_NO": 6,
+            "KEEP_DISCARD": 7
+        },
+        "SIZE": {
+            "MEDIUM": "md",
+            "LARGE": "lg",
+            "EXTRA_LARGE": "xl"
+        },
+        "SPECIFIC_TYPE": {
+            "DISCARD_CHANGES": 1,
+            "CONFIRM_CHANGES": 2,
+            "ERROR_UPDATE": 3
+        },
+        "TYPE": {
+            "INFORMATIONAL": 1,
+            "WARNING": 2,
+            "ERROR": 3,
+            "CONFIRMATION": 4,
+            "CUSTOM": 5
+        }
+    },
+    "DONT_SHOW_AGAIN_IDS": {
+        "TRAFFICKING": {
+            "PENDING_CHANGES": "trafficking_pending_changes"
+        }
+    },
+    "FLY_OUT": {
+        "STATE": {
+            "FULL_VIEW": {
+                "ID": "full-view"
+            },
+            "HALF_VIEW": {
+                "ID": "half-view"
+            },
+            "HIDDEN": {
+                "ID": "hidden"
+            }
+        }
+    },
+    "GROWL": {
+        "TTL": 5000,
+        "POSITION": "top-center"
+    },
+    "HTTP_STATUS": {
+        "OK": 200,
+        "CREATED": 201,
+        "BAD_REQUEST": 400,
+        "CONFLICT": 409
+    },
+    "INPUT": {
+        "MAX_LENGTH": {
+            "GROUP_NAME": 128,
+            "PLACEMENT_NAME": 256,
+            "MEDIA_PACKAGE": 100,
+            "TRACKING_TAG_NAME": 25,
+            "OPT_OUT_URL": 653,
+            "TRACKING_TAG_HTML_CONTENT": 1000
+        }
+    },
+    "INPUT_MASK": {
+        "DATES": {
+            "ALIAS": "mm/dd/yyyy",
+            "PLACEHOLDER": "MM/DD/YYYY"
+        }
+    },
+    "INPUT_MAX_LENGTH": 256,
+    "INSERTION_ORDER": {
+        "FILE_TYPE": {
+            "XLSX": "xlsx",
+            "MEDIA_INSERTION": "Media"
+        },
+        "NAME": {
+            "MAX_LENGTH": 128
+        },
+        "NOTES": {
+            "MAX_LENGTH": 2000
+        },
+        "INPUT_MAX_LENGTH_NOTES": 2000,
+        "IMPORT": {
+            "MAX_ROWS": 1000,
+            "TEMPLATE_URL": "templates/Media_Import_Template.xlsx",
+            "ISSUE_TYPE" : {
+                "ERROR": "ERROR",
+                "WARNING": "WARNING"
+            }
+        },
+        "STATUS_UPLOAD": {
+            "EXCEED_FILE_OPTION": 10,
+            "LIMIT_SIZE": 62914560
+        }
+    },
+    "KPI": {
+        "ICONS": {
+            "TOTAL": "fa-cubes",
+            "ACTIVE": "fa-cube",
+            "SPEND": "fa-usd"
+        }
+    },
+    "NUMERIC_DEFAULT": "0",
+    "PACKAGE": {
+        "PLACEMENT_ASSOCIATED_REMOVE_WARNING_DIALOG_ID": "PACKAGE_ASSOCIATION_REMOVE",
+        "PLACEMENT_ASSOCIATION_ADD_WARNING_DIALOG_ID": "PACKAGE_ASSOCIATION_ADD"
+    },
+    "PERMISSION": {
+        "ADM": {
+            "LIST": "VIEW_ADM_DATASET_CONFIG_LIST",
+            "CONFIG": "VIEW_ADM_DATASET_CONFIG",
+            "UPDATE": "UPDATE_ADM_DATASET_CONFIG"
+        },
+        "CAMPAIGN": {
+            "ADD": "CREATE_NEW_CAMPAIGN"
+        },
+        "MEDIA": {
+            "EXPORT_MEDIA": "EXPORT_MEDIA",
+            "EXPORT_MEDIA_ISSUES": "EXPORT_MEDIA_ISSUES",
+            "IMPORT_MEDIA": "IMPORT_MEDIA"
+        },
+        "SCHEDULE": {
+            "CREATE_CREATIVE_INSERTION": "CREATE_CREATIVE_INSERTION",
+            "EXPORT_CREATIVE_INSERTIONS": "EXPORT_CREATIVE_INSERTIONS",
+            "IMPORT_CREATIVE_INSERTIONS": "IMPORT_CREATIVE_INSERTIONS",
+            "UPDATE_BULK_CREATIVE_INSERTION": "UPDATE_BULK_CREATIVE_INSERTION"
+        },
+        "SITE_MEASUREMENT": {
+            "CREATE_SITE_MEASUREMENT": "CREATE_SITE_MEASUREMENT",
+            "DETAILS": "VIEW_SITE_MEASUREMENT_PING_EVENT_LIST",
+            "LIST": "VIEW_SITE_MEASUREMENT_LIST"
+        },
+        "TAGS" : {
+            "DETAILS": "VIEW_AD_TAG_DETAILS",
+            "LIST": "VIEW_AD_TAGS_LIST"
+        },
+        "TAG_INJECTION": {
+            "LIST": "VIEW_HTML_INJECTION_TAG_LIST"
+        }
+    },
+    "PLACEMENT": {
+        "COST_DETAIL": {
+            "REMOVING": {
+                "FIRST": 0,
+                "LAST": -10
+            }
+        },
+        "DATES": {
+            "DAYS": 30
+        },
+        "PLACEMENT_LIST_FILTER_OPTION": {
+            "ALL": "all",
+            "PACKAGES": "packages",
+            "NO_PACKAGES": "noPackages"
+        },
+        "PROPERTIES": {
+            "PUBLISHER_INPUT_MAX_LENGTH": 200,
+            "SECTION_INPUT_MAX_LENGTH": 200,
+            "SITE_INPUT_MAX_LENGTH": 256
+        },
+        "SCHEDULED": {
+            "YES": "Y",
+            "NO": "N"
+        },
+        "UTC_OFFSET": 0
+    },
+    "PROMISE": {
+        "STATUS": {
+            "PENDING": 0,
+            "RESOLVED": 1,
+            "REJECTED": 2
+        }
+    },
+    "QUERY": {
+        "CREATIVE": {
+            "GET_ALL_BY_CAMPAIGN_EXCEPT": "campaignId=:campaignId and id not in [:creativeIds]"
+        }
+    },
+    "RADIAL_PROGRESS": {
+        "OPTIONS": {
+            "max": 100,
+            "current": 0,
+            "bgColor": "#eaeaea",
+            "radius": 80,
+            "isSemi": false,
+            "rounded": false,
+            "stroke": 20,
+            "clockwise": true,
+            "responsive": false,
+            "duration": 800,
+            "currentAnimation": "easeOutCubic",
+            "offset": 0,
+            "animationDelay": 0,
+            "preciseCurrent": 0
+        },
+        "STYLE": {
+            "top": "48%",
+            "bottom": "auto",
+            "left": "50%",
+            "transform": "translateY(-50%) translateX(-50%)",
+            "-moz-transform": "translateY(-50%) translateX(-50%)",
+            "-webkit-transform": "translateY(-50%) translateX(-50%)",
+            "font-size": "36px",
+            "font-family": "Arial Black",
+            "height": "50px",
+            "background-image": "none",
+            "background-color": "transparent",
+            "color": "#3B6C00",
+            "border": "0px"
+        }
+    },
+    "REGEX": {
+        "ALPHANUMERIC": "^[a-zA-Z 0-9]+$",
+        "ASCII_PRINTABLE": "^[\\x20-\\x7F]+$",
+        "CREATIVE_GROUP_NAME": "[\\w- \\.~\\/?%&=\\'\\!\\(\\)\\+\\-\\*\\$\\#\\@\\:\\;\\^\\{\\}\\<\\>\\,\\]\\[]+$",
+        "EMAIL": "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+){0,2}(\\.[a-z]{2,3})$",
+        "NUMERIC": "^[\\d]+$",
+        "OPT_OUT_URL": "^(https?|ftp|file):\/\/[-a-zA-Z0-9&@#\/%?=~_|!:,.;]*[-a-zA-Z0-9&@#\/%=~_|]",
+        "URL": "^(?:(?:https?|ftp):\/\/)(?:[^,\\f\\n\\r\\t\\v\\u00a0\\u1680\\u180e\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]+(?::[^,\\f\\n\\r\\t\\v\\u00a0\\u1680\\u180e\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]*)?@)?(?:(?!(?:10|127)(?:\\.\\d{1,3}){3})(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:[a-z\\u00a1-\\uffff0-9!@#$%^&*=+{}\\[\\]|?~_;:-]+)(?:\\.[a-z\\u00a1-\\uffff0-9!@#$%^&*=+{}\\[\\]|?~_;:-]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))\\.?)(?::\\d{2,5})?(?:[/?#][^,\\f\\n\\r\\t\\v\\u00a0\\u1680\\u180e\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]*)?$",
+        "CONTENT_HTML": "(?:<(\\w+)(?:(?:\\s+\\w+(?:\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)>)|(<\/\\w+>)|(<\\w+\/>)",
+        "PLACEMENT_SECTION_SITE_NAME": "[\\w\\.~\\/?%&=\\'\\!\\+\\-\\<\\>\\(\\)\\*\\$\\#\\@\\:\\;\\^\\{\\}\\,\\[\\] ]+$",
+        "PUBLISHER_NAME": "^[\\w\\-\\'\\,\\/\\&\\!\\.\\(\\) ]+$",
+        "WORD": "[\\w]+$"
+    },
+    "RESOLUTION": {
+        "FHD": {
+            "WIDTH": 1920,
+            "HEIGHT": 1080
+        },
+        "WXGA_PLUS": {
+            "WIDTH": 1440,
+            "HEIGHT": 900
+        }
+    },
+    "SCHEDULE": {
+        "FILE_TYPE": {
+            "XLSX": "xlsx",
+            "CREATIVE_INSERTION": "CreativeInsertion"
+        },
+        "FILTER_FLYOUT_VIEW": {
+            "KEY": {
+                "SITE": "siteId",
+                "PLACEMENT": "placementId",
+                "CREATIVE_GROUP": "creativeGroupId",
+                "CREATIVE": "creativeId"
+            }
+        },
+        "ICONS": {
+            "CREATIVE": "fa-camera",
+            "CREATIVE_GROUP": "fa-users",
+            "PLACEMENT": "fa-hand-paper-o",
+            "SITE": "fa-newspaper-o"
+        },
+        "LEVEL": {
+            "SITE": {
+                "KEY": "site",
+                "NAME": "global.site",
+                "VALUE": 0,
+                "PERMISSION": "VIEW_SITE_PIVOT",
+                "CHILDREN_SEQUENCE": [
+                    {
+                        "LEVEL": "section",
+                        "SEQUENCE": 0
+                    },
+                    {
+                        "LEVEL": "placement",
+                        "SEQUENCE": 1
+                    },
+                    {
+                        "LEVEL": "group",
+                        "SEQUENCE": 2
+                    },
+                    {
+                        "LEVEL": "schedule",
+                        "SEQUENCE": 3
+                    }
+                ]
+            },
+            "SECTION": {
+                "KEY": "section",
+                "NAME": "global.section",
+                "VALUE": 1,
+                "PERMISSION": "VIEW_SECTION_PIVOT"
+            },
+            "PLACEMENT": {
+                "KEY": "placement",
+                "NAME": "global.placement",
+                "VALUE": 2,
+                "PERMISSION": "VIEW_PLACEMENT_PIVOT",
+                "CHILDREN_SEQUENCE": [
+                    {
+                        "LEVEL": "group",
+                        "SEQUENCE": 0
+                    },
+                    {
+                        "LEVEL": "schedule",
+                        "SEQUENCE": 1
+                    }
+                ]
+            },
+            "CREATIVE_GROUP": {
+                "KEY": "group",
+                "NAME": "global.group",
+                "VALUE": 3,
+                "PERMISSION": "VIEW_GROUP_PIVOT",
+                "CHILDREN_SEQUENCE": [
+                    {
+                        "LEVEL": "site",
+                        "SEQUENCE": 0
+                    },
+                    {
+                        "LEVEL": "placement",
+                        "SEQUENCE": 1
+                    },
+                    {
+                        "LEVEL": "schedule",
+                        "SEQUENCE": 2
+                    }
+                ]
+            },
+            "CREATIVE": {
+                "KEY": "creative",
+                "NAME": "creative.creative",
+                "VALUE": 4,
+                "PERMISSION": "VIEW_CREATIVE_PIVOT",
+                "CHILDREN_SEQUENCE": [
+                    {
+                        "LEVEL": "site",
+                        "SEQUENCE": 0
+                    },
+                    {
+                        "LEVEL": "placement",
+                        "SEQUENCE": 1
+                    },
+                    {
+                        "LEVEL": "group",
+                        "SEQUENCE": 2
+                    },
+                    {
+                        "LEVEL": "schedule",
+                        "SEQUENCE": 3
+                    }
+                ]
+            },
+            "SCHEDULE": {
+                "KEY": "schedule",
+                "NAME": "creative.creative",
+                "VALUE": 5,
+                "PERMISSION": "VIEW_SCHEDULE_PIVOT"
+            }
+        },
+        "STATUS_UPLOAD": {
+            "EXCEED_FILE_OPTION": 10,
+            "LIMIT_SIZE": 62914560
+        },
+        "WEIGHT": {
+            "MAX": 10000,
+            "MIN": 0,
+            "DEFAULT": 100
+        }
+    },
+    "SEARCH_INPUT_SIZE": 50,
+    "SITE_MEASUREMENT": {
+        "ASSOCIATION": {
+            "PAGE_SIZE": 10
+        },
+        "CREATE_EVENT_WARNING_DIALOG_ID": "CREATE_EVENT",
+        "EVENT_TYPE": {
+            "STANDARD": 0,
+            "TRU_TAG": 1
+        },
+        "INPUT": {
+            "MAX_LENGTH": {
+                "CAMPAIGN_NAME": 128,
+                "CAMPAIGN_DESCRIPTION": 200,
+                "EVENT_NAME": 20,
+                "EVENT_DESCRIPTION": 256,
+                "GROUP_NAME": 20
+            }
+        },
+        "MAX_LENGTH": 200,
+        "NAME_STATE": {
+            "EMPTY": 0,
+            "DUPLICATED": 1,
+            "INVALID": 2,
+            "VALID": 3
+        },
+        "NAME_TRUNCATE_LENGTH": 40,
+        "PAGE_SIZE": 50,
+        "PING_CARD": {
+            "MAX_LENGTH": {
+                "CONTENT": 4000,
+                "DESCRIPTION": 1024,
+                "SITE_NAME": 40
+            },
+            "MIN_LENGTH": {
+                "CONTENT": 4000,
+                "DESCRIPTION": 1024,
+                "SITE_NAME": 15
+            },
+            "TAG_IMG": 0,
+            "TAG_IFRAME": 1,
+            "TAG_TAG": 2,
+            "TAG_TYPE_BROADCAST_LIST": [
+                {
+                    "KEY": 0,
+                    "NAME": "global.img"
+                },
+                {
+                    "KEY": 1,
+                    "NAME": "global.iframe"
+                },
+                {
+                    "KEY": 2,
+                    "NAME": "global.tag"
+                }
+            ],
+            "TAG_TYPE_SELECTIVE_LIST": [
+                {
+                    "KEY": 0,
+                    "NAME": "global.img"
+                }
+            ],
+            "TYPE": [
+                {
+                    "KEY": 1,
+                    "NAME": "global.broadcast"
+                },
+                {
+                    "KEY": 2,
+                    "NAME": "global.selective"
+                }
+            ],
+            "TYPE_BROADCAST": 1,
+            "TYPE_SELECTIVE": 2
+        },
+        "SM_EVENT_TYPE": {
+            "OTHER": 0,
+            "CONVERSION": 1,
+            "CONVERSION_REVENUE": 2,
+            "MEASURED": 3
+        },
+        "STATES": {
+            "UNKNOWN": 0,
+            "NEW": 1,
+            "UPDATED": 2,
+            "TRAFFICKED": 3,
+            "COMP": 4,
+            "TRAFFICKING": 5
+        }
+    },
+    "STATUS": {
+        "ACCEPTED": "Accepted",
+        "REJECTED": "Rejected"
+    },
+    "TAG_INJECTION": {
+        "ASSOCIATION": {
+            "LIMIT_STRING_VIEW": 8
+        },
+        "MACROS": {
+            "CAID": {
+                "KEY": "@@CAID@@",
+                "DESCRIPTION": "The Trueffect campaign ID. This is the ID of the campaign of the Trueffect ad-tag in which your tag is injected into.",
+                "TOOLTIP": "Campaign ID: The ID of the Campaign that owns the requested Placement ID."
+            },
+            "PLID": {
+                "KEY": "@@PLID@@",
+                "DESCRIPTION": "The Trueffect placement ID. This is the ID of the placement, and the first and fifth number set in the ‘spacedesc’ portion of the Trueffect ad-tag in which your tag is injected into. Placement IDs are unique identifiers for tags.",
+                "TOOLTIP": "Placement ID: Derived from the spacedesc in the tag."
+            },
+            "SIID": {
+                "KEY": "@@SIID@@",
+                "DESCRIPTION": "The Trueffect site ID. This is the ID of the site, and the second number set in the ‘spacedesc’ portion of the Trueffect ad-tag in which your tag is injected into. Your Site ID is unique to your agency set-up with Trueffect.",
+                "TOOLTIP": "Site ID: The ID of the Site that is associated to the requested Placement ID."
+            },
+            "SEID": {
+                "KEY": "@@SEID@@",
+                "DESCRIPTION": "The Trueffect section ID. This is the ID of the section, and the fourth number set in the ‘spacedesc’ portion of the Trueffect ad-tag in which your tag is injected into. Your Site ID is unique to your agency set-up with Trueffect.",
+                "TOOLTIP": "Section ID: The ID of the Section that is associated to the requested Placement ID."
+            },
+            "SIZE": {
+                "KEY": "@@SIZE@@",
+                "DESCRIPTION": "Size. The size of the placement in which your tag is injected into.",
+                "TOOLTIP": "Alias for \"@@WIDTH@@x@@HEIGHT@@\""
+            },
+            "ML_DOMAIN": {
+                "KEY": "@@ML_DOMAIN@@",
+                "DESCRIPTION": "Domain. The domain of the campaign in which your Trueffect ad-tag is trafficked under.",
+                "TOOLTIP": ""
+            },
+            "PREFID": {
+                "KEY": "@@PREFID@@",
+                "DESCRIPTION": "PrefID of the end user. PrefID, or ‘browser id’ is a cookie that is dropped within the end user’s cookie jar under the domain of which the ad is served under. It is a unique identifier of the end user in order to associate conversions.",
+                "TOOLTIP": ""
+            },
+            "TXNID": {
+                "KEY": "@@TXNID@@",
+                "DESCRIPTION": "Transaction GUID from Ad-server. This is the unique identifier of the transaction upon the Trueffect ad-tag being served.",
+                "TOOLTIP": "Transaction ID: Unique GUID that is appended to every transaction that goes through the ad server."
+            },
+            "spacedesc": {
+                "KEY": "@@spacedesc@@",
+                "DESCRIPTION": "Space description. The Space description, or ‘spacedesc’ is a group of 5 number sets within each Trueffect tag. On an Ad Tag, the spacedesc consists of this number sequence: ‘PlacementID_SiteID_Size_SectionID_PlacementID’",
+                "TOOLTIP": "Space Descriptor: The mapping that is used by the ad server to connect a request to the right placement for targeting and ad selection. @@PLID@@@@SIID@@@@SIZE@@@@SEID@@@@PLID@@"
+            },
+            "CRID": {
+                "KEY": "@@CRID@@",
+                "DESCRIPTION": "Creative Id. This is the ID unique to your campaign of the creative uploaded.",
+                "TOOLTIP": "Creative ID: The ID of the Creative that was selected to serve on this transaction."
+            },
+            "CR_GRP_ID": {
+                "KEY": "@@CR_GRP_ID@@",
+                "DESCRIPTION": "Creative Group Id. This is the ID unique to your campaign of the creative group created.",
+                "TOOLTIP": "Creative Group ID: The ID of the Creative Group that was selected to serve a Creative on this transaction."
+            },
+            "USEC": {
+                "KEY": "@@USEC@@",
+                "DESCRIPTION": "Cachebuster. This is a randomly generated number used as a Cachebuster for your tag injected.",
+                "TOOLTIP": "USEC: This represents the milliseconds component of the current timestamp and is often used as a random number."
+            }
+        }
+    },
+    "TAGS": {
+        "SEND_AD_TAGS": {
+            "EMAIL_CLIENT": "clientservices@trueffect.com",
+            "FORMAT_TYPE": {
+                "XLSX_1X1": "1x1_XLSX",
+                "LIST": {
+                    "TXT": {
+                        "KEY": "TXT",
+                        "NAME": "TXT (Standard)",
+                        "VALUE": 1
+                    },
+                    "XLSX": {
+                        "KEY": "XLSX",
+                        "NAME": "Excel",
+                        "VALUE": 2
+                    },
+                    "HTML": {
+                        "KEY": "HTML",
+                        "NAME": "HTML",
+                        "VALUE": 3
+                    },
+                    "PDF": {
+                        "KEY": "PDF",
+                        "NAME": "PDF",
+                        "VALUE": 4
+                    }
+                }
+            },
+            "PAGE_SIZE": 10,
+            "PLACEMENT_SIZE_NAME_1X1": "1x1"
+        },
+        "STORAGE": {
+            "LIST_FILTER": "TAGS_LIST_FILTER",
+            "LIST_FILTER_PARENTS": "TAGS_LIST_FILTER_PARENTS"
+        },
+        "PAGE_SIZE": 50
+    },
+    "TE_TABLE": {
+        "PAGE_SIZE": 10,
+        "SELECTION_MODE": {
+            "MULTI": "MULTI",
+            "NONE": "NONE",
+            "SINGLE": "SINGLE",
+            "SINGLE_CHECKBOX": "SINGLE_CHECKBOX"
+        }
+    },
+    "TE_TREE_GRID": {
+        "PAGE_SIZE": {
+            "SMALL": 30,
+            "MEDIUM": 50
+        },
+        "SEARCH_INTERVAL": 1000,
+        "SEARCH_MIN_LENGTH": 1
+    },
+    "TIMEZONE": {
+        "DEFAULT": "MST",
+        "UTC": "UTC",
+        "MST": "-0700"
+    }
+}

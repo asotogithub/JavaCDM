@@ -1,0 +1,66 @@
+<div class="associate-placements">
+    <div class="form-group back-button">
+        <a id="listOfPlacementsBtn" class="btn btn-default margin-bottom10" data-ng-click="vmAssoc.cancel()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i> {{'package.packageDetails' | translate}}
+        </a>
+    </div>
+    <h3>Associate Placements to {{vmAssoc.package.name}}</h3>
+    <form name="vmAssoc.formWizard" form-wizard="" steps="2" novalidate="" data-cg-busy="vmAssoc.promise">
+        <h4>{{'package.followSteps' | translate}}</h4>
+        <div class="form-wizard wizard-horizontal">
+            <!-- START wizard steps indicator-->
+            <ol class="row">
+                <li data-ng-class="{'active':wizard.active(1)}" class="col-md-3">
+                    <h4>{{'placement.addPlacements' | translate}}</h4>
+                    <small class="text-muted">{{'package.createNewOrSelectFromExisting' | translate}}</small>
+                </li>
+                <li data-ng-class="{'active':wizard.active(2)}" class="col-md-3">
+                    <h4>{{'package.packageAssociation' | translate}}</h4>
+                    <small class="text-muted">{{'package.associateToPackage' | translate}}</small>
+                </li>
+            </ol>
+            <!-- END wizard steps indicator-->
+            <!-- START Wizard Step inputs -->
+            <div data-ng-show="wizard.active(1)">
+                <div data-ng-include="'app/cm/campaigns/io-tab/package-tab/associate-placements/add-placement/add-placement.html'"></div>
+                <div>
+                    <div class="pull-right content-button">
+                        <a class="btn btn-default" data-ng-click="vmAssoc.cancel()">
+                            {{'global.close' | translate}}
+                        </a>
+                        <a class="btn btn-primary" href=""
+                           data-ng-click="vmAssoc.activateStep(vmAssoc.STEP.PACKAGE_ASSOCIATION); wizard.go(2);">
+                            {{'global.next' | translate}} <span>&rarr;</span></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <!-- END Wizard Step inputs -->
+            <!-- START Wizard Step inputs -->
+            <div data-ng-show="wizard.active(2)">
+                <div data-ng-if="vmAssoc.option == vmAssoc.OPTION.CREATE_NEW"
+                     data-ng-include="'app/cm/campaigns/io-tab/package-tab/associate-placements/create-placements/create-placements.html'"></div>
+                <div data-ng-if="vmAssoc.option == vmAssoc.OPTION.SELECT_EXISTING"
+                     data-ng-include="'app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/package-association.html'"></div>
+                <div>
+                    <div class="pull-left">
+                        <a class="btn btn-default" href="" data-ng-click="wizard.go(1)">
+                            <span>&larr;</span> {{'global.previous' | translate}}
+                        </a>
+                    </div>
+                    <div class="pull-right content-button">
+                        <a class="btn btn-default" data-ng-click="vmAssoc.cancel()">
+                            {{'global.close' | translate}}
+                        </a>
+                        <a class="btn btn-primary" a-disabled="!vmAssoc.STEP.PACKAGE_ASSOCIATION.isValid" href=""
+                           data-ng-click="vmAssoc.save()">
+                            {{'global.save' | translate}}
+                        </a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <!-- END Wizard Step inputs -->
+        </div>
+    </form>
+</div>

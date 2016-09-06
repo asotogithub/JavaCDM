@@ -1,0 +1,32 @@
+<h3>
+    {{vm.model.siteMeasurement.name | limitTo: vm.nameTruncateLength}}
+    {{vm.model.siteMeasurement.name.length > vm.nameTruncateLength ? '&hellip;' : ''}}
+</h3>
+<a id="listOfCampaignsBtn" class="btn btn-default margin-bottom20" data-ui-sref="site-measurements" data-ui-sref-opts="{reload:true}">
+    {{'campaigns.listOfCampaigns' | translate}}
+</a>
+<ul class="nav nav-tabs">
+    <li id="smSummaryTab" data-ui-sref-active="active">
+        <a data-ui-sref="sm-details">
+            {{'global.summary' | translate}}
+        </a>
+    </li>
+    <li id="smEventsTab" data-ui-sref-active="active">
+        <a data-ui-sref="sm-events">
+            {{'global.eventsPings' | translate}}
+        </a>
+    </li>
+    <li id="smCampaignAssociationsTab" data-ui-sref-active="active">
+        <a data-ui-sref="sm-campaign-associations">
+            {{'global.associations' | translate}}
+        </a>
+    </li>
+    <li id="smAttributionSettingsTab" data-ui-sref-active="active">
+        <a data-ui-sref="sm-attribution-settings">
+            {{'siteMeasurement.attributionSettings' | translate}}
+        </a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" role="tabpanel" data-ui-view></div>
+</div>

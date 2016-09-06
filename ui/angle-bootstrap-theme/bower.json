@@ -1,0 +1,10 @@
+{
+  "name": "angle-bootstrap-theme",
+  "version": "0.0.1",
+  "main": [
+    "dist/css/bootstrap-theme.css",
+    "dist/css/app.css",
+    "dist/css/angle-theme.css"
+  ],
+  "private": true
+}

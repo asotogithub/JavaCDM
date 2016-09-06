@@ -1,0 +1,12 @@
+'use strict';
+
+angular.module('uiApp')
+    .constant('API_HOST', '<%= API_HOST %>')
+    .constant('PUBLIC_CONTEXT', '<%= PUBLIC_CONTEXT %>')
+    .constant('OAUTH_CONTEXT', '<%= OAUTH_CONTEXT %>')
+    .constant('API_VERSION', '<%= API_VERSION %>')
+    .constant('MEASUREMENT_URL', '<%= MEASUREMENT_URL %>');
+
+angular.module('logDecorator')
+    .constant('LOGGLY_LEVEL', '<%= LOGGLY_LEVEL %>')
+    .constant('DEPLOY_ENV', '<%= DEPLOY_ENV %>');

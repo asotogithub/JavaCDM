@@ -1,0 +1,62 @@
+<div data-ng-controller="EventNameController as vmAddEventName">
+    <fieldset>
+        <legend>{{'global.nameType' | translate}}</legend>
+        <div class="col-md-12 event-fields-container">
+            <div class="col-md-4 event-name-container"
+                 data-ng-class="{'has-error': (vmAddEvent.formWizard.eventName.$invalid && vmAddEventName.event.name !== '') || vmAddEventName.eventNameState === vmAddEventName.EVENT_NAME_STATE.DUPLICATED}">
+                {{'global.eventName' | translate}}
+                <input id="eventName"
+                       name="eventName"
+                       class="form-control"
+                       type="text"
+                       data-ng-blur="vmAddEventName.checkValidEventName($event, vmAddEvent.formWizard.eventName.$error.pattern)"
+                       data-ng-model="vmAddEventName.event.name"
+                       data-ng-pattern="vmAddEventName.namePattern"
+                       maxlength="{{vmAddEventName.maxLength.name}}"
+                       autocomplete="off"
+                       required/>
+                <p id="eventNameError" class="help-block"
+                   data-ng-if="vmAddEventName.eventNameState === vmAddEventName.EVENT_NAME_STATE.DUPLICATED">
+                    {{'siteMeasurement.eventsPings.duplicatedEventNameFound' | translate}}
+                </p>
+                <p id="eventNamePattern" class="help-block"
+                   data-ng-if="vmAddEvent.formWizard.eventName.$error.pattern">
+                    {{'validation.error.invalid' | translate}}
+                </p>
+            </div>
+            <div class="col-md-2">
+                {{'global.eventType' | translate}}
+                <select id="eventType"
+                        class="form-control"
+                        data-ng-model="vmAddEventName.event.type"
+                        data-ng-change="vmAddEventName.checkValidInputType()"
+                        data-ng-options="eventType.name | translate for eventType in vmAddEventName.eventTypeList track by eventType.key"
+                        required>
+                    <option value="" disabled selected hidden>{{'global.select' | translate}}</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                {{'global.tagType' | translate}}
+                <select id="eventTagType"
+                        class="form-control"
+                        data-ng-model="vmAddEventName.event.tagType"
+                        data-ng-change="vmAddEventName.checkValidInputType()"
+                        data-ng-options="eventTagType.name | translate for eventTagType in vmAddEventName.eventTagTypeList track by eventTagType.key"
+                        required>
+                    <option value="" disabled selected hidden>{{'global.select' | translate}}</option>
+                </select>
+            </div>
+            <div class="col-md-4 event-description-container">
+                {{'global.description' | translate}}
+                <input id="eventDescription"
+                       name="eventDescription"
+                       class="form-control"
+                       type="text"
+                       data-ng-blur="vmAddEventName.setDescription()"
+                       data-ng-model="vmAddEventName.event.description"
+                       maxlength="{{vmAddEventName.maxLength.description}}"
+                       autocomplete="off"/>
+            </div>
+        </div>
+    </fieldset>
+</div>

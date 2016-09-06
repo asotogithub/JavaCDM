@@ -1,0 +1,59 @@
+<div class="aside-inner" data-ng-controller="SidebarController as vmSidebar">
+    <nav sidebar="" sidebar-anyclick-close="" class="sidebar">
+        <ul class="nav">
+            <li data-ui-sref-active="active" ng-click="vmSidebar.toggleMediaItem()">
+                <a title="{{'global.media' | translate}}">
+                    <em data-ng-if="app.layout.isCollapsed" class="fa fa-folder-o collapsed-media"></em>
+                    <em data-ng-if="!app.layout.isCollapsed && vmSidebar.sidebarMenu.isCollapsed" class="fa fa-folder-o"></em>
+                    <em data-ng-if="!app.layout.isCollapsed && !vmSidebar.sidebarMenu.isCollapsed" class="fa fa-folder-open-o"></em>
+                    <span>{{'global.media' | translate}}</span>
+                </a>
+                <ul class="nav sidebar-subnav sidebarSubElementMargin" uib-collapse="vmSidebar.sidebarMenu.isCollapsed">
+                    <li data-ng-class="vmSidebar.getMenuItemPropClasses(vmSidebar.menu.MEDIA.CAMPAIGNS)">
+                        <a data-ui-sref="campaigns" data-ui-sref-opts="{reload:true}"
+                           ng-click="$event.stopPropagation()" title="{{'nav.campaigns' | translate}}">
+                            <em class="fa fa-sitemap fa-rotate-270"></em>
+                            <span>{{'nav.campaigns' | translate}}</span>
+                        </a>
+                    </li>
+                    <li data-ng-class="vmSidebar.getMenuItemPropClasses(vmSidebar.menu.MEDIA.TAG_INJECTION)"
+                        data-ng-if="mainVm.hasPermission(mainVm.PERMISSION.TAG_INJECTION.LIST)">
+                        <a data-ui-sref="tag-injection" data-ui-sref-opts="{reload:true}"
+                           ng-click="$event.stopPropagation()" title="{{'global.tagInjection' | translate}}">
+                            <em class="fa fa-eyedropper"></em>
+                            <span>{{'global.tagInjection' | translate}}</span>
+                        </a>
+                    </li>
+                    <li data-ng-class="vmSidebar.getMenuItemPropClasses(vmSidebar.menu.MEDIA.TAGS)"
+                        data-ng-if="mainVm.hasPermission(mainVm.PERMISSION.TAGS.LIST)">
+                        <a data-ui-sref="tags" data-ui-sref-opts="{reload:true}"
+                           ng-click="$event.stopPropagation()" title="{{'global.tags' | translate}}">
+                            <em class="fa fa-tags"></em>
+                            <span>{{'global.tags' | translate}}</span>
+                        </a>
+                    </li>
+                    <li data-ng-class="vmSidebar.getMenuItemPropClasses(vmSidebar.menu.MEDIA.SITE_MEASUREMENT)"
+                        data-ng-if="mainVm.hasPermission(mainVm.PERMISSION.SITE_MEASUREMENT.LIST)" >
+                        <a data-ui-sref="site-measurements" data-ui-sref-opts="{reload:true}"
+                           ng-click="$event.stopPropagation()" title="{{'nav.siteMeasurement' | translate}}">
+                            <em class="fa fa-pie-chart"></em>
+                            <span>{{'nav.siteMeasurement' | translate}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="{{mainVm.MEASUREMENT_URL}}" target="_blank" title="{{'nav.reporting' | translate}}">
+                    <em class="fa fa-bar-chart"></em>
+                    <span>{{'nav.reporting' | translate}}</span>
+                </a>
+            </li>
+            <li data-ng-if="mainVm.hasPermission(mainVm.PERMISSION.ADM.LIST)" data-ui-sref-active="active">
+                <a data-ui-sref="adm" data-ui-sref-opts="{reload:true}" title="{{'global.adm' | translate}}">
+                    <em class="fa fa-file-o"></em>
+                    <span>{{'global.adm' | translate}}</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

@@ -1,0 +1,59 @@
+<script type="text/ng-template" id="individualRecipientsHeader.html">
+    {{'tags.sendAdTags.individualRecipients' | translate}}  <i data-toggle="tooltip" title="{{'tags.sendAdTags.individualRecipientsToolTip' | translate}}" class="fa fa-question-circle"></i>
+</script>
+
+<div class="col-md-12">
+    <te-table id="adTagsSiteGrid"
+              data-model="vmSendAdTags.siteList"
+              data-empty-message="'global.listEmpty' | translate"
+              data-page-size="{{vmSendAdTags.SEND_AD_TAGS_PAGE_SIZE}}"
+              data-selection-mode="NONE">
+        <table>
+            <tr data-ng-repeat="site in $data">
+                <td data-title="'global.site' | translate"
+                    data-searchable="true"
+                    data-sortable="'site'">
+                    <span title="{{site.site}}">{{site.site}}</span>
+                </td>
+                <td class="text-center"
+                    data-title="'global.placements' | translate"
+                    data-searchable="false"
+                    data-sortable="'placementsCount'">
+                    {{site.placementsCount}}
+                </td>
+                <td data-title="'global.format' | translate"
+                    data-searchable="false">
+                    <div data-ng-class="{'has-error': !vmSendAdTags.adTagsForm.formatSelect_{{site.siteId}}.$valid}">
+                        <select id="formatSelect_{{site.siteId}}"
+                                name="formatSelect_{{site.siteId}}"
+                                class="form-control"
+                                data-ng-model="vmSendAdTags.tagsList[site.siteId].format"
+                                data-ng-change="vmSendAdTags.onSelectFormat(site.siteId)"
+                                data-ng-options="format.NAME for format in vmSendAdTags.formatList track by format.KEY"
+                                required>
+                            <option value="" disabled selected hidden>{{'global.select' | translate}}</option>
+                        </select>
+                    </div>
+                </td>
+                <td header="'individualRecipientsHeader.html'"
+                    data-searchable="false">
+                    <div class="form-group send-ad-tags-format-container">
+                        <tags-input id="adTagsIndividualRecipients_{{site.siteId}}"
+                                    class="bootstrap send-ad-tags-individual-recipients-container"
+                                    data-allowed-tags-pattern="{{vmSendAdTags.EMAIL_PATTERN}}"
+                                    data-add-on-comma="true"
+                                    data-add-on-blur="true"
+                                    data-add-on-space="true"
+                                    data-enable-editing-last-tag="true"
+                                    data-ng-model="vmSendAdTags.tagsList[site.siteId].emailList"
+                                    data-placeholder="{{'tags.sendAdTags.email' | translate}}"
+                                    data-replace-spaces-with-dashes="false"
+                                    data-spellcheck="true"
+                                    data-type="email">
+                        </tags-input>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

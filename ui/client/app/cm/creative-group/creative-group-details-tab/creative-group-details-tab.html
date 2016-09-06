@@ -1,0 +1,38 @@
+<div data-cg-busy="vmDetails.promise">
+    <div class="alert alert-danger" role="alert" data-ng-if="vmDetails.errorMessage">
+        {{'creativeGroup.errors' | translate}}
+        <ul>
+            <li id="errorMessageText">{{vmDetails.errorMessage}}</li>
+        </ul>
+    </div>
+    <creative-group-details-form data-model="vmDetails.creativeGroup"
+                                 data-pristine="vmDetails.pristine"
+                                 data-submit-disabled="vmDetails.submitDisabled">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left">
+                    <button id="deleteButton"
+                            class="btn btn-danger"
+                            data-ng-click="vmDetails.remove()"
+                            data-ng-if="vmDetails.creativeGroup &amp;&amp; vmDetails.creativeGroup.originalName !== vmDetails.CREATIVE_GROUP_DEFAULT_NAME">
+                        {{'global.delete' | translate}}
+                    </button>
+                </div>
+                <div class="pull-right">
+                    <button id="saveButton"
+                            type="submit"
+                            class="btn btn-primary"
+                            data-ng-click="vmDetails.save()"
+                            data-ng-disabled="vmDetails.submitDisabled || vmDetails.promise">
+                        {{'global.save' | translate}}
+                    </button>
+                    <a class="btn btn-default"
+                       data-ng-click="vmDetails.close($event)"
+                       data-ui-sref="creative-groups-tab({campaignId: vmDetails.creativeGroup.campaignId})">
+                        {{'global.close' | translate}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </creative-group-details-form>
+</div>

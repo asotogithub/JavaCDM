@@ -1,0 +1,25 @@
+<div data-cg-busy="vmTagInjectionTab.promiseTab">
+    <div class="row content-standard-tab">
+        <div class="col-md-12">
+            {{'tagInjection.standard.description' | translate}}
+            <i class="fa fa-info-circle" data-toggle="tooltip" title="{{'tagInjection.standard.descriptionTooltip' | translate}}"></i>
+        </div>
+        <div class="col-md-3 content-grid te-table-search-tracking-tags">
+            <div data-ng-include="'app/cm/tag-injection/tag-injection-tab/standard-tab/tracking-tags/tracking-tags.html'"></div>
+        </div>
+        <div class="col-md-6 content-grid content-grid-placements">
+            <div data-ng-include="'app/cm/tag-injection/tag-injection-tab/standard-tab/placements/placements.html'"></div>
+        </div>
+        <div class="col-md-3 content-grid content-grid-associations">
+            <div data-ng-include="'app/cm/tag-injection/tag-injection-tab/standard-tab/associations/associations.html'"></div>
+        </div>
+    </div>
+
+    <!--fly-out panel directive-->
+    <te-fly-out is-open="vmTIStandard.isOpenFlyOut"
+                fly-out-model="vmTIStandard.flyOutModel"
+                fly-out-default-state="vmTIStandard.flyOutDefaultState"
+                template-content="'app/cm/tag-injection/tag-injection-tab/standard-tab/tag-injection-fly-out/tag-injection-fly-out.html'"
+                on-close-fly-out="vmTIStandard.onCloseFlyout()">
+    </te-fly-out>
+</div>

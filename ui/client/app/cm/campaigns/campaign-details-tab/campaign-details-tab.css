@@ -1,0 +1,16 @@
+.form-campaign {
+    min-height: 34px;
+}
+
+.panel-body.row {
+    padding-top: 0;
+    padding-bottom: 5px;
+}
+
+.input-date ul.dropdown-menu .button.btn.btn-default.btn-sm {
+    margin-bottom: 0;
+}
+
+.input-date ul.dropdown-menu .pull-right, .input-date ul.dropdown-menu .pull-left {
+    margin-bottom: 0;
+}

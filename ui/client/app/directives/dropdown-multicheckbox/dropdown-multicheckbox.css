@@ -1,0 +1,29 @@
+.multiselect-parent ul.dropdown-menu {
+    min-width: 250px;
+    overflow: auto;
+    max-height: 300px;
+}
+
+.multiselect-parent ul.dropdown-menu .dropdown-header input {
+    width: 100%;
+    padding-right: 26px;
+}
+
+.multiselect-parent ul.dropdown-menu .dropdown-header span {
+    position: absolute;
+    top: 19px;
+    left: 87%!important;
+    font-size: 15px;
+}
+
+.multiselect-parent ul.dropdown-menu .content-option {
+    max-width: 338px;
+}
+
+.multiselect-parent ul.dropdown-menu .content-label {
+    max-width: 345px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: list-item;
+}

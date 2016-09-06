@@ -1,0 +1,65 @@
+<div data-cg-busy="vm.promise">
+    <div class="modal-header dialog-header-confirm" id="dialog-mp">
+        <h4 class="modal-title">{{'creative.addExistingCreative' | translate}}</h4><a class="modal-close-btn" data-ng-click="vm.closeModal()"><span class="fa fa-close"></span></a>
+    </div>
+    <div class="modal-body">
+        <legend>{{'creative.selectExistingCreativeMessage' | translate}}</legend>
+        <te-table data-empty-message="'global.listEmpty' | translate"
+                  data-model="vm.existingCreative"
+                  data-page-size="{{vm.pageSize}}"
+                  data-selection-mode="MULTI"
+                  data-te-table-select="vm.selectRows($selection)">
+            <te-table-secondary-btns>
+                <span>{{vm.selectedRows.length}} {{'global.selected' | translate}}</span>
+            </te-table-secondary-btns>
+            <table>
+                <tr id="creative{{creative.id}}Selected"  data-ng-repeat="creative in $data">
+                    <td data-title="'global.alias' | translate"
+                        data-searchable="true"
+                        data-sortable="'alias'"
+                        class="wide-column wrap-text-td">
+                        {{creative.alias}}
+                    </td>
+                    <td data-title="'global.filename' | translate"
+                        data-searchable="true"
+                        data-sortable="'filename'"
+                        class="wide-column wrap-text-td">
+                        {{creative.filename}}
+                    </td>
+                    <td data-title="'global.width' | translate"
+                        class="text-center"
+                        data-sortable="'width'"
+                        class="narrow-column">
+                        {{creative.width | number }}
+                    </td>
+                    <td data-title="'global.height' | translate"
+                        class="text-center"
+                        data-sortable="'height'"
+                        class="narrow-column">
+                        {{creative.height | number}}
+                    </td>
+                    <td data-title="'global.type' | translate"
+                        class="text-center"
+                        data-sortable="'creativeType'"
+                        class="narrow-column">
+                        {{creative.creativeType}}
+                    </td>
+                    <td data-title="'global.groups' | translate"
+                        class="text-center"
+                        data-sortable="'groupsCount'"
+                        class="narrow-column">
+                        {{creative.groupsCount | number}}
+                    </td>
+                </tr>
+            </table>
+        </te-table>
+    </div>
+    <div class="modal-footer">
+        <button id="dialog-mp-add"
+                type="button"
+                class="btn btn-default"
+                data-ng-disabled="vm.selectedRows.length < 1"
+                data-ng-click="vm.add()">{{'global.add' | translate}}
+        </button>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<div data-cg-busy="vm.promise">
+    <te-table data-empty-message="'global.listEmpty' | translate"
+              data-model="vm.creatives"
+              data-page-size="{{vm.pageSize}}"
+              data-on-counter-search="vm.onSearchCounter(counterSearch)"
+              data-selection-mode="SINGLE_CHECKBOX"
+              id="creativesGroupCreativeList">
+        <te-table-btns>
+            <te-table-add-btn data-te-table-btn-click="vm.addCreative()"></te-table-add-btn>
+            <te-table-edit-btn data-te-table-btn-click="vm.editCreative($selection)"></te-table-edit-btn>
+            <te-table-remove-btn id="deleteCreative" data-te-table-btn-click="vm.deleteCreative($selection.id)"></te-table-remove-btn>
+        </te-table-btns>
+        <te-table-thirdly-btns class="thirdly-btns-position">
+            <legend-table class="btn-group" id="creativeCounter" data-legend="vm.creativeCounterLegend"></legend-table>
+        </te-table-thirdly-btns>
+        <table>
+            <tr data-ng-repeat="creative in $data">
+                <td data-title="'global.alias' | translate"
+                    data-searchable="true"
+                    data-sortable="'alias'"
+                    class="wide-column wrap-text-td">
+                    {{creative.alias}}
+                </td>
+                <td data-title="'global.filename' | translate"
+                    data-searchable="true"
+                    data-sortable="'filename'"
+                    class="wide-column wrap-text-td">
+                    {{creative.filename}}
+                </td>
+                <td data-title="'global.width' | translate"
+                    data-sortable="'width'"
+                    class="text-center narrow-column">
+                    {{creative.width | number }}
+                </td>
+                 <td data-title="'global.height' | translate"
+                     data-sortable="'height'"
+                     class="text-center narrow-column">
+                     {{creative.height | number}}
+                </td>
+                <td data-title="'global.type' | translate"
+                    data-sortable="'creativeType'"
+                    class="text-center narrow-column">
+                    {{vm.isCreativeXML(creative.creativeType) ?
+                    'global.template' : creative.creativeType | translate | lowercase}}
+                </td>
+                <td data-title="'global.groups' | translate"
+                    data-sortable="'groupsCount'"
+                    class="text-center narrow-column">
+                    {{creative.groupsCount | number}}
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>

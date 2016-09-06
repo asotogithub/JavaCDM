@@ -1,0 +1,57 @@
+<form class="form-horizontal form-package-edit" name="vmEdit.editForm" data-cg-busy="vmEdit.promise || vm.promise" novalidate>
+    <div class="form-group back-button-class">
+        <a id="listOfPlacementsBtn" class="btn btn-default margin-bottom10 back-button" data-ng-click="vmEdit.cancel()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i> {{vmEdit.backButton}}
+        </a>
+    </div>
+    <legend class="long-text-wrapper title">{{vmEdit.name}}</legend>
+    <h4 class="title">{{'package.packageDetails' | translate}}</h4>
+    <div class="form-group" data-ng-class="{'has-error': vmEdit.editForm.name.$dirty && vmEdit.editForm.name.$invalid}">
+        <label id="packageNameLabel" class="col-sm-1 control-label">{{'global.name' | translate}}:</label>
+        <div class="col-sm-3"
+             data-ng-class="{'has-error': vmEdit.editForm.name.$dirty && vmEdit.editForm.name.$invalid}">
+            <input id="name"
+                   class="form-control"
+                   name="name"
+                   type="text"
+                   data-ng-model="vmEdit.package.name"
+                   data-ng-maxlength="{{vmEdit.maxLength}}"
+                   required/>
+            <p class="help-block"
+               data-ng-if="vmEdit.editForm.name.$dirty && vmEdit.editForm.name.$error.required">
+                {{'validation.error.required' | translate}}
+            </p>
+            <p id="ioNameMaxLength" class="help-block"
+               data-ng-if="vmEdit.editForm.name.$dirty && vmEdit.editForm.name.$error.maxlength"
+               translate="validation.error.maxlength" translate-values="{length: vmEdit.maxLength}">
+            </p>
+        </div>
+    </div>
+    <h4 class="title-placement-associated">{{'package.associatedPlacement' | translate}}</h4>
+    <associated-placements data-model="vmEdit.package.placements"
+                           data-add-action="vmEdit.addPlacement()"
+                           data-select-row-action="vmEdit.selectRows"
+                           data-options="vmEdit.options"
+                           data-remove-last="false"
+                           table-template="'app/cm/campaigns/io-tab/package-tab/associate-placements/package-association/templates/associated-placements.html'">
+    </associated-placements>
+    <h4 class="title-cost-detail">{{'package.packageCost' | translate}}</h4>
+    <legend></legend>
+    <div data-ng-include="'app/cm/campaigns/io-tab/partial/cost-details/cost-details.html'"></div>
+    <div class="row footer">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <button id="saveButton"
+                        type="submit"
+                        class="btn btn-primary"
+                        data-ng-disabled="vmEdit.editForm.$invalid || vmEdit.editForm.$pristine && vmEdit.placementsCount == vmEdit.package.placements.length"
+                        data-ng-click="vmEdit.save()">
+                    {{'global.save' | translate}}
+                </button>
+                <a class="btn btn-default" data-ng-click="vmEdit.cancel()">
+                    {{'global.close' | translate}}
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

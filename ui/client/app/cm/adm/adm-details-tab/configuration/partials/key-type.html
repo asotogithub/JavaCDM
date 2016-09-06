@@ -1,0 +1,39 @@
+<div class="row-fluid">
+    <label class="padding-top16 padding-bottom7 label-information">{{'adm.keyType' | translate}}</label>
+    <i class="fa fa-info-circle" data-toggle="tooltip" title="{{'adm.keyTypeTooltip' |  translate}}"></i>
+</div>
+<div class="row-fluid padding-bottom10">
+    <label for="urlPath" class="radio-inline">
+        <input type="radio"
+               name="keyTypeRadio"
+               id="urlPath"
+               data-ng-model="vmConfig.admConfig.keyTypeOption"
+               data-ng-value="vmConfig.KEY_TYPE_OPTION.URL_PATH"
+               data-ng-checked="vmConfig.admConfig.keyTypeOption == vmConfig.KEY_TYPE_OPTION.URL_PATH">
+        {{'global.urlPath' | translate}}
+    </label>
+</div>
+<div class="row-fluid padding-bottom10">
+    <label for="cookie" class="radio-inline label-information">
+        <input type="radio"
+               name="keyTypeRadio"
+               id="cookie"
+               data-ng-model="vmConfig.admConfig.keyTypeOption"
+               data-ng-value="vmConfig.KEY_TYPE_OPTION.COOKIE"
+               data-ng-checked="vmConfig.admConfig.keyTypeOption == vmConfig.KEY_TYPE_OPTION.COOKIE">
+        {{'global.cookie' | translate}}
+    </label>
+</div>
+<form name="vmConfig.formKeyType"
+      data-ng-class="{'has-error': vmConfig.formKeyType.matchCookieName.$dirty && vmConfig.formKeyType.matchCookieName.$invalid}"
+      novalidate>
+    <input class="form-control"
+           type="text"
+           id="matchCookieName"
+           name="matchCookieName"
+           data-ng-model="vmConfig.admConfig.matchCookieName"
+           placeholder="{{'adm.enterCookieName' | translate}}"
+           data-ng-disabled="vmConfig.admConfig.keyTypeOption != vmConfig.KEY_TYPE_OPTION.COOKIE"
+           data-ng-maxlength="256"
+           data-ng-required="vmConfig.admConfig.keyTypeOption == vmConfig.KEY_TYPE_OPTION.COOKIE"/>
+</form>

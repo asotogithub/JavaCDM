@@ -1,0 +1,38 @@
+.ping-box-container {
+    border: 1px solid #1C9AD6;
+    background-color: #F9F9F9;
+}
+
+.ping-box-container .row {
+    padding: 10px 10px 0px 10px;
+}
+
+.ping-box-container .row:first-child {
+    padding-top: 4px;
+}
+
+.ping-box-container .row:last-child {
+    padding-bottom: 10px;
+}
+
+.ping-box-container hr {
+    height: 2px;
+    margin: 0px;
+}
+
+.ping-box-container textarea{
+    height: 9em;
+}
+
+.ping-box-selective-color {
+    background-color: #F68F0E;
+}
+
+.ping-box-broadcast-color {
+    background-color: #FAE238;
+}
+
+.ping-box-action-buttons {
+    margin-top: 10px;
+    text-align: right;
+}

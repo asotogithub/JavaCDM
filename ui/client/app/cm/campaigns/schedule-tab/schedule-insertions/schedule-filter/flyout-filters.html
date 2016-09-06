@@ -1,0 +1,13 @@
+<div id="flyoutFilters" data-ng-controller="FlyoutFiltersController as vmFilters">
+    <div class="filters-container">
+        <dropdown-multicheckbox data-ng-repeat="option in vmFilters.listFilters"
+                                data-input-model="option.value"
+                                data-name-element="option.fieldName"
+                                data-output-model="vmFilters.filterValues[option.index].values"
+                                data-title="option.text"
+                                data-display-field="'label'"
+                                data-events="vmFilters.actionFilter[0]"
+                                data-id-field="'id'">
+        </dropdown-multicheckbox>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+<div data-ng-controller="CostDetailsController as vm" data-cg-busy="vm.promise">
+    <div data-ng-form name="vm.costForm">
+        <te-table data-model="vm.costData"
+                  data-selection-mode="NONE">
+            <te-table-btns>
+                <te-table-add-btn
+                    data-ng-disabled="vm.costForm.$invalid"
+                    data-te-table-btn-click="vm.addCost(true)"></te-table-add-btn>
+            </te-table-btns>
+            <table class="table-condensed cost-details-grid">
+                <tr id="cost{{cost.costKey}}" data-ng-repeat="cost in vm.costData">
+                    <td id="cost{{cost.costKey}}Margin"
+                        data-title="'placement.margin' | translate">
+                        <div class="input-group input-group-sm"
+                             data-ng-class="{'has-error': vm.costForm.marginInput{{cost.costKey}}.$dirty && vm.costForm.marginInput{{cost.costKey}}.$invalid}">
+                            <span class="input-group-addon">%</span>
+                            <input type="text"
+                                   id="marginInput{{cost.costKey}}"
+                                   name="marginInput{{cost.costKey}}"
+                                   size="5"
+                                   class="form-control"
+                                   data-ng-change="vm.calculateNetValues(cost)"
+                                   data-ng-model="cost.margin"
+                                   data-te-money
+                                   data-default-value="{{vm.placementConstants.AD_SPEND.DEFAULT}}"
+                                   data-max-precision-focus="{{vm.placementConstants.AD_SPEND.DECIMAL_DIGITS.MAX}}"
+                                   data-max-precision-blur="{{vm.placementConstants.AD_SPEND.DECIMAL_DIGITS.MIN}}"
+                                   max="{{vm.maxMarginValue}}"
+                                   autocomplete="off"
+                                   enter-as-tab/>
+                        </div>
+                    </td>
+                    <td id="cost{{cost.costKey}}AdSpend"
+                        data-title="'placement.adSpend' | translate">
+                        <div class="input-group input-group-sm"
+                             data-ng-class="{'has-error': vm.costForm.adSpendInput{{cost.costKey}}.$dirty && vm.costForm.adSpendInput{{cost.costKey}}.$invalid}">
+                            <span class="input-group-addon">$</span>
+                            <input type="text"
+                                   id="adSpendInput{{cost.costKey}}"
+                                   name="adSpendInput{{cost.costKey}}"
+                                   size="10"
+                                   class="form-control"
+                                   data-ng-change="vm.calculateCostInventory(cost);vm.updateNetAdSpend(cost)"
+                                   data-ng-model="cost.plannedGrossAdSpend"
+                                   data-te-money
+                                   data-default-value="{{vm.placementConstants.AD_SPEND.DEFAULT}}"
+                                   data-max-precision-focus="{{vm.placementConstants.AD_SPEND.DECIMAL_DIGITS.MAX}}"
+                                   data-max-precision-blur="{{vm.placementConstants.AD_SPEND.DECIMAL_DIGITS.MIN}}"
+                                   max="{{vm.maxInputNumber}}"
+                                   autocomplete="off"
+                                   enter-as-tab/>
+                        </div>
+                    </td>
+                    <td id="cost{{cost.costKey}}Inventory"
+                        data-title="'placement.inventory' | translate"
+                        class="text-right">
+                        <div>
+                            {{cost.inventory &lt; vm.maxCostInventoryValue ? (cost.inventory | number) : cost.inventory}}
+                        </div>
+                        <input type="text"
+                               id="inventoryInput{{cost.costKey}}"
+                               name="inventoryInput{{cost.costKey}}"
+                               class="form-control"
+                               data-ng-model="cost.inventory"
+                               data-ng-show="false"/>
+                    </td>
+                    <td id="cost{{cost.costKey}}Rate"
+                        data-title="'placement.rate' | translate">
+                        <div class="input-group input-group-sm"
+                             data-ng-class="{'has-error': vm.costForm.rateInput{{cost.costKey}}.$dirty && vm.costForm.rateInput{{cost.costKey}}.$invalid}">
+                            <span class="input-group-addon">$</span>
+                            <input type="text"
+                                   id="rateInput{{cost.costKey}}"
+                                   name="rateInput{{cost.costKey}}"
+                                   class="form-control"
+                                   data-ng-change="vm.calculateCostInventory(cost);vm.updateNetRate(cost)"
+                                   data-ng-model="cost.plannedGrossRate"
+                                   data-te-money
+                                   data-default-value="{{vm.placementConstants.RATE.DEFAULT}}"
+                                   data-max-precision-focus="{{vm.placementConstants.RATE.DECIMAL_DIGITS.MAX}}"
+                                   data-max-precision-blur="{{vm.placementConstants.RATE.DECIMAL_DIGITS.MIN}}"
+                                   max="{{vm.maxInputNumber}}"
+                                   autocomplete="off"
+                                   enter-as-tab/>
+                        </div>
+                    </td>
+                    <td id="cost{{cost.costKey}}RateType"
+                        data-title="'placement.rateType' | translate">
+                        <div class="input-group input-group-sm">
+                            <select id="rateTypeSelect"
+                                    class="form-control"
+                                    data-ng-change="vm.calculateCostInventory(cost)"
+                                    data-ng-model="cost.rateType"
+                                    data-ng-options="rType.NAME | translate for rType in vm.rateTypeList track by rType.KEY">
+                            </select>
+                        </div>
+                    </td>
+                    <td id="cost{{cost.costKey}}StartDate"
+                        data-title="'global.startDate' | translate">
+                        <div class="input-group input-group-sm"
+                             data-ng-class="{'has-error': vm.costForm.cost{{cost.costKey}}StartDateInput.$invalid}">
+                            <input type="text"
+                                   id="cost{{cost.costKey}}StartDateInput"
+                                   name="cost{{cost.costKey}}StartDateInput"
+                                   data-uib-datepicker-popup="{{vm.format}}"
+                                   data-ng-model="cost.startDate"
+                                   data-is-open="cost.startDateOpened"
+                                   data-min-date="vm.costData[$index - 1].endDate"
+                                   data-datepicker-append-to-body="true"
+                                   data-datepicker-options="vm.dateOptions"
+                                   data-close-text="{{'global.close' | translate}}"
+                                   data-masked
+                                   data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                                   data-next-to="{{vm.costData[$index - 1].endDate}}"
+                                   data-ng-blur="vm.updateDates(cost)"
+                                   data-ng-disabled="vm.disableFirstStartDate($index)"
+                                   class="form-control"
+                                   required
+                                   enter-as-tab/>
+                        <span class="input-group-btn">
+                            <button type="button"
+                                    data-ng-click="vm.openStartDate($event, cost)"
+                                    class="btn btn-default"
+                                    data-ng-disabled="vm.disableFirstStartDate($index)">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                        </div>
+                    </td>
+                    <td id="cost{{cost.costKey}}EndDate"
+                        data-title="'global.endDate' | translate">
+                        <div class="input-group input-group-sm end-date-picker-container"
+                             data-ng-class="{'has-error': vm.costForm.cost{{cost.costKey}}EndDateInput.$invalid}">
+                            <input type="text"
+                                   id="cost{{cost.costKey}}EndDateInput"
+                                   name="cost{{cost.costKey}}EndDateInput"
+                                   data-uib-datepicker-popup="{{vm.format}}"
+                                   data-ng-model="cost.endDate"
+                                   data-is-open="cost.endDateOpened"
+                                   data-init-date="cost.startDate"
+                                   data-min-date="cost.startDate"
+                                   data-datepicker-options="vm.dateOptions"
+                                   data-close-text="{{'global.close' | translate}}"
+                                   data-masked
+                                   data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                                   data-lower-than="{{cost.startDate}}"
+                                   data-ng-blur="vm.updateDates(cost);vm.addRowForEndDate(cost, true)"
+                                   data-ng-required="!cost.isLast"
+                                   data-ng-click="vm.addRowForEndDate(cost)"
+                                   class="form-control"
+                                   enter-as-tab/>
+                            <span class="input-group-btn">
+                                <button type="button"
+                                        data-ng-click="vm.openEndDate($event, cost)"
+                                        class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div data-ng-if="cost.isLast && vm.costData.length > 2">
+                            <button class="btn btn-danger"
+                                    data-ng-click="vm.removeCost()">
+                                <span class="fa fa-trash"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </te-table>
+        <div data-ng-if="vm.showInfo">
+            <div class="alert alert-info">
+                {{'placement.exist' | translate}}&nbsp;{{vm.totalItems-10}}&nbsp;{{'placement.itemsMore' | translate}}
+            </div>
+        </div>
+    </div>
+</div>

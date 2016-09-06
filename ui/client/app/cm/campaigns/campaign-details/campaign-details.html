@@ -1,0 +1,40 @@
+<h3 id="campaignsHeader">{{vm.campaignName || campaignName}}
+  <button class="btn btn-default pull-right btn-tag-injection"
+          id="tagInjectionFromCampaign"
+          data-ng-click="vm.goToTagInjection()"
+          data-ng-if="vm.campaignName || campaignName">
+    <i class="fa fa-eyedropper" aria-hidden="true"></i>
+  </button>
+</h3>
+<div data-ng-include="'app/cm/campaigns/partials/list-of-campaigns-button.html'"></div>
+<te-metrics data-ng-if="vm.metrics" data-model="vm.metrics" data-legend="'global.last30Days' | translate"></te-metrics>
+<ul class="nav nav-tabs">
+  <li id="campaignDetailsTab" data-ui-sref-active="active">
+    <a data-ui-sref="campaign-details-tab">
+      {{'global.summary' | translate}}
+    </a>
+  </li>
+  <li id="insertionOrderListTab" data-ui-sref-active="active">
+    <a data-ui-sref="insertion-order-tab">
+      {{'global.media' | translate}}
+    </a>
+  </li>
+  <li id="creativeGroupsTab" data-ui-sref-active="active">
+    <a data-ui-sref="creative-groups-tab">
+      {{'creativeGroup.creativeGroups' | translate}}
+    </a>
+  </li>
+  <li id="creativeListTab" data-ui-sref-active="active">
+    <a data-ui-sref="creative-tab">
+      {{'creative.creative' | translate}}
+    </a>
+  </li>
+  <li id="scheduleTab" data-ui-sref-active="active">
+    <a data-ui-sref="schedule-tab">
+      {{'schedule.schedule' | translate}}
+    </a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" role="tabpanel" data-ui-view></div>
+</div>

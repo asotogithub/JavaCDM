@@ -1,0 +1,430 @@
+/*!
+ * Trueffect's Angle Bootstrap Theme v0.0.1
+ * Copyright 2015-2016 Trueffect, Inc.
+ */
+
+@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,400italic);
+@media (min-width: 1080px) {
+  .modal-xl .modal-dialog.modal-lg {
+    width: 1080px;
+  }
+}
+.btn-default,
+.btn-primary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .2);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+}
+.btn-default:active,
+.btn-primary:active,
+.btn-success:active,
+.btn-info:active,
+.btn-warning:active,
+.btn-danger:active,
+.btn-default.active,
+.btn-primary.active,
+.btn-success.active,
+.btn-info.active,
+.btn-warning.active,
+.btn-danger.active {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+.btn:active,
+.btn.active {
+  background-image: none;
+}
+.btn-default {
+  text-shadow: 0 1px 0 #fff;
+  background-color: #fff;
+  border-color: #dbdbdb;
+  border-color: #ccc;
+}
+.btn-default:hover,
+.btn-default:focus {
+  background-color: #e0e0e0;
+  background-position: 0 -15px;
+}
+.btn-default:active,
+.btn-default.active {
+  background-color: #e0e0e0;
+  border-color: #dbdbdb;
+}
+.btn-primary {
+  background-color: #1c9ad6;
+  border-color: #146d97;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #1573a0;
+  background-position: 0 -15px;
+}
+.btn-primary:active,
+.btn-primary.active {
+  background-color: #1573a0;
+  border-color: #146d97;
+}
+.btn-success {
+  background-color: #548235;
+  border-color: #334f20;
+}
+.btn-success:hover,
+.btn-success:focus {
+  background-color: #385723;
+  background-position: 0 -15px;
+}
+.btn-success:active,
+.btn-success.active {
+  background-color: #385723;
+  border-color: #334f20;
+}
+.btn-info {
+  background-color: #0f5880;
+  border-color: #082c40;
+}
+.btn-info:hover,
+.btn-info:focus {
+  background-color: #093249;
+  background-position: 0 -15px;
+}
+.btn-info:active,
+.btn-info.active {
+  background-color: #093249;
+  border-color: #082c40;
+}
+.btn-warning {
+  background-color: #ff902b;
+  border-color: #e36c00;
+}
+.btn-warning:hover,
+.btn-warning:focus {
+  background-color: #ed7100;
+  background-position: 0 -15px;
+}
+.btn-warning:active,
+.btn-warning.active {
+  background-color: #ed7100;
+  border-color: #e36c00;
+}
+.btn-danger {
+  background-color: #f05050;
+  border-color: #e51414;
+}
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: #eb1818;
+  background-position: 0 -15px;
+}
+.btn-danger:active,
+.btn-danger.active {
+  background-color: #eb1818;
+  border-color: #e51414;
+}
+.thumbnail,
+.img-thumbnail {
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background-color: #eaeef2;
+}
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  background-color: #198abf;
+}
+.navbar-default {
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+}
+.navbar-default .navbar-nav > .active > a {
+  -webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 3px 9px rgba(0, 0, 0, .075);
+}
+.navbar-brand,
+.navbar-nav > li > a {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+}
+.navbar-inverse {
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.navbar-inverse .navbar-nav > .active > a {
+  -webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+          box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+}
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-nav > li > a {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
+}
+.navbar-static-top,
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  border-radius: 0;
+}
+.alert {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(0, 0, 0, .05);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(0, 0, 0, .05);
+}
+.alert-success {
+  border-color: #314c1f;
+}
+.alert-info {
+  border-color: #07293c;
+}
+.alert-warning {
+  border-color: #de6a00;
+}
+.alert-danger {
+  border-color: #e01313;
+}
+.progress {
+  background-image: -webkit-linear-gradient(top, #e7e7e7 0%, #f1f1f1 100%);
+  background-image:         linear-gradient(to bottom, #e7e7e7 0%, #f1f1f1 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe7e7e7', endColorstr='#fff1f1f1', GradientType=0);
+  background-repeat: repeat-x;
+}
+.progress-bar {
+  background-image: -webkit-linear-gradient(top, #1c9ad6 0%, #167aa9 100%);
+  background-image:         linear-gradient(to bottom, #1c9ad6 0%, #167aa9 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1c9ad6', endColorstr='#ff167aa9', GradientType=0);
+  background-repeat: repeat-x;
+}
+.progress-bar-success {
+  background-image: -webkit-linear-gradient(top, #548235 0%, #3d5e26 100%);
+  background-image:         linear-gradient(to bottom, #548235 0%, #3d5e26 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff548235', endColorstr='#ff3d5e26', GradientType=0);
+  background-repeat: repeat-x;
+}
+.progress-bar-info {
+  background-image: -webkit-linear-gradient(top, #0f5880 0%, #0a3952 100%);
+  background-image:         linear-gradient(to bottom, #0f5880 0%, #0a3952 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0f5880', endColorstr='#ff0a3952', GradientType=0);
+  background-repeat: repeat-x;
+}
+.progress-bar-warning {
+  background-image: -webkit-linear-gradient(top, #ff902b 0%, #f77600 100%);
+  background-image:         linear-gradient(to bottom, #ff902b 0%, #f77600 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff902b', endColorstr='#fff77600', GradientType=0);
+  background-repeat: repeat-x;
+}
+.progress-bar-danger {
+  background-image: -webkit-linear-gradient(top, #f05050 0%, #ec2121 100%);
+  background-image:         linear-gradient(to bottom, #f05050 0%, #ec2121 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff05050', endColorstr='#ffec2121', GradientType=0);
+  background-repeat: repeat-x;
+}
+.list-group {
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
+}
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus {
+  text-shadow: 0 -1px 0 #167aa9;
+  background-image: -webkit-linear-gradient(top, #1c9ad6 0%, #1882b4 100%);
+  background-image:         linear-gradient(to bottom, #1c9ad6 0%, #1882b4 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1c9ad6', endColorstr='#ff1882b4', GradientType=0);
+  background-repeat: repeat-x;
+  border-color: #1882b4;
+}
+.panel {
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+.panel-default > .panel-heading {
+  background-color: #fff;
+}
+.panel-primary > .panel-heading {
+  background-color: #1c9ad6;
+}
+.panel-success > .panel-heading {
+  background-color: #548235;
+}
+.panel-info > .panel-heading {
+  background-color: #0f5880;
+}
+.panel-warning > .panel-heading {
+  background-color: #ff902b;
+}
+.panel-danger > .panel-heading {
+  background-color: #f05050;
+}
+.pagination > li > a,
+.pagination > li > span {
+  color: #1c9ad6;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  color: #1c9ad6;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: #1c9ad6;
+  border-color: #1c9ad6;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] {
+  padding: 3px;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] table > thead > tr > th:first-child {
+  padding-right: 2px;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] li table > thead > tr > th:last-child button.btn.pull-right {
+  padding-left: 11px;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] > li:last-child {
+  padding-top: 3px !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] > li > span.btn-group.pull-left > button.btn.btn-info {
+  margin-right: 3px;
+  border-radius: 3px;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] > li > span.btn-group.pull-left > button.btn.btn-danger {
+  border-radius: 3px;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info {
+  background-color: #1c9ad6;
+  border-color: #146d97;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info:hover,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info:focus {
+  background-color: #1573a0;
+  background-position: 0 -15px;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info:active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info.active {
+  background-color: #1573a0;
+  border-color: #146d97;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info.disabled,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info[disabled],
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info.disabled:hover,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info[disabled]:hover,
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info:hover,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info.disabled:focus,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info[disabled]:focus,
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info:focus,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info.disabled:active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info[disabled]:active,
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info:active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info.disabled.active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info[disabled].active,
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] .btn-info.active {
+  background-color: #1c9ad6;
+  border-color: #146d97;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info {
+  background-color: #e0e0e0;
+  border-color: #bdbdbd;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info:hover,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info:focus {
+  background-color: #c2c2c2;
+  background-position: 0 -15px;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info:active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info.active {
+  background-color: #c2c2c2;
+  border-color: #bdbdbd;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info.disabled,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info[disabled],
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info.disabled:hover,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info[disabled]:hover,
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info:hover,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info.disabled:focus,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info[disabled]:focus,
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info:focus,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info.disabled:active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info[disabled]:active,
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info:active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info.disabled.active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info[disabled].active,
+fieldset[disabled] ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-info.active {
+  background-color: #e0e0e0;
+  border-color: #dbdbdb;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-default.btn-info:active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-default.btn-info.active {
+  background-color: #e0e0e0;
+  border-color: #dbdbdb;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-default:active,
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-default.active {
+  color: #333;
+  background-color: #fff;
+  border-color: #dbdbdb;
+}
+ul.dropdown-menu[uib-datepicker-popup-wrap] tbody tr td .btn-default:hover {
+  color: #fff;
+  background-color: #1c9ad6;
+  border-color: #146d97;
+}
+.end-date-picker-container .dropdown-menu {
+  right: 0 !important;
+  left: auto !important;
+}
+.well {
+  background-image: -webkit-linear-gradient(top, #f2f2f2 0%, #fff 100%);
+  background-image:         linear-gradient(to bottom, #f2f2f2 0%, #fff 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff2f2f2', endColorstr='#ffffffff', GradientType=0);
+  background-repeat: repeat-x;
+  border-color: #e6e6e6;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, .05), 0 1px 0 rgba(255, 255, 255, .1);
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, .05), 0 1px 0 rgba(255, 255, 255, .1);
+}
+.metrics-row .text-info em {
+  color: #548235;
+}
+input[checkbox]:check {
+  color: #1c9ad6;
+}
+.jqx-checkbox-check-checked {
+  color: white;
+  background-color: #1c9ad6;
+  border-color: #1c9ad6;
+}
+.form-control:focus {
+  border-color: #1c9ad6;
+}
+.panel.selected {
+  border-color: #1c9ad6;
+}
+form div.form-group tags-input.bootstrap ul > li.tag-item {
+  color: white;
+  background: #1c9ad6;
+}
+form div.form-group tags-input.bootstrap ul > li.tag-item a.remove-button {
+  color: white;
+}
+.btn-link {
+  color: #1c9ad6;
+}
+.dialog-header-warning {
+  color: white;
+  background-color: #fad732;
+}
+.information-div {
+  color: white;
+  background-color: #1c9ad6;
+  border-color: #146d97;
+  border-radius: 3px;
+}

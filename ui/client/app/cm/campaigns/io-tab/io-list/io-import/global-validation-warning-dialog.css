@@ -1,0 +1,16 @@
+.global-validation-hide-no-button {
+    display: none;
+}
+
+.global-validation-list-requirements {
+    list-style-type: none;
+    padding: 0;
+}
+
+.global-validation-list-requirements li:before {
+    content: "- ";
+}
+
+.global-validation-message-requirements {
+    font-style: italic
+}

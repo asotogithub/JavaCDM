@@ -1,0 +1,14 @@
+<h3 id="creativeDetailsHeader">{{vmDetails.creativeName}}</h3>
+<a id="listOfCreativeBtn" class="btn btn-default margin-bottom10" data-ng-click="vmDetails.backToList()">
+    <i class="fa fa-angle-left"></i> {{vmDetails.labelBackButton}}
+</a>
+<ul class="nav nav-tabs">
+    <li id="campaignCreativeDetailsTab" data-ui-sref-active="active">
+        <a data-ui-sref="campaign-creative-details-tab">
+            {{'global.summary' | translate}}
+        </a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" role="tabpanel" data-ui-view></div>
+</div>

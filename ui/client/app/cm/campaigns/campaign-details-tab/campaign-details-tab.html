@@ -1,0 +1,227 @@
+<div class="alert alert-danger" role="alert" data-ng-if="vmDetails.errorMessage">
+    {{'campaigns.details.errors' | translate}}
+    <ul>
+        <li id="errorMessageText">{{vmDetails.errorMessage}}</li>
+    </ul>
+</div>
+<div id="campaignDetailsChartPanel" data-ng-if="vmDetails.metrics" class="panel panel-default">
+    <div class="panel-heading">
+        <paneltool tool-collapse="tool-collapse"></paneltool>
+        <div class="panel-title">{{"campaign.details.chart.panel.title" | translate}}</div>
+    </div>
+    <div collapse="campaignDetailsChartPanel" class="panel-wrapper">
+        <div class="panel-body">
+            <highchart config="vmDetails.chartConfig" class="span10"></highchart>
+        </div>
+    </div>
+</div>
+<form class="form-horizontal" name="vmDetails.campaignDetailsForm" data-ng-submit="vmDetails.submit()" data-cg-busy="vmDetails.promise"
+      novalidate>
+    <div class="panel-body row">
+        <div class="col-sm-6">
+            <div class="form-group form-campaign"
+                 data-ng-class="{'has-error': vmDetails.campaignDetailsForm.campaignName.$touched &amp;&amp; vmDetails.campaignDetailsForm.campaignName.$invalid}">
+                <label id="campaignNameLabel" class="col-sm-4 control-label">{{'global.name' | translate}}:</label>
+                <div class="col-sm-6">
+                    <input id="campaignName"
+                           class="form-control"
+                           name="campaignName"
+                           type="text"
+                           data-ng-model="vmDetails.campaign.name"
+                           data-ng-maxlength="{{vmDetails.CAMPAIGN_MAX_LENGTH}}"
+                           required/>
+                    <div id="campaignNameTooLong" class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.campaignName.$touched &amp;&amp; vmDetails.campaignDetailsForm.campaignName.$error.maxlength"
+                       translate="validation.error.maxlength" translate-values="{length: vmDetails.CAMPAIGN_MAX_LENGTH}">
+                    </div>
+                    <div id="campaignNameRequired" class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.campaignName.$touched &amp;&amp; vmDetails.campaignDetailsForm.campaignName.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="domainLabel" class="col-sm-4 control-label">{{'global.domain' | translate}}:</label>
+                <div class="col-sm-5">
+                    <select id="domainSelect"
+                            class="form-control"
+                            data-ng-model="vmDetails.selectedDomain"
+                            data-ng-options="domain.domain for domain in vmDetails.domains track by domain.id"
+                            data-ng-if="vmDetails.campaign.statusId === 1"
+                            required>
+                    </select>
+                    <div id="domain" class="form-control-static" data-ng-if="vmDetails.campaign.statusId !== 1">
+                        {{vmDetails.selectedDomain.domain}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-campaign"
+                 data-ng-class="{'has-error': vmDetails.campaignDetailsForm.budget.$dirty && vmDetails.campaignDetailsForm.budget.$invalid}">
+                <label id="budgetLabel" class="col-sm-4 control-label">{{'global.budget' | translate}}:</label>
+                <div class="col-sm-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input class="form-control input-budget"
+                               id="budget"
+                               name="budget"
+                               data-ng-model="vmDetails.campaign.overallBudget"
+                               data-ng-blur="vmDetails.validateBudget(vmDetails.campaign.overallBudget)"
+                               masked
+                               data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'placeholder': '0'"
+                               required/>
+                    </div>
+                    <div class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.budget.$dirty && vmDetails.campaignDetailsForm.budget.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </div>
+                    <div class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.budget.$dirty && vmDetails.campaignDetailsForm.budget.$error.budgetInvalid">
+                        {{'campaign.budget.error' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-campaign"
+                 data-ng-class="{'has-error': vmDetails.campaignDetailsForm.startDate.$dirty && vmDetails.campaignDetailsForm.startDate.$invalid}">
+                <label id="startDateLabel" class="col-sm-4 control-label">{{'global.startDate' | translate}}:</label>
+                <div class="col-sm-4">
+                    <div class="input-group input-date">
+                        <input type="text"
+                               id="startDate"
+                               name="startDate"
+                               data-uib-datepicker-popup="{{vmDetails.DATE_FORMAT}}"
+                               data-ng-model="vmDetails.campaign.startDate"
+                               data-is-open="vmDetails.startDateOpened"
+                               data-min-date="vmDetails.campaign.startDate"
+                               data-datepicker-append-to-body="true"
+                               data-datepicker-options="vmDetails.dateOptions"
+                               data-close-text="{{ 'global.close' | translate }}"
+                               masked
+                               data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                               data-ng-blur="vmDetails.updateDates()"
+                               class="form-control"
+                               required/>
+                        <span class="input-group-btn">
+                            <button type="button"
+                                    data-ng-click="vmDetails.openStartDate($event)"
+                                    class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.startDate.$dirty && vmDetails.campaignDetailsForm.startDate.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </div>
+                    <div class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.startDate.$dirty && vmDetails.campaignDetailsForm.startDate.$error.date">
+                        {{'validation.error.invalidDate' | translate}}
+                    </div>
+                    <div class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.startDate.$dirty && vmDetails.campaignDetailsForm.startDate.$error.lowerThan">
+                        {{'campaign.date.error.initDate' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-campaign"
+                 data-ng-class="{'has-error': vmDetails.campaignDetailsForm.endDate.$dirty && vmDetails.campaignDetailsForm.endDate.$invalid}">
+                <label id="endDateLabel" class="col-sm-4 control-label">{{'global.endDate' | translate}}:</label>
+                <div class="col-sm-4">
+                    <div class="input-group input-date">
+                        <input type="text"
+                               id="endDate"
+                               name="endDate"
+                               data-uib-datepicker-popup="{{vmDetails.DATE_FORMAT}}"
+                               data-ng-model="vmDetails.campaign.endDate"
+                               data-is-open="vmDetails.endDateOpened"
+                               data-min-date="vmDetails.campaign.startDate"
+                               data-datepicker-append-to-body="true"
+                               data-datepicker-options="vmDetails.dateOptions"
+                               data-close-text="{{ 'global.close' | translate }}"
+                               masked
+                               data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                               lower-than="{{vmDetails.campaign.startDate}}"
+                               data-ng-blur="vmDetails.updateDates()"
+                               class="form-control"
+                               required/>
+                        <span class="input-group-btn">
+                            <button type="button" data-ng-click="vmDetails.openEndDate($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.endDate.$dirty && vmDetails.campaignDetailsForm.endDate.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </div>
+                    <div class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.endDate.$dirty && vmDetails.campaignDetailsForm.endDate.$error.date">
+                        {{'validation.error.invalidDate' | translate}}
+                    </div>
+                    <div class="help-block"
+                       data-ng-if="vmDetails.campaignDetailsForm.endDate.$dirty && vmDetails.campaignDetailsForm.endDate.$error.lowerThan">
+                        {{'campaign.date.error.endDate' | translate}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group form-campaign">
+                <label id="advertiserNameLabel" class="col-sm-4 control-label">{{'global.advertiser' |  translate}}:</label>
+                <div class="col-sm-6">
+                    <div id="advertiserName" class="form-control-static">{{vmDetails.campaign.advertiserName}}
+                        ({{vmDetails.campaign.advertiserId}})
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="brandNameLabel" class="col-sm-4 control-label">{{'global.brand' | translate}}:</label>
+                <div class="col-sm-6">
+                    <div id="brandName" class="form-control-static">{{vmDetails.campaign.brandName}}
+                        ({{vmDetails.campaign.brandId}})
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="campaignIdLabel" class="col-sm-4 control-label">{{'global.id' | translate}}:</label>
+                <div class="col-sm-6">
+                    <div id="campaignId" class="form-control-static">{{vmDetails.campaign.id}}</div>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="isActiveLabel" class="col-sm-4 control-label">{{'global.isActive' | translate}}:</label>
+                <div class="col-sm-6">
+                    <div class="checkbox c-checkbox" class="text-left">
+                        <label id="isActiveSwitch" class="switch">
+                            <input id="isActiveInput" type="checkbox"
+                                   data-ng-model="vmDetails.campaign.isActive"
+                                   data-ng-true-value="'Y'"
+                                   data-ng-false-value="'N'">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-campaign">
+                <label id="campaignOwnerLabel" class="col-sm-4 control-label">{{'global.createdBy' |  translate}}:</label>
+                <div class="col-sm-5">
+                    <div id="campaignOwner" class="form-control-static">
+                        {{vmDetails.campaign.userId}} on {{vmDetails.campaign.createdDate | date:"MM/dd/yy 'at' h:mma"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <button id="saveButton"
+                        type="submit"
+                        class="btn btn-primary pull-right"
+                        data-ng-disabled="vmDetails.campaignDetailsForm.$invalid || vmDetails.campaignDetailsForm.$pristine">
+                    {{'global.save' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

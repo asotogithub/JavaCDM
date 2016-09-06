@@ -1,0 +1,60 @@
+<div class="modal-header dialog-header-confirm" id="dialog-mp">
+    <h4 class="modal-title">{{'schedule.popup.importErrorsTitle' | translate}}</h4>
+    <a class="modal-close-btn disabled-fa-close"  data-ng-disabled="vm.isActionInProgress()" data-ng-click="vm.cancel()"><span class="fa fa-close"></span></a>
+</div>
+<div class="modal-body" data-cg-busy="vm.promise">
+    <div>
+        <p class="pb">
+            {{'schedule.popup.numberRowsWithErrors1' | translate}}
+            <span id="rowsErrors" class="text-highlight">{{vm.rowsErrors}}</span>
+            {{'schedule.popup.numberRowsWithErrors2' | translate}}
+        </p>
+        <te-table id="issuesGrid"
+                  data-model="vm.issues"
+                  data-page-size="{{vm.pageSize}}">
+            <te-table-secondary-btns>
+                <button id="export-issues"
+                        type="button"
+                        class="btn btn-warning pull-right"
+                        data-ng-click="vm.exportIssues()">
+                    {{'schedule.popup.exportIssues' | translate}}
+                </button>
+                <span id="exportIssuesSuccessful" data-ng-show="false">{{vm.exportIssuesSuccessful}}</span>
+            </te-table-secondary-btns>
+            <table>
+                <tr data-ng-repeat="issue in $data">
+                    <td data-title="'global.rowNumber' | translate"
+                        data-sortable="'row'"  class="text-center import-errors-column-row">
+                        {{issue.row}}
+                    </td>
+                    <td data-title="'global.issue' | translate"
+                        data-sortable="'description'">
+                        {{issue.description}}
+                    </td>
+                </tr>
+            </table>
+        </te-table>
+        <p class="text-center mb0 mt">
+            <span id="rowsUpdate" class="text-highlight">{{vm.rowsUpdate}}</span>
+            {{'schedule.popup.numberRowsWillUpdate1' | translate}}
+            <span id="totalRowsImport" class="text-highlight">{{vm.totalRows}}</span>
+            {{'schedule.popup.numberRowsWillUpdate2' | translate}}
+        </p>
+    </div>
+</div>
+<div class="modal-footer mt0">
+    <button id="cancel-import-errors"
+            type="button"
+            class="btn btn-default"
+            data-ng-disabled="vm.isActionInProgress()"
+            data-ng-click="vm.cancel()">
+        {{'global.cancel' | translate}}
+    </button>
+    <button id="complete-import"
+            type="button"
+            class="btn btn-primary"
+            data-ng-disabled="!vm.isValidComplete || vm.isActionInProgress()"
+            data-ng-click="vm.completeBulk()">
+        {{'global.continue' | translate}}
+    </button>
+</div>

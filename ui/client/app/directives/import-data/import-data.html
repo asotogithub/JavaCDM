@@ -1,0 +1,65 @@
+<div class="modal-body" data-cg-busy="vm.promise">
+    <div class="pb">
+        <b>{{vm.popupText.note}}:</b>
+        {{vm.popupText.description}}
+        <a href="{{vm.popupText.url}}">{{vm.popupText.urlTitle}}</a>
+    </div>
+    <div class="text-center pt">
+        <div data-ng-app="fileUpload">
+            <div class="well-dashed p0">
+                <div class="vertical-box"
+                     data-ngf-drop
+                     data-ng-model="vm.file"
+                     data-ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
+                     data-ngf-drop-available="true"
+                     data-ngf-change="vm.upload($files)"
+                     data-ngf-multiple="false">
+                    <div class="vertical-center file-upload">
+                        <div class="center-block">
+                            <h3>{{vm.popupText.dragDrop}}</h3>
+                        </div>
+                        <div class="center-block">
+                            <i class="fa fa-upload fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input-group">
+        <input id="fileName"
+               class="form-control"
+               name="fileName"
+               type="text"
+               data-ng-disabled="true"
+               data-ng-model="vm.file.name"/>
+        <div id="select-file" class="btn btn-default input-group-btn input-group-btn-alignTop"
+             accept=".xlsx"
+             data-ngf-select="vm.upload($files)"
+             data-ng-model="vm.file"
+             data-ngf-multiple="false"
+             data-ngf-keep="distinct"
+             data-ng-disabled="vm.uploading.upload">
+            <span class="fa fa-file-excel-o fa-lg pr-sm"></span>
+            <b>{{vm.popupText.openButton}}</b>
+        </div>
+    </div>
+    <div>
+        <div data-ng-if="vm.isProgress" class="progress progress-xs center-progress">
+            <div role="progressbar" data-ng-style="{ 'width': vm.file.progress + '%' }" class="progress-bar"></div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer mt0">
+    <button id="cancel-import" type="button"
+            class="btn btn-default"
+            data-ng-disabled="vm.isActionInProgress()"
+            data-ng-click="vm.cancel()">
+        {{vm.popupText.cancelButton}}
+    </button>
+    <button id="process-import" type="button"
+            class="btn btn-primary"
+            data-ng-click="vm.importProcess()" data-ng-disabled="!vm.isValidModel">
+        {{vm.popupText.importButton}}
+    </button>
+</div>

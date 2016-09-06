@@ -1,0 +1,31 @@
+<div class="modal-header dialog-header-confirm">
+    <h4 class="modal-title">{{data.title}}</h4>
+</div>
+<div class="modal-body">
+    <div class="content">
+        <div class="row">
+            <div class="col-xs-2">
+                <span class="fa fa-info" aria-hidden="true"></span>
+            </div>
+            <div class="col-xs-10">
+                <div data-ng-if="data.description" data-ng-bind-html="data.description"></div>
+                <div data-ng-if="data.partialHTML" data-ng-include="data.partialHTML"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="row">
+        <div class="col-xs-5">
+            <label class="c-checkbox" data-ng-if="data.dontShowAgain">
+                <input type="checkbox" name="dontShowAgain" data-ng-model="data.dontShowAgainCheck">
+                <span class="fa fa-check"></span>
+                {{data.dontShowAgain}}
+            </label>
+        </div>
+        <div class="col-xs-7">
+            <button type="button" class="btn btn-default" data-ng-click="yes()">{{data.buttons.yes}}</button>
+        </div>
+    </div>
+</div>
+<center-dialog/>

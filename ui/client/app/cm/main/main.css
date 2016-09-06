@@ -1,0 +1,110 @@
+.main-layout {
+    padding-top: 70px;
+}
+
+.breadcrumb {
+    margin-bottom: 0;
+}
+
+.topnavbar .navbar-nav > li > a:hover, .topnavbar .navbar-nav > .open > a:hover, .topnavbar .navbar-nav > li > a:focus, .topnavbar .navbar-nav > .open > a:focus {
+    background: transparent;
+}
+
+.navbar-brand {
+    height: 55px;
+}
+
+.topnavbar .navbar-nav > li > a.dropdown {
+    padding: 0;
+}
+
+/* US5426 */
+.tab-content {
+    padding: 20px;
+}
+
+.tab-content .form-group .pull-right {
+    margin-bottom: -15px;
+    padding-right: 15px;
+}
+
+.input-budget {
+    max-width: 114px;
+    min-width: 114px;
+}
+
+.input-max-int {
+    max-width: 120px;
+    min-width: 120px;
+}
+
+.input-date {
+    max-width: 130px;
+    min-width: 130px;
+}
+
+.input-12-char {
+    max-width: 110px;
+}
+
+.form-wizard fieldset,
+.upload-creative fieldset {
+    border-bottom: 0 none;
+    padding-bottom: 0;
+}
+
+.associate-placements .form-wizard fieldset,
+.placement-add .form-wizard fieldset {
+    margin-bottom: 20px;
+}
+
+.form-wizard fieldset {
+    margin-bottom: 10px;
+}
+
+.upload-creative fieldset {
+    margin-bottom: 0;
+}
+
+.upload-creative .well {
+    border: 1px solid #dde6e9;
+    border-radius: 4px;
+    min-height: 20px;
+    padding: 20px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.upload-creative .vertical-box {
+    height: 98px;
+}
+
+.panel {
+    margin-bottom: 0;
+}
+
+.panel-heading {
+    padding: 10px 20px;
+}
+
+.panel-body {
+    padding: 15px 20px 20px;
+}
+
+ul.nav.nav-tabs {
+    cursor: default;
+}
+
+.user-Name {
+    cursor: default;
+    color: rgb(255,255,255) !important;
+    padding-right: 0px !important;
+}
+
+.main-content {
+    height: 100%;
+}
+
+.nativeLogoWidth {
+    max-width: none;
+}

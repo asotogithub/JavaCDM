@@ -1,0 +1,32 @@
+<div data-ng-form name="admDetails.admParentForm" data-cg-busy="admDetails.promise" class="adm-details">
+    <div class="alert alert-danger" role="alert" data-ng-if="admDetails.errorMessage">
+        {{'adm.details.errors' | translate}}
+        <ul>
+            <li id="errorMessageText">{{admDetails.errorMessage}}</li>
+        </ul>
+    </div>
+    <div data-ng-include="'app/cm/adm/adm-details-tab/form/form.html'"></div>
+    <div data-ng-include="'app/cm/adm/adm-details-tab/configuration/configuration.html'"></div>
+    <fieldset></fieldset>
+        <div class="row">
+        <div class="col-sm-12">
+            <div class="pull-right">
+                <button id="saveButton"
+                        data-ng-click="admDetails.submit()"
+                        class="btn btn-primary"
+                        data-ng-show="admDetails.permission.updateConfig"
+                        data-ng-disabled="admDetails.admParentForm.$pristine || admDetails.admParentForm.$invalid ||
+                                         admDetails.admDetailsForm.$invalid ||
+                                         !(admDetails.admConfigForm.extractableCookiesForm &&
+                                         admDetails.admConfigForm.cookieOverwriteExceptionsForm &&
+                                         admDetails.admConfigForm.formKeyType && admDetails.admConfigForm.formKey &&
+                                         admDetails.admConfigForm.failThroughDefaultsForm)">
+                    {{'global.save' | translate}}
+                </button>
+                <a class="btn btn-default" data-ng-click="admDetails.close()">
+                    {{'global.close' | translate}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

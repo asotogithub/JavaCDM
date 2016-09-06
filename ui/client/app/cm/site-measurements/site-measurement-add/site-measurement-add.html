@@ -1,0 +1,83 @@
+<div>
+    <h3>{{'siteMeasurement.newSMCampaign' | translate}}</h3>
+    <!-- START panel-->
+    <div class="panel panel-default">
+        <div class="panel-heading">{{'siteMeasurement.followStepsCreate' | translate}}</div>
+        <div class="panel-body">
+            <form name="vmSMCampaign.formWizard" form-wizard="" steps="2" novalidate="" data-cg-busy="vmSMCampaign.promise">
+                <div class="form-wizard wizard-horizontal">
+                    <!-- START wizard steps indicator-->
+                    <ol class="row">
+                        <li data-ng-class="{'active':wizard.active(1)}" class="col-md-3">
+                            <h4>{{'global.name' | translate}}</h4>
+                            <small class="text-muted">{{'siteMeasurement.enterName' | translate}}</small>
+                        </li>
+                        <li data-ng-class="{'active':wizard.active(2)}" class="col-md-3">
+                            <h4>{{'global.domainStatus' | translate}}</h4>
+                            <small class="text-muted">{{'siteMeasurement.setDomainStatus' | translate}}</small>
+                        </li>
+                    </ol>
+                    <!-- END wizard steps indicator-->
+                    <!-- START Wizard Step inputs -->
+                    <div id="wizardStep1" data-ng-show="wizard.active(1)">
+                        <fieldset>
+                            <legend>{{'global.name' | translate}}</legend>
+                            <!-- START row -->
+                            <div class="row">
+                                <div data-ng-include="'app/cm/site-measurements/site-measurement-add/name/name.html'"></div>
+                            </div>
+                            <!-- END row -->
+                        </fieldset>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <a class="btn btn-default" data-ng-click="vmSMCampaign.cancel()">
+                                        {{'global.cancel' | translate}}
+                                    </a>
+                                    <a id="nextBtn" class="btn btn-primary" a-disabled="!vmSMCampaign.STEP.NAME.isValid" href=""
+                                       data-ng-click="vmSMCampaign.activateStep(vmSMCampaign.STEP.DOMAIN); wizard.go(2)">
+                                        {{'global.next' | translate}} <span>&rarr;</span></a>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Wizard Step inputs -->
+                    <!-- START Wizard Step inputs -->
+                    <div id="wizardStep2" data-ng-show="wizard.active(2)">
+                        <fieldset>
+                            <legend>{{'global.domainStatus' | translate}}</legend>
+                            <!-- START row -->
+                            <div class="row">
+                                <div data-ng-include="'app/cm/site-measurements/site-measurement-add/domain/domain.html'"></div>
+                            </div>
+                            <!-- END row -->
+                        </fieldset>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-left">
+                                    <a class="btn btn-default" href="" data-ng-click="wizard.go(1)">
+                                        <span>&larr;</span> {{'global.previous' | translate}}
+                                    </a>
+                                </div>
+                                <div class="pull-right">
+                                    <a id="cancelBtn" class="btn btn-default" data-ng-click="vmSMCampaign.cancel()">
+                                        {{'global.cancel' | translate}}
+                                    </a>
+                                    <a id="saveBtn" class="btn btn-primary" a-disabled="!vmSMCampaign.STEP.DOMAIN.isValid"
+                                       href=""
+                                       data-ng-click="vmSMCampaign.save()">
+                                        {{'global.save' | translate}}
+                                    </a>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Wizard Step inputs -->
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END panel -->
+</div>

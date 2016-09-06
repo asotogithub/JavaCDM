@@ -1,0 +1,35 @@
+<h5>{{'schedule.availablePlacements' | translate}}:</h5>
+<te-table data-model="vm.placements"
+          data-empty-message="'global.listEmpty' | translate"
+          data-page-size="10"
+          data-selection-mode="MULTI"
+          data-te-table-select="vm.selectPlacements($selection)">
+    <table class="table-condensed placements-table">
+        <tr data-ng-repeat="placement in $data">
+            <td data-header-class="'site-column'"
+                data-title="'global.site' | translate"
+                data-searchable="true"
+                data-sortable="'siteName'">
+                <span title="{{placement.siteName}}">{{placement.siteName}}</span>
+            </td>
+            <td data-header-class="'placement-column'"
+                data-title="'global.placement' | translate"
+                data-searchable="true"
+                data-sortable="'placementName'">
+                <span title="{{placement.placementName}}">{{placement.placementName}}</span>
+            </td>
+            <td data-header-class="'placement-id-column'"
+                data-title="'placement.plcmtId' | translate"
+                data-searchable="true"
+                data-sortable="'placementId'">
+                <span title="{{placement.placementId}}">{{placement.placementId}}</span>
+            </td>
+            <td data-header-class="'size-column'"
+                data-title="'global.size' | translate"
+                data-searchable="true"
+                data-sortable="'sizeName'">
+                <span title="{{placement.sizeName}}">{{placement.sizeName}}</span>
+            </td>
+        </tr>
+    </table>
+</te-table>

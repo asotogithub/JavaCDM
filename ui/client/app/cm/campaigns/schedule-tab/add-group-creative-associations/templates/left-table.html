@@ -1,0 +1,29 @@
+<span>{{'schedule.availableCreative' | translate}}:</span>
+<te-table data-model="inputModel"
+          data-empty-message="'global.listEmpty' | translate"
+          data-te-table-select="makeSelectionInputModel($selection)"
+          data-te-table-filter="filteredDataInputModel($filtered)"
+          data-selection-mode="MULTI"
+          data-page-size="{{defaultPagerSize}}">
+    <table>
+        <tr class="actionable-row" data-ng-repeat="object in $data">
+            <td data-title="'global.alias' | translate"
+                data-searchable="true"
+                data-sortable="'creativeAlias'"
+                class="wrap-text-td column-width-55">
+                {{object.creativeAlias}}
+            </td>
+            <td data-title="'global.group' | translate"
+                data-searchable="true"
+                data-sortable="'creativeGroupName'"
+                class="wrap-text-td column-width-25">
+                {{object.creativeGroupName}}
+            </td>
+            <td data-title="'global.size' | translate"
+                data-searchable="true"
+                data-sortable="'sizeName'">
+                <span title="{{object.sizeName}}">{{object.sizeName}}</span>
+            </td>
+        </tr>
+    </table>
+</te-table>

@@ -1,0 +1,79 @@
+<vmap:VMAP xmlns:vmap="http://www.iab.net/vmap-1.0" version="1.0">
+  <vmap:AdBreak breakType="linear" breakId="mypre" timeOffset="start">
+    <vmap:AdSource allowMultipleAds="true" followRedirects="true" id="1">
+      <vmap:VASTAdData>
+        <VAST version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="oxml.xsd">
+          <Ad id="115571748">
+            <InLine>
+              <AdSystem version="2.0 alpha">Atlas</AdSystem>
+              <AdTitle>Unknown</AdTitle>
+              <Description>Unknown</Description>
+              <Survey></Survey>
+              <Error></Error>
+              <Impression id="Atlas"><![CDATA[http://view.atdmt.com/000/sview/115571748/direct;ai.201582527;vt.2/01/634364885739970673]]></Impression>
+              <Creatives>
+                <Creative id="video" sequence="0" AdID=""> 
+                  <Linear>
+                    <Duration>00:00:32</Duration>
+                    <MediaFiles>
+                      <MediaFile apiFramework="Windows Media" id="windows_progressive_200" maintainAspectRatio="true" scaleable="true"  delivery="progressive" bitrate="200" width="400" height="300" type="video/mp4">
+                        <![CDATA[https://truadvertiser.trueffect.com/video/SampleVideo_1080x720_1mb.mp4]]>
+                      </MediaFile>
+                    </MediaFiles>
+                  </Linear>
+                </Creative>
+              </Creatives>
+            </InLine>
+          </Ad>
+        </VAST>
+      </vmap:VASTAdData>
+    </vmap:AdSource>
+    <vmap:TrackingEvents>
+      <vmap:Tracking event="breakStart">http://server.com/breakstart</vmap:Tracking>
+      <vmap:Tracking event="breakEnd">http://server.com/breakend</vmap:Tracking>
+      <vmap:Tracking event="breakEnd">http://server.com/breakend2</vmap:Tracking>
+      <vmap:Tracking event="error">http://server.com/error?[ERRORCODE]</vmap:Tracking>
+    </vmap:TrackingEvents>
+  </vmap:AdBreak>
+  <vmap:AdBreak breakType="linear" breakId="myid" timeOffset="00:10:23.125">
+    <vmap:AdSource allowMultipleAds="true" followRedirects="true" id="2">
+      <vmap:VASTAdData>
+        <VAST version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="oxml.xsd">
+          <Ad id="115571748">
+            <InLine>
+              <AdSystem version="2.0 alpha">Atlas</AdSystem>
+              <AdTitle>Unknown</AdTitle>
+              <Description>Unknown</Description>
+              <Survey></Survey>
+              <Error></Error>
+              <Impression id="Atlas"><![CDATA[http://view.atdmt.com/000/sview/115571748/direct;ai.201582527;vt.2/01/634364885739970673]]></Impression>
+              <Creatives>
+                <Creative id="video" sequence="0" AdID=""> 
+                  <Linear>
+                    <Duration>00:00:32</Duration>
+                    <MediaFiles>
+                      <MediaFile apiFramework="Windows Media" id="windows_progressive_200" maintainAspectRatio="true" scaleable="true"  delivery="progressive" bitrate="200" width="400" height="300" type="video/mp4-wmv">
+                        <![CDATA[https://truadvertiser.trueffect.com/video/SampleVideo_1080x720_1mb.mp4]]>
+                      </MediaFile>
+                    </MediaFiles>
+                  </Linear>
+                </Creative>
+              </Creatives>
+            </InLine>
+          </Ad>
+        </VAST>
+      </vmap:VASTAdData>
+    </vmap:AdSource>
+    <vmap:TrackingEvents>
+      <vmap:Tracking event="breakStart">http://server.com/breakstart</vmap:Tracking>
+    </vmap:TrackingEvents>
+  </vmap:AdBreak>
+  <vmap:AdBreak breakType="linear" breakId="mypost" timeOffset="end">
+    <vmap:AdSource allowMultipleAds="true" followRedirects="true" id="3">
+    <vmap:AdTagURI>http://server.com/vast.xml</vmap:AdTagURI>
+    </vmap:AdSource>
+    <vmap:TrackingEvents>
+      <vmap:Tracking event="breakStart">http://server.com/breakstart</vmap:Tracking>
+    </vmap:TrackingEvents>
+  </vmap:AdBreak>
+</vmap:VMAP>

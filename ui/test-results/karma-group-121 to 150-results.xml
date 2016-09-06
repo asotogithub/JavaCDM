@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="PhantomJS 1.9.8 (Windows 8)" package="(Test Files 121 to 150)" timestamp="2016-08-22T17:04:15" id="0" hostname="ascbomvillarroe" tests="237" errors="0" failures="0" time="9.256">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34"/>
+    </properties>
+    <testcase name="should render add - search - filters" time="0.129" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Directive: te-table-ping Directive Table Ping rendering"/>
+    <testcase name="Should create an instance of the controller." time="0.034" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Controller: UploadCreativeController"/>
+    <testcase name="Should delete all creative from a list." time="0.017" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Controller: UploadCreativeController"/>
+    <testcase name="Should delete a creative from list." time="0.018" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Controller: UploadCreativeController"/>
+    <testcase name="should make hidden element visible" time="0.069" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Directive: uploadCreative"/>
+    <testcase name="should validate duplicate as invalid" time="0.03" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Directive: validateDuplicate validateDuplicate"/>
+    <testcase name="should input dates validated as valid" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Directive: validateDuplicate validateDuplicate"/>
+    <testcase name="should return formatted input if properly parsed" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Filter: daypartOption"/>
+    <testcase name="should return input if not properly parsed" time="0.039" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Filter: daypartOption"/>
+    <testcase name="should resolve promise with response.records[0].Dataset" time="0.032" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AdmService getADMDatasetConfigs() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AdmService getADMDatasetConfigs() on success"/>
+    <testcase name="should show generic error dialog" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AdmService getADMDatasetConfigs() on failure"/>
+    <testcase name="should reject promise" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AdmService getADMDatasetConfigs() on failure"/>
+    <testcase name="should resolve promise with dataObject" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AdmService getAdmDetails() on success"/>
+    <testcase name="should show generic error dialog" time="0.053" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AdmService getAdmDetails() on failure"/>
+    <testcase name="should reject promise" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AdmService getAdmDetails() on failure"/>
+    <testcase name="should update data set configuration" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AdmService updateAdmDetails()"/>
+    <testcase name="should get all advertisers" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Advertiser getList() on success"/>
+    <testcase name="should show generic error dialog" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Advertiser getList() on failure"/>
+    <testcase name="should reject promise" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Advertiser getList() on failure"/>
+    <testcase name="Should get a list of records with trafficking users" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getUsersTrafficking() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.059" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getUsersTrafficking() on success"/>
+    <testcase name="should show generic error dialog" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getUsersTrafficking() on failure"/>
+    <testcase name="should reject promise" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getUsersTrafficking() on failure"/>
+    <testcase name="Should get a list of tag injections" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getHTMLTagInjections() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getHTMLTagInjections() on success"/>
+    <testcase name="should show generic error dialog" time="0.029" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getHTMLTagInjections() on failure"/>
+    <testcase name="should reject promise" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getHTMLTagInjections() on failure"/>
+    <testcase name="should get all tags associations" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getHtmlInjectionTagAssociation() on success"/>
+    <testcase name="should show generic error dialog" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getHtmlInjectionTagAssociation() on failure"/>
+    <testcase name="should reject promise" time="0.074" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService getHtmlInjectionTagAssociation() on failure"/>
+    <testcase name="should create new tracking-tag" time="0.035" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService saveTrackingTag()"/>
+    <testcase name="should bulk save tag associations" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService bulkSaveHtmlInjectionTagAssociations()"/>
+    <testcase name="should show generic error dialog" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService bulkSaveHtmlInjectionTagAssociations() on failure"/>
+    <testcase name="should reject promise" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService bulkSaveHtmlInjectionTagAssociations() on failure"/>
+    <testcase name="should resolve promise with response.records[0].PlacementView" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService searchPlacementView() on success"/>
+    <testcase name="should show generic error dialog" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService searchPlacementView() on failure"/>
+    <testcase name="should reject promise" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AgencyService searchPlacementView() on failure"/>
+    <testcase name="Authentication service initialize correctly." time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: authentication"/>
+    <testcase name="should invoke AuthenticationService.clear()" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: authentication"/>
+    <testcase name="Token correctly set" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: authentication"/>
+    <testcase name="should get a placements list based on the Brand id" time="0.041" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: PlacementService getPlacement()"/>
+    <testcase name="should return the IOs status list" time="0.096" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsUtilService getIOStatusList()"/>
+    <testcase name="should $translate status name" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsUtilService getStatusName()"/>
+    <testcase name="should process isActiveDisplay and resolve promise with response.records[0].CampaignDTO" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getList() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getList() on success"/>
+    <testcase name="should show generic error dialog" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getList() on failure"/>
+    <testcase name="should reject promise" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getList() on failure"/>
+    <testcase name="should resolve promise with campaign" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCampaign() on success"/>
+    <testcase name="should show generic error dialog" time="0.038" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCampaign() on failure"/>
+    <testcase name="should reject promise" time="0.033" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCampaign() on failure"/>
+    <testcase name="should resolve promise with campaign details" time="0.03" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCampaignDetails() on success"/>
+    <testcase name="should show generic error dialog" time="0.032" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCampaignDetails() on failure"/>
+    <testcase name="should reject promise" time="0.032" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCampaignDetails() on failure"/>
+    <testcase name="should update campaign details" time="0.032" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService updateCampaignDetails()"/>
+    <testcase name="should resolve promise with response.records[0].Creative" time="0.035" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreatives() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.035" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreatives() on success"/>
+    <testcase name="should show generic error dialog" time="0.046" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreatives() on failure"/>
+    <testcase name="should reject promise" time="0.121" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreatives() on failure"/>
+    <testcase name="should resolve promise with response.records[0].CreativeGroupDtoForCampaigns" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeGroups() on success"/>
+    <testcase name="should return null for priority if the creativeGroup.name is Default" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeGroups() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeGroups() on success"/>
+    <testcase name="should show generic error dialog" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeGroups() on failure"/>
+    <testcase name="should reject promise" time="0.033" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeGroups() on failure"/>
+    <testcase name="should create new campaign with its details" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService saveCampaignDetails()"/>
+    <testcase name="upload a file for a new creative" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService uploadCreative()"/>
+    <testcase name="should roll up key metrics" time="0.019" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService reduceMetricsData()"/>
+    <testcase name="should resolve promise with response.records[0].PackagePlacementView" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackagePlacements() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackagePlacements() on success"/>
+    <testcase name="should resolve promise with empty array when no records in response" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackagePlacements() on success"/>
+    <testcase name="should show generic error dialog" time="0.035" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackagePlacements() on failure"/>
+    <testcase name="should reject promise" time="0.039" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackagePlacements() on failure"/>
+    <testcase name="should resolve promise with response.records[0].CreativeGroupCreativeView" time="0.053" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeGroupCreatives()"/>
+    <testcase name="should resolve promise with response.records[0].Placement" time="0.042" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPlacements() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.04" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPlacements() on success"/>
+    <testcase name="should resolve promise with empty array when no records in response" time="0.036" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPlacements() on success"/>
+    <testcase name="should show generic error dialog" time="0.04" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPlacements() on failure"/>
+    <testcase name="should reject promise" time="0.04" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPlacements() on failure"/>
+    <testcase name="should resolve promise with creative insertions" time="0.16" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeInsertions()"/>
+    <testcase name="should resolve promise with a list of creative insertions according to parameters" time="0.029" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeInsertions()"/>
+    <testcase name="should resolve promise with a list of placements according to parameters" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getCreativeInsertions()"/>
+    <testcase name="should resolve promise with matching results" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService searchCreativeInsertions()"/>
+    <testcase name="should return an empty object when there are no matches" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService searchCreativeInsertions()"/>
+    <testcase name="should resolve promise with search results within sent id&apos;s scope" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService searchCreativeInsertions()"/>
+    <testcase name="should make a bulk save for a new Publisher, Site, Section and Size" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService bulkSaveSiteSectionSize()"/>
+    <testcase name="should make a bulk save even though there is a duplicate name already in the DB" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService bulkSaveSiteSectionSize()"/>
+    <testcase name="should resolve promise with a file" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService exportResource() on success"/>
+    <testcase name="should show generic error dialog" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService exportResource() on failure"/>
+    <testcase name="should reject promise" time="0.033" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService exportResource() on failure"/>
+    <testcase name="import a file for Shedule" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService importResource()"/>
+    <testcase name="should resolve the promise with a file" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService exportIssuesResource() on success"/>
+    <testcase name="should show generic error dialog" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService exportIssuesResource() on failure"/>
+    <testcase name="should reject promise" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService exportIssuesResource() on failure"/>
+    <testcase name="should resolve promise with campaign" time="0.034" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService exportIssuesResource() getSiteContacts() on success"/>
+    <testcase name="should associate creative with placement" time="0.036" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService exportIssuesResource() bulkUpdate()"/>
+    <testcase name="should resolve promise with response.records[0].Package" time="0.039" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackageList() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.055" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackageList() on success"/>
+    <testcase name="should show generic error dialog" time="0.052" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackageList() on failure"/>
+    <testcase name="should reject promise" time="0.047" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CampaignsService getPackageList() on failure"/>
+    <testcase name="should return true for single input rule and valid value" time="0.036" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService numberValidation() for rule without multiple options"/>
+    <testcase name="should return true for single input rule and valid single value" time="0.039" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService numberValidation() for rule with multiple options"/>
+    <testcase name="should return true for single input rule and valid multiple values" time="0.036" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService numberValidation() for rule with multiple options"/>
+    <testcase name="should return true for single input rule and valid value" time="0.048" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService numberRangeValidation() for rule without multiple options"/>
+    <testcase name="should return true for single input rule and valid single value" time="0.041" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService numberRangeValidation() for rule with multiple options"/>
+    <testcase name="should return true for single input rule and valid multiple values" time="0.037" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService numberRangeValidation() for rule with multiple options"/>
+    <testcase name="should return false for single input rule and invalid single value" time="0.038" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService numberRangeValidation() for rule with multiple options"/>
+    <testcase name="should return false for single input rule and at least one invalid of multiple values" time="0.188" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService numberRangeValidation() for rule with multiple options"/>
+    <testcase name="should return an empty list when cookie domain id is not set" time="0.033" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService getCookies()"/>
+    <testcase name="should map cookie types correctly" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CookieDomainsService getCookies()"/>
+    <testcase name="should return the rate type list " time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should return the default rate type along with its translation string" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should calculate the inventory value for CPM rate type " time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should calculate the inventory value for CPC rate type " time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should calculate the inventory value for CPA rate type " time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should calculate the inventory value for FLT rate type " time="0.02" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should calculate the inventory value for CPL rate type " time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should calculate the Net Ad Spend based on Gross Ad Spend and Margin" time="0.02" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should calculate the Net Rate based on Gross Rate and Margin " time="0.03" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: costUtil Cost utils"/>
+    <testcase name="should verify if a creative type is a XML type" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeUtilService"/>
+    <testcase name="should verify if a creative type is a Video Template type" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeUtilService"/>
+    <testcase name="should verify if a creative type is a text" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeUtilService"/>
+    <testcase name="should verify if a creative has clickthrough by its type" time="0.019" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeUtilService"/>
+    <testcase name="should display a popup listing creatives with duplicate alias" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeUtilService"/>
+    <testcase name="should delete one creative with a given id" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService deleteCreative() on success"/>
+    <testcase name="should fail attempting to delete one creative with a given id" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService deleteCreative() on failure"/>
+    <testcase name="should get hasSchedules response" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService hasSchedule() on success"/>
+    <testcase name="should fail attempting to get hasSchedules" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService hasSchedule() on failure"/>
+    <testcase name="should get a creative based on the given id" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreative()"/>
+    <testcase name="should get an error due a request of a creative with a wrong id" time="0.05" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreative()"/>
+    <testcase name="should get a creative file based on the given id" time="0.045" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreativeFile()"/>
+    <testcase name="should get an error due a request of a creative that has no file related" time="0.036" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreativeFile()"/>
+    <testcase name="should send an update request" time="0.038" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreativeFile()"/>
+    <testcase name="should get a creative template file based on the given id" time="0.04" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreativeTemplateFile()"/>
+    <testcase name="should get an error due a request of a creative that has no file related" time="0.04" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreativeTemplateFile()"/>
+    <testcase name="should get an array of all unassociated Creative based on CampaignId and CreativeGroupId" time="0.051" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreativeNotAssociatedByCampaignAndGroup()"/>
+    <testcase name="should get number of associations" time="0.051" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getCreativeAssociationsCount()"/>
+    <testcase name="should get an array of all schedules associated to creative" time="0.043" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeService getScheduleByCreative()"/>
+    <testcase name="should set enablePriority to 0 if priority is 0" time="0.047" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService getCreativeGroup()"/>
+    <testcase name="should set enablePriority to 1 if priority is not 0" time="0.045" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService getCreativeGroup()"/>
+    <testcase name="should set originalName" time="0.049" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService getCreativeGroup()"/>
+    <testcase name="should format geoTargets" time="0.066" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService getCreativeGroup()"/>
+    <testcase name="should show generic error dialog" time="0.055" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService getCreativeGroup() on failure"/>
+    <testcase name="should reject promise" time="0.048" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService getCreativeGroup() on failure"/>
+    <testcase name="should PUT w/ priority adjusted up to min" time="0.05" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ priority adjusted down to max" time="0.049" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ priority coerced to a number" time="0.061" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/o priority if enablePriority is disabled" time="0.064" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/o priority if isDefault is enabled" time="0.235" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ frequencyCap adjusted up to min" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ frequencyCap adjusted down to max" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ frequencyCap coerced to a number" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ frequencyCapWindow adjusted up to min" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ frequencyCapWindow adjusted down to max" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ frequencyCapWindow coerced to a number" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ weight adjusted up to min" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ weight adjusted down to max" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ weight coerced to a number" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ impressionCap adjusted up to 0" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ impressionCap coerced to a number" time="0.034" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/o originalName" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should PUT w/ formatted geoTargets" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should format response w/ enablePriority set to 0 if priority is 0" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should format response w/ enablePriority set to 1 if priority is not 0" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService updateCreativeGroup()"/>
+    <testcase name="should resolve promise with response.records[0].CreativeGroupCreative" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService getCreativeList()"/>
+    <testcase name="should wrap single record response in an array" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService getCreativeList()"/>
+    <testcase name="should DELETE creative group" time="0.021" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService removeCreativeGroup()"/>
+    <testcase name="should DELETE creative group with recursiveDelete" time="0.022" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService forceRemoveCreativeGroup()"/>
+    <testcase name="should POST creative group" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService saveCreativeGroup()"/>
+    <testcase name="should associate creatives with creative-groups" time="0.036" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService createAssociations()"/>
+    <testcase name="should reject promise" time="0.035" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService createAssociations() on failure"/>
+    <testcase name="should get a CreativeGroups array based on CampaignId and Name criteria" time="0.031" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeGroupService searchByCampaignAndName()"/>
+    <testcase name="should bulk update a set of creatives and creativeGroups" time="0.03" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: CreativeInsertionService bulkUpdate()"/>
+    <testcase name="should resolve promise with dataObject" time="0.038" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DatasetService getDatasetMetrics() on success"/>
+    <testcase name="should show generic error dialog" time="0.039" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DatasetService getDatasetMetrics() on failure"/>
+    <testcase name="should reject promise" time="0.044" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DatasetService getDatasetMetrics() on failure"/>
+    <testcase name="should format using an input and output formats" time="0.054" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService customFormat()"/>
+    <testcase name="should return null for invalid parameters" time="0.048" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService customFormat()"/>
+    <testcase name="should format a text date using a default pattern" time="0.049" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService format()"/>
+    <testcase name="should format a text date using a pattern" time="0.046" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService format()"/>
+    <testcase name="should return null for invalid dates" time="0.051" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService format()"/>
+    <testcase name="should format a date object using a default pattern" time="0.059" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService formatDate()"/>
+    <testcase name="should format a date object using a pattern" time="0.056" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService formatDate()"/>
+    <testcase name="should return null for invalid dates" time="0.047" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService formatDate()"/>
+    <testcase name="should return a date from an input date(using input string)" time="0.048" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService getDate()"/>
+    <testcase name="should return a date from an input date(using input date)" time="0.047" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService getDate()"/>
+    <testcase name="should return current date" time="0.062" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService getDate()"/>
+    <testcase name="should return a date from text" time="0.065" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService parse()"/>
+    <testcase name="should return null for invalid text" time="0.048" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService parse()"/>
+    <testcase name="should set hour to 00:00:00" time="0.053" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService getStartDate()"/>
+    <testcase name="should set hour to 23:59:59" time="0.051" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService getEndDate()"/>
+    <testcase name="should compare if a date1 is before than date2" time="0.064" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService isBefore()"/>
+    <testcase name="should compare if first date time is before than second date time" time="0.057" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService isBefore()"/>
+    <testcase name="should compare if a date1 is before or equal to date2" time="0.054" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService isBeforeOrEqual()"/>
+    <testcase name="should compare if first date time is before or equal to second date time" time="0.052" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService isBeforeOrEqual()"/>
+    <testcase name="should compare if a date1 is equal to date2" time="0.053" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService isEqual()"/>
+    <testcase name="should compare if first date time is equal to second date time" time="0.067" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: DateTimeService isEqual()"/>
+    <testcase name="should get a single message as string" time="0.059" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: ErrorHandlingService"/>
+    <testcase name="should get object for all Events for the site measurement with id 9046516" time="0.327" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event getEvents() on success"/>
+    <testcase name="should show generic error dialog" time="0.033" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event getEvents() on failure"/>
+    <testcase name="should reject promise" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event getEvents() on failure"/>
+    <testcase name="should get details and pings for the event with id 9046516" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event get Pings on success"/>
+    <testcase name="should show generic error dialog" time="0.031" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event get Pings on failure"/>
+    <testcase name="should update event with id 9046516" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event update Event on success"/>
+    <testcase name="should show generic error dialog" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event update Event on failure"/>
+    <testcase name="should check if event name is unique" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event Check if event name is unique on success"/>
+    <testcase name="should show generic error dialog" time="0.029" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event Check if event name is unique on failure"/>
+    <testcase name="should save an event" time="0.035" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event Save event on success"/>
+    <testcase name="should show generic error dialog" time="0.031" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: Event Save event on failure"/>
+    <testcase name="should get list of countries" time="0.028" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: GeoTargetingService getCountries()"/>
+    <testcase name="should get list of states" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: GeoTargetingService getStates()"/>
+    <testcase name="should get list of DMAs" time="0.023" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: GeoTargetingService getDMAs()"/>
+    <testcase name="should get list of zips" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: GeoTargetingService getZips()"/>
+    <testcase name="should set and get the pending changes state" time="0.024" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderUtilService setHasPendingChanges()/getHasPendingChanges()"/>
+    <testcase name="should resolve promise with response.records[0].InsertionOrder" time="0.026" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getList() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getList() on success"/>
+    <testcase name="should show generic error dialog" time="0.027" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getList() on failure"/>
+    <testcase name="should reject promise" time="0.04" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getList() on failure"/>
+    <testcase name="should get a Insertion Order based on the given id" time="0.032" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getInsertionOrder()"/>
+    <testcase name="should get an error due a request of a Insertion Order with a wrong id" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getInsertionOrder()"/>
+    <testcase name="should resolve promise with response.records[0].PackagePlacementView" time="0.029" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getPackagePlacements() on success"/>
+    <testcase name="should wrap single record response in an array" time="0.025" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getPackagePlacements() on success"/>
+    <testcase name="should show generic error dialog" time="0.033" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getPackagePlacements() on failure"/>
+    <testcase name="should reject promise" time="0.037" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService getPackagePlacements() on failure"/>
+    <testcase name="should PUT all data" time="0.034" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService updateInsertionOrder()"/>
+    <testcase name="should create a new Insertion Order" time="0.045" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService saveInsertionOrder()"/>
+    <testcase name="should save the placements under Insertion Order" time="0.049" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: InsertionOrderService saveBulkPackagePlacement()"/>
+    <testcase name="should go to login page with the correct url request" time="0.043" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AuthInterceptor"/>
+    <testcase name="should redirect to login page when the request is wrong" time="0.046" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AuthInterceptor"/>
+    <testcase name="should redirect to forbidden page when response status is 403" time="0.039" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AuthInterceptor"/>
+    <testcase name="should refresh the token and be redirected to login page" time="0.051" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: AuthInterceptor"/>
+    <testcase name="should resolve promise with campaign" time="0.073" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: MediaBuyService getMediaBuyByCampaign() on success"/>
+    <testcase name="should show generic error dialog" time="0.067" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: MediaBuyService getMediaBuyByCampaign() on failure"/>
+    <testcase name="should reject promise" time="0.059" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: MediaBuyService getMediaBuyByCampaign() on failure"/>
+    <testcase name="should set and get the pending changes state" time="0.047" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: PackageUtilService setHasPendingChanges()/getHasPendingChanges()"/>
+    <testcase name="should update the package" time="0.079" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: PackageService updatePackage()"/>
+    <testcase name="should show generic error dialog" time="0.072" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: PackageService updatePackage() on failure"/>
+    <testcase name="should reject promise" time="0.065" classname="(Test Files 121 to 150) PhantomJS 1.9.8 (Windows 8).Service: PackageService updatePackage() on failure"/>
+    <system-out><![CDATA[
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

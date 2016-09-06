@@ -1,0 +1,117 @@
+<script type="text/ng-template" id="trafficHeader.html">
+   {{'global.trafficking' | translate}}  <i data-toggle="tooltip" title="{{'tags.tooltip.traffic' | translate}}" class="fa fa-question-circle"></i>
+</script>
+<script type="text/ng-template" id="statusHeader.html">
+    {{'global.status' | translate}}  <i data-toggle="tooltip" title="{{'tags.tooltip.status' | translate}}" class="fa fa-question-circle"></i>
+</script>
+<div data-cg-busy="vmTagPlacement.promise">
+    <h3 id="tagsHeader">{{'global.tags' | translate}}</h3>
+    <div>
+        <ul class="nav nav-tabs border-bottom-none margin-bottom5">
+            <li id="selectorBrand" class="selectors col-md-2">
+                <select id="brandSelect"
+                        name="brandSelect"
+                        class="form-control"
+                        data-ng-model="vmTagPlacement.filtersParents.brand"
+                        data-ng-options="brand.name for brand in vmTagPlacement.listBrands track by brand.id"
+                        data-ng-change="vmTagPlacement.selectBrand(vmTagPlacement.filtersParents.brand)"
+                        data-ng-disabled="vmTagPlacement.filtersParents.advertiser.id < 0"
+                        required>
+                </select>
+            </li>
+            <li id="selectorAdvertiser" class="selectors col-md-2">
+                <select id="advertiserSelect"
+                        name="advertiserSelect"
+                        class="form-control"
+                        data-ng-model="vmTagPlacement.filtersParents.advertiser"
+                        data-ng-options="advertiser.name for advertiser in vmTagPlacement.listAdvertisers track by advertiser.id"
+                        data-ng-change="vmTagPlacement.selectAdvertiser(vmTagPlacement.filtersParents.advertiser)"
+                        required>
+                </select>
+            </li>
+        </ul>
+    </div>
+    <te-table id="tagsPlacementsGrid"
+              data-empty-message="'global.listEmpty' | translate"
+              data-model="vmTagPlacement.placements"
+              data-te-table-select="vmTagPlacement.selectRows($selection)"
+              data-filter-values="vmTagPlacement.filterValues"
+              data-page-size="{{vmTagPlacement.pageSize}}"
+              data-on-counter-search="vmTagPlacement.onSearchCounter(counterSearch)"
+              data-selection-mode="MULTI">
+        <te-table-btns>
+            <te-table-edit-btn id="tagsPlacementEditBtnId"
+                               data-ng-if="vmTagPlacement.hasDetailsPermission"
+                               data-te-table-btn-click="vmTagPlacement.getAdTagsDetails($selection)"></te-table-edit-btn>
+        </te-table-btns>
+        <te-table-thirdly-btns class="thirdly-btns-position">
+            <legend-table class="btn-group" id="tagPlacementCounter" data-legend="vmTagPlacement.tagPlacementLegend"></legend-table>
+        </te-table-thirdly-btns>
+        <te-table-secondary-btns>
+            <dropdown-multicheckbox data-ng-repeat="option in vmTagPlacement.filterOption"
+                                    data-input-model="option.value"
+                                    data-output-model="vmTagPlacement.filterValues[$index].values"
+                                    data-events="vmTagPlacement.actionFilter[$index]"
+                                    data-title="option.text">
+            </dropdown-multicheckbox>
+            <button id="placementListSendBtn"
+                    class="btn"
+                    data-ng-disabled="vmTagPlacement.selectedRows.length == 0 || !vmTagPlacement.enableActivate"
+                    data-ng-click="vmTagPlacement.openSendAdTags()"
+                    data-ng-class="vmTagPlacement.selectedRows.length &&
+                    vmTagPlacement.enableActivate ? 'btn-success' : 'btn-default'">
+                {{'global.send' | translate}}
+            </button>
+        </te-table-secondary-btns>
+        <table class="tags-placement-grid">
+            <tr class="actionable-row" data-ng-repeat="placement in $data">
+                <td data-title="'global.placement' | translate"
+                    data-searchable="true"
+                    class="wrapped-text tag-placement-truncate-text-placement"
+                    data-sortable="'name'">
+                    {{placement.name}}
+                </td>
+                <td data-title="'global.site' | translate"
+                    data-searchable="true"
+                    class="wrapped-text tag-placement-truncate-text-site"
+                    data-sortable="'siteName'">
+                    {{placement.siteName}}
+                </td>
+                <td data-title="'global.section' | translate"
+                    data-searchable="true"
+                    class="text-center wrapped-text tag-placement-truncate-text-section"
+                    data-sortable="'siteSectionName'">
+                    {{placement.siteSectionName}}
+                </td>
+                <td data-title="'global.size' | translate"
+                    data-searchable="true"
+                    class="text-center"
+                    data-sortable="'sizeName'">
+                    {{placement.sizeName}}
+                </td>
+                <td data-title="'global.campaign' | translate"
+                    data-sortable="'campaignName'">
+                    {{placement.campaignName}}
+                </td>
+                <td data-title="'global.status' | translate" class="text-center"
+                    data-header="'statusHeader.html'"
+                    data-sortable="'status'">
+                    {{vmTagPlacement.getStatusName(placement.status) | translate}}
+                </td>
+                <td data-title="'global.trafficking' | translate" class="text-center"
+                    header="'trafficHeader.html'"
+                    data-sortable="'statusTraffic'">
+                    {{placement.statusTraffic}}
+                </td>
+            </tr>
+        </table>
+    </te-table>
+    <!--fly-out panel directive details Tag-->
+    <te-fly-out is-open="vmTagPlacement.isOpenflyout"
+                fly-out-model="vmTagPlacement.flyOutModel"
+                fly-out-default-state="vmTagPlacement.flyOutDefaultState"
+                template-content="'app/cm/tags/tag-placement-list/tag-details-fly-out/tag-details-fly-out.html'"
+                on-close-fly-out="vmTagPlacement.onCloseFlyout(params)"
+                class="position-details">
+    </te-fly-out>
+</div>

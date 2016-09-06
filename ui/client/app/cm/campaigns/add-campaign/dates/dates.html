@@ -1,0 +1,112 @@
+<div class="col-md-12 campaign-dates" data-ng-controller="AddCampaignDatesController as vm">
+    <div class="row">
+        <data-ng-form name="vm.datesForm">
+            <div class="col-md-4">
+                <div class="form-group" data-ng-class="{'has-error': vm.datesForm.startDate.$invalid}">
+                    <label for="startDate" class="control-label">{{ 'global.startDate' | translate }}</label>
+                    <p class="input-group input-date">
+                        <input type="text"
+                               id="startDate"
+                               name="startDate"
+                               data-datepicker-append-to-body="true"
+                               data-uib-datepicker-popup="{{vm.format}}"
+                               data-ng-model="vm.startDate"
+                               data-is-open="vm.startDateOpened"
+                               data-min-date="vm.minDate"
+                               data-datepicker-options="vm.dateOptions"
+                               data-close-text="{{ 'global.close' | translate }}"
+                               masked
+                               data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                               lower-than="{{vm.minDate}}"
+                               data-ng-blur="vm.updateDates()"
+                               class="form-control"
+                               required/>
+                              <span class="input-group-btn">
+                                 <button type="button" data-ng-click="vm.openStartDate($event)" class="btn btn-default">
+                                     <em class="fa fa-calendar"></em>
+                                 </button>
+                              </span>
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vm.datesForm.startDate.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vm.datesForm.startDate.$error.date">
+                        {{'validation.error.invalidDate' | translate}}
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vm.datesForm.startDate.$error.lowerThan">
+                        {{'campaign.date.error.initDate' | translate}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group" data-ng-class="{'has-error': vm.datesForm.endDate.$invalid}">
+                    <label for="endDate" class="control-label">{{ 'global.endDate' | translate }}</label>
+                    <p class="input-group input-date">
+                        <input type="text"
+                               id="endDate"
+                               name="endDate"
+                               data-datepicker-append-to-body="true"
+                               data-uib-datepicker-popup="{{vm.format}}"
+                               data-ng-model="vm.endDate"
+                               data-is-open="vm.endDateOpened"
+                               data-min-date="vm.startDate"
+                               data-datepicker-options="vm.dateOptions"
+                               data-close-text="{{ 'global.close' | translate }}"
+                               masked
+                               data-inputmask="'alias': 'mm/dd/yyyy', 'placeholder': 'MM/DD/YYYY'"
+                               data-ng-blur="vm.updateDates()"
+                               lower-than="{{vm.startDate}}"
+                               class="form-control"
+                               required/>
+                              <span class="input-group-btn">
+                                 <button type="button" data-ng-click="vm.openEndDate($event)" class="btn btn-default">
+                                     <em class="fa fa-calendar"></em>
+                                 </button>
+                              </span>
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vm.datesForm.endDate.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vm.datesForm.endDate.$error.date">
+                        {{'validation.error.invalidDate' | translate}}
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vm.datesForm.endDate.$error.lowerThan">
+                        {{'campaign.date.error.endDate' | translate}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group" data-ng-class="{'has-error': vm.datesForm.budget.$dirty && vm.datesForm.budget.$invalid}">
+                    <label for="budget" class="control-label">{{'global.budget' | translate}}</label>
+                    <p class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input class="form-control input-budget"
+                               id="budget"
+                               name="budget"
+                               data-ng-model="vm.budget"
+                               data-ng-blur="vm.validateBudget(vm.budget)"
+                               masked
+                               data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'placeholder': '0'"
+                               required/>
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vm.datesForm.budget.$dirty && vm.datesForm.budget.$error.required">
+                        {{'validation.error.required' | translate}}
+                    </p>
+                    <p class="help-block"
+                       data-ng-if="vm.datesForm.budget.$dirty && vm.datesForm.budget.$error.budgetInvalid">
+                        {{'campaign.budget.error' | translate}}
+                    </p>
+                </div>
+            </div>
+        </data-ng-form>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div data-ng-form name="extededPropertiesForm" class="form-horizontal container-fluid container-extended-properties" novalidate>
+    <div data-ng-repeat="item in vmEdit.extendedPropertiesArray">
+        <div class="form-group"
+             data-ng-class="{'has-error': extededPropertiesForm[item.name].$dirty && extededPropertiesForm[item.name].$invalid}">
+            <label class="col-sm-3 control-label">{{'creative.extProp'| translate}} {{$index + 1}}:</label>
+
+            <div class="col-sm-6">
+                <input class="form-control"
+                       id="{{item.name}}"
+                       name="{{item.name}}"
+                       type="text"
+                       data-ng-model="item.value"
+                       data-maxlength="{{vmEdit.maxLength}}"/>
+
+                <p id="extProp1MaxLength" class="help-block"
+                   data-ng-if="extededPropertiesForm[item.name].$dirty && extededPropertiesForm[item.name].$error.maxlength"
+                   translate="validation.error.maxlength" translate-values="{length: vmEdit.maxLength}">
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

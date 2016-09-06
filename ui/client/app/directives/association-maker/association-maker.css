@@ -1,0 +1,74 @@
+.association-panel {
+    margin-bottom: 16px;
+}
+
+.association-panel .assoc-search-box {
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 0 0 #000;
+    color: #555;
+    display: block;
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857143;
+    margin-bottom: 5px;
+    padding: 6px 12px;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    width: 100%;
+}
+
+.association-panel .assoc-search-box input {
+    border: none;
+    padding-left: 5px;
+    width: 90%;
+}
+
+.association-panel .panel-assoc {
+    float: left;
+    font-size: 12px;
+    width: 46%;
+}
+
+.association-panel .panel-assoc table {
+    margin-bottom: 0px;
+}
+
+.association-panel .panel-assoc table tbody tr td {
+    text-align: left;
+}
+
+.association-panel .panel-assoc table tbody tr:first-child td {
+    border-top: none;
+}
+
+.association-panel .panel-assoc .no-items {
+    background-color: #ffffff;
+    min-height: 198px;
+    text-align: center;
+}
+
+.association-panel .center-btns {
+    width: 3.304%;
+    float: left;
+    margin: 57px 18px;
+}
+
+.association-panel .asso-group-btns {
+    margin-top: 64px;
+}
+
+.association-panel .asso-group-btns div {
+    margin-top: 3px;
+}
+
+.association-panel .ng-table-pager {
+    margin-top: 10px;
+}
+
+.clear {
+    clear: both;
+}

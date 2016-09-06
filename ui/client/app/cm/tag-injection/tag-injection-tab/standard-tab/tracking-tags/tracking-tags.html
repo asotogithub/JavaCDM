@@ -1,0 +1,29 @@
+<div data-ng-controller="TrackingTagsController as vmTrackingTags">
+    <te-table data-collapse-search="true"
+              data-empty-message="'global.listEmpty' | translate"
+              data-model="vmTIStandard.trackingTags"
+              data-page-size="{{vmTrackingTags.pageSize}}"
+              data-selection-mode="MULTI"
+              data-te-table-select="vmTrackingTags.selectRows($selection)"
+              data-selection-mode="MULTI"
+              id="trackingTagList">
+        <te-table-btns>
+            <te-table-add-btn data-te-table-btn-click="vmTrackingTags.addTrackingTag()"></te-table-add-btn>
+            <te-table-remove-btn data-te-table-btn-click="vmTrackingTags.deleteTrackingTag($selection)"></te-table-remove-btn>
+            <te-table-edit-btn data-ng-click="vmTrackingTags.editTrackingTag()"></te-table-edit-btn>
+        </te-table-btns>
+        <table>
+            <tr class="actionable-row" data-ng-repeat="trackingTag in $data">
+                <td data-drag="true"
+                    jqyoui-draggable="{index: {{$index}}, animate: true, placeholder: 'keep', onStart: 'vmTIStandard.onStart($index, $data)'}"
+                    data-jqyoui-options="{revert: 'invalid', helper: 'clone', refreshPositions: 'true'}"
+                    data-title="'global.trackingTags' | translate"
+                    data-searchable="true"
+                    data-sortable="'name'">
+                    {{trackingTag.name}}
+                </td>
+            </tr>
+        </table>
+    </te-table>
+</div>
+

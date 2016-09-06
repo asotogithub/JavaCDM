@@ -1,0 +1,17 @@
+.modal-close-btn {
+    background-color: white;
+    border-radius: 15px;
+    float: right;
+    left: 28px;
+    padding: 4px 8px;
+    position: relative;
+    top: -54px;
+}
+
+.modal-close-btn span {
+    color: black;
+}
+
+.upload-creative upload-creative form fieldset .upload {
+    margin-bottom: 20px;
+}

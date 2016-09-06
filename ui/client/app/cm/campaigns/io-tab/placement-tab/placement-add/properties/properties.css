@@ -1,0 +1,68 @@
+/*Apply To*/
+.placement-properties-grid > thead > tr > th > button.btn.btn-primary {
+    padding-top: 3px;
+    height: 30px;
+}
+
+/*Media Package*/
+.placement-properties-grid > thead > tr > th:nth-child(1) {
+    min-width: 130px;
+}
+
+/*Inventory*/
+.placement-properties-grid > thead > tr > th:nth-child(6) {
+    width: 130px;
+}
+
+/*Ad Spend*/
+.placement-properties-grid > thead > tr > th:nth-child(7) {
+    width: 130px;
+    min-width: 130px;
+}
+
+/*Rate*/
+.placement-properties-grid > thead > tr > th:nth-child(8) {
+    width: 120px;
+    min-width: 120px;
+}
+
+/*Rate Type*/
+.placement-properties-grid > thead > tr > th:nth-child(9) {
+    width: 97px;
+    min-width: 97px;
+}
+
+.placement-properties-grid > tbody > tr > td:nth-child(9) > div {
+    width: 85px;
+    min-width: 85px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.placement-properties-grid > thead > tr > th:nth-child(9) > div.select {
+    width: 85px;
+    min-width: 85px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Start and End Dates*/
+.placement-properties-grid > thead > tr > th:nth-child(10) {
+    width: 137px;
+    min-width: 137px;
+    max-width: 137px;
+}
+
+.placement-properties-grid > thead > tr > th:nth-child(11) {
+    width: 137px;
+    min-width: 137px;
+    max-width: 137px;
+}
+
+.column-max-width {
+    max-width: 450px;
+}
+
+.wrapper {
+    overflow-x: visible;
+}

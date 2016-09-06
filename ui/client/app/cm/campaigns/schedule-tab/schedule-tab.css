@@ -1,0 +1,75 @@
+.schedule-tab .association + .association {
+    margin-left: 10px;
+}
+
+.schedule-tab .association .fa {
+    margin-right: 5px;
+}
+
+.schedule-tab .clickthrough-urls {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.schedule-tab .clickthrough-urls > li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.schedule-tab .fa.creative {
+    color: #e90bd6;
+}
+
+.schedule-tab .fa.creative-group {
+    color: #f3ca06;
+}
+
+.schedule-tab .fa.placement {
+    color: #2f80e7;
+}
+
+.schedule-tab .fa.site {
+    color: #000000;
+}
+
+.schedule-tab .status-active {
+    color: #1e983b;
+}
+
+.schedule-tab .status-inactive {
+    color: #ec2121;
+}
+
+.schedule-tab .status-planning {
+    color: #f77600;
+}
+
+.schedule-tab .row.schedule-row {
+    margin-right: -13px;
+}
+
+.schedule-tab .row.schedule-row .te-tree-grid-toolbar .te-tree-grid-secondary-btns div.dropdown {
+    margin-right: -2px;
+}
+
+#bulk-dropdown-list {
+    min-width: 100px;
+}
+
+.schedule-tab .site-selected {
+    width: 76px;
+}
+
+.schedule-tab .placement-selected {
+    width: 117px;
+}
+
+.schedule-tab .group-selected {
+    width: 90px;
+}
+
+.schedule-tab .creative-selected {
+    width: 100px;
+}

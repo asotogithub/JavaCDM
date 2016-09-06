@@ -1,0 +1,25 @@
+<div data-ng-controller="GlobalValidationWarningController as vmValidation">
+    <p>
+        {{'media.import.globalValidationMessage.unableImport' | translate}}
+    </p>
+    <p>
+        <h4>
+            {{data.partialHTMLParams.message}}
+        </h4>
+    </p>
+    <p>
+        {{'media.import.globalValidationMessage.pleaseCorrect' | translate}}
+    </p>
+    <p>
+        <div class="global-validation-message-requirements">
+            {{'media.import.globalValidationMessage.note' | translate}}
+            <ul class="global-validation-list-requirements">
+                <li translate='media.import.globalValidationMessage.maximumRowsAllowed' translate-values='{rows: vmValidation.MAX_ROWS_IMPORT}'></li>
+                <li translate='media.import.globalValidationMessage.maximumFileSize' translate-values='{valueWithFormat: vmValidation.MAX_FILE_SIZE}'></li>
+                <li>{{'media.import.globalValidationMessage.fileTypeAllowed' | translate}}</li>
+                <li>{{'media.import.globalValidationMessage.columnsShouldExist' | translate}}</li>
+                <li>{{'media.import.globalValidationMessage.headersRightRow' | translate}}</li>
+            </ul>
+        </div>
+    </p>
+</div>

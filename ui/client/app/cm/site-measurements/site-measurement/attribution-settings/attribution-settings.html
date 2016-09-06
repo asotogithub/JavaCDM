@@ -1,0 +1,106 @@
+<div data-cg-busy="vm.model.promiseRequest">
+    <form name="vm.editForm" novalidate>
+        <div class="row">
+            <!-- LEFT SIDE -->
+            <div class="col-md-6">
+                <div class="col-md-2"></div>
+                <div class="col-md-10 text-center">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary"
+                               data-ng-click="vm.enableLeftSide()">{{'attributionSettings.overrideDefaultAttributionMethodology'|translate}}</button>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control"
+                                data-ng-model="vm.model.siteMeasurement.assocMethodView"
+                                data-ng-options="item.text | translate for item in vm.ATTRIBUTION_METHODOLOGY_OPTIONS track by item.id"
+                                data-ng-disabled="vm.leftSideDisabled"
+                                required>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <p class="content-background text-left">
+                            {{ 'attributionSettings.methodologiesLastClickContent' | translate }}<br>
+                            {{ 'attributionSettings.methodologiesLastTouchContent' | translate }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- RIGHT SIDE -->
+            <div class="col-md-6">
+                <div class="col-md-10">
+                    <div class="form-group text-center">
+                        <button type="button" class="btn btn-primary"
+                               data-ng-click="vm.enableRightSide()">{{ 'attributionSettings.overrideDefaultCampaignAttributionWindows'|translate }}</button>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <label>{{'global.click' | translate}}</label>
+                            </div>
+                            <div class="col-md-3" data-ng-class="{'has-error':vm.editForm.click.$invalid}">
+                                <input data-ng-disabled="vm.rightSideDisabled"
+                                       type="number"
+                                       min="{{ vm.ATTRIBUTION_SETTINGS.CLICK.MIN }}"
+                                       max="{{ vm.ATTRIBUTION_SETTINGS.CLICK.MAX }}"
+                                       class="form-control"
+                                       data-ng-model="vm.model.siteMeasurement.clWindowView"
+                                       name="click"
+                                       data-ng-required="true">
+
+                                <p class="help-block" data-ng-show="vm.editForm.click.$invalid">
+                                    <span data-ng-show="vm.editForm.click.$error.required">{{'validation.error.required' | translate}}</span>
+                                    <span data-ng-show="vm.editForm.click.$error.number">{{'validation.error.invalid' | translate}}</span>
+                                    <span data-ng-show="vm.editForm.click.$error.min">{{'validation.error.min' | translate}} {{ vm.ATTRIBUTION_SETTINGS.CLICK.MIN }}</span>
+                                    <span data-ng-show="vm.editForm.click.$error.max">{{'validation.error.max' | translate}} {{ vm.ATTRIBUTION_SETTINGS.CLICK.MAX }}</span>
+                                </p>
+                            </div>
+                            <div class="col-md-2">
+                                <label>{{'global.days' | translate}}</label>
+                            </div>
+                            <div class="col-md-1">
+                                <label>{{'global.view' | translate}}</label>
+                            </div>
+                            <div class="col-md-3" data-ng-class="{'has-error':vm.editForm.view.$invalid}">
+                                <input data-ng-disabled="vm.rightSideDisabled"
+                                       type="number"
+                                       class="form-control"
+                                       data-ng-model="vm.model.siteMeasurement.vtWindowView"
+                                       type="number"
+                                       class="form-control"
+                                       data-ng-model="vm.model.siteMeasurement.tvWindow"
+                                       min="{{ vm.ATTRIBUTION_SETTINGS.VIEW.MIN }}"
+                                       max="{{ vm.ATTRIBUTION_SETTINGS.VIEW.MAX }}"
+                                       name="view"
+                                       data-ng-required="true">
+
+                                <p class="help-block" data-ng-show="vm.editForm.view.$invalid">
+                                    <span data-ng-show="vm.editForm.view.$error.required">{{'validation.error.required' | translate}}</span>
+                                    <span data-ng-show="vm.editForm.view.$error.number">{{'validation.error.invalid' | translate}}</span>
+                                    <span data-ng-show="vm.editForm.view.$error.min">{{'validation.error.min' | translate}} {{ vm.ATTRIBUTION_SETTINGS.VIEW.MIN }}</span>
+                                    <span data-ng-show="vm.editForm.view.$error.max">{{'validation.error.max' | translate}} {{ vm.ATTRIBUTION_SETTINGS.VIEW.MAX }}</span>
+                                </p>
+                            </div>
+                            <div class="col-md-2">
+                                <label>{{'global.days' | translate}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-left">
+                        <p class="content-background">
+                            {{ 'attributionSettings.windowsContent' | translate }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default"
+                            data-ng-disabled="(vm.leftSideDisabled && vm.rightSideDisabled) || vm.editForm.$invalid"
+                            data-ng-click="vm.save(vm.model.siteMeasurement)">
+                        {{'global.save' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

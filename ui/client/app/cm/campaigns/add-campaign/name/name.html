@@ -1,0 +1,55 @@
+<div data-ng-controller="AddCampaignNameController as vm">
+    <div data-ng-form name="vm.nameForm" novalidate>
+        <fieldset>
+            <div>
+                <!-- CAMPAIGN NAME -->
+                <div class="col-xs-4">
+                    <div class="form-group" data-ng-class="{'has-error': vm.nameForm.name.$dirty && vm.nameForm.name.$invalid}">
+                        <label for="name" class="control-label">{{'campaign.name' | translate}}</label>
+                        <input id="name"
+                               class="form-control"
+                               name="name"
+                               type="text"
+                               data-ng-model="vmCampaign.campaign.name"
+                               maxlength="{{vm.maxLength}}"
+                               required/>
+                        <p class="help-block"
+                           data-ng-if="vm.nameForm.name.$dirty && vm.nameForm.name.$invalid">
+                            {{'validation.error.required' | translate}}
+                        </p>
+                    </div>
+                </div>
+                <!-- ADVERTISER -->
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="advertiserSelect" class="control-label">{{'global.advertiser' | translate}}:</label>
+                        <select id="advertiserSelect"
+                                name="advertiserSelect"
+                                class="form-control"
+                                data-ng-model="vmCampaign.campaign.advertiser"
+                                data-ng-options="advertiser.name for advertiser in vm.advertisers track by advertiser.id"
+                                data-ng-change="vm.setSelectedAdvertiser(vmCampaign.campaign.advertiser)"
+                                required>
+                            <option value="">{{'advertiser.selectAdvertiser' | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- BRAND -->
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="brandSelect" class="control-label">{{'global.brand' | translate}}:</label>
+                        <select id="brandSelect"
+                                name="brandSelect"
+                                class="form-control"
+                                data-ng-model="vmCampaign.campaign.brand"
+                                data-ng-options="brand.name for brand in vm.brands track by brand.id"
+                                data-ng-disabled="vmCampaign.campaign.advertiser == null"
+                                required>
+                            <option value="">{{'advertiser.selectBrand' | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

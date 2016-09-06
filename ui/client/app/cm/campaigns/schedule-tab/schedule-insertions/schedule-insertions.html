@@ -1,0 +1,327 @@
+<!--This is to allow load schedule-checkbox as a template from cache-->
+<script type="text/ng-template" id="schedule-checkbox-renderer.html">
+    <div class="checkbox c-checkbox customTreeGridColumnCheckbox">
+        <label>
+            <input data-row-key="{{vm.rowId}}"
+                   data-check-value="{{vm.checked}}"
+                   type="checkbox"
+                   class="customTreeGridCheckbox"
+                   {{vm.checked === true? 'checked="checked"': ''}}/>
+            <span class="fa fa-check"></span>
+        </label>
+    </div>
+</script>
+<script type="text/ng-template" id="schedule-checkbox-header-renderer.html">
+    <div id="customTreeGridHeaderCheckboxCheckedContainer" class="checkbox c-checkbox" style="{{vm.checkedStyle}}" data-row-key="{{vm.rowId}}">
+        <label>
+            <input id="customTreeGridHeaderCheckboxChecked"
+                   type="checkbox"
+                   checked="checked"/>
+            <span class="fa fa-check"></span>
+        </label>
+    </div>
+    <div id="customTreeGridHeaderCheckboxContainer" class="checkbox c-checkbox" style="{{vm.uncheckedStyle}}" data-row-key="{{vm.rowId}}">
+        <label>
+            <input id="customTreeGridHeaderCheckbox"
+                   type="checkbox"/>
+            <span class="fa fa-check"></span>
+        </label>
+    </div>
+</script>
+<script type="text/ng-template" id="schedule-checkbox-header-disabled-renderer.html">
+    <div id="customTreeGridHeaderCheckboxCheckedContainer" class="checkbox c-checkbox" style="{{vm.checkedStyle}}" data-row-key="{{vm.rowId}}">
+        <label>
+            <input id="customTreeGridHeaderCheckboxDisabledChecked"
+                   type="checkbox"
+                   checked="checked" disabled="disabled"/>
+            <span class="fa fa-check"></span>
+        </label>
+    </div>
+    <div id="customTreeGridHeaderCheckboxContainer" class="checkbox c-checkbox" style="{{vm.uncheckedStyle}}" data-row-key="{{vm.rowId}}">
+        <label>
+            <input id="customTreeGridHeaderCheckboxDisabled"
+                   type="checkbox" disabled="disabled"/>
+            <span class="fa fa-check"></span>
+        </label>
+    </div>
+</script>
+
+<script type="text/ng-template" id="schedule-row-renderer.html">
+    <div class="display-inline">
+        <i class="{{vm.class}}"></i>
+        <span class="wrapped-text" title="{{vm.label}}">{{vm.label}}</span>
+    </div>
+</script>
+
+<div id="scheduleInsertionsContainer" class="schedule-insertions-container schedule-insertions-container-initial panel panel-primary" data-cg-busy="vm.promise">
+    <div class="panel-heading">
+        <span id="expandoClose" class="glyphicon glyphicon-remove-circle flyout-ctrl-btns pull-right" data-ng-click="vm.close()"></span>
+        <span id="expandoRight" class="glyphicon glyphicon-fast-forward flyout-ctrl-btns pull-right" data-ng-show="vm.flyoutState === vm.FLYOUT_STATE.FULL_VIEW" data-ng-click="vm.half()"></span>
+        <span id="expandoLeft" class="glyphicon glyphicon-fast-backward flyout-ctrl-btns pull-right" data-ng-show="vm.flyoutState === vm.FLYOUT_STATE.HALF_VIEW" data-ng-click="vm.full()"></span>
+        <h4 class="modal-title">{{vm.propertiesModel.mainTitle}}</h4>
+    </div>
+    <div class="content">
+        <div class="modal-body">
+            <div class="panel-group" id="accordion" role="tablist">
+                <div class="panel panel-info form-horizontal">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" class="collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                                {{'global.properties' | translate}}: {{vm.propertiesModel.title}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <div data-ng-repeat="group in vm.propertiesModel.groups">
+                                <label class="control-label">{{group.groupName}}</label>
+                                <article>
+                                    <table>
+                                        <tr data-ng-repeat="content in group.content">
+                                            <td class="properties-label">
+                                                <label>{{content.field}}:</label>
+                                            </td>
+                                            <td class="properties-value">
+                                                <label class="control-label-properties" data-ng-bind-html="content.value"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tagAssociationsPanel" class="panel panel-info" data-ng-if="vm.selectedRowField == vm.SCHEDULE_LEVEL.PLACEMENT.KEY">
+                    <div class="panel-heading" role="tab" id="headingTagAssociations">
+                        <h4 class="panel-title">
+                            <a role="button" class="collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTagAssociations">
+                                {{'global.trackingTagAssociations' | translate}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTagAssociations" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <div data-ng-include="'app/cm/campaigns/schedule-tab/schedule-insertions/schedule-tracking-tag-associations/schedule-tracking-tag-associations.html'"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                                {{vm.propertiesModel.editLabel}}: {{vm.propertiesModel.title}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <te-tree-grid id="flyoutGrid"
+                                              class="col-xs-12"
+                                              data-te-tree-grid-custom-search="true"
+                                              data-te-tree-grid-hide-custom-search-button="vm.isSmallResolution"
+                                              data-te-tree-grid-on-search="vm.serverSideSearch(searchText)"
+                                              data-te-tree-grid-on-clear-search-field="vm.serverFlyoutSideClearSearch()"
+                                              data-te-tree-grid-search-options="{{vm.SERVER_SIDE_SEARCH_OPTIONS}}"
+                                              data-te-tree-grid-on-reload-search-options="vm.reloadSearchOptions()"
+                                              data-search-fields="vm.searchFields"
+                                              data-model="vm.submodel"
+                                              data-uuid="vm.flyoutUUID"
+                                              data-legend="'schedule.flyoutLegend' | translate"
+                                              data-pagination-enabled="true"
+                                              data-page-size="{{vm.PAGE_SIZE}}"
+                                              data-selection-mode="{{vm.selectionMode}}"
+                                              data-te-tree-grid-row-collapse="vm.flyoutRowCollapsed($row)"
+                                              data-te-tree-grid-row-expand="vm.flyoutRowExpanded($row)"
+                                              data-te-tree-grid-checked="vm.getAllChecked($allChecked)"
+                                              data-selection-hierarchy="true"
+                                              data-columns-resize="true">
+                                    <te-btns>
+                                        <te-table-add-btn data-ng-click="vm.showAddScheduleDialog()"
+                                                          data-ng-if="vm.showAddScheduleButton">
+                                        </te-table-add-btn>
+                                        <te-table-add-btn data-ng-click="vm.showAddGroupCreativeDialog()"
+                                                          data-ng-if="vm.showAddGroupCreativeAssocButton && vm.hasCreateCreativePermission">
+                                        </te-table-add-btn>
+                                        <button class="btn btn-danger"
+                                                data-ng-click="vm.hierarchicalRemove()"
+                                                data-ng-disabled="vm.allMarkedAsChecked.length == 0 && !vm.parentNodeChecked">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </te-btns>
+                                    <te-secondary-btns>
+                                        <div class="pull-left">
+                                            <div uib-collapse="vm.filterControlsCollapsed"
+                                                 data-ng-include="'app/cm/campaigns/schedule-tab/schedule-insertions/schedule-filter/flyout-filters.html'"></div>
+                                        </div>
+                                        <div class="pull-right">
+                                            <button id="filterOptions"
+                                                    data-ng-click="vm.showFilterOptions()"
+                                                    class="btn btn-warning"
+                                                    data-ng-mouseup="vm.blurButton('filterOptions')"
+                                                    data-ng-if="vm.filterControlsVisible">
+                                                <span data-ng-show="vm.filterLoading == true" class="text-center">
+                                                    <i class="fa fa-spinner fa-pulse"></i>
+                                                </span>
+                                                <span data-ng-show="vm.filterLoading != true" class="text-center">
+                                                    <i class="fa fa-filter"></i>
+                                                </span>
+                                            </button>
+                                            <button id="bulkEditOptions"
+                                                    data-ng-click="vm.showBulkEditOptions()"
+                                                    class="btn btn-warning"
+                                                    data-ng-if="vm.hasBulkEditPermission"
+                                                    data-ng-mouseup="vm.blurButton('bulkEditOptions')">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </button>
+                                        </div>
+                                    </te-secondary-btns>
+                                    <te-thirdly-btns >
+                                        <div uib-collapse="vm.bulkEditControlsCollapsed" data-ng-include="'app/cm/campaigns/schedule-tab/schedule-insertions/bulk-edit.html'"></div>
+                                    </te-thirdly-btns>
+                                    <te-columns>
+                                        <te-column data-field="creativeAssociations" data-hidden="true"></te-column>
+                                        <te-column data-field="creativeGroupAssociations" data-hidden="true"></te-column>
+                                        <te-column data-field="expanded" data-hidden="true"></te-column>
+                                        <te-column data-field="editSupport" data-hidden="true"></te-column>
+                                        <te-column data-field="placementAssociations" data-hidden="true"></te-column>
+                                        <te-column data-field="placementStatus" data-hidden="true"></te-column>
+                                        <te-column data-field="id" data-hidden="true"></te-column>
+                                        <te-column data-field="creativeType" data-hidden="true"></te-column>
+                                        <te-column data-field="siteId" data-hidden="true"></te-column>
+                                        <te-column data-field="siteSectionId" data-hidden="true"></te-column>
+                                        <te-column data-field="placementId" data-hidden="true"></te-column>
+                                        <te-column data-field="creativeGroupId" data-hidden="true"></te-column>
+                                        <te-column data-field="creativeId" data-hidden="true"></te-column>
+                                        <te-column data-field="field" data-hidden="true"></te-column>
+                                        <te-column data-field="loadData" data-hidden="true"></te-column>
+                                        <te-column data-field="treeRowId" data-hidden="true"></te-column>
+
+                                        <te-column data-field="siteLabel"
+                                                   data-filterable="vm.getFilterable(vm.SCHEDULE_LEVEL.SITE.KEY)"
+                                                   data-hidden="true"
+                                                   data-title="'global.site' | translate"
+                                                   data-position="vm.getPosition(vm.SCHEDULE_LEVEL.SITE.KEY)">
+                                        </te-column>
+                                        <te-column data-field="siteSectionLabel"
+                                                   data-filterable="vm.getFilterable(vm.SCHEDULE_LEVEL.SECTION.KEY)"
+                                                   data-hidden="true"
+                                                   data-title="'global.section' | translate"
+                                                   data-position="vm.getPosition(vm.SCHEDULE_LEVEL.SECTION.KEY)">
+                                        </te-column>
+                                        <te-column data-field="placementLabel"
+                                                   data-filterable="vm.getFilterable(vm.SCHEDULE_LEVEL.PLACEMENT.KEY)"
+                                                   data-hidden="true"
+                                                   data-title="'global.placement' | translate"
+                                                   data-position="vm.getPosition(vm.SCHEDULE_LEVEL.PLACEMENT.KEY)">
+                                        </te-column>
+                                        <te-column data-field="creativeGroupLabel"
+                                                   data-filterable="vm.getFilterable(vm.SCHEDULE_LEVEL.CREATIVE_GROUP.KEY)"
+                                                   data-hidden="true"
+                                                   data-title="'creativeGroup.creativeGroup' | translate"
+                                                   data-position="vm.getPosition(vm.SCHEDULE_LEVEL.CREATIVE_GROUP.KEY)">
+                                        </te-column>
+                                        <te-column data-field="creativeLabel"
+                                                   data-filterable="vm.getFilterable(vm.SCHEDULE_LEVEL.SCHEDULE.KEY)"
+                                                   data-hidden="true"
+                                                   data-title="'creative.creative' | translate"
+                                                   data-position="vm.getPosition(vm.SCHEDULE_LEVEL.SCHEDULE.KEY)">
+                                        </te-column>
+
+                                        <te-column data-field="siteDetailLabel"
+                                                   data-sortable="true"
+                                                   data-cells-renderer="vm.getRowRenderer($rowData, $cellValue)"
+                                                   data-title="vm.getDetailColumnTitle()"
+                                                   data-dynamic-width="vm.getColumnWidth('siteDetailLabel')"
+                                                   data-min-width="100">
+                                        </te-column>
+
+                                        <te-column data-field="checked"
+                                                   data-cells-align="center"
+                                                   data-width="46"
+                                                   data-resizable="false"
+                                                   data-header-renderer="vm.getCheckboxHeaderRenderer(vm.submodel)"
+                                                   data-cells-renderer="vm.getCheckboxRenderer($rowData, $cellValue)">
+                                        </te-column>
+
+                                        <te-column data-editable="true"
+                                                   data-editor-conf="vm.getWeightEditorConf()"
+                                                   data-field="weight"
+                                                   data-cells-align="center"
+                                                   data-title="'creativeGroup.weight' | translate"
+                                                   data-type="number"
+                                                   data-cells-format="'d'"
+                                                   data-dynamic-width="vm.getColumnWidth('weight')"
+                                                   data-min-width="60">
+                                        </te-column>
+                                        <te-column data-editable="true"
+                                                   data-editor-conf="vm.getDateEditorConf('flightDateStart')"
+                                                   data-field="flightDateStart"
+                                                   data-cells-align="center"
+                                                   data-cells-renderer="vm.getDateRenderer($cellValue)"
+                                                   data-title="'global.startDate' | translate"
+                                                   data-dynamic-width="vm.getColumnWidth('flightDateStart')"
+                                                   data-min-width="75">
+                                        </te-column>
+                                        <te-column data-editable="true"
+                                                   data-editor-conf="vm.getDateEditorConf('flightDateEnd')"
+                                                   data-field="flightDateEnd"
+                                                   data-cells-align="center"
+                                                   data-cells-renderer="vm.getDateRenderer($cellValue)"
+                                                   data-title="'global.endDate' | translate"
+                                                   data-dynamic-width="vm.getColumnWidth('flightDateEnd')"
+                                                   data-min-width="75">
+                                        </te-column>
+                                        <te-column data-editable="true"
+                                                   data-editor-conf="vm.getClickThroughEditorConf($rowData)"
+                                                   data-field="clickThroughUrl"
+                                                   data-cells-renderer="vm.getCTRenderer($row, $cellValue)"
+                                                   data-title="vm.getCTUrlColumnTitle()"
+                                                   data-resizable="false"
+                                                   data-min-width="65">
+                                        </te-column>
+                                    </te-columns>
+                                </te-tree-grid>
+                                <div class="form-group">
+                                    <div class="btn-group-right">
+                                        <button class="btn btn-default"
+                                                data-ng-click="vm.close()">
+                                            {{'global.cancel' | translate}}
+                                        </button>
+                                        <button id="saveButton"
+                                                type="submit"
+                                                class="btn btn-primary"
+                                                data-ng-disabled="!vm.isGridValid"
+                                                data-ng-click="vm.bulkUpdate()">
+                                            {{'global.save' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info" data-ng-if="false">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title">
+                            <a role="button"
+                               data-toggle="collapse"
+                               data-parent="#accordion"
+                               data-target="#collapseThree">
+                                {{'schedule.editSiteInsertionsAll' | translate}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <br clear="all"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="scheduleInsertionsContainerGhost"
+     class="pull-right">
+</div>

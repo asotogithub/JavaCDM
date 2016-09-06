@@ -1,0 +1,64 @@
+/*Margin*/
+.cost-details-grid > thead > tr > th:nth-child(1) {
+    width: 130px;
+    min-width: 130px;
+}
+
+/*Ad Spend*/
+.cost-details-grid > thead > tr > th:nth-child(2) {
+    width: 130px;
+    min-width: 130px;
+}
+
+/*Inventory*/
+.cost-details-grid > thead > tr > th:nth-child(3) {
+    width: 130px;
+}
+
+/*Rate*/
+.cost-details-grid > thead > tr > th:nth-child(4) {
+    width: 120px;
+    min-width: 120px;
+}
+
+/*Rate Type*/
+.cost-details-grid > thead > tr > th:nth-child(5) {
+    width: 97px;
+    min-width: 97px;
+}
+
+.cost-details-grid > tbody > tr > td:nth-child(5) > div {
+    width: 85px;
+    min-width: 85px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cost-details-grid > thead > tr > th:nth-child(5) > div.select {
+    width: 85px;
+    min-width: 85px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Start and End Dates*/
+.cost-details-grid > thead > tr > th:nth-child(6) {
+    width: 137px;
+    min-width: 137px;
+    max-width: 137px;
+}
+
+.cost-details-grid > thead > tr > th:nth-child(7) {
+    width: 137px;
+    min-width: 137px;
+    max-width: 137px;
+}
+
+/*Delete button*/
+.cost-details-grid > thead > tr > th:nth-child(8) {
+    width: 40px;
+}
+
+.input-group .form-control {
+    cursor: auto;
+}

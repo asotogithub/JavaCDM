@@ -1,0 +1,28 @@
+.form-horizontal .form-group {
+    margin-left: 0;
+}
+
+.form-package-edit .title {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+
+.form-package-edit .title-placement-associated {
+    margin-bottom: 5px;
+    padding-bottom: 15px;
+}
+
+.form-package-edit .title-cost-detail {
+    margin-bottom: 5px;
+    margin-top: 15px;
+    padding-bottom: 15px;
+}
+
+.form-package-edit .footer {
+    margin-top: 20px
+}
+
+.form-horizontal .back-button-class {
+    margin-bottom: 0;
+}
+

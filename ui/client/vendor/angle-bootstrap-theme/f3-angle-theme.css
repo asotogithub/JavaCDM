@@ -1,0 +1,230 @@
+/*!
+ * Trueffect's Angle Bootstrap Theme v0.0.1
+ * Copyright 2015-2016 Trueffect, Inc.
+ */
+
+/* ========================================================================
+   Component: layout
+ ========================================================================== */
+body,
+.wrapper > section {
+  background-color: #f5f7fa;
+}
+.wrapper > .aside {
+  background-color: #fff;
+}
+.overflow-x-visible {
+  overflow-x: visible;
+}
+/* ========================================================================
+   Component: top-navbar
+ ========================================================================== */
+.topnavbar {
+  background-color: #fff;
+}
+.topnavbar .navbar-header {
+  background-color: transparent;
+}
+@media only screen and (min-width: 768px) {
+  .topnavbar .navbar-header {
+    background-image: none;
+  }
+}
+.topnavbar .navbar-nav > li > a,
+.topnavbar .navbar-nav > .open > a {
+  color: #0f5880;
+}
+.topnavbar .navbar-nav > li > a:hover,
+.topnavbar .navbar-nav > .open > a:hover,
+.topnavbar .navbar-nav > li > a:focus,
+.topnavbar .navbar-nav > .open > a:focus {
+  color: #041925;
+}
+.topnavbar .navbar-nav > .active > a,
+.topnavbar .navbar-nav > .open > a,
+.topnavbar .navbar-nav > .active > a:hover,
+.topnavbar .navbar-nav > .open > a:hover,
+.topnavbar .navbar-nav > .active > a:focus,
+.topnavbar .navbar-nav > .open > a:focus {
+  background-color: transparent;
+}
+.topnavbar .navbar-nav > li > [data-toggle='navbar-search'] {
+  color: #fff;
+}
+.topnavbar .nav-wrapper {
+  background-color: #0f5880;
+}
+@media only screen and (min-width: 768px) {
+  .topnavbar {
+    background-color: #0f5880;
+  }
+  .topnavbar .navbar-nav > .open > a,
+  .topnavbar .navbar-nav > .open > a:hover,
+  .topnavbar .navbar-nav > .open > a:focus {
+    box-shadow: 0 -3px 0 rgba(255, 255, 255, .5) inset;
+  }
+  .topnavbar .navbar-nav > li > a,
+  .topnavbar .navbar-nav > .open > a {
+    color: #fff;
+  }
+  .topnavbar .navbar-nav > li > a:hover,
+  .topnavbar .navbar-nav > .open > a:hover,
+  .topnavbar .navbar-nav > li > a:focus,
+  .topnavbar .navbar-nav > .open > a:focus {
+    color: #041925;
+  }
+}
+/* ========================================================================
+   Component: sidebar
+ ========================================================================== */
+.sidebar {
+  background-color: #fff;
+}
+.sidebar .nav-heading {
+  color: #919da8;
+}
+.sidebar > .nav > li > a > em,
+.sidebar > .nav > li > .nav-item > em {
+  width: 1em;
+}
+.sidebar .nav > li > a,
+.sidebar .nav > li > .nav-item {
+  color: #515253;
+}
+.sidebar .nav > li > a:focus,
+.sidebar .nav > li > .nav-item:focus,
+.sidebar .nav > li > a:hover,
+.sidebar .nav > li > .nav-item:hover {
+  color: #0f5880;
+}
+.sidebar .nav > li > a > em,
+.sidebar .nav > li > .nav-item > em {
+  color: inherits;
+}
+.sidebar .nav > li.active,
+.sidebar .nav > li.open,
+.sidebar .nav > li.active > a,
+.sidebar .nav > li.open > a,
+.sidebar .nav > li.active .nav,
+.sidebar .nav > li.open .nav {
+  font-weight: bold;
+  color: #0f5880;
+  background-color: #fcfcfc;
+}
+.sidebar .nav > li.active:hover,
+.sidebar .nav > li.open:hover,
+.sidebar .nav > li.active > a:hover,
+.sidebar .nav > li.open > a:hover,
+.sidebar .nav > li.active .nav:hover,
+.sidebar .nav > li.open .nav:hover {
+  color: #0f5880;
+}
+.sidebar .nav > li.active > a > em,
+.sidebar .nav > li.open > a > em {
+  color: #0f5880;
+}
+.sidebar .nav > li.active {
+  border-left-color: #0f5880;
+}
+.sidebar-subnav {
+  background-color: #fff;
+}
+.sidebar-subnav > .sidebar-subnav-header {
+  color: #515253;
+}
+.sidebar-subnav > li > a > em,
+.sidebar-subnav > li > .nav-item > em {
+  width: 1em;
+}
+.sidebar-subnav > li > a,
+.sidebar-subnav > li > .nav-item {
+  color: #515253;
+}
+.sidebar-subnav > li > a:focus,
+.sidebar-subnav > li > .nav-item:focus,
+.sidebar-subnav > li > a:hover,
+.sidebar-subnav > li > .nav-item:hover {
+  color: #0f5880;
+}
+.sidebar-subnav > li.active > a,
+.sidebar-subnav > li.active > .nav-item {
+  color: #0f5880;
+}
+.sidebar-subnav > li.active > a:after,
+.sidebar-subnav > li.active > .nav-item:after {
+  background-color: #0f5880;
+  border-color: #0f5880;
+}
+/* ========================================================================
+   Component: offsidebar
+ ========================================================================== */
+.offsidebar {
+  color: #515253;
+  background-color: #fff;
+  border-left: 1px solid #ccc;
+}
+.c-checkbox input[type="checkbox"]:checked + span,
+.c-radio input[type="checkbox"]:checked + span,
+.c-checkbox input[type="radio"]:checked + span,
+.c-radio input[type="radio"]:checked + span {
+  background-color: #1c9ad6;
+  border-color: #1c9ad6;
+}
+/* ========================================================================
+   Component: form-wizard
+ ========================================================================== */
+.form-wizard > ol > li.active {
+  background-color: #1c9ad6;
+}
+/*
+  toggles
+*/
+.switch input:checked + span {
+  background-color: #1c9ad6;
+}
+/**
+ Metrics
+ */
+.metrics-row .icon-right {
+  color: #548235;
+}
+/**
+  Breadcrumbs
+  */
+.breadcrumb li a {
+  color: #0f5880;
+}
+/**
+  Wizards
+  */
+.col-md-6 .panel.selected {
+  border-color: #1c9ad6;
+}
+.daypart-targeting .panel.selected {
+  border-color: #1c9ad6;
+}
+.nav-tabs-ui-boostrap {
+  color: #515253;
+  border-bottom: 0 solid;
+}
+.flyout-ctrl-btns {
+  top: 6px;
+}
+.panel-heading-danger {
+  padding: 10px 20px;
+}
+.import-errors-column-row {
+  width: 13%;
+}
+.panel-danger > .panel-heading-danger {
+  color: #a94442;
+  background-color: #f2dede;
+}
+/* ========================================================================
+   Component: nav-tabs
+ ========================================================================== */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+  color: #0f5880;
+}
