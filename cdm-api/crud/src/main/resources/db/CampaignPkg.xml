@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CampaignPkg">
+
+    <resultMap id="campaignResultMap" type="trueffect.truconnect.api.commons.model.Campaign">
+        <id     property="id"               column="CAMPAIGN_ID"/> 
+        <result property="cookieDomainId"   column="COOKIE_DOMAIN_ID"/>
+        <result property="statusId"         column="CAMPAIGN_STATUS_ID"/>
+        <result property="agencyId"         column="AGENCY_ID"/>
+        <result property="brandId"          column="BRAND_ID"/>
+        <result property="contactId"        column="CONTACT_ID"/>
+        <result property="advertiserId"     column="ADVERTISER_ID"/>
+        <result property="name"             column="CAMPAIGN_NAME"/>
+        <result property="dupName"          column="DUP_CAMPAIGN_NAME"/>
+        <result property="startDate"        column="START_DATE"/>
+        <result property="endDate"          column="END_DATE"/>
+        <result property="objective"        column="OBJECTIVE"/>
+        <result property="description"      column="DESCRIPTION"/>
+        <result property="agencyNotes"      column="AGENCY_NOTES"/>
+        <result property="trafficToOwner"   column="TRAFFIC_TO_OWNER"/>
+        <result property="logicalDelete"    column="LOGICAL_DELETE"/>
+        <result property="createdTpwsKey"   column="CREATED_TPWS_KEY"/>
+        <result property="modifiedTpwsKey"  column="MODIFIED_TPWS_KEY"/>
+        <result property="createdDate"      column="CREATED"/>
+        <result property="modifiedDate"     column="MODIFIED"/>
+        <result property="resourcePathId"   column="RESOURCE_PATH_ID"/>
+        <result property="mediaBuyId"       column="MEDIA_BUY_ID"/>
+        <result property="isHidden"         column="IS_HIDDEN"/>
+    </resultMap>
+
+    <update id="insertCampaignMediaBuy" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.CAMPAIGN_PKG.InsertCampaignMediaBuy(
+                #{campaignId,jdbcType=NUMERIC,mode=IN},
+                #{agencyId,jdbcType=NUMERIC,mode=IN},
+                #{mbName,jdbcType=VARCHAR,mode=IN},
+                #{mbState,jdbcType=VARCHAR,mode=IN},
+                #{mbBudget,jdbcType=NUMERIC,mode=IN},
+                #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="removeCampaign" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.CAMPAIGN_PKG.DeleteCampaign(
+                #{id,jdbcType=NUMERIC,mode=IN},
+                #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <select id="findCampaignByNameAndBrand" parameterType="java.util.Map" resultType="trueffect.truconnect.api.commons.model.Campaign">
+        SELECT  C.CAMPAIGN_ID        as id,
+                C.COOKIE_DOMAIN_ID   as cookieDomainId,
+                C.CAMPAIGN_STATUS_ID as statusId,
+                C.AGENCY_ID          as agencyId,
+                C.BRAND_ID           as brandId,
+                C.CONTACT_ID         as contactId,
+                C.ADVERTISER_ID      as advertiserId,
+                C.CAMPAIGN_NAME      as name,
+                C.DUP_CAMPAIGN_NAME  as dupName,
+                C.START_DATE         as startDate,
+                C.END_DATE           as endDate,
+                C.OBJECTIVE          as objective,
+                C.DESCRIPTION        as description,
+                C.AGENCY_NOTES       as agencyNotes,
+                C.TRAFFIC_TO_OWNER   as trafficToOwner,
+                C.LOGICAL_DELETE     as logicalDelete,
+                C.CREATED_TPWS_KEY   as createdTpwsKey,
+                C.MODIFIED_TPWS_KEY  as modifiedTpwsKey,
+                C.CREATED            as createdDate,
+                C.MODIFIED           as modifiedDate,
+                C.RESOURCE_PATH_ID   as resourcePathId
+        FROM TE_XLS.CAMPAIGN C
+        WHERE C.CAMPAIGN_NAME = '${name}' AND C.BRAND_ID = #{brandId}
+    </select>
+</mapper>

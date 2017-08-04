@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for each web application -->
+<Context>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <Environment name="server.authorization.uri" value="https://truapi-int.trueffect.com/oauth/{version}/" type="java.lang.String" override="false"/> 
+    <Environment name="public.path" value="https://truapi-int.trueffect.com/cms/{version}/" type="java.lang.String" override="false"/> 
+    <Environment name="image.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/" type="java.lang.String" override="false"/>
+    <Environment name="tmp.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/tmp/" type="java.lang.String" override="false"/>
+    <Environment name="unittest.folderpath" value="src/main/resources/files/" type="java.lang.String" override="false"/>
+    <Environment name="stub.path" value="/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/tmp/creative.jpg" type="java.lang.String" override="false"/>
+    <Environment name="log.level" value="trace" type="java.lang.String" override="false"/> <!-- Log levels can be one of these: TRACE, DEBUG, INFO, WARN, ERROR, FATAL, ALL, OFF -->
+</Context>

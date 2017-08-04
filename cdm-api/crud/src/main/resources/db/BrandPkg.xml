@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BrandPkg">
+       
+    <!--InserBrand-->
+    <update id="insertBrand" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL BRAND_PKG.InsertBrand(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{advertiserId,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{dupName,jdbcType=VARCHAR,mode=IN},
+            #{description,jdbcType=VARCHAR,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    
+    <update id="updateBrand" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL BRAND_PKG.UpdateBrand(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{advertiserId,jdbcType=NUMERIC,mode=IN},
+            #{dupName,jdbcType=VARCHAR,mode=IN},
+            #{description,jdbcType=VARCHAR,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{isHidden,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="deleteBrand" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL BRAND_PKG.DeleteBrand(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    
+    <!--SECTION OF QUERY'S-->
+    
+    <select id="getBrand"  parameterType="java.lang.Long"
+            resultType="trueffect.truconnect.api.commons.model.Brand" >
+        SELECT B.BRAND_ID        as id,
+            B.ADVERTISER_ID      as advertiserId,
+            B.BRAND_NAME         as name,
+            B.DESCRIPTION        as description,
+            B.CREATED            as createdDate,
+            B.MODIFIED           as modifiedDate,
+            B.IS_HIDDEN          as isHidden
+        FROM TE_XLS.BRAND B
+        WHERE B.BRAND_ID = #{id} AND (B.LOGICAL_DELETE != 'Y' OR B.LOGICAL_DELETE IS NULL)
+    </select>
+    
+    <select id="brandExists"  parameterType="java.lang.String"
+            resultType="java.lang.Long" >
+        SELECT BRAND_ID
+        FROM TE_XLS.BRAND
+        WHERE BRAND_NAME = '${value}'
+    </select>
+    
+     <select id="getBrandsByCriteria" parameterType="java.util.Map" 
+            resultType="trueffect.truconnect.api.commons.model.Brand">
+       SELECT BRAND.BRAND_ID        AS id
+            , BRAND.ADVERTISER_ID   AS advertiserId
+            , BRAND.BRAND_NAME      AS name
+            , BRAND.DESCRIPTION     AS description
+            , BRAND.CREATED         AS createdDate
+            , BRAND.MODIFIED        AS modifiedDate
+            , BRAND.is_hidden       AS isHidden
+        FROM TE_XLS.BRAND
+        INNER JOIN ADVERTISER A ON BRAND.advertiser_id = A.advertiser_id
+        INNER JOIN ( SELECT AI.AGENCY_ID
+                       FROM TE_XLS.USERS U
+                        INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                WHERE (UPPER(U.LOGICAL_DELETE) != 'Y')
+                AND (UPPER(AI.LOGICAL_DELETE) != 'Y')
+                AND (U.user_id = '${userId}')
+                ) AU on (AU.agency_id = a.agency_id    and a.logical_delete != 'Y'    )
+        WHERE (    BRAND.logical_delete != 'Y' OR BRAND.logical_delete IS NULL )
+        <if test="condition != null">
+            AND ${condition}
+        </if>
+        <if test="order != null">
+               ${order}
+           </if>
+    </select>
+    
+    <select id="getBrandsNumberOfRecordsByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+       SELECT COUNT(*) as totalRecords
+         FROM TE_XLS.BRAND
+        INNER JOIN ADVERTISER A ON BRAND.advertiser_id = A.advertiser_id
+        INNER JOIN ( SELECT AI.AGENCY_ID
+                       FROM TE_XLS.USERS U
+                        INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                WHERE (UPPER(U.LOGICAL_DELETE) != 'Y')
+                AND (UPPER(AI.LOGICAL_DELETE) != 'Y')
+                AND (U.user_id = '${userId}')
+                ) AU on (AU.agency_id = a.agency_id    and a.logical_delete != 'Y'    )
+        WHERE (    BRAND.logical_delete != 'Y' OR BRAND.logical_delete IS NULL )
+        <if test="condition != null">
+            AND ${condition}
+        </if>
+    </select>
+    
+     <select id="brandNameExists" parameterType="trueffect.truconnect.api.commons.model.Brand" resultType="java.lang.Long">
+        SELECT COUNT (B.BRAND_ID)
+        FROM TE_XLS.BRAND B
+        WHERE LOWER(B.BRAND_NAME) = LOWER(#{name})
+        AND B.ADVERTISER_ID = #{advertiserId}
+        AND ( UPPER( B.LOGICAL_DELETE ) != 'Y' )
+        <if test="id != null">
+          AND B.brand_id != #{id}
+        </if>
+    </select>
+</mapper>

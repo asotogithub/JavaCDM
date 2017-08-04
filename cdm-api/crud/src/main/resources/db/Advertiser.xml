@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Advertiser">
+
+     <!-- InsertCompleteAdvertiser(p_advertiser_id,....) -->
+    <insert id="saveAdvertiser" statementType="CALLABLE" parameterType="java.util.Map">
+         INSERT INTO ADVERTISER( ADVERTISER_ID,
+                                AGENCY_ID,
+                                ADVERTISER_NAME,
+                                DUP_ADVERTISER_NAME,
+                                ADVERT_ADDRESS1,
+                                ADVERT_ADDRESS2,
+                                ADVERT_CITY,
+                                ADVERT_STATE,
+                                ADVERT_ZIP,
+                                ADVERT_COUNTRY,
+                                ADVERT_PHONE,
+                                ADVERT_URL,
+                                ADVERT_FAX,
+                                ADVERT_CONTACT_DEFAULT,
+                                ADVERT_NOTES,
+                                CREATED,
+                                MODIFIED,
+                                CREATED_TPWS_KEY,
+                                MODIFIED_TPWS_KEY,
+                                ENABLE_HTML_TAG  )
+        VALUES ( #{id,jdbcType=NUMERIC},
+                 #{agencyId,jdbcType=NUMERIC},
+                 #{name,jdbcType=VARCHAR},
+                 LOWER( #{name,jdbcType=VARCHAR} ),
+                 #{address1,jdbcType=VARCHAR},
+                 #{address2,jdbcType=VARCHAR},
+                 #{city,jdbcType=VARCHAR},
+                 #{state,jdbcType=VARCHAR},
+                 #{zip,jdbcType=VARCHAR},
+                 #{country,jdbcType=VARCHAR},
+                 #{phone,jdbcType=VARCHAR},
+                 #{url,jdbcType=VARCHAR},
+                 #{fax,jdbcType=VARCHAR},
+                 #{contactDefault,jdbcType=VARCHAR},
+                 #{notes,jdbcType=VARCHAR},
+                 SYSDATE,
+                 SYSDATE,
+                 #{createdTpwsKey,jdbcType=VARCHAR},
+                 #{createdTpwsKey,jdbcType=VARCHAR},
+                 #{enableHtmlTag,jdbcType=NUMERIC} )
+    </insert>
+    <update id="updateAdvertiser" statementType="CALLABLE" parameterType="java.util.Map">
+        UPDATE ADVERTISER
+        SET    ADVERTISER_NAME = #{name,jdbcType=VARCHAR},
+               DUP_ADVERTISER_NAME = LOWER( #{name,jdbcType=VARCHAR} ),
+               ADVERT_ADDRESS1 = #{address1,jdbcType=VARCHAR},
+               ADVERT_ADDRESS2 = #{address2,jdbcType=VARCHAR},
+               ADVERT_CITY = #{city,jdbcType=VARCHAR},
+               ADVERT_STATE = #{state,jdbcType=VARCHAR},
+               ADVERT_ZIP = #{zip,jdbcType=VARCHAR},
+               ADVERT_COUNTRY = #{country,jdbcType=VARCHAR},
+               ADVERT_PHONE = #{phone,jdbcType=VARCHAR},
+               ADVERT_URL = #{url,jdbcType=VARCHAR},
+               ADVERT_FAX =    #{fax,jdbcType=VARCHAR},
+               ADVERT_CONTACT_DEFAULT = #{contactDefault,jdbcType=VARCHAR},
+               ADVERT_NOTES = #{notes,jdbcType=VARCHAR},
+               MODIFIED = SYSDATE,
+               MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR},
+               ENABLE_HTML_TAG = #{enableHtmlTag,jdbcType=NUMERIC},
+               IS_HIDDEN = #{isHidden,jdbcType=VARCHAR}
+        WHERE  LOGICAL_DELETE = 'N'
+               AND ADVERTISER_ID = #{id,jdbcType=NUMERIC}
+        
+    </update>
+    
+    <select id="getAdvertiser" parameterType="java.lang.Long" resultType="trueffect.truconnect.api.commons.model.Advertiser">
+        SELECT AD.ADVERTISER_ID             as  id,
+                 AD.AGENCY_ID               as  agencyId,
+                 AD.ADVERTISER_NAME         as  name,
+                 AD.ADVERT_ADDRESS1         as  address1,
+                 AD.ADVERT_ADDRESS2         as  address2,
+                 AD.ADVERT_CITY             as  city,
+                 AD.ADVERT_STATE            as  state,
+                 AD.ADVERT_ZIP              as  zipCode,
+                 AD.ADVERT_COUNTRY          as  country,
+                 AD.ADVERT_PHONE            as  phoneNumber,
+                 AD.ADVERT_URL              as  url,
+                 AD.ADVERT_FAX              as  faxNumber,
+                 AD.ADVERT_NOTES            as  notes,
+                 AD.CREATED                 as  createdDate,
+                 AD.MODIFIED                as  modifiedDate,
+                 AD.IS_HIDDEN               as  isHidden,
+                 AD.ADVERT_CONTACT_DEFAULT as  contactDefault,
+                 AD.ENABLE_HTML_TAG as  enableHtmlTag
+        FROM  TE_XLS.ADVERTISER AD
+            WHERE AD.ADVERTISER_ID = #{value} AND (AD.LOGICAL_DELETE != 'Y' OR AD.LOGICAL_DELETE IS NULL)
+    </select>
+    
+    <!--SECTION OF QUERY'S-->
+    <select id="getAdvertisersByCriteria" parameterType="java.util.Map" resultType="Advertiser">
+        SELECT ADVERTISER.ADVERTISER_ID          as id,
+               ADVERTISER.AGENCY_ID              as  agencyId,
+               ADVERTISER.ADVERTISER_NAME        as  name,
+               ADVERTISER.ADVERT_ADDRESS1        as  address1,
+               ADVERTISER.ADVERT_ADDRESS2        as  address2,
+               ADVERTISER.ADVERT_CITY            as  city,
+               ADVERTISER.ADVERT_STATE           as  state,
+               ADVERTISER.ADVERT_ZIP             as  zipCode,
+               ADVERTISER.ADVERT_COUNTRY         as  country,
+               ADVERTISER.ADVERT_PHONE           as  phoneNumber,
+               ADVERTISER.ADVERT_URL             as  url,
+               ADVERTISER.ADVERT_FAX             as  faxNumber,
+               ADVERTISER.ADVERT_NOTES           as  notes,
+               ADVERTISER.IS_HIDDEN              as  isHidden,
+               ADVERTISER.ADVERT_CONTACT_DEFAULT as  contactDefault,
+               ADVERTISER.CREATED                as  createdDate,
+               ADVERTISER.MODIFIED               as  modifiedDate,
+               ADVERTISER.ENABLE_HTML_TAG        as  enableHtmlTag
+          FROM TE_XLS.ADVERTISER
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U INNER JOIN AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                             WHERE U.USER_ID = #{userId,jdbcType=VARCHAR}
+                               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                          ) AU ON AU.AGENCY_ID = ADVERTISER.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = ADVERTISER.ADVERTISER_ID
+        WHERE DECODE(ADVERTISER.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+               ${order}
+            </if>
+    </select>
+    <select id="getAdvertisersNumberOfRecordsByCriteria" parameterType="java.util.Map"
+        resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalRecords
+          FROM TE_XLS.ADVERTISER
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U INNER JOIN AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                             WHERE U.USER_ID = #{userId,jdbcType=VARCHAR}
+                               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                          ) AU ON AU.AGENCY_ID = ADVERTISER.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = ADVERTISER.ADVERTISER_ID
+        WHERE DECODE(ADVERTISER.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+    <select id="getAgencyId" parameterType="java.lang.Long"    resultType="java.lang.Long">
+     SELECT AGENCY_ID
+       FROM ADVERTISER
+      WHERE ADVERTISER_ID = #{value}
+    </select>
+    <select id="advertiserNameExists" parameterType="trueffect.truconnect.api.commons.model.Advertiser"    resultType="java.lang.Long">
+        SELECT COUNT( 1 ) as cant
+          FROM ADVERTISER
+         WHERE ( UPPER( LOGICAL_DELETE ) != 'Y' )
+           AND LOWER( ADVERTISER_NAME ) = LOWER( #{name} )
+        <if test="id != null">
+          AND ADVERTISER_ID != #{id}
+        </if>    
+        <if test="agencyId != null">
+          AND AGENCY_ID = #{agencyId}
+        </if>        
+    </select>
+    <select id="getAdvertisersByUserId" parameterType="java.util.Map" resultType="Advertiser">
+        SELECT ADV.ADVERTISER_ID   	  AS ID                   ,
+               ADV.AGENCY_ID   		  AS AGENCYID             ,
+               ADV.ADVERTISER_NAME   	  AS NAME                 ,
+               ADV.DUP_ADVERTISER_NAME    AS DUPADVERTISERNAME    ,
+               ADV.ADVERT_ADDRESS1   	  AS ADDRESS1             ,
+               ADV.ADVERT_ADDRESS2   	  AS ADDRESS2             ,
+               ADV.ADVERT_CITY   	  AS CITY                 ,
+               ADV.ADVERT_STATE   	  AS STATE                ,
+               ADV.ADVERT_ZIP   	  AS ZIPCODE              ,
+               ADV.ADVERT_COUNTRY   	  AS COUNTRY              ,
+               ADV.ADVERT_PHONE   	  AS PHONENUMBER          ,
+               ADV.ADVERT_URL   	  AS URL                  ,
+               ADV.LOGICAL_DELETE   	  AS LOGICALDELETE        ,
+               ADV.CREATED_TPWS_KEY   	  AS CREATEDTPWSKEY       ,
+               ADV.MODIFIED_TPWS_KEY 	  AS MODIFIEDTPWSKEY      ,
+               ADV.CREATED   		  AS CREATEDDATE          ,
+               ADV.MODIFIED   		  AS MODIFIEDDATE         ,
+               ADV.ENABLE_HTML_TAG   	  AS ENABLEHTMLTAG        ,
+               ADV.IS_HIDDEN   		  AS ISHIDDEN             ,
+               ADV.ADVERT_FAX   	  AS FAXNUMBER            ,
+               ADV.ADVERT_CONTACT_DEFAULT AS CONTACTDEFAULT       ,
+               ADV.ADVERT_NOTES   	  AS NOTES                ,
+               ADV.CHANNEL_ATTRIBUTION    AS CHANNELATTRIBUTION   ,
+               ADV.USE_NEW_TRAFFIC   	  AS USENEWTRAFFIC
+          FROM TE_XLS.ADVERTISER ADV, TE_XLS.AGENCY AG, TE_XLS.USERS U
+         WHERE U.AGENCY_ID = AG.AGENCY_ID 
+           AND AG.AGENCY_ID = ADV.AGENCY_ID
+           AND U.USER_ID = #{userId}
+           AND UPPER(U.LIMIT_ADVERTISERS) = 'N' 
+           AND (UPPER(U.LOGICAL_DELETE) != 'Y' OR U.LOGICAL_DELETE IS NULL)
+           AND (UPPER(AG.LOGICAL_DELETE) != 'Y' OR AG.LOGICAL_DELETE IS NULL)
+           AND (UPPER(ADV.LOGICAL_DELETE) != 'Y' OR ADV.LOGICAL_DELETE IS NULL)
+         UNION
+        SELECT ADV.ADVERTISER_ID   	  AS ID                   ,
+               ADV.AGENCY_ID   		  AS AGENCYID             ,
+               ADV.ADVERTISER_NAME   	  AS NAME                 ,
+               ADV.DUP_ADVERTISER_NAME    AS DUPADVERTISERNAME    ,
+               ADV.ADVERT_ADDRESS1   	  AS ADDRESS1             ,
+               ADV.ADVERT_ADDRESS2   	  AS ADDRESS2             ,
+               ADV.ADVERT_CITY   	  AS CITY                 ,
+               ADV.ADVERT_STATE   	  AS STATE                ,
+               ADV.ADVERT_ZIP   	  AS ZIPCODE              ,
+               ADV.ADVERT_COUNTRY   	  AS COUNTRY              ,
+               ADV.ADVERT_PHONE   	  AS PHONENUMBER          ,
+               ADV.ADVERT_URL   	  AS URL                  ,
+               ADV.LOGICAL_DELETE   	  AS LOGICALDELETE        ,
+               ADV.CREATED_TPWS_KEY   	  AS CREATEDTPWSKEY       ,
+               ADV.MODIFIED_TPWS_KEY 	  AS MODIFIEDTPWSKEY      ,
+               ADV.CREATED   		  AS CREATEDDATE          ,
+               ADV.MODIFIED   		  AS MODIFIEDDATE         ,
+               ADV.ENABLE_HTML_TAG   	  AS ENABLEHTMLTAG        ,
+               ADV.IS_HIDDEN   		  AS ISHIDDEN             ,
+               ADV.ADVERT_FAX   	  AS FAXNUMBER            ,
+               ADV.ADVERT_CONTACT_DEFAULT AS CONTACTDEFAULT       ,
+               ADV.ADVERT_NOTES   	  AS NOTES                ,
+               ADV.CHANNEL_ATTRIBUTION    AS CHANNELATTRIBUTION   ,
+               ADV.USE_NEW_TRAFFIC   	  AS USENEWTRAFFIC
+          FROM TE_XLS.ADVERTISER ADV, TE_XLS.USERS U, TE_XLS.USER_ADVERTISER UA
+         WHERE U.USER_ID = UA.USER_ID
+           AND ADV.ADVERTISER_ID = UA.ADVERTISER_ID 
+           AND U.USER_ID = #{userId}
+           AND UPPER(U.LIMIT_ADVERTISERS) = 'Y' 
+           AND (UPPER(U.LOGICAL_DELETE) != 'Y' OR U.LOGICAL_DELETE IS NULL)
+           AND (UPPER(ADV.LOGICAL_DELETE) != 'Y' OR ADV.LOGICAL_DELETE IS NULL)
+    </select>
+</mapper>

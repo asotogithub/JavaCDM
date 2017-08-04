@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SmEvent">
+    <!--Site Measurement Event-->
+    <update id="insertSmEvent" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.InsertSMEvent(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{smGroupId,jdbcType=NUMERIC,mode=IN},
+        #{eventName,jdbcType=VARCHAR,mode=IN},
+        #{location,jdbcType=VARCHAR,mode=IN},
+        #{eventType,jdbcType=NUMERIC,mode=IN},
+        #{smEventType,jdbcType=NUMERIC,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="updateSmEvent" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.UpDateSMEvent(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{location,jdbcType=VARCHAR,mode=IN},
+        #{smEventType,jdbcType=NUMERIC,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="deleteSmEvent" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.DeleteSMEvent(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <select id="getSmEvent" parameterType="java.lang.Long" resultType="SmEvent">
+        SELECT
+            SM_EVENT.SM_EVENT_ID       as id,
+            SM_EVENT.SM_GROUP_ID       as smGroupId,
+            SM_EVENT.EVENT_NAME        as eventName,
+            SM_EVENT.LOCATION          as location,
+            SM_EVENT.EVENT_TYPE        as eventType,
+            SM_EVENT.LOGICAL_DELETE    as logicalDelete,
+            SM_EVENT.CREATED_TPWS_KEY  as createdTpwsKey,
+            SM_EVENT.MODIFIED_TPWS_KEY as modifiedTpwsKey,
+            SM_EVENT.CREATED           as createdDate,
+            SM_EVENT.MODIFIED          as modifiedDate,
+            SM_EVENT.IS_TRAFFICKED     as isTrafficked,
+            SM_EVENT.SM_EVENT_TYPE     as smEventType,
+            SITE_MEASUREMENT.MEASUREMENT_STATE              AS measurementState
+        FROM TE_XLS.SM_EVENT
+          INNER JOIN TE_XLS.SM_GROUP
+            ON SM_EVENT.SM_GROUP_ID = SM_GROUP.SM_GROUP_ID
+                AND DECODE(SM_GROUP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+          INNER JOIN TE_XLS.SITE_MEASUREMENT
+            ON SITE_MEASUREMENT.MEASUREMENT_ID = SM_GROUP.MEASUREMENT_ID
+                AND DECODE(SITE_MEASUREMENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE
+            DECODE(SM_EVENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND SM_EVENT.SM_EVENT_ID = #{id}
+    </select>
+
+    <select id="getSmEventsBySiteMeasurement" parameterType="java.util.Map" resultType="SmEventDTO">
+        SELECT
+            SM_EVENT.SM_EVENT_ID       as id,
+            SM_EVENT.SM_GROUP_ID       as smGroupId,
+            SM_EVENT.EVENT_NAME        as eventName,
+            SM_EVENT.LOCATION          as location,
+            SM_EVENT.EVENT_TYPE        as eventType,
+            SM_EVENT.LOGICAL_DELETE    as logicalDelete,
+            SM_EVENT.CREATED_TPWS_KEY  as createdTpwsKey,
+            SM_EVENT.MODIFIED_TPWS_KEY as modifiedTpwsKey,
+            SM_EVENT.CREATED           as createdDate,
+            SM_EVENT.MODIFIED          as modifiedDate,
+            SM_EVENT.IS_TRAFFICKED     as isTrafficked,
+            SM_EVENT.SM_EVENT_TYPE     as smEventType,
+            SM_GROUP.GROUP_NAME        as groupName
+        FROM SM_EVENT
+            INNER JOIN SM_GROUP ON SM_EVENT.SM_GROUP_ID = SM_GROUP.SM_GROUP_ID
+        WHERE
+            ( UPPER( SM_EVENT.LOGICAL_DELETE ) != 'Y' ) AND ( UPPER( SM_GROUP.LOGICAL_DELETE ) != 'Y' )
+            AND SM_GROUP.MEASUREMENT_ID = #{siteMeasurementId}
+    </select>
+
+    <select id="getSmPingEventsByEvent" parameterType="java.util.Map" resultType="SmPingEventDTO">
+        SELECT
+            SM_EVENT.SM_EVENT_ID                            AS id,
+            SM_EVENT.SM_GROUP_ID                            AS smGroupId,
+            SM_EVENT.EVENT_NAME                             AS eventName,
+            SM_EVENT.LOCATION                               AS location,
+            SM_EVENT.EVENT_TYPE                             AS eventType,
+            SM_EVENT.SM_EVENT_TYPE                          AS smEventType,
+            SM_GROUP.GROUP_NAME                             AS groupName,
+            SM_EVENT_PING_ID                                AS pingId,
+            SM_EVENT_PING.PING_CONTENT                      AS pingContent,
+            SM_EVENT_PING.DESCRIPTION                       AS description,
+            SM_EVENT_PING.SITE_ID                           AS siteId,
+            SITE.SITE_NAME                                  AS siteName,
+            SM_EVENT_PING.PING_TYPE                         AS pingType,
+            SM_EVENT_PING.TAG_TYPE                          AS pingTagType
+        FROM TE_XLS.SM_EVENT
+        INNER JOIN TE_XLS.SM_GROUP
+            ON SM_EVENT.SM_GROUP_ID = SM_GROUP.SM_GROUP_ID
+                AND DECODE(SM_GROUP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN TE_XLS.SM_EVENT_PING
+            ON SM_EVENT_PING.SM_EVENT_ID = SM_EVENT.SM_EVENT_ID
+                AND DECODE(SM_EVENT_PING.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN TE_XLS.SITE
+            ON SITE.SITE_ID = SM_EVENT_PING.SITE_ID
+                AND DECODE(SITE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE DECODE(SM_EVENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND SM_EVENT.SM_EVENT_ID = #{smEventId}
+    </select>
+
+
+    <select id="isSmEventNameExists" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1) AS IS_NAME_EXIST
+        FROM TE_XLS.SM_EVENT
+        INNER JOIN TE_XLS.SM_GROUP
+            ON SM_GROUP.SM_GROUP_ID = SM_EVENT.SM_GROUP_ID
+                AND DECODE(SM_GROUP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE DECODE(SM_EVENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND UPPER(SM_EVENT.EVENT_NAME) = UPPER(#{name, jdbcType=VARCHAR,mode=IN})
+            AND TE_XLS.SM_GROUP.SM_GROUP_ID = #{groupId, jdbcType=VARCHAR,mode=IN}
+    </select>
+    <update id="insertSmEventPing" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.SITE_MEASUREMENT_PKG.InsertSMEventPing(
+        #{pingId,jdbcType=NUMERIC,mode=IN},
+        #{smEventId,jdbcType=NUMERIC,mode=IN},
+        #{siteId,jdbcType=NUMERIC,mode=IN},
+        #{pingContent,jdbcType=VARCHAR,mode=IN},
+        #{pingDescription,jdbcType=VARCHAR,mode=IN},
+        #{pingType,jdbcType=NUMERIC,mode=IN},
+        #{pingTagType,jdbcType=NUMERIC,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN})}
+    </update>
+</mapper>

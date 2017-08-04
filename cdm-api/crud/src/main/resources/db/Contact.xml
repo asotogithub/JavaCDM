@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Contact">
+    <resultMap id="contactResultMap" type="trueffect.truconnect.api.commons.model.Contact">
+        <result property="id" column="CONTACT_ID" />
+        <result property="lastName" column="LNAME" />
+        <result property="firstName" column="FNAME" />
+        <result property="email" column="EMAIL" />
+        <result property="phone" column="PHONE" />
+        <result property="fax" column="FAX" />
+        <result property="notes" column="NOTES" />
+        <result property="logicalDelete" column="LOGICAL_DELETE" />
+        <result property="createdTpwsKey" column="CREATED_TPWS_KEY" />
+        <result property="modifiedTpwsKey" column="MODIFIED_TPWS_KEY" />
+        <result property="createdDate" column="CREATED" />
+        <result property="modifiedDate" column="MODIFIED" />
+        <result property="address1" column="ADDRESS1" />
+        <result property="address2" column="ADDRESS2" />
+        <result property="city" column="CITY" />
+        <result property="state" column="STATE" />
+        <result property="zip" column="ZIP" />
+        <result property="country" column="COUNTRY" />
+    </resultMap>
+
+    <insert id="insertContact" statementType="CALLABLE" parameterType="java.util.Map">
+            INSERT INTO CONTACT(
+            CONTACT_ID,
+            LNAME,
+            FNAME,
+            EMAIL,
+            PHONE,
+            FAX,
+            NOTES,
+            CREATED, MODIFIED,
+            CREATED_TPWS_KEY,
+            MODIFIED_TPWS_KEY,
+            ADDRESS1,
+            ADDRESS2,
+            CITY,
+            STATE,
+            ZIP,
+            COUNTRY)
+        VALUES (
+            #{id,jdbcType=NUMERIC},
+            #{lname,jdbcType=VARCHAR},
+            #{fname,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR},
+            #{phone,jdbcType=VARCHAR},
+            #{fax,jdbcType=VARCHAR},
+            #{notes,jdbcType=VARCHAR},
+            SYSDATE, 
+            SYSDATE,
+            #{tpwsKey,jdbcType=VARCHAR},
+            #{tpwsKey,jdbcType=VARCHAR},
+            #{address1,jdbcType=VARCHAR},
+            #{address2,jdbcType=VARCHAR},
+            #{city,jdbcType=VARCHAR},
+            #{state,jdbcType=VARCHAR},
+            #{zip,jdbcType=VARCHAR},
+            #{country,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateContact" statementType="CALLABLE" parameterType="java.util.Map">
+        UPDATE TE_XLS.CONTACT C
+           SET C.LNAME = #{lname,jdbcType=VARCHAR},
+               C.FNAME = #{fname,jdbcType=VARCHAR},
+               C.EMAIL = #{email,jdbcType=VARCHAR},
+               C.PHONE = #{phone,jdbcType=VARCHAR},
+               C.FAX = #{fax,jdbcType=VARCHAR},
+               C.NOTES = #{notes,jdbcType=VARCHAR},
+               C.MODIFIED = SYSDATE,
+               C.MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR},
+               C.ADDRESS1 = #{address1,jdbcType=VARCHAR},
+               C.ADDRESS2 = #{address2,jdbcType=VARCHAR},
+               C.CITY = #{city,jdbcType=VARCHAR},
+               C.STATE = #{state,jdbcType=VARCHAR},
+               C.ZIP = #{zip,jdbcType=VARCHAR},
+               C.COUNTRY = #{country,jdbcType=VARCHAR}
+         WHERE C.CONTACT_ID = #{id,jdbcType=NUMERIC}
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </update>
+        <select id="userContactCount" parameterType="java.lang.Long" resultType="java.lang.Long">
+            SELECT COUNT(1) as active_user_acct
+              FROM TE_XLS.USERS u
+             WHERE U.CONTACT_ID     = #{value}
+               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        </select>
+        
+    <update id="deleteContact" statementType="CALLABLE" parameterType="java.util.Map">
+        UPDATE TE_XLS.CONTACT C
+           SET C.LOGICAL_DELETE = 'Y',
+               C.MODIFIED = SYSDATE,
+               C.MODIFIED_TPWS_KEY = #{tpwsKey,jdbcType=VARCHAR}
+         WHERE C.CONTACT_ID = #{id,jdbcType=NUMERIC}    
+    </update>
+        <select id="existsAgencyContactRef" parameterType="java.util.Map" resultType="java.lang.Long" >
+            SELECT COUNT( * ) as cant
+              FROM TE_XLS.AGENCY_CONTACT AC
+             WHERE ac.contact_id = #{contactId,jdbcType=NUMERIC}
+               AND ac.agency_id = #{agencyId,jdbcType=NUMERIC}
+               AND ac.type_id = #{typeId,jdbcType=NUMERIC}
+               AND DECODE(AC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        </select>
+    <update id="updateAgencyContactRef" statementType="CALLABLE" parameterType="java.util.Map">
+            UPDATE TE_XLS.AGENCY_CONTACT AC
+               SET AC.LOGICAL_DELETE = 'N',
+                   AC.MODIFIED_TPWS_KEY = #{createdTpwsKey,jdbcType=VARCHAR}
+             WHERE AC.CONTACT_ID = #{contactId,jdbcType=NUMERIC}
+               AND AC.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+               AND AC.TYPE_ID = #{typeId,jdbcType=NUMERIC}
+               AND DECODE(AC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+       </update> 
+     <insert id="addAgencyContactRef" statementType="CALLABLE" parameterType="java.util.Map">
+        INSERT INTO TE_XLS.AGENCY_CONTACT (
+                    CONTACT_ID
+                    , AGENCY_ID
+                    , TYPE_ID
+                    , CREATED_TPWS_KEY
+                    , MODIFIED_TPWS_KEY )
+            VALUES ( #{contactId,jdbcType=NUMERIC}
+                   , #{agencyId,jdbcType=NUMERIC}
+                   , #{typeId,jdbcType=NUMERIC}
+                   , #{createdTpwsKey,jdbcType=VARCHAR}
+                   , #{createdTpwsKey,jdbcType=VARCHAR}  )
+    </insert> 
+    <update id="clearAgencyContactRef" statementType="CALLABLE" parameterType="java.util.Map">
+       UPDATE TE_XLS.AGENCY_CONTACT AC
+          SET AC.LOGICAL_DELETE = 'Y',
+              AC.MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR}
+        WHERE AC.CONTACT_ID = #{contactId,jdbcType=NUMERIC}
+          AND AC.AGENCY_ID = #{agencyId,jdbcType=NUMERIC}
+    </update> 
+
+    <select id="getContact" parameterType="java.lang.Long" resultType="Contact">
+        SELECT C.CONTACT_ID        as  id,
+               C.LNAME             as  lastName,
+               C.FNAME             as  firstName,
+               C.EMAIL             as  email,
+               C.PHONE             as  phone,
+               C.FAX               as  fax,
+               C.NOTES             as  notes,
+               C.LOGICAL_DELETE    as  logicalDelete,
+               C.CREATED_TPWS_KEY  as  createdTpwsKey,
+               C.MODIFIED_TPWS_KEY as  modifiedTpwsKey,
+               C.CREATED           as  createdDate,
+               C.MODIFIED          as  modifiedDate,
+               C.ADDRESS1          as  address1,
+               C.ADDRESS2          as  address2,
+               C.CITY              as  city,
+               C.STATE             as  state,
+               C.ZIP               as  zip,
+               C.COUNTRY           as  country
+          FROM TE_XLS.CONTACT c
+         WHERE c.CONTACT_ID = #{value} 
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+     </select>
+     <select id="getContactByUser" parameterType="java.lang.String" resultType="Contact">
+        SELECT C.CONTACT_ID        as  id,
+               C.LNAME             as  lname,
+               C.FNAME             as  fname,
+               C.EMAIL             as  email,
+               C.PHONE             as  phone,
+               C.FAX               as  fax,
+               C.NOTES             as  notes,
+               C.LOGICAL_DELETE    as  logicalDelete,
+               C.CREATED_TPWS_KEY  as  createdTpwsKey,
+               C.MODIFIED_TPWS_KEY as  modifiedTpwsKey,
+               C.CREATED           as  createdDate,
+               C.MODIFIED          as  modifiedDate,
+               C.ADDRESS1          as  address1,
+               C.ADDRESS2          as  address2,
+               C.CITY              as  city,
+               C.STATE             as  state,
+               C.ZIP               as  zip
+          FROM TE_XLS.USERS u, TE_XLS.CONTACT c
+         WHERE U.CONTACT_ID = C.CONTACT_ID
+           AND U.USER_ID = '${value}'
+           AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <select id="getAgencyContact" parameterType="java.util.Map" resultType="AgencyContact">
+        SELECT AC.CONTACT_ID as contactId,
+               AC.AGENCY_ID  as agencyId,
+               AC.TYPE_ID       as typeId,
+               AC.LOGICAL_DELETE as logicalDelete,
+               AC.CREATED_TPWS_KEY as createdTpwsKey,
+               AC.MODIFIED_TPWS_KEY as modifiedTpwsKey
+          FROM TE_XLS.AGENCY_CONTACT AC
+         WHERE AC.CONTACT_ID = #{contactId} 
+           AND AC.AGENCY_ID = #{agencyId} 
+           AND AC.TYPE_ID = #{typeId} 
+           AND DECODE(AC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <update id="AddSiteContactRef" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL PUBLISHER_PKG.AddSiteContactRef(
+            #{contactId,jdbcType=NUMERIC,mode=IN},
+            #{siteId,jdbcType=NUMERIC,mode=IN},
+            #{typeId,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN})}
+    </update>
+    <select id="getSiteContact" parameterType="SiteContact" resultType="SiteContact">
+        SELECT sc.site_id           AS siteId,
+               sc.contact_id        AS contactId,
+               sc.type_id           AS typeId, 
+               sc.logical_delete    AS logicalDelete,
+               sc.created_tpws_key  AS createdTpwsKey,
+               sc.modified_tpws_key AS modifiedTpwsKey
+          FROM TE_XLS.SITE_CONTACT SC
+         WHERE sc.site_id = #{siteId}
+           AND sc.contact_id = #{contactId}
+           AND sc.type_id = #{typeId}
+           AND DECODE(SC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+</mapper>

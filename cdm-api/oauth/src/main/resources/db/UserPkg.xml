@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserPkg">
+    
+    <!--SECTION OF QUERY'S-->
+    <select id="getUser"  parameterType="java.lang.String"
+            resultType="trueffect.truconnect.api.oauth.model.User" >
+        SELECT c.contact_id as contactId, 
+            u.user_id  as userId,
+            u.PASSWORD as password,
+            u.is_app_admin     as isAppAdmin,
+            u.is_client_admin  as isClientAdmin,
+            u.is_disabled      as isDisabled,
+            u.is_sys_admin     as isSysAdmin
+        FROM users u,
+            contact c,
+            agency a,
+            agency_contact ac
+        WHERE LOWER( user_id ) = LOWER( #{value,jdbcType=VARCHAR} )
+            AND a.agency_id = ac.agency_id
+            AND ac.contact_id = c.contact_id
+            AND c.contact_id = u.contact_id
+            AND u.agency_id = a.agency_id
+            AND (   u.logical_delete != 'Y'
+            OR u.logical_delete IS NULL )
+            AND (   c.logical_delete != 'Y'
+            OR c.logical_delete IS NULL )
+            AND (   ac.logical_delete != 'Y'
+            OR ac.logical_delete IS NULL )
+            AND (   a.logical_delete != 'Y'
+            OR a.logical_delete IS NULL )
+            AND ac.type_id = 1
+    </select>
+    <select id="getRoles"  parameterType="java.lang.String" resultType="java.lang.String" >
+        SELECT r.role_name
+        FROM users u INNER JOIN user_role ur ON u.id = ur.user_id
+            INNER JOIN role r ON ur.role_id = r.role_id
+        WHERE LOWER( u.user_id ) = LOWER( #{value,jdbcType=VARCHAR} )
+    </select>
+    <update id="openTPWSKey" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.ADMIN_PKG.OpenTPWSKey(
+            #{tpwskey,jdbcType=VARCHAR,mode=IN},
+            #{agentType,jdbcType=VARCHAR,mode=IN},
+            #{userOrgType,jdbcType=VARCHAR,mode=IN},
+            #{contactId,jdbcType=NUMERIC,mode=IN},
+            #{registeredUserId,jdbcType=VARCHAR,mode=IN},
+            #{userHostAddress,jdbcType=VARCHAR,mode=IN},
+            #{userAgent,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+</mapper>

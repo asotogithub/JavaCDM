@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SiteSection">
+    <!-- Queries: get SiteSection data-->
+    <select id="getInsertSiteSection"  parameterType="java.lang.Long" resultType="SiteSection" >
+        SELECT SECTION_ID        as  id
+             , SITE_ID           as  siteId
+             , SECTION_NAME      as  name
+             , DUP_SECTION_NAME  as  dupName
+             , SECTION_URL       as  url
+             , AGENCY_NOTES      as  agencyNotes
+             , PUBLISHER_NOTES   as  publisherNotes
+             , LOGICAL_DELETE    as  logicalDelete
+             , CREATED_TPWS_KEY  as  createdTpwsKey
+             , MODIFIED_TPWS_KEY as  modifiedTpwsKey
+             , CREATED           as  createdDate
+             , MODIFIED          as  modifiedDate
+             , EXT_PROP1         as  extProp1
+             , EXT_PROP2         as  extProp2
+             , EXT_PROP3         as  extProp3
+             , EXT_PROP4         as  extProp4
+             , EXT_PROP5         as  extProp5
+          FROM TE_XLS.SITE_SECTION
+         WHERE SECTION_ID  = #{id}
+           AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <select id="getSiteSectionsByCriteria" parameterType="java.util.Map" resultType="SiteSection">
+        SELECT SITE_SECTION.SECTION_ID        as  id,
+               SITE_SECTION.SITE_ID           as  siteId,
+               SITE_SECTION.SECTION_NAME      as  name,
+               SITE_SECTION.DUP_SECTION_NAME  as  dupName,
+               SITE_SECTION.SECTION_URL       as  url,
+               SITE_SECTION.AGENCY_NOTES      as  agencyNotes,
+               SITE_SECTION.PUBLISHER_NOTES   as  publisherNotes,
+               SITE_SECTION.LOGICAL_DELETE    as  logicalDelete,
+               SITE_SECTION.CREATED_TPWS_KEY  as  createdTpwsKey,
+               SITE_SECTION.MODIFIED_TPWS_KEY as  modifiedTpwsKey,
+               SITE_SECTION.CREATED           as  createdDate,
+               SITE_SECTION.MODIFIED          as  modifiedDate,
+               SITE_SECTION.EXT_PROP1         as  extProp1,
+               SITE_SECTION.EXT_PROP2         as  extProp2,
+               SITE_SECTION.EXT_PROP3         as  extProp3,
+               SITE_SECTION.EXT_PROP4         as  extProp4,
+               SITE_SECTION.EXT_PROP5         as  extProp5
+          FROM TE_XLS.SITE_SECTION
+               INNER JOIN SITE S ON S.SITE_ID = SITE_SECTION.SITE_ID
+               INNER JOIN PUBLISHER P ON S.PUBLISHER_ID = P.PUBLISHER_ID
+               INNER JOIN AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AP.AGENCY_ID
+        WHERE DECODE(SITE_SECTION.LOGICAL_DELETE,'Y','1','0')='0'
+          AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+          AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+          AND DECODE(AP.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+                ${order}
+            </if>
+    </select>
+    <select id="getSiteSectionsNumberOfRecordsByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1) as totalRecords
+          FROM TE_XLS.SITE_SECTION
+               INNER JOIN SITE S ON S.SITE_ID = SITE_SECTION.SITE_ID
+               INNER JOIN PUBLISHER P ON S.PUBLISHER_ID = P.PUBLISHER_ID
+               INNER JOIN AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AP.AGENCY_ID
+        WHERE DECODE(SITE_SECTION.LOGICAL_DELETE,'Y','1','0')='0'
+          AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+          AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+          AND DECODE(AP.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+    <select id="getSectionByCampaignIdAndPublisherSiteSectionNames" parameterType="java.util.Map" resultType="SiteSection">
+        SELECT SS.SITE_ID                                                       AS siteId,
+               SS.SECTION_ID                                                    AS id,
+               P.PUBLISHER_ID || '_@&lt;-*->@_' || S.SITE_ID || '_@&lt;-*->@_' || UPPER(SS.SECTION_NAME) AS name
+          FROM TE_XLS.SITE_SECTION SS
+               INNER JOIN TE_XLS.SITE S ON SS.SITE_ID = S.SITE_ID
+                 AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.PUBLISHER P ON S.PUBLISHER_ID = P.PUBLISHER_ID
+                 AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+                 AND DECODE(AP.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON AP.AGENCY_ID = C.AGENCY_ID
+                 AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                 AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) UA ON C.AGENCY_ID = UA.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE P.PUBLISHER_ID || '_@&lt;-*->@_' || S.SITE_ID || '_@&lt;-*->@_' || UPPER(SS.SECTION_NAME) IN
+            <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(SS.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+    <!-- Queries: get SiteSection data-->
+
+    <!-- Queries: utilities-->
+    <select id="siteSectionExists"  parameterType="SiteSection"   resultType="java.lang.Long" >
+        SELECT COUNT(SS.SECTION_ID) AS id
+          FROM TE_XLS.SITE_SECTION SS
+         WHERE SS.SITE_ID = #{siteId}
+           AND UPPER(SS.SECTION_NAME) = UPPER(#{name})
+           AND DECODE(SS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: utilities-->
+    
+    <!-- Queries: Create/update/delete siteSections-->
+    <update id="insertSiteSection" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.InsertSiteSection(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{siteId,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{url,jdbcType=VARCHAR,mode=IN},
+            #{agencyNotes,jdbcType=VARCHAR,mode=IN},
+            #{publisherNotes,jdbcType=VARCHAR,mode=IN},
+            #{extProp1,jdbcType=VARCHAR,mode=IN},
+            #{extProp2,jdbcType=VARCHAR,mode=IN},
+            #{extProp3,jdbcType=VARCHAR,mode=IN},
+            #{extProp4,jdbcType=VARCHAR,mode=IN},
+            #{extProp5,jdbcType=VARCHAR,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="updateSiteSection" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.UpdateSiteSection(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{url,jdbcType=VARCHAR,mode=IN},
+            #{agencyNotes,jdbcType=VARCHAR,mode=IN},
+            #{publisherNotes,jdbcType=VARCHAR,mode=IN},
+            #{extProp1,jdbcType=VARCHAR,mode=IN},
+            #{extProp2,jdbcType=VARCHAR,mode=IN},
+            #{extProp3,jdbcType=VARCHAR,mode=IN},
+            #{extProp4,jdbcType=VARCHAR,mode=IN},
+            #{extProp5,jdbcType=VARCHAR,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update> 
+    <update id="deleteSiteSection" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.DeleteSiteSection(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!-- Queries: Create/update/delete siteSections-->
+</mapper>

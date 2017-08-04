@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="MediaBuy">
+    <select id="getMediaBuy"  parameterType="java.lang.Long" resultType="trueffect.truconnect.api.commons.model.MediaBuy" >
+        SELECT DISTINCT MEDIA_BUY.MEDIA_BUY_ID   as id,
+        MEDIA_BUY.AGENCY_ID      as agencyId,
+        MEDIA_BUY.BUY_NAME       as name,
+        MEDIA_BUY.STATE          as state,
+        MEDIA_BUY.OVERALL_BUDGET as overallBudget,
+        MEDIA_BUY.AGENCY_NOTES   as agencyNotes,
+        MEDIA_BUY.CREATED        as createdDate,
+        MEDIA_BUY.MODIFIED       as modifiedDate
+        FROM MEDIA_BUY
+        WHERE MEDIA_BUY.MEDIA_BUY_ID = #{id}
+        AND (UPPER( MEDIA_BUY.logical_delete ) != 'Y' OR MEDIA_BUY.logical_delete IS NULL)
+    </select>
+    <select id="getMediaBuyByCampaign"  parameterType="java.lang.Long" resultType="MediaBuy" >
+        SELECT DISTINCT MEDIA_BUY.MEDIA_BUY_ID   as id,
+               MEDIA_BUY.AGENCY_ID      as agencyId,
+               MEDIA_BUY.BUY_NAME       as name,
+               MEDIA_BUY.STATE          as state,
+               MEDIA_BUY.OVERALL_BUDGET as overallBudget,
+               MEDIA_BUY.AGENCY_NOTES   as agencyNotes,
+               MEDIA_BUY.CREATED        as createdDate,
+               MEDIA_BUY.MODIFIED       as modifiedDate
+          FROM TE_XLS.MEDIA_BUY
+               INNER JOIN MEDIA_BUY_CAMPAIGN MBC ON MEDIA_BUY.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+         WHERE MBC.CAMPAIGN_ID = #{id}
+           AND DECODE(MEDIA_BUY.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="getMediaBuyCampaign"  parameterType="java.util.Map" resultType="trueffect.truconnect.api.commons.model.MediaBuyCampaign" >
+        SELECT DISTINCT MBC.MEDIA_BUY_ID   as mediBuyId,
+                        MBC.CAMPAIGN_ID    as campaignId,
+                        MBC.LOGICAL_DELETE as logicalDelete,
+                        MBC.CREATED        as createdDate,
+                        MBC.MODIFIED       as modifiedDate
+        FROM MEDIA_BUY_CAMPAIGN MBC
+        WHERE MBC.MEDIA_BUY_ID = #{mediaBuyId} AND MBC.CAMPAIGN_ID = #{campaignId}
+            AND (UPPER( MBC.logical_delete ) != 'Y' OR MBC.logical_delete IS NULL)
+    </select>
+    
+    <insert id="insertMediaBuy" parameterType="java.util.Map">
+        INSERT INTO MEDIA_BUY(media_buy_id, agency_id, buy_name, dup_buy_name,
+            overall_budget, agency_notes, created_tpws_key, modified_tpws_key,
+            created, modified)
+        VALUES (#{id,jdbcType=NUMERIC}, #{agencyId,jdbcType=NUMERIC},
+            #{name,jdbcType=VARCHAR}, LOWER( #{name,jdbcType=VARCHAR} ),
+            #{overallBudget,jdbcType=NUMERIC}, #{agencyNotes,jdbcType=VARCHAR},
+            #{tpwsKey,jdbcType=VARCHAR}, #{tpwsKey,jdbcType=VARCHAR},
+            SYSDATE, SYSDATE)
+    </insert>
+    <insert id="insertMediaBuyCampaign" parameterType="java.util.Map">
+        INSERT INTO MEDIA_BUY_CAMPAIGN(campaign_id, media_buy_id, 
+            created_tpws_key, modified_tpws_key, created, modified )
+        VALUES (#{campaignId,jdbcType=NUMERIC,mode=IN},
+            #{mediaBuyId,jdbcType=NUMERIC,mode=IN}, 
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN},
+            SYSDATE, SYSDATE)
+    </insert>
+    <delete id="deleteMediaBuyCampaign" parameterType="java.util.Map">
+        DELETE FROM media_buy_campaign
+        WHERE campaign_id = #{mediaBuyId,jdbcType=NUMERIC,mode=IN}
+            AND media_buy_id = #{mediaBuyId,jdbcType=NUMERIC,mode=IN}
+    </delete>
+
+    <update id="updateMediaBuy" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.IO_PKG.UpdateMediaBuy(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{overallBudget,jdbcType=NUMERIC,mode=IN},
+            #{agencyNotes,jdbcType=VARCHAR,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+</mapper>

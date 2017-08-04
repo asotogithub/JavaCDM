@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for each web application -->
+<Context>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+    <Environment name="log.level" value="info" type="java.lang.String" override="false"/> <!-- Log levels can be one of these: TRACE, DEBUG, INFO, WARN, ERROR, FATAL, ALL, OFF -->
+    <Environment name="time.left.to.expire.in.seconds" value="10" type="java.lang.String" override="false"/>
+
+    <Resource 
+        name="jdbc/mybatis" 
+        auth="Container" 
+        type="javax.sql.DataSource"
+        removeAbandoned="true" removeAbandonedTimeout="30" logAbandoned="true"
+        testWhileIdle="true" validationQuery="SELECT 1 FROM DUAL" timeBetweenEvictionRunsMillis="60000"
+        maxActive="30" maxIdle="5" maxWait="50000"
+        username="TE_XLS" 
+        password="t3ux1$" 
+        driverClassName="oracle.jdbc.OracleDriver"
+        url="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=optimus.trueffect.com)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=tfaprod.trueffect.com)))"/>
+
+</Context>

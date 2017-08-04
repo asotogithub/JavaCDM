@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Site">
+    <!-- Queries: get Site data-->
+    <select id="getSiteById"  parameterType="java.lang.Long" resultType="Site" >
+        SELECT S.SITE_ID           AS  id          ,
+               S.PUBLISHER_ID      AS  publisherId ,
+               S.SITE_NAME         AS  name        ,
+               S.SITE_URL          AS  url         ,
+               S.PREFERRED_TAG     AS  preferredTag,
+               S.RICH_MEDIA        AS  richMedia   ,
+               S.ACCEPT_FLASH      AS  acceptsFlash,
+               S.CLICK_TRACK       AS  clickTrack  ,
+               S.ENCODE            AS  encode      ,
+               S.TARGET_WIN        AS  targetWin     ,
+               S.AGENCY_NOTES      AS  agencyNotes   ,
+               S.PUBLISHER_NOTES   AS  publisherNotes,
+               S.CREATED           AS  createdDate   ,
+               S.MODIFIED          AS  modifiedDate  ,
+               EXT.EXTERNAL_ID     AS  externalId    ,  
+               P.PUBLISHER_NAME    AS  publisherName
+          FROM TE_XLS.SITE S, TE_XLS.PUBLISHER P,
+               (SELECT EPV.OBJECT_ID AS SITE_ID, EPV.VALUE AS EXTERNAL_ID
+                  FROM TE_XLS.EXTENDED_PROPERTIES EP, TE_XLS.EXTENDED_PROPERTIES_VALUE EPV
+                 WHERE EP.EXTENDED_PROPERTIES_ID = EPV.EXTENDED_PROPERTIES_ID
+                   AND LOWER(EP.OBJECT_NAME) = LOWER('Site') 
+                   AND LOWER(EP.FIELD_NAME) = LOWER('MediaID')
+                ) EXT
+         WHERE S.PUBLISHER_ID = P.PUBLISHER_ID
+           AND S.SITE_ID = EXT.SITE_ID (+)
+           AND S.SITE_ID = #{id}
+           AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+           AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+    <select id="getSitesByCriteria"  parameterType="java.util.Map" resultType="Site" >
+        SELECT SITE.site_id           AS id,
+               SITE.PUBLISHER_ID      AS publisherId,
+               SITE.SITE_NAME         AS name,
+               SITE.DUP_SITE_NAME     AS dupName,
+               SITE.SITE_URL          AS url,
+               SITE.PREFERRED_TAG     AS preferredTag,
+               SITE.RICH_MEDIA        AS richMedia,
+               SITE.ACCEPT_FLASH      AS acceptsFlash,
+               SITE.CLICK_TRACK       AS clickTrack,
+               SITE.ENCODE            AS encode,
+               SITE.TARGET_WIN        AS targetWin,
+               SITE.AGENCY_NOTES      AS agencyNotes,
+               SITE.PUBLISHER_NOTES   AS publisherNotes,
+               SITE.logical_delete    AS logicalDelete,
+               SITE.CREATED_TPWS_KEY  AS createdTpwsKey,
+               SITE.MODIFIED_TPWS_KEY AS modifiedTpwsKey,
+               SITE.CREATED           AS createdDate,
+               SITE.MODIFIED          AS modifiedDate,
+               EXT.externalId         AS externalId,
+               P.PUBLISHER_NAME       AS publisherName
+          FROM TE_XLS.SITE
+               INNER JOIN PUBLISHER P ON SITE.PUBLISHER_ID = P.PUBLISHER_ID
+               INNER JOIN AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AP.AGENCY_ID
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as siteId, EPV.VALUE as externalId
+                                  FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                       INNER JOIN te_xls.extended_properties_value epv on epv.extended_properties_id = ep.extended_properties_id
+                                 WHERE LOWER(object_name) = LOWER('Site')
+                                   AND LOWER(field_name) = LOWER('MediaID')
+                               )  ext on ext.siteid = site.site_id
+         WHERE DECODE(SITE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(AP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+                ${order}
+            </if>
+    </select>
+    <select id="getSiteNumberOfRecordsByCriteria" parameterType="java.util.Map"
+        resultType="java.lang.Integer">
+        SELECT COUNT(1) as totalRecords
+          FROM TE_XLS.SITE
+               INNER JOIN PUBLISHER P ON SITE.PUBLISHER_ID = P.PUBLISHER_ID
+               INNER JOIN AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AP.AGENCY_ID
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as siteId, EPV.VALUE as externalId
+                                  FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                       INNER JOIN te_xls.extended_properties_value epv on epv.extended_properties_id = ep.extended_properties_id
+                                 WHERE LOWER(object_name) = LOWER('Site')
+                                   AND LOWER(field_name) = LOWER('MediaID')
+                               )  ext on ext.siteid = site.site_id
+         WHERE DECODE(SITE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(AP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+    <select id="getSiteByCampaignIdAndPublisherSiteNames" parameterType="java.util.Map" resultType="Site">
+        SELECT S.PUBLISHER_ID                         AS publisherId,
+               S.SITE_ID                              AS id,
+               P.PUBLISHER_ID || '_@&lt;-*->@_' || UPPER(S.SITE_NAME) AS name
+          FROM TE_XLS.SITE S
+               INNER JOIN TE_XLS.PUBLISHER P ON S.PUBLISHER_ID = P.PUBLISHER_ID
+                 AND DECODE(P.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+                 AND DECODE(AP.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON AP.AGENCY_ID = C.AGENCY_ID
+                 AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                 AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) UA ON C.AGENCY_ID = UA.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE P.PUBLISHER_ID || '_@&lt;-*->@_' || UPPER(S.SITE_NAME) IN
+            <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+    <select id="checkSiteExistsByName"  parameterType="java.util.Map" resultType="Site" >
+         SELECT s.site_id           AS id,
+                s.PUBLISHER_ID      AS publisherId,
+                s.SITE_NAME         AS name,
+                P.PUBLISHER_NAME    AS publisherName
+           FROM TE_XLS.SITE s, TE_XLS.PUBLISHER P, TE_XLS.AGENCY_PUBLISHER AP,
+                ( SELECT AI.AGENCY_ID
+                    FROM TE_XLS.USERS U, TE_XLS.AGENCY AI 
+                   WHERE U.AGENCY_ID = AI.AGENCY_ID
+                     AND ( U.USER_ID = #{userId, jdbcType=VARCHAR} )
+                     AND DECODE(UPPER(U.logical_delete), 'Y', '1', '0') = '0'
+                     AND DECODE(UPPER(AI.logical_delete), 'Y', '1', '0') = '0'
+                 ) AU
+          WHERE s.PUBLISHER_ID = P.PUBLISHER_ID
+            AND P.PUBLISHER_ID = AP.PUBLISHER_ID
+            AND AU.AGENCY_ID = AP.AGENCY_ID
+            AND LOWER(s.SITE_NAME) = LOWER (#{siteName, jdbcType=VARCHAR})
+            AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND DECODE(AP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <select id="getTraffickingContactsByCampaignId" parameterType="java.lang.Long" resultType="SiteContactView">
+        SELECT s.site_id                 AS siteId,
+               s.site_name               AS siteName,
+               ps.publisher_id           AS publisherid, 
+               ps.PUBLISHER_NAME         AS publisherName,
+               sc.contact_id             AS contactId,  
+               c.fname || ' ' || c.lname AS contactName, 
+               c.email                   AS contactEmail
+          FROM TE_XLS.SITE s, TE_XLS.SITE_CONTACT sc, TE_XLS.CONTACT c, TE_XLS.PUBLISHER ps,
+               (SELECT DISTINCT p.site_id
+                  FROM TE_XLS.PLACEMENT p, TE_XLS.INSERTION_ORDER io, TE_XLS.MEDIA_BUY mb, TE_XLS.MEDIA_BUY_CAMPAIGN mbc
+                 WHERE p.io_id = io.io_id
+                   AND io.media_buy_id = mb.media_buy_id
+                   AND mb.media_buy_id = mbc.media_buy_id
+                   AND mbc.campaign_id = #{value}
+                   AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                   AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                   AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                   AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                 ) SITES
+         WHERE sites.site_id = s.site_id
+           AND s.site_id = sc.site_id
+           AND sc.contact_id = c.contact_id
+           AND sc.type_id = 6
+           AND s.publisher_id = ps.publisher_id
+           AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(SC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(PS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: get Site data-->
+    
+    <!-- Queries: utilities-->
+    <select id="siteExists"  parameterType="Site"  resultType="java.lang.Long" >
+        SELECT S.site_id as id
+          FROM TE_XLS.SITE S
+         WHERE UPPER(S.SITE_NAME) = UPPER(#{name})
+           AND S.PUBLISHER_ID = #{publisherId}
+           AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: utilities-->
+    
+    <!-- Queries: Create/update/delete sites-->
+    <update id="insertSite" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.InsertSite(
+            #{id,jdbcType=NUMERIC,mode=IN},                     
+            #{publisherId,jdbcType=NUMERIC,mode=IN},                 
+            #{name,jdbcType=VARCHAR,mode=IN},                 
+            #{url,jdbcType=VARCHAR,mode=IN},                     
+            #{preferredTag,jdbcType=VARCHAR,mode=IN},             
+            #{richMedia,jdbcType=VARCHAR,mode=IN},                 
+            #{acceptsFlash,jdbcType=VARCHAR,mode=IN},                
+            #{clickTrack,jdbcType=VARCHAR,mode=IN},                 
+            #{encode,jdbcType=VARCHAR,mode=IN},                     
+            #{targetWin,jdbcType=VARCHAR,mode=IN},                 
+            #{agencyNotes,jdbcType=VARCHAR,mode=IN},                 
+            #{publisherNotes,jdbcType=VARCHAR,mode=IN},             
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="updateSite" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.UpdateSite(
+            #{id,jdbcType=NUMERIC,mode=IN},                     
+            #{name,jdbcType=VARCHAR,mode=IN},                 
+            #{url,jdbcType=VARCHAR,mode=IN},                     
+            #{preferredTag,jdbcType=VARCHAR,mode=IN},             
+            #{richMedia,jdbcType=VARCHAR,mode=IN},                 
+            #{acceptsFlash,jdbcType=VARCHAR,mode=IN},                
+            #{clickTrack,jdbcType=VARCHAR,mode=IN},                 
+            #{encode,jdbcType=VARCHAR,mode=IN},                     
+            #{targetWin,jdbcType=VARCHAR,mode=IN},                 
+            #{agencyNotes,jdbcType=VARCHAR,mode=IN},                 
+            #{publisherNotes,jdbcType=VARCHAR,mode=IN},             
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update> 
+    <update id="deleteSite" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.PUBLISHER_PKG.DeleteSite(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!-- Queries: Create/update/delete sites-->
+</mapper>

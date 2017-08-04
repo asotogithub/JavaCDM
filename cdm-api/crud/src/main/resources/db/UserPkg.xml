@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserPkg">
+    <resultMap id="agencyUsersResultMap" type="trueffect.truconnect.api.commons.model.AgencyUser">
+        <result property="userId"               column="USER_ID"/>
+        <result property="password"             column="PASSWORD"/>
+        <result property="agencyId"             column="AGENCY_ID"/>
+        <result property="isAppAdmin"           column="IS_APP_ADMIN"/>
+        <result property="isClientAdmin"        column="IS_CLIENT_ADMIN"/>
+        <result property="limitDomains"         column="LIMIT_DOMAINS"/>
+        <result property="limitAdvertisers"     column="LIMIT_ADVERTISERS"/>
+        <result property="id"                   column="ID"/>
+        <result property="isTraffickingContact" column="IS_TRAFFICKING_CONTACT"/>
+        <result property="isDisabled"           column="IS_DISABLED"/>
+        <result property="lname"                column="LNAME"/>
+        <result property="fname"                column="FNAME"/>
+        <result property="email"                column="EMAIL"/>
+        <result property="fax"                  column="FAX"/>
+        <result property="notes"                column="NOTES"/>
+        <result property="phone"                column="PHONE"/>
+        <result property="agencyName"           column="AGENCY_NAME"/>
+        <result property="agUrl"                column="AG_URL"/>
+        <result property="contactId"            column="CONTACT_ID"/>
+    </resultMap>
+    <!--InserUser-->
+    <update id="insertUser" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL USER_PKG.InsertUser(
+            #{userId,jdbcType=VARCHAR,mode=IN},
+            #{password,jdbcType=VARCHAR,mode=IN},
+            #{agencyId,jdbcType=NUMERIC,mode=IN},
+            #{contactId,jdbcType=NUMERIC,mode=IN},
+            #{isAppAdmin,jdbcType=CHAR,mode=IN},
+            #{isClientAdmin,jdbcType=CHAR,mode=IN},
+            #{limitDomains,jdbcType=CHAR,mode=IN},
+            #{limitAdvertisers,jdbcType=CHAR,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <insert id="insertUserRole">
+        INSERT INTO TE_XLS.USER_ROLE (USER_ROLE_ID, USER_ID, ROLE_ID)
+        VALUES (#{userRoleId}, #{userId}, #{roleId})
+    </insert>
+    <delete id="deleteUserRole">
+        DELETE FROM USER_ROLE
+        WHERE EXISTS
+            (SELECT *
+            FROM USERS
+            WHERE USERS.USER_ID = '${userId}'
+                AND USER_ROLE.USER_ID = USERS.ID)
+    </delete>
+    <!--UpdateUser-->
+    <update id="updateUser" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL USER_PKG.UpdateUser(
+            #{userId,jdbcType=VARCHAR,mode=IN},
+            #{password,jdbcType=VARCHAR,mode=IN},
+            #{isAppAdmin,jdbcType=CHAR,mode=IN},
+            #{isClientAdmin,jdbcType=CHAR,mode=IN},
+            #{limitDomains,jdbcType=CHAR,mode=IN},
+            #{limitAdvertisers,jdbcType=CHAR,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{isDisabled,jdbcType=CHAR,mode=IN},
+            #{isTraffickingContact,jdbcType=CHAR,mode=IN}) }
+    </update>
+    
+    <update id="setUserLimits" parameterType="java.util.Map">
+        UPDATE TE_XLS.USERS SET
+            <if test="limitDomains != null">
+                LIMIT_DOMAINS = #{limitDomains,jdbcType=VARCHAR}
+            </if>
+            <if test="limitAdvertisers != null">
+                <if test="limitDomains != null">,</if>
+                LIMIT_ADVERTISERS = #{limitAdvertisers,jdbcType=VARCHAR}
+            </if>
+        WHERE DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+
+    <!--DeleteUser-->
+    <update id="deleteUser" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL USER_PKG.DeleteUser(
+            #{userId,jdbcType=VARCHAR,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    
+    <!--SECTION OF QUERY'S-->
+    <select id="getUser"  parameterType="java.lang.String"
+            resultType="User" >
+        SELECT U.USER_ID              as userName,
+            U.PASSWORD                as password,
+            U.AGENCY_ID               as agencyId,
+            U.CONTACT_ID              as contactId,
+            U.LOGICAL_DELETE          as logicalDelete,
+            U.CREATED_TPWS_KEY        as createdTpwsKey,
+            U.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+            U.CREATED                 as createdDate,
+            U.MODIFIED                as modifiedDate,
+            U.IS_APP_ADMIN            as isAppAdmin,
+            U.IS_CLIENT_ADMIN         as isClientAdmin,
+            U.LIMIT_DOMAINS           as limitDomains,
+            U.LIMIT_ADVERTISERS       as limitAdvertisers,
+            U.ID                      as id,
+            U.IS_DISABLED             as isDisabled,
+            U.IS_TRAFFICKING_CONTACT  as isTraffickingContact,
+            U.IS_SYS_ADMIN            as isSysAdmin
+        FROM USERS U
+        WHERE U.USER_ID = '${value}'
+        AND U.LOGICAL_DELETE = 'N'
+    </select>
+    <select id="getRoles"  parameterType="java.lang.String" 
+            resultType="java.lang.String" >
+        SELECT r.role_name
+        FROM users u INNER JOIN user_role ur ON u.id = ur.user_id
+            INNER JOIN role r ON ur.role_id = r.role_id
+        WHERE u.user_id = '${value}'
+    </select>
+    <select id="getPermissionsByUser"  parameterType="java.lang.String"
+            resultType="java.lang.String" >
+        SELECT DISTINCT P.PERMISSION_KEY
+          FROM TE_XLS.ROLE_PERMISSION RP
+               INNER JOIN TE_XLS.ROLE R       ON R.ROLE_ID = RP.ROLE_ID
+               INNER JOIN TE_XLS.PERMISSION P ON P.PERMISSION_ID = RP.PERMISSION_ID
+               INNER JOIN TE_XLS.USER_ROLE UR ON UR.ROLE_ID = R.ROLE_ID
+               INNER JOIN TE_XLS.USERS U      ON UR.USER_ID = U.ID
+        WHERE U.USER_ID         = '${value}'
+          AND (U.LOGICAL_DELETE  != 'Y' OR U.LOGICAL_DELETE IS NULL )
+    </select>
+    <select id="getRoleId"  parameterType="java.lang.String"
+            resultType="java.lang.Long" >
+        SELECT ROLE_ID FROM ROLE WHERE ROLE_NAME = '${value}'
+    </select>
+    <select id="getAgencyIdByUser"  parameterType="java.lang.String" 
+            resultType="java.lang.Long" >
+        SELECT AGENCY_ID FROM USERS WHERE USER_ID = '${value}'
+    </select>
+    <select id="getUserContact"  parameterType="java.lang.Long" 
+            resultType="java.lang.Long" >
+        SELECT COUNT(1) FROM USERS WHERE CONTACT_ID = #{id}
+    </select>
+    <select id="getAgencyUserByTpws" statementType="CALLABLE" 
+            parameterType="java.util.Map">
+        { CALL TE_XLS.USER_PKG.GetAgencyUserBySessionKey(
+                #{tpws, jdbcType=VARCHAR, mode=IN},
+                #{refCursor, jdbcType=CURSOR, mode=OUT,
+                        javaType=java.sql.ResultSet, resultMap=agencyUsersResultMap}) }
+    </select>
+    
+    <select id="queryGetUser"  parameterType="java.lang.String"
+            resultType="trueffect.truconnect.api.commons.model.User" >
+        SELECT USERS.USER_ID              as userId,
+            USERS.PASSWORD                as password,
+            USERS.AGENCY_ID               as agencyId,
+            USERS.CONTACT_ID              as contactId,
+            USERS.LOGICAL_DELETE          as logicalDelete,
+            USERS.CREATED_TPWS_KEY        as createdTpwsKey,
+            USERS.MODIFIED_TPWS_KEY       as modifiedTpwsKey,
+            USERS.CREATED                 as createdDate,
+            USERS.MODIFIED                as modifiedDate,
+            USERS.IS_APP_ADMIN            as isAppAdmin,
+            USERS.IS_CLIENT_ADMIN         as isClientAdmin,
+            USERS.LIMIT_DOMAINS           as limitDomains,
+            USERS.LIMIT_ADVERTISERS       as limitAdvertisers,
+            USERS.ID                      as id,
+            USERS.IS_DISABLED             as isDisabled,
+            USERS.IS_TRAFFICKING_CONTACT  as isTraffickingContact,
+            USERS.IS_SYS_ADMIN            as isSysAdmin
+        FROM USERS
+        ${value}
+    </select>
+    
+    <select id="getUserView" parameterType="java.lang.Long" resultType="UserView">
+        SELECT u.id                      as id,
+               u.user_id                 as userName,
+               u.contact_id              as contactId,
+               c.fname || ' ' || c.lname as realName,
+               c.fname                   as firstName,
+               c.lname                   as lastName
+          FROM TE_XLS.USERS u, TE_XLS.CONTACT c
+         WHERE U.AGENCY_ID = #{agencyId}
+           AND U.CONTACT_ID = C.CONTACT_ID
+           AND U.IS_TRAFFICKING_CONTACT = 'Y'
+           AND U.LOGICAL_DELETE = 'N'
+           AND C.LOGICAL_DELETE = 'N'
+    </select>
+    
+    <select id="getTraffickingContacts" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT CONTACT_ID
+        FROM TE_XLS.USERS
+        WHERE CONTACT_ID IN
+        <foreach item="item" index="index" collection="agencyContacts" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND IS_TRAFFICKING_CONTACT = 'Y'
+        AND DECODE(LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+</mapper>

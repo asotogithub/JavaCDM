@@ -1,0 +1,42 @@
+{
+  "cpus": 1,
+  "mem": 512.0,
+  "instances": <INSTANCES>,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "quay.io/trueffect/truadvertiser:<UI_VERSION>",
+      "forcePullImage" : true,
+      "privileged" : false,
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": 8080, "hostPort": 0, "servicePort": 19001, "protocol": "tcp" }
+      ]
+    }
+  },
+  "env" : {
+    "API_HOST" : "<CLUSTER_DNS_ADDRESS>",
+    "PUBLIC_CONTEXT" : "cms",
+    "OAUTH_CONTEXT" : "oauth",
+    "API_VERSION" : "<API_VERSION>",
+    "PORT" : "8080",
+    "MEASUREMENT_URL": "<MEASUREMENT_URL>",
+    "DEPLOY_ENV": "<DEPLOY_ENV>"
+  },
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.25,
+    "maximumOverCapacity" : 0
+  },
+  "uris" : ["http://<MESOS_ADDRESS>:8080/v2/artifacts/.dockercfg"],
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/#/status",
+      "portIndex": 0,
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+}

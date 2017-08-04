@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GenericQueries">
+    <!--SECTION OF QUERIES -->
+    <select id="getNextId" parameterType="java.lang.String"
+        resultType="java.lang.Long" flushCache="true" useCache="false">
+        SELECT TE_XLS.${value}.NextVal FROM DUAL
+    </select>
+
+    <delete id="deleteRecord" parameterType="java.util.Map">
+        DELETE FROM TE_XLS.${table} WHERE ${column.getColumn()} = '${column.getValue()}'
+    </delete>
+
+    <delete id="deleteRecordMultiKey" parameterType="java.util.Map">
+        DELETE FROM TE_XLS.${table} 
+        <where>
+            <foreach item="column" collection="columns" separator=" AND "
+                open="(" close=")">
+                ${column.getColumn()} = '${column.getValue()}'
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="genericSearchQuery" parameterType="java.lang.String" resultType="java.util.HashMap">
+        ${value}
+    </select>
+
+</mapper>

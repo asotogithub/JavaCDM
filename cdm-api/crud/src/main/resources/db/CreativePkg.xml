@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CreativePkg">
+
+    <resultMap id="creativeResultMap" type="trueffect.truconnect.api.commons.model.Creative">
+        <result property="id"                 column="id"/>
+        <result property="agencyId"           column="agencyId"/>
+        <result property="campaignId"         column="campaignId"/>
+        <result property="ownerCampaignId"    column="ownerCampaignId"/>
+        <result property="filename"           column="filename"/>
+        <result property="alias"              column="alias"/>
+        <result property="creativeType"       column="creativeType"/>
+        <result property="purpose"            column="purpose"/>
+        <result property="width"              column="width"/>
+        <result property="height"             column="height"/>
+        <result property="clickthrough"       column="clickthrough"/>
+        <result property="scheduled"          column="scheduled"/>
+        <result property="released"           column="released"/>
+        <result property="logicalDelete"      column="logicalDelete"/>
+        <result property="createdTpwsKey"     column="createdTpwsKey"/>
+        <result property="modifiedTpwsKey"    column="modifiedTpwsKey"/>
+        <result property="createdDate"        column="createdDate"/>
+        <result property="modifiedDate"       column="modifiedDate"/>
+        <result property="setCookieString"    column="setCookieString"/>
+        <result property="extProp1"           column="extProp1"/>
+        <result property="extProp2"           column="extProp2"/>
+        <result property="extProp3"           column="extProp3"/>
+        <result property="extProp4"           column="extProp4"/>
+        <result property="extProp5"           column="extProp5"/>
+        <result property="richMediaId"        column="richMediaId"/>
+        <result property="fileSize"           column="fileSize"/>
+        <result property="swfClickCount"      column="swfClickCount"/>
+        <result property="isExpandable"       column="isExpandable"/>
+        <result property="creativeVersion"    column="creativeVersion"/>
+        <collection property="creativeGroups" ofType="CreativeGroup">
+            <result property="id"                  column="groupId"/>
+            <result property="name"                column="groupName"/>
+        </collection>
+        <collection property="clickthroughs" ofType="Clickthrough">
+            <result property="sequence"            column="sequence"/>
+            <result property="url"                 column="url"/>
+        </collection>
+        <collection property="versions" ofType="CreativeVersion">
+            <result property="creativeId"         column="creativeId"/>
+            <result property="versionNumber"      column="versionNumber"/>
+            <result property="alias"              column="versionAlias"/>
+            <result property="startDate"          column="startDate"/>
+            <result property="isDateSet"          column="isDateSet"/>
+            <result property="campaignId"         column="versionCampaignId"/>
+        </collection>
+    </resultMap>
+
+    <!-- Queries: Create/update/delete Creatives-->
+    <update id="insertCreative" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.CREATIVE_PKG.InsertCreative(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{agencyId,jdbcType=NUMERIC,mode=IN},
+        #{campaignId,jdbcType=NUMERIC,mode=IN},
+        #{ownerCampaignId,jdbcType=NUMERIC,mode=IN},
+        #{filename,jdbcType=VARCHAR,mode=IN},
+        #{alias,jdbcType=VARCHAR,mode=IN},
+        #{creativeType,jdbcType=VARCHAR,mode=IN},
+        #{purpose,jdbcType=VARCHAR,mode=IN},
+        #{width,jdbcType=NUMERIC,mode=IN},
+        #{height,jdbcType=NUMERIC,mode=IN},
+        #{clickthrough,jdbcType=VARCHAR,mode=IN},
+        #{scheduled,jdbcType=NUMERIC,mode=IN},
+        #{released,jdbcType=NUMERIC,mode=IN},
+        #{extProp1,jdbcType=VARCHAR,mode=IN},
+        #{extProp2,jdbcType=VARCHAR,mode=IN},
+        #{extProp3,jdbcType=VARCHAR,mode=IN},
+        #{extProp4,jdbcType=VARCHAR,mode=IN},
+        #{extProp5,jdbcType=VARCHAR,mode=IN},
+        #{createdTpwsKey,jdbcType=VARCHAR,mode=IN},
+        #{richMediaId,jdbcType=NUMERIC,mode=IN},
+        #{swfClickCount,jdbcType=NUMERIC,mode=IN},
+        #{isExpandable,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+
+    <update id="updateCreative" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.CREATIVE_PKG.UpdateCreative(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{alias,jdbcType=VARCHAR,mode=IN},
+        #{purpose,jdbcType=VARCHAR,mode=IN},
+        #{width,jdbcType=NUMERIC,mode=IN},
+        #{height,jdbcType=NUMERIC,mode=IN},
+        #{clickthrough,jdbcType=VARCHAR,mode=IN},
+        #{scheduled,jdbcType=NUMERIC,mode=IN},
+        #{released,jdbcType=NUMERIC,mode=IN},
+        #{extProp1,jdbcType=VARCHAR,mode=IN},
+        #{extProp2,jdbcType=VARCHAR,mode=IN},
+        #{extProp3,jdbcType=VARCHAR,mode=IN},
+        #{extProp4,jdbcType=VARCHAR,mode=IN},
+        #{extProp5,jdbcType=VARCHAR,mode=IN},
+        #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+        #{swfClickCount,jdbcType=NUMERIC,mode=IN},
+        #{isExpandable,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+
+    <update id="deleteCreative" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.CREATIVE_PKG.DeleteCreative(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{modifiedTpwsKey,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+    <!-- Queries: Create/update/delete Creatives-->
+
+    <!-- Queries: Get Creative-->
+    <sql id="getCreativeSelect">
+        SELECT C.CREATIVE_ID         AS  id,
+               C.AGENCY_ID           AS  agencyId,
+               C.CAMPAIGN_ID         AS  campaignId,
+               C.OWNER_CAMPAIGN_ID   AS  ownerCampaignId,
+               C.FILENAME            AS  filename,
+               C.ALIAS               AS  alias,
+               C.CREATIVE_TYPE       AS  creativeType,
+               C.PURPOSE             AS  purpose,
+               C.WIDTH               AS  width,
+               C.HEIGHT              AS  height,
+               C.CLICKTHROUGH        AS  clickthrough,
+               C.SCHEDULED           AS  scheduled,
+               C.RELEASED            AS  released,
+               C.SET_COOKIE_STRING   AS  setCookieString,
+               C.EXT_PROP1           AS  extProp1,
+               C.EXT_PROP2           AS  extProp2,
+               C.EXT_PROP3           AS  extProp3,
+               C.EXT_PROP4           AS  extProp4,
+               C.EXT_PROP5           AS  extProp5,
+               C.RICH_MEDIA_ID       AS  richMediaId,
+               C.FILE_SIZE           AS  fileSize,
+               C.SWF_CLICK_COUNT     AS  swfClickCount,
+               C.IS_EXPANDABLE       AS  isExpandable,
+               C.LOGICAL_DELETE      AS  logicalDelete,
+               C.CREATED_TPWS_KEY    AS  createdTpwsKey,
+               C.MODIFIED_TPWS_KEY   AS  modifiedTpwsKey,
+               C.CREATED             AS  createdDate,
+               C.MODIFIED            AS  modifiedDate,
+               NVL(V.VERSION_NUMBER, #{defaultCreativeVersion,jdbcType=VARCHAR,mode=IN}) as creativeVersion,
+               CV.CREATIVE_ID        AS creativeId,
+               CV.VERSION_NUMBER     AS versionNumber,
+               CV.ALIAS              AS versionAlias,
+               CV.START_DATE         AS startDate,
+               CV.IS_DATE_SET        AS isDateSet,
+               G.CREATIVE_GROUP_ID   AS groupId,
+               G.GROUP_NAME          AS groupName,
+               CC.SEQUENCE           AS sequence,
+               CC.CLICKTHROUGH       AS url
+        FROM TE_XLS.CREATIVE C
+               LEFT JOIN TE_XLS.CREATIVE_VERSION CV ON C.CREATIVE_ID = CV.CREATIVE_ID
+               LEFT JOIN (SELECT CREATIVE_ID,
+                                 VERSION_NUMBER
+                            FROM (SELECT CV.CREATIVE_ID,
+                                         CV.VERSION_NUMBER,
+                                         row_number() OVER (PARTITION BY CV.CREATIVE_ID ORDER BY CV.VERSION_NUMBER DESC) r
+                                    FROM TE_XLS.CREATIVE_VERSION CV
+                                        <if test="campaignId != null">
+                                            INNER JOIN TE_XLS.CREATIVE C ON CV.CREATIVE_ID = C.CREATIVE_ID
+                                              AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                                        </if>
+                                   WHERE
+                                    <if test="creativeId != null">
+                                        CV.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC,mode=IN}
+                                    </if>
+                                    <if test="campaignId != null">
+                                        C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+                                    </if>
+                                     AND (CV.IS_DATE_SET = 1 OR CV.VERSION_NUMBER = 1)
+                                 )
+                           WHERE r = 1
+                         ) V ON C.CREATIVE_ID = V.CREATIVE_ID
+               LEFT JOIN (SELECT CGC.CREATIVE_ID,
+                                 CG.CREATIVE_GROUP_ID,
+                                 CG.GROUP_NAME
+                            FROM TE_XLS.CREATIVE_GROUP_CREATIVE CGC
+                                 INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CGC.CREATIVE_GROUP_ID = CG.CREATIVE_GROUP_ID
+                                   AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+                           WHERE
+                            <if test="creativeId != null">
+                                CGC.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC,mode=IN}
+                            </if>
+                            <if test="campaignId != null">
+                                CG.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+                            </if>
+                             AND DECODE(CGC.LOGICAL_DELETE,'Y','1','0')='0'
+                          ) G ON C.CREATIVE_ID = G.CREATIVE_ID
+               LEFT JOIN TE_XLS.CREATIVE_CLICKTHROUGH CC ON C.CREATIVE_ID = CC.CREATIVE_ID
+                AND DECODE(CC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </sql>
+
+    <select id="getCreative"  parameterType="java.util.Map" resultMap="creativeResultMap" >
+        <include refid="getCreativeSelect"/>
+          WHERE C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC,mode=IN}
+            AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="getByCampaignIdAndFileName" parameterType="java.util.Map" resultMap="creativeResultMap">
+        <include refid="getCreativeSelect"/>
+         WHERE C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+           AND LOWER(C.FILENAME) = LOWER(#{filename,jdbcType=VARCHAR,mode=IN})
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0')  = '0'
+    </select>
+
+    <select id="getByCampaignIdAndFileNames" parameterType="java.util.Map" resultMap="creativeResultMap">
+        <include refid="getCreativeSelect"/>
+         WHERE C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+           AND LOWER(C.FILENAME) IN
+            <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                LOWER(#{item})
+            </foreach>
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0')  = '0'
+    </select>
+
+    <select id="getCreativesByIds"  parameterType="java.util.Map" resultMap="creativeResultMap" >
+        SELECT C.CREATIVE_ID         AS  id,
+               C.AGENCY_ID           AS  agencyId,
+               C.CAMPAIGN_ID         AS  campaignId,
+               C.OWNER_CAMPAIGN_ID   AS  ownerCampaignId,
+               C.FILENAME            AS  filename,
+               C.ALIAS               AS  alias,
+               C.CREATIVE_TYPE       AS  creativeType,
+               C.PURPOSE             AS  purpose,
+               C.WIDTH               AS  width,
+               C.HEIGHT              AS  height,
+               C.CLICKTHROUGH        AS  clickthrough,
+               C.SCHEDULED           AS  scheduled,
+               C.RELEASED            AS  released,
+               C.SET_COOKIE_STRING   AS  setCookieString,
+               C.EXT_PROP1           AS  extProp1,
+               C.EXT_PROP2           AS  extProp2,
+               C.EXT_PROP3           AS  extProp3,
+               C.EXT_PROP4           AS  extProp4,
+               C.EXT_PROP5           AS  extProp5,
+               C.RICH_MEDIA_ID       AS  richMediaId,
+               C.FILE_SIZE           AS  fileSize,
+               C.SWF_CLICK_COUNT     AS  swfClickCount,
+               C.IS_EXPANDABLE       AS  isExpandable,
+               C.LOGICAL_DELETE      AS  logicalDelete,
+               C.CREATED_TPWS_KEY    AS  createdTpwsKey,
+               C.MODIFIED_TPWS_KEY   AS  modifiedTpwsKey,
+               C.CREATED             AS  createdDate,
+               C.MODIFIED            AS  modifiedDate,
+               CC.SEQUENCE           AS  sequence,
+               CC.CLICKTHROUGH       as  url
+          FROM TE_XLS.CREATIVE C, TE_XLS.CREATIVE_CLICKTHROUGH CC
+         WHERE C.CREATIVE_ID = CC.CREATIVE_ID (+)
+           AND C.CREATIVE_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(CC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <!-- Queries: Get Creative-->
+
+    <!-- Queries: Get Creatives by criteria-->
+    <select id="getCreativesByCriteria" fetchSize="1500" parameterType="java.util.Map"
+            resultType="Creative">
+        SELECT CREATIVE.creative_id         as  id,
+               CREATIVE.agency_id           as  agencyId,
+               CREATIVE.campaign_id         as  campaignId,
+               CREATIVE.owner_campaign_id   as  ownerCampaignId,
+               CREATIVE.filename            as  filename,
+               CREATIVE.alias               as  alias,
+               CREATIVE.creative_type       as  creativeType,
+               CREATIVE.purpose             as  purpose,
+               CREATIVE.width               as  width,
+               CREATIVE.height              as  height,
+               CREATIVE.clickthrough        as  clickthrough,
+               CREATIVE.scheduled           as  scheduled,
+               CREATIVE.released            as  released,
+               CREATIVE.logical_delete      as  logicalDelete,
+               CREATIVE.created_tpws_key    as  createdTpwsKey,
+               CREATIVE.modified_tpws_key   as  modifiedTpwsKey,
+               CREATIVE.created             as  createdDate,
+               CREATIVE.modified            as  modifiedDate,
+               CREATIVE.set_cookie_string   as  setCookieString,
+               CREATIVE.ext_prop1           as  extProp1,
+               CREATIVE.ext_prop2           as  extProp2,
+               CREATIVE.ext_prop3           as  extProp3,
+               CREATIVE.ext_prop4           as  extProp4,
+               CREATIVE.ext_prop5           as  extProp5,
+               CREATIVE.rich_media_id       as  richMediaId,
+               CREATIVE.file_size           as  fileSize,
+               CREATIVE.swf_click_count     as  swfClickCount,
+               CREATIVE.is_expandable       as  isExpandable,
+               EXT.externalId               as  externalId,
+               COUNT (cgc.creative_group_id) as groupsCount,
+               cv.version_number AS creativeVersion
+          FROM TE_XLS.CREATIVE
+               INNER JOIN TE_XLS.CAMPAIGN C ON CREATIVE.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                INNER JOIN (SELECT creative_id, version_number FROM (
+                    SELECT cv.creative_id, cv.version_number,row_number() OVER (PARTITION BY cv.creative_id ORDER BY cv.version_number DESC) r
+                    FROM te_xls.creative_version cv WHERE (cv.is_date_set = 1 OR cv.version_number = 1)
+                    ) WHERE r = 1) cv ON TE_XLS.CREATIVE.CREATIVE_ID = cv.CREATIVE_ID
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                             WHERE U.USER_ID = #{userId, jdbcType=VARCHAR}
+                               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeId, EPV.VALUE as externalId
+                                  FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                       INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                 WHERE LOWER(OBJECT_NAME) = LOWER('Creative')
+                                   AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                               ) EXT ON EXT.creativeId = CREATIVE.CREATIVE_ID
+               LEFT OUTER JOIN TE_XLS.CREATIVE_GROUP_CREATIVE CGC ON CGC.CREATIVE_ID = CREATIVE.CREATIVE_ID
+                    AND DECODE(CGC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+         WHERE DECODE(CREATIVE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        <if test="condition != null">
+            AND ${condition}
+        </if>
+         GROUP BY CREATIVE.creative_id, CREATIVE.agency_id, CREATIVE.campaign_id, CREATIVE.owner_campaign_id, CREATIVE.filename, CREATIVE.alias, CREATIVE.creative_type, CREATIVE.purpose,
+               CREATIVE.width, CREATIVE.height, CREATIVE.clickthrough, CREATIVE.scheduled, CREATIVE.released, CREATIVE.logical_delete, CREATIVE.created_tpws_key, CREATIVE.modified_tpws_key,
+               CREATIVE.created, CREATIVE.modified, CREATIVE.set_cookie_string, CREATIVE.ext_prop1, CREATIVE.ext_prop2, CREATIVE.ext_prop3, CREATIVE.ext_prop4, CREATIVE.ext_prop5,
+               CREATIVE.rich_media_id, CREATIVE.file_size, CREATIVE.swf_click_count, CREATIVE.is_expandable, EXT.externalId, cv.version_number
+        <if test="order != null">
+            ${order}
+        </if>
+    </select>
+
+    <select id="getCreativesNumberOfRecordsByCriteria" parameterType="java.util.Map"
+        resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT CREATIVE.CREATIVE_ID) as totalRecords
+          FROM TE_XLS.CREATIVE
+               INNER JOIN TE_XLS.CAMPAIGN C ON CREATIVE.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN ( SELECT AI.AGENCY_ID
+                              FROM TE_XLS.USERS U
+                                   INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                             WHERE U.USER_ID = #{userId, jdbcType=VARCHAR}
+                               AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                       ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+               LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeId, EPV.VALUE as externalId
+                                  FROM TE_XLS.EXTENDED_PROPERTIES EP
+                                       INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                                 WHERE LOWER(OBJECT_NAME) = LOWER('Creative')
+                                   AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                                ) EXT ON EXT.creativeId = CREATIVE.CREATIVE_ID
+               LEFT OUTER JOIN TE_XLS.CREATIVE_GROUP_CREATIVE CGC ON CGC.CREATIVE_ID = CREATIVE.CREATIVE_ID
+                    AND DECODE(CGC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+         WHERE DECODE(CREATIVE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+    <!-- Queries: Get Creatives by criteria-->
+
+    <select id="getCountCreativesByCampaignIdAndIds" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(1)
+          FROM TE_XLS.CREATIVE C
+         WHERE C.CAMPAIGN_ID = #{campaignId}
+        <if test="ids != null and ids.size() > 0">
+            AND C.CREATIVE_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+           AND (UPPER(C.LOGICAL_DELETE ) != 'Y' OR C.LOGICAL_DELETE IS NULL)
+    </select>
+
+    <update id="insertCreativeClickThrough" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL CREATIVE_PKG.InsertCreativeClickThrough(
+                #{creativeId, jdbcType=NUMERIC, mode=IN},
+            #{clickthrough, jdbcType=VARCHAR, mode=IN},
+            #{sequence, jdbcType=NUMERIC, mode=IN},
+            #{tpwsKey, jdbcType=VARCHAR, mode=IN}) }
+    </update>
+
+    <insert id="insertCreativeVersion" parameterType="java.util.Map">
+        INSERT INTO TE_XLS.CREATIVE_VERSION
+        (
+            CREATIVE_ID,
+            VERSION_NUMBER,
+            ALIAS,
+            START_DATE,
+            IS_DATE_SET,
+            CAMPAIGN_ID
+        )
+        VALUES
+            (
+             #{creativeId, jdbcType=NUMERIC},
+             #{versionNumber, jdbcType=NUMERIC},
+             #{alias, jdbcType=VARCHAR},
+             SYSDATE,
+             #{isDateSet, jdbcType=NUMERIC},
+             #{campaignId, jdbcType=NUMERIC}
+            )
+    </insert>
+
+    <update id="updateCreativeAlias" parameterType="java.util.Map">
+        UPDATE TE_XLS.CREATIVE
+        SET CREATIVE.ALIAS = #{alias,jdbcType=VARCHAR},
+            CREATIVE.MODIFIED_TPWS_KEY = #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+            CREATIVE.MODIFIED = sysdate
+        WHERE CREATIVE_ID = #{creativeId, jdbcType=NUMERIC}
+              AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </update>
+
+    <update id="updateCreativeVersionAlias" parameterType="java.util.Map">
+        UPDATE TE_XLS.CREATIVE_VERSION
+        SET CREATIVE_VERSION.ALIAS = #{alias,jdbcType=VARCHAR}
+        WHERE CREATIVE_ID = #{creativeId, jdbcType=NUMERIC}
+        AND IS_DATE_SET = 0
+    </update>
+
+    <update id="updateCreativeVersionIsDateSetByCampaignId" parameterType="java.util.Map">
+        UPDATE TE_XLS.CREATIVE_VERSION
+        SET IS_DATE_SET = 1
+        WHERE CAMPAIGN_ID = #{campaignId, jdbcType=NUMERIC} AND IS_DATE_SET = 0
+    </update>
+
+    <update id="updateCreativeAliasByVersion" parameterType="java.util.Map">
+        UPDATE TE_XLS.CREATIVE_VERSION
+        SET CREATIVE_VERSION.ALIAS = #{alias,jdbcType=VARCHAR}
+        WHERE CREATIVE_ID = #{creativeId, jdbcType=NUMERIC}
+        AND VERSION_NUMBER = #{versionNumber, jdbcType=NUMERIC}
+    </update>
+
+    <update id="deleteCreativeClickThrough" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL CREATIVE_PKG.DeleteCreativeClickThrough(
+                #{creativeId, jdbcType=NUMERIC, mode=IN}) }
+    </update>
+
+    <!-- Queries: utilities creatives-->
+    <sql id="getUnassociatedToGroupData">
+    	SELECT
+            C.CREATIVE_ID         AS  id,
+            C.AGENCY_ID           AS  agencyId,
+            C.CAMPAIGN_ID         AS  campaignId,
+            C.OWNER_CAMPAIGN_ID   AS  ownerCampaignId,
+            C.FILENAME            AS  filename,
+            C.ALIAS               AS  alias,
+            C.CREATIVE_TYPE       AS  creativeType,
+            C.PURPOSE             AS  purpose,
+            C.WIDTH               AS  width,
+            C.HEIGHT              AS  height,
+            C.CLICKTHROUGH        AS  clickthrough,
+            C.SCHEDULED           AS  scheduled,
+            C.RELEASED            AS  released,
+            C.LOGICAL_DELETE      AS  logicalDelete,
+            C.CREATED_TPWS_KEY    AS  createdTpwsKey,
+            C.MODIFIED_TPWS_KEY   AS  modifiedTpwsKey,
+            C.CREATED             AS  createdDate,
+            C.MODIFIED            AS  modifiedDate,
+            C.SET_COOKIE_STRING   AS  setCookieString,
+            C.EXT_PROP1           AS  extProp1,
+            C.EXT_PROP2           AS  extProp2,
+            C.EXT_PROP3           AS  extProp3,
+            C.EXT_PROP4           AS  extProp4,
+            C.EXT_PROP5           AS  extProp5,
+            C.RICH_MEDIA_ID       AS  richMediaId,
+            C.FILE_SIZE           AS  fileSize,
+            C.SWF_CLICK_COUNT     AS  swfClickCount,
+            C.IS_EXPANDABLE       AS  isExpandable,
+            EXT.externalId        AS  externalId,
+            COUNT (CGC.CREATIVE_GROUP_ID) AS groupsCount
+        FROM TE_XLS.CREATIVE C
+            LEFT OUTER JOIN (
+                SELECT EPV.OBJECT_ID AS creativeId, EPV.VALUE AS externalId
+                FROM TE_XLS.EXTENDED_PROPERTIES EP
+                    INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                WHERE LOWER(OBJECT_NAME) = LOWER('Creative')
+                    AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                ) EXT ON EXT.creativeId = C.CREATIVE_ID
+            LEFT OUTER JOIN TE_XLS.CREATIVE_GROUP_CREATIVE CGC ON CGC.CREATIVE_ID = C.CREATIVE_ID
+                AND DECODE(CGC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE C.CAMPAIGN_ID = #{campaignId, jdbcType=NUMERIC}
+            AND C.CREATIVE_ID NOT IN (
+                SELECT CGC.CREATIVE_ID
+                FROM TE_XLS.CREATIVE_GROUP_CREATIVE CGC
+                WHERE CGC.CREATIVE_GROUP_ID = #{groupId, jdbcType=NUMERIC}
+                    AND DECODE(CGC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                )
+            AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        GROUP BY C.CREATIVE_ID, C.AGENCY_ID, C.CAMPAIGN_ID, C.OWNER_CAMPAIGN_ID, C.FILENAME, C.ALIAS, C.CREATIVE_TYPE,
+            C.PURPOSE, C.WIDTH, C.HEIGHT, C.CLICKTHROUGH, C.SCHEDULED, C.RELEASED, C.LOGICAL_DELETE, C.CREATED_TPWS_KEY,
+            C.MODIFIED_TPWS_KEY, C.CREATED, C.MODIFIED, C.SET_COOKIE_STRING, C.EXT_PROP1, C.EXT_PROP2, C.EXT_PROP3,
+            C.EXT_PROP4, C.EXT_PROP5, C.RICH_MEDIA_ID, C.FILE_SIZE, C.SWF_CLICK_COUNT, C.IS_EXPANDABLE, EXT.externalId
+    </sql>
+
+    <select id="getUnassociatedToGroup" parameterType="java.util.Map" resultType="Creative">
+        SELECT DISTINCT CF.*
+        FROM ( SELECT CP.*
+            FROM (SELECT SR.*,
+                    ROWNUM  AS ROWNUMBER
+                FROM (
+                    <include refid="getUnassociatedToGroupData"/>
+                ) SR
+            ) CP
+            WHERE ROWNUMBER > #{startIndex,jdbcType=NUMERIC}
+                AND #{pageSize,jdbcType=NUMERIC} >= ROWNUM
+        ) CF
+    </select>
+
+    <select id="countGetUnassociatedToGroup" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT
+            COUNT(1)
+        FROM (
+            <include refid="getUnassociatedToGroupData"/>
+        )
+    </select>
+
+    <select id="getCreativeVersionsByCreativeId" parameterType="java.util.Map" resultType="CreativeVersion">
+        SELECT CV.CREATIVE_ID    AS creativeId,
+               CV.CAMPAIGN_ID    AS campaignId,
+               CV.VERSION_NUMBER AS versionNumber,
+               CV.ALIAS          AS alias,
+               CV.START_DATE     AS startDate,
+               CV.IS_DATE_SET    AS isDateSet
+          FROM TE_XLS.CREATIVE_VERSION CV
+         WHERE CV.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+         ORDER BY CV.VERSION_NUMBER desc
+    </select>
+
+    <select id="getScheduleAssociationsPerGroupByCreativeId" parameterType="java.util.Map" resultType="CreativeAssociationsDTO">
+        SELECT CG.CREATIVE_GROUP_ID AS groupId,
+               (SELECT COUNT(1)
+                  FROM TE_XLS.CREATIVE_INSERTION CI
+                 WHERE CI.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+                   AND CI.CREATIVE_GROUP_ID = CG.CREATIVE_GROUP_ID
+                   AND DECODE(CI.LOGICAL_DELETE,'Y','1','0')='0'
+               ) AS schedules
+          FROM TE_XLS.CREATIVE C
+               INNER JOIN TE_XLS.CREATIVE_GROUP_CREATIVE CGC ON C.CREATIVE_ID = CGC.CREATIVE_ID
+                 AND DECODE(CGC.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CREATIVE_GROUP CG ON CGC.CREATIVE_GROUP_ID = CG.CREATIVE_GROUP_ID
+                 AND DECODE(CG.LOGICAL_DELETE,'Y','1','0')='0'
+         WHERE C.CREATIVE_ID = #{creativeId,jdbcType=NUMERIC}
+           AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="getCreativeVersionAliasWithDupValue" parameterType="java.util.Map" resultType="Creative">
+        SELECT DISTINCT CV.CREATIVE_ID AS id,
+               CV.ALIAS   AS alias,
+               C.FILENAME AS filename
+          FROM TE_XLS.CREATIVE_VERSION CV
+               INNER JOIN TE_XLS.CREATIVE C ON CV.CREATIVE_ID = C.CREATIVE_ID
+                 AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0')  = '0'
+                INNER JOIN (SELECT CREATIVE_ID,
+                                   VERSION_NUMBER
+                              FROM (SELECT CV.CREATIVE_ID,
+                                           CV.VERSION_NUMBER,
+                                           row_number() OVER (PARTITION BY CV.CREATIVE_ID ORDER BY CV.VERSION_NUMBER DESC) r
+                                      FROM TE_XLS.CREATIVE_VERSION CV
+                                              INNER JOIN TE_XLS.CREATIVE C ON CV.CREATIVE_ID = C.CREATIVE_ID
+                                                AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+                                     WHERE C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC,mode=IN}
+                                       AND (CV.IS_DATE_SET = 1)
+                                   )
+                             WHERE r = 1
+                           ) LV ON CV.CREATIVE_ID = LV.CREATIVE_ID
+         WHERE CV.CREATIVE_ID || '_@&lt;-*->@_' || UPPER(CV.ALIAS) IN
+            <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                UPPER(#{item})
+            </foreach>
+           AND CV.VERSION_NUMBER &lt;= LV.VERSION_NUMBER
+    </select>
+    <!-- Queries: utilities creatives-->
+
+    <sql id="getByCampaignData">
+        SELECT C.creative_id      as  id,
+            C.agency_id           as  agencyId,
+            C.campaign_id         as  campaignId,
+            C.owner_campaign_id   as  ownerCampaignId,
+            C.filename            as  filename,
+            C.alias               as  alias,
+            C.creative_type       as  creativeType,
+            C.purpose             as  purpose,
+            C.width               as  width,
+            C.height              as  height,
+            C.clickthrough        as  clickthrough,
+            C.scheduled           as  scheduled,
+            C.released            as  released,
+            C.logical_delete      as  logicalDelete,
+            C.created_tpws_key    as  createdTpwsKey,
+            C.modified_tpws_key   as  modifiedTpwsKey,
+            C.created             as  createdDate,
+            C.modified            as  modifiedDate,
+            C.set_cookie_string   as  setCookieString,
+            C.ext_prop1           as  extProp1,
+            C.ext_prop2           as  extProp2,
+            C.ext_prop3           as  extProp3,
+            C.ext_prop4           as  extProp4,
+            C.ext_prop5           as  extProp5,
+            C.rich_media_id       as  richMediaId,
+            C.file_size           as  fileSize,
+            C.swf_click_count     as  swfClickCount,
+            C.is_expandable       as  isExpandable,
+            EXT.externalId        as  externalId,
+            COUNT (cgc.creative_group_id) as groupsCount
+        FROM TE_XLS.CREATIVE C
+            INNER JOIN TE_XLS.CAMPAIGN CP ON CP.CAMPAIGN_ID = C.CAMPAIGN_ID
+                AND DECODE(CP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                AND CP.CAMPAIGN_ID = #{campaignId, jdbcType=NUMERIC}
+            LEFT OUTER JOIN (SELECT EPV.OBJECT_ID as creativeId, EPV.VALUE as externalId
+                FROM TE_XLS.EXTENDED_PROPERTIES EP
+                    INNER JOIN EXTENDED_PROPERTIES_VALUE EPV ON EPV.EXTENDED_PROPERTIES_ID = EP.EXTENDED_PROPERTIES_ID
+                WHERE LOWER(OBJECT_NAME) = LOWER('Creative')
+                    AND LOWER(FIELD_NAME) = LOWER('MediaID')
+                ) EXT ON EXT.creativeId = C.CREATIVE_ID
+            LEFT OUTER JOIN TE_XLS.CREATIVE_GROUP_CREATIVE CGC ON CGC.CREATIVE_ID = C.CREATIVE_ID
+                AND DECODE(CGC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        GROUP BY C.creative_id, C.agency_id, C.campaign_id, C.owner_campaign_id, C.filename, C.alias, C.creative_type, C.purpose,
+            C.width, C.height, C.clickthrough, C.scheduled, C.released, C.logical_delete, C.created_tpws_key, C.modified_tpws_key,
+            C.created, C.modified, C.set_cookie_string, C.ext_prop1, C.ext_prop2, C.ext_prop3, C.ext_prop4, C.ext_prop5,
+            C.rich_media_id, C.file_size, C.swf_click_count, C.is_expandable, EXT.externalId
+    </sql>
+
+    <select id="getByCampaign" parameterType="java.util.Map" resultType="Creative">
+        SELECT DISTINCT CF.*
+        FROM ( SELECT CP.*
+            FROM (SELECT SR.*,
+                    ROWNUM  AS ROWNUMBER
+                FROM (
+                    <include refid="getByCampaignData"/>
+                ) SR
+            ) CP
+            WHERE ROWNUMBER > #{startIndex,jdbcType=NUMERIC}
+                AND #{pageSize,jdbcType=NUMERIC} >= ROWNUM
+        ) CF
+    </select>
+
+    <select id="countGetByCampaign" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT
+            COUNT(1)
+        FROM (
+            <include refid="getByCampaignData"/>
+        )
+    </select>
+</mapper>

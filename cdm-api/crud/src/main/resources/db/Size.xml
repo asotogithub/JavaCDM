@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Size">
+    <!-- Queries: get Size data-->
+    <select id="getAdSize"  parameterType="Size" resultType="Size" >
+        SELECT AD_SIZE_ID         as id
+             , AGENCY_ID           as agencyId
+             , WIDTH               as width
+             , HEIGHT              as height
+             , SIZE_NAME           as label
+             , CREATED             as createdDate
+             , MODIFIED            as modifiedDate
+          FROM TE_XLS.AD_SIZE
+         WHERE AD_SIZE_ID = #{id}
+           AND DECODE(AD_SIZE.LOGICAL_DELETE,'Y','1','0')='0'
+    </select>
+
+    <select id="getAdSizeByDimension"  parameterType="java.util.Map" resultType="Size" >
+        SELECT AD_SIZE.AD_SIZE_ID          as id,
+               AD_SIZE.AGENCY_ID           as agencyId,
+               AD_SIZE.WIDTH               as width,
+               AD_SIZE.HEIGHT              as height,
+               AD_SIZE.SIZE_NAME           as label,
+               AD_SIZE.CREATED             as createdDate,
+               AD_SIZE.MODIFIED            as modifiedDate
+          FROM TE_XLS.AD_SIZE
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AD_SIZE.AGENCY_ID
+          WHERE HEIGHT = #{height}
+            AND WIDTH = #{width}
+            AND DECODE(AD_SIZE.LOGICAL_DELETE,'Y','1','0')='0'
+            AND ROWNUM = 1
+    </select>
+
+    <select id="getAdSizesByCriteria" parameterType="java.util.Map" resultType="Size">
+        SELECT AD_SIZE.AD_SIZE_ID           as id,
+               AD_SIZE.AGENCY_ID            as agencyId,
+               AD_SIZE.WIDTH                as width,
+               AD_SIZE.HEIGHT               as height,
+               AD_SIZE.SIZE_NAME            as label,
+               AD_SIZE.CREATED              as createdDate,
+               AD_SIZE.MODIFIED             as modifiedDate
+          FROM TE_XLS.AD_SIZE
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AD_SIZE.AGENCY_ID
+        WHERE DECODE(AD_SIZE.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+               ${order}
+            </if>
+    </select>
+
+    <select id="getAdSizesNumberOfRecordsByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalRecords
+          FROM TE_XLS.AD_SIZE
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = AD_SIZE.AGENCY_ID
+         WHERE DECODE(AD_SIZE.LOGICAL_DELETE,'Y','1','0')='0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+    
+    <select id="getSizeByCampaignIdAndWidthHeight" parameterType="java.util.Map" resultType="Size">
+        SELECT MIN(S.AD_SIZE_ID)          AS id,
+               S.WIDTH                    AS width,
+               S.HEIGHT                   AS height,
+               S.WIDTH || 'x' || S.HEIGHT AS label
+          FROM TE_XLS.AD_SIZE S
+               INNER JOIN TE_XLS.CAMPAIGN C ON S.AGENCY_ID = C.AGENCY_ID
+                 AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                 AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) UA ON C.AGENCY_ID = UA.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE S.WIDTH || 'x' || S.HEIGHT IN
+            <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(S.LOGICAL_DELETE,'Y','1','0')='0'
+         GROUP BY S.WIDTH, S.HEIGHT, S.WIDTH || 'x' || S.HEIGHT
+    </select>
+    <!-- Queries: get Size data-->
+    
+    <!-- Queries: Create/update/delete Sizes-->
+    <update id="insertAdSize" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.IO_PKG.InsertAdSize(
+                         #{id,jdbcType=NUMERIC,mode=IN},
+                         #{agencyId,jdbcType=NUMERIC,mode=IN},
+                         #{width,jdbcType=NUMERIC,mode=IN},
+                         #{height,jdbcType=NUMERIC,mode=IN},
+                         #{label,jdbcType=VARCHAR,mode=IN},
+                         #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!-- Queries: Create/update/delete Sizes-->
+</mapper>

@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DataAccessControlPkg">
+    <!--SECTION OF QUERY'S-->
+    <select id="isAdminUser" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT IS_APP_ADMIN 
+          FROM TE_XLS.USERS
+         WHERE USER_ID = #{value,jdbcType=VARCHAR,mode=IN}
+           AND DECODE(LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    <sql id="getUserAgencies">
+        SELECT AI.AGENCY_ID
+          FROM TE_XLS.USERS U
+               INNER JOIN TE_XLS.AGENCY AI ON U.AGENCY_ID = AI.AGENCY_ID
+                 AND DECODE(AI.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+         WHERE U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN}
+           AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </sql>
+
+    <sql id="userAdvertisers">
+        (SELECT ADV.ADVERTISER_ID 
+           FROM TE_XLS.ADVERTISER ADV 
+                INNER JOIN TE_XLS.AGENCY A ON ADV.AGENCY_ID = A.AGENCY_ID
+                  AND DECODE(A.LOGICAL_DELETE,'Y','1','0')='0'
+                INNER JOIN TE_XLS.USERS U ON A.AGENCY_ID = U.AGENCY_ID
+                  AND U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN}
+                  AND U.LIMIT_ADVERTISERS = 'N'
+                  AND DECODE(U.LOGICAL_DELETE,'Y','1','0')='0'
+          WHERE DECODE(ADV.LOGICAL_DELETE,'Y','1','0')='0'
+        )
+          UNION
+        (SELECT UA.ADVERTISER_ID 
+           FROM TE_XLS.USER_ADVERTISER UA
+                INNER JOIN TE_XLS.USERS U ON UA.USER_ID = U.USER_ID
+                  AND U.USER_ID = #{userId,jdbcType=VARCHAR,mode=IN}
+                  AND U.LIMIT_ADVERTISERS = 'Y'
+                  AND DECODE(U.LOGICAL_DELETE,'Y','1','0')='0'
+        )        
+    </sql>
+    
+    <select id="getCreativeGroupsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.CREATIVE_GROUP CG
+               INNER JOIN TE_XLS.CAMPAIGN C ON CG.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.AGENCY A ON C.AGENCY_ID = A.AGENCY_ID
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = A.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE CG.CREATIVE_GROUP_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(CG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    
+    <select id="getCreativesByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.CREATIVE CR
+               INNER JOIN TE_XLS.CAMPAIGN C ON CR.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                        <include refid="userAdvertisers"/>
+                    ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE CR.CREATIVE_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(CR.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    
+    <select id="getCampaignsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.CAMPAIGN C
+               INNER JOIN TE_XLS.AGENCY A ON C.AGENCY_ID = A.AGENCY_ID
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE C.CAMPAIGN_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    
+    <select id="getAgenciesByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.AGENCY A
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = A.AGENCY_ID
+        WHERE ( UPPER( A.LOGICAL_DELETE ) != 'Y' )
+            <if test="ids != null and ids.size() > 0">
+                AND A.AGENCY_ID IN 
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+    </select>
+
+    <select id="getAdvertisersByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.ADVERTISER A
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = A.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = A.ADVERTISER_ID
+         WHERE ( UPPER( A.LOGICAL_DELETE ) != 'Y' )
+            <if test="ids != null and ids.size() > 0">
+                AND A.ADVERTISER_ID IN 
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+    </select>
+    
+    <select id="getBrandsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.BRAND B
+               INNER JOIN TE_XLS.ADVERTISER A ON B.ADVERTISER_ID = A.ADVERTISER_ID
+                 AND DECODE(A.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = A.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = A.ADVERTISER_ID
+         WHERE B.BRAND_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(B.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getAdSizesByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.AD_SIZE A 
+               INNER JOIN (
+                 <include refid="getUserAgencies"/>
+               ) AU ON AU.AGENCY_ID = A.AGENCY_ID
+         WHERE A.AD_SIZE_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(A.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+    </select>
+
+    <select id="getCookieDomainsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.COOKIE_DOMAIN CD
+               INNER JOIN (
+                 <include refid="getUserAgencies"/>
+               ) AU ON AU.AGENCY_ID = CD.AGENCY_ID
+         WHERE CD.COOKIE_DOMAIN_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(CD.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+    </select>
+    
+    <select id="ifUserHasAccessToAllDomains" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        
+          SELECT CASE 
+                    WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                 END AS hasAccess
+            FROM TE_XLS.COOKIE_DOMAIN CD
+                 INNER JOIN (
+                   <include refid="getUserAgencies"/>
+                 ) AU ON AU.AGENCY_ID = CD.AGENCY_ID,
+                 (SELECT CASE WHEN COUNT(1) > 0
+                           THEN 'true'
+                           ELSE 'false'
+                         END AS hasDomains
+                    FROM TE_XLS.USERS us
+                         LEFT JOIN TE_XLS.USER_DOMAIN usd ON us.USER_ID=usd.USER_ID
+                   WHERE us.USER_ID = '${userId}'
+                     AND ( us.LIMIT_DOMAINS = 'N' OR
+                           ( us.LIMIT_DOMAINS = 'Y' AND usd.DOMAIN_ID in
+                            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                                #{item}
+                            </foreach>
+                            )
+                         )
+                 ) domains
+           WHERE CD.COOKIE_DOMAIN_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+             AND domains.hasDomains = 'true'
+             AND DECODE(CD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getPackagesByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.PACKAGE P
+               INNER JOIN TE_XLS.CAMPAIGN C ON P.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE P.PACKAGE_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+        
+    <select id="getPlacementsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.PLACEMENT P
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON IO.IO_ID = P.IO_ID
+                 AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'  
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = MB.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+        WHERE P.PLACEMENT_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getPackageCostDetailsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+          FROM TE_XLS.PACKAGE_COST_DETAIL PCD
+               INNER JOIN TE_XLS.PACKAGE P ON PCD.PACKAGE_ID = P.PACKAGE_ID
+                 AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON P.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE PCD.PACKAGE_COST_ID IN
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+           AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getPlacementCostDetailsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                    THEN 'true'
+                    ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.PLACEMENT_COST_DETAIL PCD
+               INNER JOIN TE_XLS.PLACEMENT P ON P.PLACEMENT_ID = PCD.PLACEMENT_ID
+                 AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.INSERTION_ORDER IO ON IO.IO_ID = P.IO_ID
+                 AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = MB.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE PCD.PLACEMENT_COST_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    
+    <select id="getInsertionOrdersByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.INSERTION_ORDER IO
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                           ) AU ON AU.AGENCY_ID = MB.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE IO.IO_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+    </select>
+
+    <select id="getPublishersByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.PUBLISHER P
+               INNER JOIN TE_XLS.AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+               INNER JOIN (
+                 <include refid="getUserAgencies"/>
+               ) AU ON AU.AGENCY_ID = AP.AGENCY_ID
+         WHERE P.PUBLISHER_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(AP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getMediaBuysByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.MEDIA_BUY MB
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = MB.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE MB.MEDIA_BUY_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+    </select>
+
+    <select id="getSiteSectionsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.SITE_SECTION SS
+               INNER JOIN TE_XLS.SITE S ON S.SITE_ID = SS.SITE_ID 
+               INNER JOIN TE_XLS.PUBLISHER P ON S.PUBLISHER_ID = P.PUBLISHER_ID
+               INNER JOIN TE_XLS.AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+               INNER JOIN (
+                 <include refid="getUserAgencies"/>
+               ) AU ON AU.AGENCY_ID = AP.AGENCY_ID
+         WHERE SS.SECTION_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(SS.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(AP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getSitesByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.SITE S 
+               INNER JOIN TE_XLS.PUBLISHER P ON S.PUBLISHER_ID = P.PUBLISHER_ID
+               INNER JOIN TE_XLS.AGENCY_PUBLISHER AP ON P.PUBLISHER_ID = AP.PUBLISHER_ID
+               INNER JOIN (
+                 <include refid="getUserAgencies"/>
+               ) AU ON AU.AGENCY_ID = AP.AGENCY_ID
+         WHERE S.SITE_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(S.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(AP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getCreativeInsertionsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.CREATIVE_INSERTION CI
+               INNER JOIN TE_XLS.CAMPAIGN C ON C.CAMPAIGN_ID = CI.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = C.AGENCY_ID
+               INNER JOIN (
+                            <include refid="userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE CI.CREATIVE_INSERTION_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+          AND DECODE(CI.LOGICAL_DELETE, 'Y', '1', '0') = '0'   
+    </select>
+    
+    <select id="getContactsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT
+            CASE
+              WHEN COUNT(*) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+              THEN 'true'
+              ELSE 'false'
+            END AS hasAccess
+         FROM TE_XLS.CONTACT C
+              INNER JOIN TE_XLS.AGENCY_CONTACT AC ON C.CONTACT_ID = AC.CONTACT_ID
+              INNER JOIN (
+                <include refid="getUserAgencies"/>
+              ) AU ON AU.AGENCY_ID = AC.AGENCY_ID
+        WHERE C.CONTACT_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+          AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'   
+          AND DECODE(AC.LOGICAL_DELETE, 'Y', '1', '0') = '0'   
+    </select>
+    
+    <select id="getSiteMeasurementsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                THEN 'true'
+                ELSE 'false'
+            END AS hasAccess
+        FROM TE_XLS.SITE_MEASUREMENT SM
+            INNER JOIN TE_XLS.BRAND B ON SM.BRAND_ID = B.BRAND_ID
+                AND DECODE(B.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+            INNER JOIN TE_XLS.ADVERTISER ADV ON B.ADVERTISER_ID = ADV.ADVERTISER_ID
+                AND DECODE(ADV.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN (
+                    <include refid="getUserAgencies"/>
+                ) AU ON AU.AGENCY_ID = ADV.AGENCY_ID
+            INNER JOIN (
+                    <include refid="userAdvertisers"/>
+                ) UADV ON UADV.ADVERTISER_ID = ADV.ADVERTISER_ID
+        WHERE DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND SM.MEASUREMENT_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+    <select id="getSiteMeasurementGroupsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+        FROM TE_XLS.SM_GROUP SMG
+            INNER JOIN TE_XLS.SITE_MEASUREMENT SM ON SMG.MEASUREMENT_ID = SM.MEASUREMENT_ID
+                AND DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.BRAND B ON SM.BRAND_ID = B.BRAND_ID
+                AND DECODE(B.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.ADVERTISER ADV ON B.ADVERTISER_ID = ADV.ADVERTISER_ID
+                AND DECODE(ADV.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN (
+                    <include refid="getUserAgencies"/>
+                ) AU ON AU.AGENCY_ID = ADV.AGENCY_ID
+            INNER JOIN (
+                    <include refid="userAdvertisers"/>
+                ) UADV ON UADV.ADVERTISER_ID = ADV.ADVERTISER_ID
+        WHERE DECODE(SMG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        <if test="ids != null and ids.size() > 0">
+            AND SMG.SM_GROUP_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    
+    <select id="getSiteMeasurementEventsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+                    WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType = NUMERIC,mode = IN}
+                    THEN 'true'
+                    ELSE 'false'
+                END AS hasAccess
+        FROM TE_XLS.SM_EVENT SME
+            INNER JOIN TE_XLS.SM_GROUP SMG ON SME.SM_GROUP_ID = SMG.SM_GROUP_ID
+                AND DECODE(SMG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.SITE_MEASUREMENT SM ON SMG.MEASUREMENT_ID = SM.MEASUREMENT_ID
+                AND DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.BRAND B ON SM.BRAND_ID = B.BRAND_ID
+                AND DECODE(B.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN TE_XLS.ADVERTISER ADV ON B.ADVERTISER_ID = ADV.ADVERTISER_ID
+                AND DECODE(ADV.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            INNER JOIN (
+                    <include refid = "getUserAgencies" />
+                  ) AU ON AU.AGENCY_ID = ADV.AGENCY_ID
+            INNER JOIN (
+                    <include refid = "userAdvertisers" />
+                        ) UADV ON UADV.ADVERTISER_ID = ADV.ADVERTISER_ID
+        WHERE DECODE(SME.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        <if test="ids != null and ids.size() > 0">
+            AND SME.SM_EVENT_ID IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    </select>
+    
+    <select id="controlAdvertisersByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+        FROM ( SELECT ADV.AGENCY_ID
+          FROM TE_XLS.ADVERTISER ADV, TE_XLS.AGENCY AG, TE_XLS.USERS U
+         WHERE ADV.AGENCY_ID = AG.AGENCY_ID
+           AND AG.AGENCY_ID = U.AGENCY_ID
+           AND U.USER_ID = '${userId}'
+        <if test="ids != null and ids.size() > 0">
+           AND ADV.ADVERTISER_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>        
+           AND UPPER(U.LIMIT_ADVERTISERS) = 'N'
+           AND DECODE(ADV.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(AG.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+        UNION
+        SELECT ADV.AGENCY_ID
+          FROM TE_XLS.ADVERTISER ADV, TE_XLS.AGENCY AG, TE_XLS.USERS U, TE_XLS.USER_ADVERTISER UA
+         WHERE ADV.AGENCY_ID = AG.AGENCY_ID
+           AND AG.AGENCY_ID = U.AGENCY_ID
+           AND U.USER_ID = UA.USER_ID
+           AND ADV.ADVERTISER_ID = UA.ADVERTISER_ID
+           AND U.USER_ID = '${userId}'
+        <if test="ids != null and ids.size() > 0">
+           AND ADV.ADVERTISER_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>           
+           AND UPPER(U.LIMIT_ADVERTISERS) = 'Y'
+           AND DECODE(ADV.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(AG.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0' )
+    </select>
+
+    <select id="controlBrandsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+        FROM (  SELECT ADV.AGENCY_ID
+          FROM TE_XLS.BRAND B, TE_XLS.ADVERTISER ADV, TE_XLS.AGENCY AG, USERS U
+         WHERE B.ADVERTISER_ID = ADV.ADVERTISER_ID
+           AND ADV.AGENCY_ID = AG.AGENCY_ID
+           AND AG.AGENCY_ID = U.AGENCY_ID
+           AND U.USER_ID = '${userId}'
+        <if test="ids != null and ids.size() > 0">
+           AND B.BRAND_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>        
+           AND UPPER(U.LIMIT_ADVERTISERS) = 'N'
+           AND DECODE(B.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(ADV.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(AG.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0'            
+        UNION
+        SELECT ADV.AGENCY_ID
+          FROM TE_XLS.BRAND B, TE_XLS.ADVERTISER ADV, TE_XLS.AGENCY AG, TE_XLS.USERS U, TE_XLS.USER_ADVERTISER UA
+         WHERE B.ADVERTISER_ID = ADV.ADVERTISER_ID
+           AND ADV.AGENCY_ID = AG.AGENCY_ID
+           AND AG.AGENCY_ID = U.AGENCY_ID
+           AND U.USER_ID = UA.USER_ID
+           AND ADV.ADVERTISER_ID = UA.ADVERTISER_ID
+           AND U.USER_ID = '${userId}'
+        <if test="ids != null and ids.size() > 0">
+           AND B.BRAND_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>           
+           AND UPPER(U.LIMIT_ADVERTISERS) = 'Y'
+           AND DECODE(B.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(ADV.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(AG.LOGICAL_DELETE, 'Y', '1', '0') = '0' 
+           AND DECODE(U.LOGICAL_DELETE, 'Y', '1', '0') = '0' )   
+    </select>
+	
+	<select id="ifUserHasAccessToHtmlInjection" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE 
+                  WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType=NUMERIC,mode=IN}
+                  THEN 'true'
+                  ELSE 'false'
+               END AS hasAccess
+          FROM TE_XLS.HTML_INJECTION H 
+               INNER JOIN (
+                 <include refid="getUserAgencies"/>
+               ) AU ON AU.AGENCY_ID = H.AGENCY_ID
+         WHERE H.HTML_INJECTION_ID IN 
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND H.IS_ENABLED = 1 
+    </select>
+
+    <select id="getSiteMeasurementPingsByUser" parameterType="java.util.Map" resultType="java.lang.String">
+        <bind name="expectedNumberOfIds" value="ids.size()" />
+        SELECT CASE
+        WHEN COUNT(1) = #{expectedNumberOfIds,jdbcType = NUMERIC,mode = IN}
+        THEN 'true'
+        ELSE 'false'
+        END AS hasAccess
+        FROM TE_XLS.SM_EVENT_PING SMPE
+        INNER JOIN TE_XLS.SM_EVENT SME
+        ON SMPE.SM_EVENT_ID = SME.SM_EVENT_ID
+        AND DECODE(SMPE.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN TE_XLS.SM_GROUP SMG
+        ON SME.SM_GROUP_ID = SMG.SM_GROUP_ID
+        AND DECODE(SMG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN TE_XLS.SITE_MEASUREMENT SM
+        ON SMG.MEASUREMENT_ID = SM.MEASUREMENT_ID
+        AND DECODE(SM.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN TE_XLS.BRAND B
+        ON SM.BRAND_ID = B.BRAND_ID
+        AND DECODE(B.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN TE_XLS.ADVERTISER ADV
+        ON B.ADVERTISER_ID = ADV.ADVERTISER_ID
+        AND DECODE(ADV.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        INNER JOIN (
+        <include refid = "getUserAgencies" />
+        ) AU ON AU.AGENCY_ID = ADV.AGENCY_ID
+        INNER JOIN (
+        <include refid = "userAdvertisers" />
+        ) UADV ON UADV.ADVERTISER_ID = ADV.ADVERTISER_ID
+        WHERE DECODE(SME.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        <if test="ids != null and ids.size() > 0">
+            AND SMPE.SM_EVENT_PING_ID IN
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+</mapper>

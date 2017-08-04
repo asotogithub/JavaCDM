@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IOPkg">
+    <resultMap id="iosResultMap" type="trueffect.truconnect.api.commons.model.InsertionOrderStatus">
+        <result property="ioId"                 column="IO_ID"/>
+        <result property="statusId"             column="STATUS_ID"/>
+        <result property="statusDate"           column="STATUS_DATE"/>
+        <result property="contactId"            column="CONTACT_ID"/>
+        <result property="logicalDelete"        column="LOGICAL_DELETE"/>
+        <result property="createdTpwsKey"       column="CREATED_TPWS_KEY"/>
+        <result property="modifiedTpwsKey"      column="MODIFIED_TPWS_KEY"/>
+        <result property="createdDate"          column="CREATED"/>
+        <result property="modifiedDate"         column="MODIFIED"/>
+    </resultMap>
+
+    <!--InsertIO-->
+    <update id="insertInsertionOrder" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL IO_PKG.InsertIO(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{mediaBuyId,jdbcType=NUMERIC,mode=IN},
+            #{publisherId,jdbcType=NUMERIC,mode=IN},
+            #{ioNumber,jdbcType=VARCHAR,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{notes,jdbcType=VARCHAR,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--UpdateIO-->
+    <update id="updateInsertionOrder" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL IO_PKG.UpdateIO(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{name,jdbcType=VARCHAR,mode=IN},
+            #{notes,jdbcType=VARCHAR,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN},
+            #{ioNumber,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+    <!--DeleteIO-->
+    <update id="deleteInsertionOrder" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL IO_PKG.DeleteIO(
+            #{id,jdbcType=NUMERIC,mode=IN},
+            #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--InsertIOStatus-->
+    <update id="insertIOStatus" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.IO_PKG.InsertIOStatus(
+            #{ioId,jdbcType=NUMERIC,mode=IN},
+            #{statusId,jdbcType=NUMERIC,mode=IN},
+            #{contactId,jdbcType=NUMERIC,mode=IN},
+            #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--    GetCurrentIOStatus-->
+    <update id="getCurrentIOStatus" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.IO_PKG.GetCurrentIOStatus(
+            #{ioId,jdbcType=NUMERIC,mode=IN},
+            #{refCursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=iosResultMap}) }
+    </update>
+
+    <!--SECTION OF QUERY'S-->
+    <select id="getIO"  parameterType="long" resultType="InsertionOrder" >
+        SELECT IO.IO_ID                                       as id,
+               IO.MEDIA_BUY_ID                                as mediaBuyId,
+               IO.PUBLISHER_ID                                as publisherId,
+               IO.IO_NUMBER                                   as ioNumber,
+               IO.IO_NAME                                     as name,
+               IO.NOTES                                       as notes,
+               IO.LOGICAL_DELETE                              as logicalDelete,
+               IO.CREATED_TPWS_KEY                            as createdTpwsKey,
+               IO.MODIFIED_TPWS_KEY                           as modifiedTpwsKey,
+               IO.CREATED                                     as createdDate,
+               IO.MODIFIED                                    as modifiedDate,
+               MBC.CAMPAIGN_ID                                as campaignId,
+               IO_PCD.placementsCount                         as placementsCount,
+               (NVL(IO_PCD.TOTALPLADSPEND,0) + NVL(IO_PCD.TOTALPKGADSPEND,0)) as totalAdSpend,
+               NVL(STATUS_TYPES.MAX_STATUS_DATE, IO.MODIFIED) as lastUpdated,
+               NVL(STATUS_TYPES.lastUpdatedAuthor, '')        as lastUpdatedAuthor,
+               DECODE(STATUS_TYPES.STATUS_NAME, 'IO_ACPT', 'Accepted','IO_NEW','New','IO_RJCT','Rejected', 'New') as status,
+               (SELECT COUNT(1)
+                  FROM ( SELECT P.PLACEMENT_ID, PS.STATUS_ID, PS.STATUS_DATE,
+                                MAX(PS.STATUS_DATE) OVER (PARTITION BY PS.PLACEMENT_ID) MAX_STATUS_DATE
+                           FROM TE_XLS.PLACEMENT P, TE_XLS.PLACEMENT_STATUS PS
+                          WHERE P.PLACEMENT_ID = PS.PLACEMENT_ID 
+                            AND P.IO_ID = #{id} 
+                            AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                            AND DECODE(PS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                       ) PLAC_STATUS
+                 WHERE PLAC_STATUS.STATUS_DATE = PLAC_STATUS.MAX_STATUS_DATE
+                   AND PLAC_STATUS.STATUS_ID = 16
+               ) AS activePlacementCounter
+          FROM TE_XLS.INSERTION_ORDER IO
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = IO.MEDIA_BUY_ID
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MBC.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+               INNER JOIN (SELECT PKPLCD.IO_ID, 
+                                  SUM(PKPLCD.PLADSPEND) AS TOTALPLADSPEND, 
+                                  SUM (PKPLCD.PKGADSPEND) AS TOTALPKGADSPEND,
+                                  SUM(PKPLCD.PLACEMENTSCOUNT) AS PLACEMENTSCOUNT
+                             FROM ( SELECT IO.IO_ID, 
+                                           COUNT(DISTINCT P.PLACEMENT_ID) AS PLACEMENTSCOUNT,
+                                           SUM(NVL(PCD.PLANNED_GROSS_AD_SPEND, 0.0)) AS PLADSPEND,
+                                           ((SELECT SUM(PKCD.PLANNED_GROSS_AD_SPEND) pkgAdSpend
+                                               FROM TE_XLS.PACKAGE PKG, TE_XLS.PACKAGE_COST_DETAIL PKCD
+                                              WHERE PKG.PACKAGE_ID = PKCD.PACKAGE_ID 
+                                                AND PKG.PACKAGE_ID = PP.PACKAGE_ID
+                                                AND DECODE(PKG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                                AND DECODE(PKCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                              GROUP BY PKG.PACKAGE_ID) /
+                                            (SELECT COUNT(distinct(pkpl.placement_id))
+                                               FROM TE_XLS.PACKAGE PKG, TE_XLS.PACKAGE_PLACEMENT PKPL
+                                              WHERE PKG.PACKAGE_ID = PKPL.PACKAGE_ID 
+                                                AND PKG.PACKAGE_ID = PP.PACKAGE_ID
+                                                AND DECODE(PKG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                                AND DECODE(PKPL.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                             ) * COUNT(DISTINCT P.PLACEMENT_ID)
+                                           )AS PKGADSPEND
+                                      FROM TE_XLS.INSERTION_ORDER IO
+                                           LEFT OUTER JOIN TE_XLS.PLACEMENT P ON IO.IO_ID = P.IO_ID
+                                            AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                           LEFT OUTER JOIN TE_XLS.PLACEMENT_COST_DETAIL PCD ON PCD.PLACEMENT_ID = P.PLACEMENT_ID
+                                            AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                           LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON P.PLACEMENT_ID = PP.PLACEMENT_ID
+                                            AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                     WHERE IO.IO_ID = #{id}
+                                       AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                   GROUP BY IO.IO_ID, PP.PACKAGE_ID
+                                  ) PKPLCD
+                            GROUP BY PKPLCD.IO_ID
+                          ) IO_PCD ON IO_PCD.IO_ID = IO.IO_ID
+               LEFT OUTER JOIN (SELECT IOS.IO_ID, ST.STATUS_NAME, IOS.STATUS_DATE, 
+                                       MAX(IOS.STATUS_DATE) OVER (PARTITION BY IOS.IO_ID) MAX_STATUS_DATE, 
+                                       CONCAT(CONCAT(C.FNAME, ' '), C.LNAME) as lastUpdatedAuthor
+                                  FROM TE_XLS.INSERTION_ORDER_STATUS IOS
+                                       INNER JOIN TE_XLS.STATUS_TYPES ST ON IOS.STATUS_ID = ST.STATUS_ID
+                                       INNER JOIN TE_XLS.CONTACT C ON C.CONTACT_ID = IOS.CONTACT_ID
+                                 WHERE IOS.IO_ID = #{id}
+                                   AND DECODE(IOS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               ) STATUS_TYPES ON ( IO.IO_ID = STATUS_TYPES.IO_ID )
+                AND ( STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE )
+          WHERE IO.IO_ID = #{id} 
+            AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+   </select>
+    
+    <select id="getIOByMediaBuy"  parameterType="long" resultType="InsertionOrder" >
+        SELECT IO.IO_ID              as id,
+               IO.MEDIA_BUY_ID       as mediaBuyId,
+               IO.PUBLISHER_ID       as publisherId,
+               IO.IO_NUMBER          as ioNumber,
+               IO.IO_NAME            as name,
+               IO.NOTES              as notes,
+               IO.LOGICAL_DELETE     as logicalDelete,
+               IO.CREATED_TPWS_KEY   as createdTpwsKey,
+               IO.MODIFIED_TPWS_KEY  as modifiedTpwsKey,
+               IO.CREATED            as createdDate,
+               IO.MODIFIED           as modifiedDate,
+               DECODE(STATUS_TYPES.STATUS_NAME, 'IO_ACPT', 'Accepted','IO_NEW','New','IO_RJCT','Rejected', 'New') as status
+          FROM TE_XLS.INSERTION_ORDER IO
+               LEFT OUTER JOIN ( SELECT IOS.IO_ID, ST.STATUS_NAME,
+                                        IOS.STATUS_DATE, MAX(IOS.STATUS_DATE) OVER (PARTITION BY IOS.IO_ID) MAX_STATUS_DATE
+                                   FROM TE_XLS.INSERTION_ORDER_STATUS IOS, TE_XLS.STATUS_TYPES ST
+                                  WHERE IOS.STATUS_ID = ST.STATUS_ID
+                                    AND DECODE(IOS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               ) STATUS_TYPES ON IO.IO_ID = STATUS_TYPES.IO_ID
+                AND STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE
+         WHERE IO.MEDIA_BUY_ID = #{id}
+           AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+    
+    <select id="getIOByCriteria" parameterType="java.util.Map" resultType="InsertionOrder">
+        SELECT INSERTION_ORDER.IO_ID                                       as id,
+               INSERTION_ORDER.MEDIA_BUY_ID                                as mediaBuyId,
+               INSERTION_ORDER.PUBLISHER_ID                                as publisherId,
+               INSERTION_ORDER.IO_NUMBER                                   as ioNumber,
+               INSERTION_ORDER.IO_NAME                                     as name,
+               INSERTION_ORDER.NOTES                                       as notes,
+               INSERTION_ORDER.LOGICAL_DELETE                              as logicalDelete,
+               INSERTION_ORDER.CREATED_TPWS_KEY                            as createdTpwsKey,
+               INSERTION_ORDER.MODIFIED_TPWS_KEY                           as modifiedTpwsKey,
+               INSERTION_ORDER.CREATED                                     as createdDate,
+               INSERTION_ORDER.MODIFIED                                    as modifiedDate,
+               MEDIA_BUY_CAMPAIGN.CAMPAIGN_ID                              as campaignId,
+               IO_PCD.placementsCount                                      as placementsCount,
+               (NVL(IO_PCD.TOTALPLADSPEND,0) + NVL(IO_PCD.TOTALPKGADSPEND,0)) as totalAdSpend,
+               NVL(STATUS_TYPES.MAX_STATUS_DATE, INSERTION_ORDER.MODIFIED) as lastUpdated,
+               NVL(STATUS_TYPES.lastUpdatedAuthor, '')                     as lastUpdatedAuthor,
+               DECODE(STATUS_TYPES.STATUS_NAME, 'IO_ACPT', 'Accepted','IO_NEW','New','IO_RJCT','Rejected', 'New') as status,
+               activePlacementIO.activePlacements                          as activePlacementCounter
+          FROM TE_XLS.INSERTION_ORDER
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = INSERTION_ORDER.MEDIA_BUY_ID
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN ON MEDIA_BUY_CAMPAIGN.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = MB.AGENCY_ID
+               INNER JOIN TE_XLS.CAMPAIGN C ON MEDIA_BUY_CAMPAIGN.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+               INNER JOIN (SELECT IO_ID, 
+                                  SUM(PLADSPEND) AS TOTALPLADSPEND, 
+                                  SUM(PKGADSPEND) AS TOTALPKGADSPEND, 
+                                  SUM(PLACEMENTSCOUNT) AS PLACEMENTSCOUNT
+                             FROM ( SELECT IO.IO_ID,
+                                           COUNT(DISTINCT P.PLACEMENT_ID) AS PLACEMENTSCOUNT,
+                                           SUM(NVL(PCD.PLANNED_GROSS_AD_SPEND, 0.0)) AS PLADSPEND,
+                                           ((SELECT SUM(PKCD.PLANNED_GROSS_AD_SPEND)
+                                               FROM TE_XLS.PACKAGE PKG, TE_XLS.PACKAGE_COST_DETAIL PKCD
+                                              WHERE PKG.PACKAGE_ID = PKCD.PACKAGE_ID 
+                                                AND PKG.PACKAGE_ID = PP.PACKAGE_ID
+                                                AND DECODE(PKG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                                AND DECODE(PKCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                              GROUP BY PKG.PACKAGE_ID) /
+                                            (SELECT COUNT(DISTINCT(pkpl.placement_id))
+                                               FROM TE_XLS.PACKAGE PKG, TE_XLS.PACKAGE_PLACEMENT PKPL
+                                              WHERE PKG.PACKAGE_ID = PKPL.PACKAGE_ID 
+                                                AND PKG.PACKAGE_ID = PP.PACKAGE_ID
+                                                AND DECODE(PKG.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                                AND DECODE(PKPL.LOGICAL_DELETE, 'Y', '1', '0') = '0')
+                                             * COUNT(DISTINCT P.PLACEMENT_ID) 
+                                            ) AS PKGADSPEND
+                                       FROM TE_XLS.INSERTION_ORDER IO
+                                            LEFT OUTER JOIN TE_XLS.PLACEMENT P ON IO.IO_ID = P.IO_ID
+                                             AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                            LEFT OUTER JOIN TE_XLS.PLACEMENT_COST_DETAIL PCD ON PCD.PLACEMENT_ID = P.PLACEMENT_ID
+                                             AND DECODE(PCD.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                            LEFT JOIN TE_XLS.PACKAGE_PLACEMENT PP ON P.PLACEMENT_ID = PP.PLACEMENT_ID
+                                             AND DECODE(PP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                      WHERE DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                      GROUP BY IO.IO_ID, PP.PACKAGE_ID 
+                                  ) PKPLCD
+                            GROUP BY PKPLCD.IO_ID
+                        ) IO_PCD ON IO_PCD.IO_ID = INSERTION_ORDER.IO_ID
+               LEFT OUTER JOIN (SELECT IOS.IO_ID, ST.STATUS_NAME, IOS.STATUS_DATE, 
+                                       MAX(IOS.STATUS_DATE) OVER (PARTITION BY IOS.IO_ID) MAX_STATUS_DATE, 
+                                       CONCAT(CONCAT(C.FNAME, ' '), C.LNAME) as lastUpdatedAuthor
+                                  FROM TE_XLS.INSERTION_ORDER_STATUS IOS
+                                       INNER JOIN TE_XLS.STATUS_TYPES ST ON IOS.STATUS_ID = ST.STATUS_ID
+                                       INNER JOIN TE_XLS.CONTACT C ON C.CONTACT_ID = IOS.CONTACT_ID
+                                 WHERE DECODE(IOS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               ) STATUS_TYPES ON ( INSERTION_ORDER.IO_ID = STATUS_TYPES.IO_ID ) 
+                AND ( STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE )
+               LEFT JOIN (SELECT PLAC_STATUS.io_id, COUNT(1) as activePlacements
+                             FROM ( SELECT p.io_id, P.PLACEMENT_ID, PS.STATUS_ID, PS.STATUS_DATE,
+                                           MAX(PS.STATUS_DATE) OVER (PARTITION BY PS.PLACEMENT_ID) MAX_STATUS_DATE
+                                      FROM TE_XLS.PLACEMENT P, TE_XLS.PLACEMENT_STATUS PS
+                                     WHERE P.PLACEMENT_ID = PS.PLACEMENT_ID 
+                                       AND DECODE(P.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                       AND DECODE(PS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                                   ) PLAC_STATUS
+                             WHERE PLAC_STATUS.STATUS_ID = 16
+                               AND PLAC_STATUS.STATUS_DATE = PLAC_STATUS.MAX_STATUS_DATE
+                             GROUP BY PLAC_STATUS.IO_ID
+                         ) activePlacementIO on activePlacementIO.io_id = INSERTION_ORDER.IO_ID
+         WHERE DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(MEDIA_BUY_CAMPAIGN.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(INSERTION_ORDER.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+            <if test="order != null">
+               ${order}
+           </if>
+    </select>
+    
+    <select id="getIONumberOfRecordsByCriteria" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) as totalRecords
+          FROM TE_XLS.INSERTION_ORDER
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON MB.MEDIA_BUY_ID = INSERTION_ORDER.MEDIA_BUY_ID
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN ON MEDIA_BUY_CAMPAIGN.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) AU ON AU.AGENCY_ID = MB.AGENCY_ID
+               INNER JOIN TE_XLS.CAMPAIGN C ON MEDIA_BUY_CAMPAIGN.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND DECODE(C.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+               LEFT OUTER JOIN (SELECT IOS.IO_ID, ST.STATUS_NAME, IOS.STATUS_DATE,
+                                       MAX(IOS.STATUS_DATE) OVER (PARTITION BY IOS.IO_ID) MAX_STATUS_DATE,
+                                       CONCAT(CONCAT(C.FNAME, ' '), C.LNAME) as lastUpdatedAuthor
+                                  FROM TE_XLS.INSERTION_ORDER_STATUS IOS
+                                       INNER JOIN TE_XLS.STATUS_TYPES ST ON IOS.STATUS_ID = ST.STATUS_ID
+                                       INNER JOIN TE_XLS.CONTACT C ON C.CONTACT_ID = IOS.CONTACT_ID
+                                 WHERE DECODE(IOS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+                               ) STATUS_TYPES ON ( INSERTION_ORDER.IO_ID = STATUS_TYPES.IO_ID )
+                AND ( STATUS_TYPES.STATUS_DATE = STATUS_TYPES.MAX_STATUS_DATE )
+         WHERE DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(MEDIA_BUY_CAMPAIGN.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+           AND DECODE(INSERTION_ORDER.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            <if test="condition != null">
+                AND ${condition}
+            </if>
+    </select>
+    
+    <select id="ioHasActCampaings"  parameterType="long" resultType="java.lang.Long" >
+        SELECT io.IO_ID as ioId
+          FROM TE_XLS.INSERTION_ORDER io
+               INNER JOIN TE_XLS.MEDIA_BUY mb ON io.MEDIA_BUY_ID=mb.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN mbc ON mb.MEDIA_BUY_ID=mbc.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.CAMPAIGN cp ON mbc.CAMPAIGN_ID=cp.CAMPAIGN_ID
+                 AND DECODE(CP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+               INNER JOIN TE_XLS.CAMPAIGN_STATUS cps ON cp.CAMPAIGN_STATUS_ID=cps.STATUS_ID
+                 AND DECODE(CPS.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+         WHERE io.IO_ID=#{id}
+           AND (cps.STATUS_ID in (1 , 2 , 3))
+           AND DECODE(IO.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+
+    <select id="getIoByCampaignIdAndIoNumberName" parameterType="java.util.Map" resultType="InsertionOrder">
+        SELECT MIN(IO.IO_ID)                     AS id,
+               IO.IO_NUMBER || '_@&lt;-*->@_' || UPPER(IO.IO_NAME) AS name
+          FROM TE_XLS.INSERTION_ORDER IO
+               INNER JOIN TE_XLS.MEDIA_BUY MB ON IO.MEDIA_BUY_ID = MB.MEDIA_BUY_ID
+                 AND DECODE(MB.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.MEDIA_BUY_CAMPAIGN MBC ON MB.MEDIA_BUY_ID = MBC.MEDIA_BUY_ID
+                 AND DECODE(MBC.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN TE_XLS.CAMPAIGN C ON MBC.CAMPAIGN_ID = C.CAMPAIGN_ID
+                 AND C.CAMPAIGN_ID = #{campaignId,jdbcType=NUMERIC}
+                 AND DECODE(C.LOGICAL_DELETE,'Y','1','0')='0'
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.getUserAgencies"/>
+                          ) UA ON C.AGENCY_ID = UA.AGENCY_ID
+               INNER JOIN (
+                            <include refid="DataAccessControlPkg.userAdvertisers"/>
+                          ) UADV ON UADV.ADVERTISER_ID = C.ADVERTISER_ID
+         WHERE IO.IO_NUMBER || '_@&lt;-*->@_' || UPPER(IO.IO_NAME) IN
+            <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+           AND DECODE(IO.LOGICAL_DELETE,'Y','1','0')='0'
+         GROUP BY IO.IO_NUMBER || '_@&lt;-*->@_' || UPPER(IO.IO_NAME)
+    </select>
+</mapper>

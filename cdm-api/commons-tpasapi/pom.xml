@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>trueffect.truconnect.api</groupId>
+        <artifactId>trueffect-api</artifactId>
+        <version>2.24.1</version>
+    </parent>
+    
+    <artifactId>commons-tpasapi</artifactId>
+    <packaging>jar</packaging>
+    <name>Trueffect API tpasapi Commons</name>
+    <description>API tpasapi Commons module</description>
+    <url>https://www.trueffect.com</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.4</version>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,68 @@
+{
+  "cpus": 2,
+  "mem": 2560.0,
+  "instances": <INSTANCES>,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "quay.io/trueffect/truadvertiser-api:<API_VERSION>",
+      "forcePullImage" : true,
+      "privileged" : false,
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": 8080, "hostPort": 0, "servicePort": 0, "protocol": "tcp" }
+      ]
+    },
+    "volumes" : [
+      {
+        "containerPath": "/opt/trueffect/truapi/apache-tomcat/webapps/public/files/CreativeFiles/",
+        "hostPath": "<CREATIVE_PATH>",
+        "mode": "RW"
+      }
+    ]
+  },
+  "env" : {
+    "CM_DB_URL" : "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=<TFA_HOSTNAME>)(PORT=<TFA_PORT>))(CONNECT_DATA=(SERVICE_NAME=<TFA_SCHEMA>)))",
+    "CM_DB_USER" : "<TFA_USER>",
+    "CM_DB_PASS" : "<TFA_PASSWORD>",
+    "METRICS_DB_URL" : "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=<METRICS_HOSTNAME>)(PORT=<METRICS_PORT>))(CONNECT_DATA=(SERVICE_NAME=<METRICS_SCHEMA>)))",
+    "METRICS_DB_USER" : "<METRICS_DB_USER>",
+    "METRICS_DB_PASS" : "<METRICS_DB_PASS>",
+    "DIM_DB_URL" : "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=<DIM_HOSTNAME>)(PORT=<DIM_PORT>))(CONNECT_DATA=(SERVICE_NAME=<DIM_SCHEMA>)))",
+    "DIM_DB_USER" : "<DIM_DB_USER>",
+    "DIM_DB_PASS" : "<DIM_DB_PASS>",
+    "OAUTH_LOG_LEVEL" : "debug",
+    "CRUD_LOG_LEVEL" : "debug",
+    "PUBLIC_LOG_LEVEL" : "debug",
+    "TPASAPI_LOG_LEVEL" : "debug",
+    "TRAFFICKING_WSDL_URL" : "<TRAFFICKING_WSDL_URL>",
+    "DELIVERY_URL" : "<DELIVERY_URL>",
+    "TRUQ_URL" : "<TRUQ_URL>",
+    "LOG_LEVEL" : "<LOG_LEVEL>",
+    "DEPLOY_ENV" : "<DEPLOY_ENV>",
+    "AWS_ACCESS_KEY_ID" : "<AWS_ACCESS_KEY_ID>",
+    "AWS_SECRET_ACCESS_KEY" : "<AWS_SECRET_ACCESS_KEY>",
+    "DS_CONFIG_TABLE_NAME" : "<DS_CONFIG_TABLE_NAME>",
+    "DS_CONFIG_S3_PATH_INDEX_NAME" : "<DS_CONFIG_S3_PATH_INDEX_NAME>",
+    "DS_CONFIG_AGENCY_ID_INDEX_NAME" : "<DS_CONFIG_AGENCY_ID_INDEX_NAME>",
+    "REDSHIFT_URL" : "<REDSHIFT_URL>",
+    "REDSHIFT_USER" : "<REDSHIFT_USER>",
+    "REDSHIFT_PASSWORD" : "<REDSHIFT_PASSWORD>"
+  },
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0.25,
+    "maximumOverCapacity" : 0.5
+  },
+  "uris" : ["http://<MESOS_ADDRESS>:8080/v2/artifacts/.dockercfg"],
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/cms/Status",
+      "portIndex": 0,
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+}

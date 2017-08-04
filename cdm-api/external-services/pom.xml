@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>trueffect.truconnect.api</groupId>
+        <artifactId>trueffect-api</artifactId>
+        <version>2.24.1</version>
+    </parent>
+    
+    <artifactId>external</artifactId>
+    <packaging>jar</packaging>
+    <name>Trueffect External Services</name>
+    <description>API External Services</description>
+    <url>https://www.trueffect.com</url>
+
+    <dependencies>
+        <!-- Model dependency -->
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>commons</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SmGroup">
+
+    <!--InsertGroup-->
+    <update id="insertSmGroup" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL SITE_MEASUREMENT_PKG.InsertSMGroup(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{measurementId,jdbcType=NUMERIC,mode=IN},
+        #{groupName,jdbcType=VARCHAR,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--DeleteSmGroup-->
+    <update id="deleteSmGroup" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL SITE_MEASUREMENT_PKG.DeleteSMGroup(
+        #{id,jdbcType=NUMERIC,mode=IN},
+        #{tpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <select id="getSmGroup"  parameterType="long" resultType="trueffect.truconnect.api.commons.model.SmGroup" >
+        SELECT G.SM_GROUP_ID     as id,
+            G.MEASUREMENT_ID     as measurementId,
+            G.GROUP_NAME         as groupName,
+            G.CREATED_TPWS_KEY   as createdTpwsKey,
+            G.MODIFIED_TPWS_KEY  as modifiedTpwsKey,
+            G.CREATED            as createdDate,
+            G.MODIFIED           as modifiedDate,
+            G.LOGICAL_DELETE     as logicalDelete
+        FROM SM_GROUP G
+        WHERE G.SM_GROUP_ID = #{id} AND (G.LOGICAL_DELETE != 'Y' OR G.LOGICAL_DELETE IS NULL)
+    </select>
+
+    <select id="isSmGroupNameExists" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1) AS IS_NAME_EXIST
+        FROM TE_XLS.SM_GROUP
+        INNER JOIN TE_XLS.site_measurement
+            ON site_measurement.MEASUREMENT_ID = TE_XLS.SM_GROUP.MEASUREMENT_ID
+                AND DECODE(site_measurement.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE DECODE(SM_GROUP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+            AND site_measurement.MEASUREMENT_ID = #{smId, jdbcType=VARCHAR,mode=IN}
+            AND UPPER(SM_GROUP.GROUP_NAME) = UPPER(#{name, jdbcType=VARCHAR,mode=IN})
+    </select>
+
+    <select id="getSmGroupList" parameterType="java.lang.Long" resultType="SmGroup">
+        SELECT
+            SM_GROUP.SM_GROUP_ID          as id,
+            SM_GROUP.MEASUREMENT_ID       as measurementId,
+            SM_GROUP.GROUP_NAME           as groupName,
+            SM_GROUP.CREATED_TPWS_KEY     as createdTpwsKey,
+            SM_GROUP.MODIFIED_TPWS_KEY    as modifiedTpwsKey,
+            SM_GROUP.CREATED              as createdDate,
+            SM_GROUP.MODIFIED             as modifiedDate
+        FROM TE_XLS.SM_GROUP
+        INNER JOIN TE_XLS.SITE_MEASUREMENT
+            ON TE_XLS.SITE_MEASUREMENT.MEASUREMENT_ID = TE_XLS.SM_GROUP.MEASUREMENT_ID
+                AND DECODE(SITE_MEASUREMENT.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+        WHERE SM_GROUP.MEASUREMENT_ID = #{siteMeasurementId}
+            AND DECODE(SM_GROUP.LOGICAL_DELETE, 'Y', '1', '0') = '0'
+    </select>
+</mapper>

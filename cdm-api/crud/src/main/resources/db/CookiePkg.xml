@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CookiePkg">
+
+    <resultMap id="cookieOperationResultMap" type="trueffect.truconnect.api.commons.model.CookieOperation">
+        <id property="cookieOperationId" column="COOKIE_OPERATION_ID" />
+        <result property="cookieName" column="COOKIE_NAME" />
+        <result property="cookieDomainId" column="COOKIE_DOMAIN_ID" />
+        <result property="expirationDays" column="EXPIRATION_DAYS" />
+        <result property="cookieOverwriteBehave" column="COOKIE_OVERWRITE_BEHAVE" />
+        <result property="createdDate" column="CREATED" />
+        <result property="modifiedDate" column="MODIFIED" />
+    </resultMap>
+    <resultMap id="covResultMap" type="trueffect.truconnect.api.commons.model.CookieOperationValue">
+        <result property="cookieOperationValueId" column="COOKIE_OPERATION_VALUE_ID" />
+        <result property="cookieOperationId" column="COOKIE_OPERATION_ID" />
+        <result property="cookieValue" column="COOKIE_VALUE" />
+        <result property="createdDate" column="CREATED" />
+        <result property="modifiedDate" column="MODIFIED" />
+    </resultMap>
+    <resultMap id="covroResultMap" type="trueffect.truconnect.api.commons.model.CookieOperationValRef">
+        <result property="cookieOperationValueId" column="COOKIE_OPERATION_VALUE_ID" />
+        <result property="cookieRefEntityType" column="COOKIE_REF_ENTITY_TYPE" />
+        <result property="cookieRefEntityId" column="COOKIE_REF_ENTITY_ID" />
+        <result property="campaignId" column="CAMPAIGN_ID" />
+        <result property="createdDate" column="CREATED" />
+        <result property="modifiedDate" column="MODIFIED" />
+    </resultMap>
+    <resultMap id="covrcResultMap" type="trueffect.truconnect.api.commons.model.CookieOperationValRef">
+        <result property="cookieOperationValueId" column="COOKIE_OPERATION_VALUE_ID" />
+        <result property="cookieRefEntityType" column="COOKIE_REF_ENTITY_TYPE" />
+        <result property="cookieRefEntityId" column="COOKIE_REF_ENTITY_ID" />
+        <result property="campaignId" column="CAMPAIGN_ID" />
+    </resultMap>
+
+    <!-- Cookie domain -->
+
+    <update id="insertCookieDomain" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.InsertCookieDomain(
+                #{p_cookie_domain_id,jdbcType=NUMERIC,mode=IN},
+                #{p_agency_id,jdbcType=NUMERIC,mode=IN},
+                #{p_domain,jdbcType=VARCHAR,mode=IN},
+                #{p_tpws_key,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="deleteCookieDomain" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.DeleteCookieDomain(
+                #{p_cookie_domain_id,jdbcType=NUMERIC,mode=IN},
+                #{p_tpws_key,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <!--InsertCookieTargetTemplate -->
+    <update id="insertCookieTT" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL COOKIE_PKG.InsertCookieTargetTemplate(
+                #{cookieTargetTemplateId,jdbcType=NUMERIC,mode=IN},
+                #{cookieName,jdbcType=VARCHAR,mode=IN},
+                #{cookieDomainId,jdbcType=NUMERIC,mode=IN},
+                #{cookieContentType,jdbcType=TINYINT,mode=IN},
+                #{contentPossibleValues,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="updateCookieTT" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL COOKIE_PKG.UpdateCookieTargetTemplate(
+                #{cookieTargetTemplateId,jdbcType=NUMERIC,mode=IN},
+                #{cookieName,jdbcType=VARCHAR,mode=IN},
+                #{cookieDomainId,jdbcType=NUMERIC,mode=IN},
+                #{cookieContentType,jdbcType=TINYINT,mode=IN},
+                #{contentPossibleValues,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+
+    <update id="deleteCookieTT" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL COOKIE_PKG.DeleteCookieTargetTemplate(
+                #{cookieTargetTemplateId,jdbcType=NUMERIC,mode=IN}) }
+    </update>
+
+    <!--Cookie Operation -->
+    <update id="insertCookieOperation" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.InsertCookieOperation(
+                #{p_cookie_operation_id,jdbcType=NUMERIC,mode=IN},
+                #{p_cookie_name,jdbcType=VARCHAR,mode=IN},
+                #{p_cookie_domain_id,jdbcType=NUMERIC,mode=IN},
+                #{p_expiration_days,jdbcType=NUMERIC,mode=IN},
+                #{p_cookie_overwrite_behave,jdbcType=NUMERIC,mode=IN},
+                #{p_tpws_key,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="updateCookieOperation" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.UpdateCookieOperation(
+                #{p_cookie_operation_id,jdbcType=NUMERIC,mode=IN},
+                #{p_cookie_name,jdbcType=VARCHAR,mode=IN},
+                #{p_cookie_domain_id,jdbcType=NUMERIC,mode=IN},
+                #{p_expiration_days,jdbcType=NUMERIC,mode=IN},
+                #{p_cookie_overwrite_behave,jdbcType=NUMERIC,mode=IN},
+                #{p_tpws_key,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="deleteCookieOperation" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.DeleteCookieOperation(
+                #{cookieOperationId, jdbcType=NUMERIC, mode=IN},
+                #{tpwsKey, jdbcType=VARCHAR, mode=IN}) }
+    </update>
+    <select id="getCookieOperationsByCookieDomain" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpBy_CookieDomain(
+                #{cookieDomainId, jdbcType=NUMERIC, mode=IN},
+                #{refCursor, jdbcType=CURSOR, mode=OUT,
+                    javaType=java.sql.ResultSet,resultMap=cookieOperationResultMap}) }
+    </select>
+    <select id="getCookieOperationsByAgency" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpBy_Agency(
+                #{agencyId, jdbcType=NUMERIC, mode=IN},
+                #{refCursor, jdbcType=CURSOR, mode=OUT,
+                    javaType=java.sql.ResultSet,resultMap=cookieOperationResultMap}) }
+    </select>
+    <select id="getCookieOperationsByCampaign" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpBy_Campaign(
+                #{campaignId, jdbcType=NUMERIC, mode=IN},
+                #{refCursor, jdbcType=CURSOR, mode=OUT,
+                    javaType=java.sql.ResultSet,resultMap=cookieOperationResultMap}) }
+    </select>
+
+    <select id="getCookieOpValBy_CookieOp" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpValBy_CookieOp(
+                #{cookieOperationValueId,jdbcType=NUMERIC,mode=IN},
+                #{refCursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=covResultMap}) }
+    </select>
+    <select id="getCookieOpValBy_CookieOp_Cmpn" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpValBy_CookieOp_Cmpn(
+                #{cookieOperationValueId,jdbcType=NUMERIC,mode=IN},
+                #{campaignId,jdbcType=NUMERIC,mode=IN},
+                #{refCursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=covResultMap}) }
+    </select>
+    <select id="getCookieOpValBy_Campaign" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpValBy_Campaign(
+                #{campaignId,jdbcType=NUMERIC,mode=IN},
+                #{refCursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=covResultMap}) }
+    </select>
+    <update id="insertCookieOperationValue" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.InsertCookieOperationValue(
+        #{cookieOperationValueId,jdbcType=NUMERIC,mode=IN},
+        #{cookieOperationId,jdbcType=NUMERIC,mode=IN},
+        #{cookieValue,jdbcType=VARCHAR,mode=IN},
+        #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="deleteCookieOperationValue" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.DeleteCookieOperationValue(
+        #{cookieOperationValueId,jdbcType=NUMERIC,mode=IN},
+        #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <select id="getCookieOpValRefBy_OpVal" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpValRefBy_OpVal(
+        #{cookieOperationValueId,jdbcType=NUMERIC,mode=IN},
+        #{refCursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=covroResultMap}) }
+    </select>
+    <select id="getCookieOpValRefBy_Cmpn" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpValRefBy_Cmpn(
+        #{campaignId,jdbcType=NUMERIC,mode=IN},
+        #{refCursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=covrcResultMap}) }
+    </select>
+    <select id="getCookieOpValRefBy_COV_Cmpn" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.GetCookieOpValRefBy_COV_Cmpn(
+        #{cookieOperationValueId,jdbcType=NUMERIC,mode=IN},
+        #{campaignId,jdbcType=NUMERIC,mode=IN},
+        #{refCursor,jdbcType=CURSOR,mode=OUT,javaType=java.sql.ResultSet,resultMap=covrcResultMap}) }
+    </select>
+
+    <update id="insertCookieOperationValRef" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.InsertCookieOperationValRef(
+        #{cookieOperationValueId,jdbcType=NUMERIC,mode=IN},
+        #{cookieRefEntityType,jdbcType=NUMERIC,mode=IN},
+        #{cookieRefEntityId,jdbcType=NUMERIC,mode=IN},
+        #{campaignId,jdbcType=NUMERIC,mode=IN},
+        #{createdTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <update id="deleteCookieOperationValRef" statementType="CALLABLE"
+        parameterType="java.util.Map">
+        { CALL TE_XLS.COOKIE_PKG.DeleteCookieOperationValRef(
+        #{cookieOperationValueId,jdbcType=NUMERIC,mode=IN},
+        #{cookieRefEntityType,jdbcType=NUMERIC,mode=IN},
+        #{cookieRefEntityId,jdbcType=NUMERIC,mode=IN},
+        #{campaignId,jdbcType=NUMERIC,mode=IN},
+        #{modifiedTpwsKey,jdbcType=VARCHAR,mode=IN}) }
+    </update>
+    <!--SECTION OF QUERY'S -->
+    <select id="getCookieTT" parameterType="long"
+        resultType="trueffect.truconnect.api.commons.model.CookieTargetTemplate">
+        SELECT CTT.COOKIE_TARGET_TEMPLATE_ID as
+        cookieTargetTemplateId,
+        CTT.COOKIE_NAME as cookieName,
+        CTT.COOKIE_DOMAIN_ID as cookieDomainId,
+        CTT.COOKIE_CONTENT_TYPE as cookieContentType,
+        CTT.CONTENT_POSSIBLE_VALUES as contentPossibleValues,
+        CTT.LOGICAL_DELETE as logicalDelete,
+        CTT.CREATED as createdDate,
+        CTT.MODIFIED as modifiedDate,
+        CTT.TRACKING_COOKIE as trackingCookie
+        FROM TE_XLS.COOKIE_TARGET_TEMPLATE CTT
+        WHERE
+        CTT.COOKIE_TARGET_TEMPLATE_ID = #{id}
+    </select>
+    <select id="getCookieByDomain" parameterType="long"
+        resultType="trueffect.truconnect.api.commons.model.CookieTargetTemplate">
+        SELECT CTT.COOKIE_TARGET_TEMPLATE_ID as
+        cookieTargetTemplateId,
+        CTT.COOKIE_NAME as cookieName,
+        CTT.COOKIE_DOMAIN_ID as cookieDomainId,
+        CTT.COOKIE_CONTENT_TYPE as cookieContentType,
+        CTT.CONTENT_POSSIBLE_VALUES as contentPossibleValues,
+        CTT.LOGICAL_DELETE as logicalDelete,
+        CTT.CREATED as createdDate,
+        CTT.MODIFIED as modifiedDate,
+        CTT.TRACKING_COOKIE as trackingCookie
+        FROM TE_XLS.COOKIE_TARGET_TEMPLATE CTT
+        WHERE
+        CTT.COOKIE_DOMAIN_ID = #{cookieDomainId}
+    </select>
+
+    <select id="existCookieTT" parameterType="java.util.Map"
+        resultType="java.lang.String">
+        SELECT DECODE(count(*),0,'false','true')
+        FROM TE_XLS.COOKIE_TARGET_TEMPLATE
+        WHERE LOWER(COOKIE_NAME) = LOWER(#{cookieName,jdbcType=VARCHAR})
+        AND COOKIE_DOMAIN_ID = #{cookieDomainId,jdbcType=NUMERIC}
+        AND ( LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL )
+    </select>
+    
+    <select id="getCookieDomain" parameterType="java.lang.Long"
+        resultType="trueffect.truconnect.api.commons.model.CookieDomain">
+        SELECT cookie_domain_id as id
+        , agency_id as agencyId
+        , domain as domain
+        , logical_delete as logicalDelete
+        , created_tpws_key as createdTpwsKey
+        , modified_tpws_key as modifiedTpwsKey
+        , created as createdDate
+        , modified as modifiedDate
+        , cookie_domain_root_id as cookieDomainRootId
+        FROM TE_XLS.COOKIE_DOMAIN
+        WHERE cookie_domain_id = #{id} AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL)
+    </select>
+    <select id="getCookieDomainAll" resultType="trueffect.truconnect.api.commons.model.CookieDomain">
+        SELECT
+        cookie_domain_id as id
+        , agency_id as agencyId
+        , domain as domain
+        , logical_delete as logicalDelete
+        , created_tpws_key as createdTpwsKey
+        , modified_tpws_key as modifiedTpwsKey
+        , created as createdDate
+        , modified as modifiedDate
+        , cookie_domain_root_id as cookieDomainRootId
+        FROM TE_XLS.COOKIE_DOMAIN
+    </select>
+    <select id="cookieDomainExists" parameterType="java.lang.String"
+        resultType="trueffect.truconnect.api.commons.model.CookieDomain">
+        SELECT cookie_domain_id as id
+        , agency_id as agencyId
+        , domain as domain
+        , logical_delete as logicalDelete
+        , created_tpws_key as createdTpwsKey
+        , modified_tpws_key as modifiedTpwsKey
+        , created as createdDate
+        , modified as modifiedDate
+        , cookie_domain_root_id as cookieDomainRootId
+        FROM TE_XLS.COOKIE_DOMAIN
+        WHERE LOWER(domain) = LOWER('${value}')
+    </select>
+
+    <!--get Cookie Operation -->
+    <select id="getCookieOperation" parameterType="java.lang.Long"
+        resultType="trueffect.truconnect.api.commons.model.CookieOperation">
+        SELECT cookie_operation_id as cookieOperationId
+        , cookie_name as cookieName
+        , cookie_domain_id as cookieDomainId
+        , expiration_days as expirationDays
+        , cookie_overwrite_behave as cookieOverwriteBehave
+        , traffic_status_flag as trafficStatusFlag
+        , logical_delete as logicalDelete
+        , created as createdDate
+        , modified as modifiedDate
+        , created_tpws_key as createdTpwsKey
+        , modified_tpws_key as modifiedTpwsKey
+        FROM TE_XLS.COOKIE_OPERATION
+        WHERE cookie_operation_id = #{cookieOperationId} AND (LOGICAL_DELETE != 'Y' OR LOGICAL_DELETE IS NULL)
+    </select>
+
+    <select id="cookieOperationAlreadyExists" parameterType="java.lang.String"
+        resultType="trueffect.truconnect.api.commons.model.CookieOperation">
+        SELECT cookie_operation_id as cookieOperationId
+        , cookie_name as cookieName
+        , cookie_domain_id as cookieDomainId
+        , expiration_days as expirationDays
+        , cookie_overwrite_behave as cookieOverwriteBehave
+        , traffic_status_flag as trafficStatusFlag
+        , logical_delete as logicalDelete
+        , created as createdDate
+        , modified as modifiedDate
+        , created_tpws_key as createdTpwsKey
+        , modified_tpws_key as modifiedTpwsKey
+        FROM TE_XLS.COOKIE_OPERATION
+        WHERE COOKIE_NAME = '${value}'
+    </select>
+
+    <select id="getCookieOperationValue" parameterType="java.lang.Long"
+        resultType="trueffect.truconnect.api.commons.model.CookieOperationValue">
+        SELECT cookie_operation_value_id as cookieOperationValueId,
+        cookie_operation_id as cookieOperationId,
+        cookie_value as cookieValue,
+        created as createdDate,
+        modified as modifiedDate,
+        logical_delete as logicalDelete,
+        created_tpws_key as createdTpwsKey,
+        modified_tpws_key as modifiedTpwsKey
+        FROM TE_XLS.COOKIE_OPERATION_VALUE
+        WHERE COOKIE_OPERATION_VALUE_ID = #{id}
+    </select>
+    <select id="getCookieOperationValRef" parameterType="java.lang.Long"
+        resultType="trueffect.truconnect.api.commons.model.CookieOperationValRef">
+        SELECT cookie_operation_value_id as cookieOperationValueId,
+        cookie_ref_entity_type as cookieRefEntityType,
+        cookie_ref_entity_id as cookieRefEntityId,
+        campaign_id as campaignId,
+        logical_delete as logicalDelete,
+        created_tpws_key as createdTpwsKey,
+        modified_tpws_key as modifiedTpwsKey,
+        created as createdDate,
+        modified as modifiedDate
+        FROM TE_XLS.COOKIE_OPERATION_VAL_REF
+        WHERE COOKIE_OPERATION_VALUE_ID = #{id}
+    </select>
+    
+    <select id="queryGetCookieTT" parameterType="java.lang.String"
+        resultType="trueffect.truconnect.api.commons.model.CookieTargetTemplate">
+        SELECT COOKIE_TARGET_TEMPLATE.COOKIE_TARGET_TEMPLATE_ID as    cookieTargetTemplateId,
+            COOKIE_TARGET_TEMPLATE.COOKIE_NAME as cookieName,
+            COOKIE_TARGET_TEMPLATE.COOKIE_DOMAIN_ID as cookieDomainId,
+            COOKIE_TARGET_TEMPLATE.COOKIE_CONTENT_TYPE as cookieContentType,
+            COOKIE_TARGET_TEMPLATE.CONTENT_POSSIBLE_VALUES as contentPossibleValues,
+            COOKIE_TARGET_TEMPLATE.LOGICAL_DELETE as logicalDelete,
+            COOKIE_TARGET_TEMPLATE.CREATED as createdDate,
+            COOKIE_TARGET_TEMPLATE.MODIFIED as modifiedDate,
+            COOKIE_TARGET_TEMPLATE.TRACKING_COOKIE as trackingCookie
+        FROM COOKIE_TARGET_TEMPLATE
+        ${value}
+    </select>
+    
+    <select id="queryGetCookieDomain" parameterType="java.lang.String"
+        resultType="trueffect.truconnect.api.commons.model.CookieDomain">
+        SELECT COOKIE_DOMAIN.cookie_domain_id as cookieDomainId
+            , COOKIE_DOMAIN.agency_id as agencyId
+            , COOKIE_DOMAIN.domain as domain
+            , COOKIE_DOMAIN.logical_delete as logicalDelete
+            , COOKIE_DOMAIN.created_tpws_key as createdTpwsKey
+            , COOKIE_DOMAIN.modified_tpws_key as modifiedTpwsKey
+            , COOKIE_DOMAIN.created as createdDate
+            , COOKIE_DOMAIN.modified as modifiedDate
+            , COOKIE_DOMAIN.cookie_domain_root_id as cookieDomainRootId
+        FROM COOKIE_DOMAIN
+        ${value}
+    </select>
+    <select id="queryGetCookieOperation" parameterType="java.lang.String"
+        resultType="trueffect.truconnect.api.commons.model.CookieOperation">
+        SELECT COOKIE_OPERATION.cookie_operation_id as cookieOperationId
+            , COOKIE_OPERATION.cookie_name as cookieName
+            , COOKIE_OPERATION.cookie_domain_id as cookieDomainId
+            , COOKIE_OPERATION.expiration_days as expirationDays
+            , COOKIE_OPERATION.cookie_overwrite_behave as cookieOverwriteBehave
+            , COOKIE_OPERATION.traffic_status_flag as trafficStatusFlag
+            , COOKIE_OPERATION.logical_delete as logicalDelete
+            , COOKIE_OPERATION.created as createdDate
+            , COOKIE_OPERATION.modified as modifiedDate
+            , COOKIE_OPERATION.created_tpws_key as createdTpwsKey
+            , COOKIE_OPERATION.modified_tpws_key as modifiedTpwsKey
+        FROM COOKIE_OPERATION
+        ${value}
+    </select>
+    
+    <select id="queryGetCookieOperationValue" parameterType="java.lang.String"
+        resultType="trueffect.truconnect.api.commons.model.CookieOperationValue">
+        SELECT COOKIE_OPERATION_VALUE.cookie_operation_value_id as cookieOperationValueId,
+            COOKIE_OPERATION_VALUE.cookie_operation_id as cookieOperationId,
+            COOKIE_OPERATION_VALUE.cookie_value as cookieValue,
+            COOKIE_OPERATION_VALUE.created as createdDate,
+            COOKIE_OPERATION_VALUE.modified as modifiedDate,
+            COOKIE_OPERATION_VALUE.logical_delete as logicalDelete,
+            COOKIE_OPERATION_VALUE.created_tpws_key as createdTpwsKey,
+            COOKIE_OPERATION_VALUE.modified_tpws_key as modifiedTpwsKey
+        FROM COOKIE_OPERATION_VALUE
+        ${value}
+    </select>
+    
+    <select id="queryGetCookieOperationValRef" parameterType="java.lang.String"
+        resultType="trueffect.truconnect.api.commons.model.CookieOperationValRef">
+        SELECT COOKIE_OPERATION_VAL_REF.cookie_operation_value_id as cookieOperationValueId,
+            COOKIE_OPERATION_VAL_REF.cookie_ref_entity_type as cookieRefEntityType,
+            COOKIE_OPERATION_VAL_REF.cookie_ref_entity_id as cookieRefEntityId,
+            COOKIE_OPERATION_VAL_REF.campaign_id as campaignId,
+            COOKIE_OPERATION_VAL_REF.logical_delete as logicalDelete,
+            COOKIE_OPERATION_VAL_REF.created_tpws_key as createdTpwsKey,
+            COOKIE_OPERATION_VAL_REF.modified_tpws_key as modifiedTpwsKey,
+            COOKIE_OPERATION_VAL_REF.created as createdDate,
+            COOKIE_OPERATION_VAL_REF.modified as modifiedDate
+        FROM COOKIE_OPERATION_VAL_REF
+        ${value}
+    </select>
+</mapper>

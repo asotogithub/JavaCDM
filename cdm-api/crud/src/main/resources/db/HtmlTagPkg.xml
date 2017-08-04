@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HtmlTagPkg">
+   <!--InsertExtendedProperty-->
+     <update id="insertTag" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.HTMLTAG_PKG.InsertTag(
+                    #{p_tag_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_vendor_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_tag_name,jdbcType=VARCHAR,mode=IN},
+                                    #{p_tag_description,jdbcType=VARCHAR,mode=IN},
+                                    #{p_match_expression,jdbcType=VARCHAR,mode=IN},
+                                    #{p_height_expression,jdbcType=VARCHAR,mode=IN},
+                                    #{p_width_expression,jdbcType=VARCHAR,mode=IN}) }
+    </update>          
+     <update id="updateTag" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.HTMLTAG_PKG.updateTag(
+                    #{p_tag_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_vendor_id,jdbcType=NUMERIC,mode=IN},
+                                    #{p_tag_name,jdbcType=VARCHAR,mode=IN},
+                                    #{p_tag_description,jdbcType=VARCHAR,mode=IN},
+                                    #{p_match_expression,jdbcType=VARCHAR,mode=IN},
+                                    #{p_height_expression,jdbcType=VARCHAR,mode=IN},
+                                    #{p_width_expression,jdbcType=VARCHAR,mode=IN}) }
+    </update>          
+     <update id="deleteTag" statementType="CALLABLE" parameterType="java.util.Map">
+        { CALL TE_XLS.HTMLTAG_PKG.DeleteTag( #{p_tag_id,jdbcType=NUMERIC,mode=IN}) }
+    </update> 
+    <select id="getTpTag"  parameterType="java.lang.Long"
+            resultType="trueffect.truconnect.api.commons.model.TpTag" >
+         SELECT   tp_tag_id as  tpTagId
+                , tp_vendor_id as  tpVendorId
+                , tag_name as  tagName
+                , tag_description as  tagDescription
+                , match_expression as  matchExpression
+                , height_expression as  heightExpression
+                , width_expression as  widthExpression
+        FROM TE_XLS.TP_TAG
+        WHERE TP_TAG_ID = #{id}
+    </select>         
+    <select id="getTpTagAll"  resultType="trueffect.truconnect.api.commons.model.TpTag" >
+         SELECT   tp_tag_id as  tpTagId
+                , tp_vendor_id as  tpVendorId
+                , tag_name as  tagName
+                , tag_description as  tagDescription
+                , match_expression as  matchExpression
+                , height_expression as  heightExpression
+                , width_expression as  widthExpression
+        FROM TE_XLS.TP_TAG
+    </select>
+    
+    <select id="queryGetTpTag"  parameterType="java.lang.String"
+            resultType="trueffect.truconnect.api.commons.model.TpTag" >
+         SELECT TP_TAG.tp_tag_id as  tpTagId
+            , TP_TAG.tp_vendor_id as  tpVendorId
+            , TP_TAG.tag_name as  tagName
+            , TP_TAG.tag_description as  tagDescription
+            , TP_TAG.match_expression as  matchExpression
+            , TP_TAG.height_expression as  heightExpression
+            , TP_TAG.width_expression as  widthExpression
+        FROM TP_TAG
+        ${value}
+    </select>   
+</mapper>
